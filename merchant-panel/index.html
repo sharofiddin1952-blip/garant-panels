@@ -1,0 +1,2083 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dilnoza Style &mdash; Merchant Kabinet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+/* ============================================================
+   DESIGN TOKENS (Garant Acquiring dizayn tizimi bilan bir xil)
+   ============================================================ */
+:root{
+  --bg:#F5F6F9;
+  --surface:#FFFFFF;
+  --surface-alt:#FAFBFC;
+  --border:#E2E5EC;
+  --border-strong:#CBD2DE;
+  --text-1:#0F1522;
+  --text-2:#4B5468;
+  --text-3:#8A93A3;
+  --blue:#2C4CE0;
+  --blue-dark:#1E37AE;
+  --blue-bg:#EAEEFC;
+  --green:#157A4A;
+  --green-bg:#E4F5EC;
+  --red:#B3261E;
+  --red-bg:#FCEAE9;
+  --amber:#A15C00;
+  --amber-bg:#FCEFDD;
+  --purple:#6339B8;
+  --purple-bg:#F0EBFB;
+  --navy-1:#0B1220;
+  --navy-2:#121B2E;
+  --navy-3:#1B2740;
+  --navy-text:#C9D2E3;
+  --navy-text-dim:#7C8AA6;
+  --radius-lg:10px;
+  --radius-md:7px;
+  --radius-sm:4px;
+  --shadow-sm:0 1px 2px rgba(15,21,34,0.06);
+  --shadow-md:0 4px 16px rgba(15,21,34,0.10);
+  --shadow-lg:0 12px 40px rgba(15,21,34,0.16);
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:var(--sans);
+  background:var(--bg);
+  color:var(--text-1);
+  font-size:13px;
+  line-height:1.45;
+  -webkit-font-smoothing:antialiased;
+  overflow:hidden;
+}
+button{font-family:inherit;cursor:pointer;}
+input,select,textarea{font-family:inherit;font-size:13px;}
+::-webkit-scrollbar{width:9px;height:9px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:#CBD2DE;border-radius:8px;}
+::-webkit-scrollbar-thumb:hover{background:#9AA4B8;}
+a{color:var(--blue);text-decoration:none;}
+:focus-visible{outline:2px solid var(--blue);outline-offset:1px;}
+.mono{font-family:var(--mono);}
+.tabular{font-variant-numeric:tabular-nums;}
+
+/* ---------- SHELL ---------- */
+.app-shell{display:flex;height:100vh;width:100vw;}
+.sidebar{width:230px;flex-shrink:0;background:var(--navy-1);color:var(--navy-text);display:flex;flex-direction:column;transition:width .15s ease;}
+.sidebar.collapsed{width:68px;}
+.sidebar-brand{display:flex;align-items:center;gap:10px;padding:18px 18px 16px 18px;border-bottom:1px solid rgba(255,255,255,0.07);}
+.sidebar-brand .logo{width:32px;height:32px;border-radius:8px;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0;}
+.sidebar-brand .txt{overflow:hidden;white-space:nowrap;}
+.sidebar-brand .name{font-size:13px;font-weight:700;color:#fff;}
+.sidebar-brand .sub{font-size:10.5px;color:var(--navy-text-dim);margin-top:1px;}
+.sidebar.collapsed .txt{display:none;}
+.nav-group{padding:14px 10px 4px 10px;}
+.nav-group .gl{font-size:10px;font-weight:700;color:var(--navy-text-dim);letter-spacing:.04em;padding:0 8px 6px 8px;white-space:nowrap;}
+.sidebar.collapsed .nav-group .gl{display:none;}
+.nav-item{
+  display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:8px;color:var(--navy-text);
+  font-size:12.5px;font-weight:500;margin-bottom:1px;white-space:nowrap;overflow:hidden;
+  background:none;border:none;width:100%;text-align:left;
+}
+.nav-item svg{width:16px;height:16px;flex-shrink:0;}
+.nav-item:hover{background:var(--navy-2);color:#fff;}
+.nav-item.active{background:var(--navy-3);color:#fff;}
+.nav-item .badge-count{margin-left:auto;background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;}
+.sidebar.collapsed .nav-item .badge-count{display:none;}
+.sidebar-foot{margin-top:auto;padding:14px 18px;border-top:1px solid rgba(255,255,255,0.07);}
+.collapse-btn{background:transparent;border:none;color:var(--navy-text-dim);font-size:12.5px;display:flex;align-items:center;gap:8px;}
+.collapse-btn svg{width:14px;height:14px;}
+
+.main{flex:1;display:flex;flex-direction:column;min-width:0;}
+.topbar{
+  height:56px;flex-shrink:0;background:var(--surface);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 20px;gap:14px;
+}
+.acc-chip{display:flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius-md);background:var(--surface-alt);font-size:11.5px;color:var(--text-2);}
+.acc-chip b{color:var(--text-1);font-weight:700;}
+.acc-chip svg{width:13px;height:13px;color:var(--text-3);}
+.search-wrap{flex:1;max-width:400px;display:flex;align-items:center;gap:8px;border:1px solid var(--border);border-radius:var(--radius-md);padding:7px 11px;background:var(--surface-alt);}
+.search-wrap svg{width:14px;height:14px;color:var(--text-3);}
+.search-wrap input{border:none;background:transparent;outline:none;width:100%;font-size:12.5px;}
+.top-right{display:flex;align-items:center;gap:10px;margin-left:auto;}
+.icon-btn{width:34px;height:34px;border-radius:8px;border:1px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:center;position:relative;color:var(--text-2);}
+.icon-btn:hover{background:var(--surface-alt);}
+.icon-btn svg{width:16px;height:16px;}
+.icon-btn .dot{position:absolute;top:6px;right:6px;width:7px;height:7px;border-radius:50%;background:var(--red);border:1.5px solid var(--surface);}
+.user-chip{display:flex;align-items:center;gap:9px;padding:5px 10px 5px 5px;border-radius:20px;border:1px solid var(--border);background:var(--surface);}
+.user-chip .av{width:26px;height:26px;border-radius:50%;background:var(--purple-bg);color:var(--purple);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;}
+.user-chip .nm{font-size:12px;font-weight:600;}
+.user-chip .rl{font-size:10.5px;color:var(--text-3);}
+
+.content{flex:1;overflow:hidden;display:flex;}
+.page-scroll{flex:1;overflow-y:auto;padding:22px 26px 40px 26px;}
+
+/* ---------- COMMON COMPONENTS (admin panel bilan bir xil) ---------- */
+.page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;gap:16px;}
+.page-header h1{font-size:21px;font-weight:700;margin:0 0 4px 0;letter-spacing:-.2px;}
+.page-header .desc{color:var(--text-2);font-size:13px;max-width:640px;}
+.header-actions{display:flex;gap:8px;flex-shrink:0;}
+.btn{border:1px solid var(--border-strong);background:var(--surface);color:var(--text-1);padding:8px 14px;border-radius:var(--radius-md);font-size:12.5px;font-weight:600;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;}
+.btn svg{width:14px;height:14px;}
+.btn:hover{background:var(--surface-alt);border-color:var(--text-3);}
+.btn-primary{background:var(--blue);border-color:var(--blue);color:#fff;}
+.btn-primary:hover{background:var(--blue-dark);border-color:var(--blue-dark);}
+.btn-danger{background:var(--red);border-color:var(--red);color:#fff;}
+.btn-danger:hover{background:#8f1e18;border-color:#8f1e18;}
+.btn-ghost{border-color:transparent;background:transparent;}
+.btn-ghost:hover{background:var(--surface-alt);}
+.btn-sm{padding:5px 10px;font-size:11.5px;}
+.btn:disabled{opacity:.45;cursor:not-allowed;}
+
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px;}
+.kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 15px;display:flex;flex-direction:column;gap:6px;min-width:0;}
+.kpi-card .label{font-size:11.5px;color:var(--text-2);font-weight:600;}
+.kpi-card .value{font-size:21px;font-weight:700;letter-spacing:-.3px;}
+.kpi-card .delta{font-size:11.5px;font-weight:600;display:flex;align-items:center;gap:3px;}
+.kpi-card .delta.up{color:var(--green);}
+.kpi-card .delta.down{color:var(--red);}
+.kpi-card .delta svg{width:11px;height:11px;}
+
+.grid-2{display:grid;grid-template-columns:1.4fr 1fr;gap:14px;margin-bottom:14px;align-items:start;}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px;}
+
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 16px 14px 16px;}
+.panel-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.panel-title h3{font-size:13.5px;font-weight:700;margin:0;}
+.panel-title .sub{font-size:11.5px;color:var(--text-3);font-weight:500;}
+.chart-wrap{position:relative;height:230px;}
+.chart-wrap.sm{height:170px;}
+
+/* status hero \u2014 "pul kelganmi" katta karta */
+.status-hero{border-radius:var(--radius-lg);padding:20px 22px;margin-bottom:16px;display:flex;align-items:center;gap:18px;}
+.status-hero.ok{background:linear-gradient(135deg,#E4F5EC,#EFFBF3);border:1px solid #BFE6D2;}
+.status-hero.pending{background:linear-gradient(135deg,#FCEFDD,#FFF7EC);border:1px solid #F0D6A8;}
+.status-hero .ic{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.status-hero.ok .ic{background:var(--green);color:#fff;}
+.status-hero.pending .ic{background:var(--amber);color:#fff;}
+.status-hero .ic svg{width:26px;height:26px;}
+.status-hero .tt{font-size:15px;font-weight:700;color:var(--text-1);}
+.status-hero .dd{font-size:12.5px;color:var(--text-2);margin-top:3px;}
+.status-hero .amt{margin-left:auto;text-align:right;}
+.status-hero .amt .n{font-size:22px;font-weight:800;letter-spacing:-.3px;}
+.status-hero .amt .l{font-size:11px;color:var(--text-3);font-weight:600;}
+
+.table-toolbar{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+.tbl-search{display:flex;align-items:center;gap:7px;border:1px solid var(--border);border-radius:var(--radius-md);padding:6px 10px;background:var(--surface-alt);min-width:230px;}
+.tbl-search svg{width:13px;height:13px;color:var(--text-3);}
+.tbl-search input{border:none;background:transparent;outline:none;width:100%;font-size:12.5px;}
+.select-filter{border:1px solid var(--border);border-radius:var(--radius-md);padding:6px 9px;background:var(--surface);font-size:12.5px;color:var(--text-1);font-weight:500;}
+.tbl-count{font-size:12px;color:var(--text-3);margin-left:auto;font-weight:500;}
+
+.data-table{width:100%;border-collapse:collapse;font-size:12.5px;}
+.data-table thead th{text-align:left;font-weight:600;color:var(--text-2);font-size:11.5px;padding:9px 12px;border-bottom:1px solid var(--border);background:var(--surface-alt);white-space:nowrap;position:sticky;top:0;}
+.data-table tbody td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.data-table tbody tr{cursor:pointer;}
+.data-table tbody tr:hover{background:var(--surface-alt);}
+.data-table .num{text-align:right;font-family:var(--mono);}
+.table-scroll{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface);}
+.table-scroll .data-table{border:none;}
+.table-scroll thead th:first-child, .table-scroll tbody td:first-child{padding-left:16px;}
+
+.badge{display:inline-flex;align-items:center;gap:4px;padding:2.5px 8px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap;}
+.badge.green{background:var(--green-bg);color:var(--green);}
+.badge.red{background:var(--red-bg);color:var(--red);}
+.badge.amber{background:var(--amber-bg);color:var(--amber);}
+.badge.blue{background:var(--blue-bg);color:var(--blue);}
+.badge.purple{background:var(--purple-bg);color:var(--purple);}
+.badge.gray{background:#EDEFF3;color:var(--text-2);}
+.badge .dotb{width:5px;height:5px;border-radius:50%;background:currentColor;}
+
+.pager{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;font-size:12px;color:var(--text-3);border-top:1px solid var(--border);}
+.pager-btns{display:flex;gap:6px;}
+.pager-btns button{width:28px;height:28px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);}
+.pager-btns button:hover{background:var(--surface-alt);}
+.pager-btns button:disabled{opacity:.4;cursor:not-allowed;}
+
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-bottom:16px;overflow-x:auto;}
+.tab-btn{padding:9px 14px;font-size:12.5px;font-weight:600;color:var(--text-3);background:none;border:none;border-bottom:2px solid transparent;white-space:nowrap;}
+.tab-btn:hover{color:var(--text-1);}
+.tab-btn.active{color:var(--blue);border-bottom-color:var(--blue);}
+
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px 20px;color:var(--text-3);text-align:center;}
+.empty-state svg{width:36px;height:36px;margin-bottom:12px;opacity:.5;}
+.empty-state .t{font-weight:600;color:var(--text-2);margin-bottom:4px;font-size:13px;}
+.empty-state .d{font-size:12px;max-width:320px;}
+
+.overlay{position:fixed;inset:0;background:rgba(11,18,32,0.45);z-index:100;display:none;align-items:stretch;justify-content:flex-end;}
+.overlay.open{display:flex;}
+.drawer{width:560px;max-width:92vw;background:var(--surface);height:100%;box-shadow:var(--shadow-lg);display:flex;flex-direction:column;animation:slidein .18s ease;}
+@keyframes slidein{from{transform:translateX(24px);opacity:.6;}to{transform:translateX(0);opacity:1;}}
+.drawer-head{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;flex-shrink:0;}
+.drawer-close{width:30px;height:30px;border-radius:var(--radius-md);border:none;background:transparent;color:var(--text-2);flex-shrink:0;}
+.drawer-close:hover{background:var(--surface-alt);}
+.drawer-close svg{width:16px;height:16px;}
+.drawer-body{flex:1;overflow-y:auto;padding:20px 22px;}
+.drawer-foot{padding:14px 22px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;flex-shrink:0;}
+
+.modal-center{position:fixed;inset:0;background:rgba(11,18,32,0.45);z-index:110;display:none;align-items:center;justify-content:center;}
+.modal-center.open{display:flex;}
+.modal-box{background:var(--surface);border-radius:var(--radius-lg);width:440px;max-width:92vw;box-shadow:var(--shadow-lg);padding:22px;animation:popin .12s ease;}
+@keyframes popin{from{transform:scale(.97);opacity:0;}to{transform:scale(1);opacity:1;}}
+.modal-box h3{margin:0 0 8px 0;font-size:15px;font-weight:700;}
+.modal-box p{margin:0 0 16px 0;color:var(--text-2);font-size:13px;}
+.modal-actions{display:flex;justify-content:flex-end;gap:8px;}
+
+.kv-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px;}
+.kv{border-bottom:1px solid var(--border);padding-bottom:9px;}
+.kv .k{font-size:11px;color:var(--text-3);font-weight:600;margin-bottom:3px;}
+.kv .v{font-size:13px;font-weight:600;}
+.kv .v.mono{font-family:var(--mono);font-size:12px;font-weight:500;}
+.section-h{font-size:12px;font-weight:700;color:var(--text-2);margin:20px 0 10px 0;}
+.section-h:first-child{margin-top:0;}
+
+.tl{position:relative;padding-left:22px;}
+.tl::before{content:'';position:absolute;left:5px;top:6px;bottom:6px;width:1.5px;background:var(--border);}
+.tl-item{position:relative;padding-bottom:18px;}
+.tl-item:last-child{padding-bottom:0;}
+.tl-item::before{content:'';position:absolute;left:-22px;top:2px;width:9px;height:9px;border-radius:50%;background:var(--blue);border:2px solid var(--surface);box-shadow:0 0 0 1.5px var(--blue);}
+.tl-item.done::before{background:var(--green);box-shadow:0 0 0 1.5px var(--green);}
+.tl-item.failed::before{background:var(--red);box-shadow:0 0 0 1.5px var(--red);}
+.tl-item .tt{font-size:12.5px;font-weight:700;}
+.tl-item .td{font-size:11.5px;color:var(--text-3);margin-top:2px;}
+
+.progress-bar-outer{height:8px;background:#EDEFF3;border-radius:5px;overflow:hidden;}
+.progress-bar-inner{height:100%;border-radius:5px;}
+
+.toast-wrap{position:fixed;bottom:20px;right:20px;z-index:200;display:flex;flex-direction:column;gap:8px;}
+.toast{background:var(--navy-1);color:#fff;padding:12px 16px;border-radius:var(--radius-md);box-shadow:var(--shadow-lg);font-size:12.5px;font-weight:500;display:flex;align-items:center;gap:10px;min-width:260px;animation:toastin .18s ease;}
+@keyframes toastin{from{transform:translateY(8px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.toast svg{width:15px;height:15px;flex-shrink:0;}
+.toast.ok svg{color:#37D67A;}
+.toast.err svg{color:#FF6B5E;}
+
+.form-row{margin-bottom:14px;}
+.form-row label{display:block;font-size:12px;font-weight:600;color:var(--text-2);margin-bottom:5px;}
+.form-row input,.form-row select,.form-row textarea{width:100%;border:1px solid var(--border-strong);border-radius:var(--radius-md);padding:8px 10px;font-size:13px;background:var(--surface);}
+.form-row input:focus,.form-row select:focus,.form-row textarea:focus{border-color:var(--blue);outline:none;}
+.form-hint{font-size:11.5px;color:var(--text-3);margin-top:4px;}
+
+.line-item{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;}
+.line-item:last-child{border-bottom:none;}
+
+.link-card{border:1px solid var(--border);border-radius:var(--radius-md);padding:12px 14px;display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;background:var(--surface);}
+.link-card .lc-url{font-family:var(--mono);font-size:11.5px;color:var(--blue);background:var(--blue-bg);padding:3px 8px;border-radius:5px;}
+
+/* toggle switch */
+.switch{position:relative;display:inline-block;width:38px;height:22px;flex-shrink:0;}
+.switch input{opacity:0;width:0;height:0;}
+.switch .slider{position:absolute;cursor:pointer;inset:0;background:#CBD2DE;border-radius:22px;transition:.15s;}
+.switch .slider::before{content:'';position:absolute;height:16px;width:16px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.15s;}
+.switch input:checked + .slider{background:var(--blue);}
+.switch input:checked + .slider::before{transform:translateX(16px);}
+.setting-row{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--border);}
+.setting-row:last-child{border-bottom:none;}
+.setting-row .st{font-size:12.5px;font-weight:600;}
+.setting-row .sd{font-size:11.5px;color:var(--text-3);margin-top:2px;}
+
+.avatar-circle{width:32px;height:32px;border-radius:50%;background:var(--blue-bg);color:var(--blue);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11.5px;flex-shrink:0;}
+.team-row{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--border);}
+.team-row:last-child{border-bottom:none;}
+
+.stat-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);font-size:12.5px;}
+.stat-row:last-child{border-bottom:none;}
+.stat-row .l{color:var(--text-2);}
+.stat-row .v{font-weight:700;}
+
+.api-key-box{display:flex;align-items:center;gap:8px;background:var(--surface-alt);border:1px solid var(--border);border-radius:var(--radius-md);padding:9px 12px;font-family:var(--mono);font-size:12px;}
+.item-row{display:grid;grid-template-columns:2.2fr .7fr 1fr 1fr auto;gap:8px;align-items:center;margin-bottom:8px;}
+.item-row input,.item-row select{padding:6px 8px;font-size:12px;}
+.mini-progress{height:5px;background:#EDEFF3;border-radius:3px;overflow:hidden;margin-top:4px;}
+.mini-progress > span{display:block;height:100%;background:var(--blue);border-radius:3px;}
+</style>
+</head>
+<body>
+
+<!-- ICON SPRITE -->
+<svg width="0" height="0" style="position:absolute">
+<defs>
+<symbol id="i-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+<symbol id="i-swap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h13l-3-4M20 16H7l3 4"/></symbol>
+<symbol id="i-bank" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M4 21V9l8-6 8 6v12M9 21v-6M15 21v-6"/></symbol>
+<symbol id="i-card" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></symbol>
+<symbol id="i-wallet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h13a1 1 0 0 1 1 1v3"/><path d="M3 7v11a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1H5a2 2 0 0 1-2-2Z"/><circle cx="16" cy="14" r="1.4"/></symbol>
+<symbol id="i-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M14 3v5h5M8 13h8M8 17h5"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 1 1 12 0c0 4 1.5 5.5 2 6.5H4c.5-1 2-2.5 2-6.5Z"/><path d="M10 19a2 2 0 0 0 4 0"/></symbol>
+<symbol id="i-life" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M5.3 5.3l3.5 3.5M15.2 15.2l3.5 3.5M18.7 5.3l-3.5 3.5M8.8 15.2l-3.5 3.5"/></symbol>
+<symbol id="i-cog" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 13a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5V19a2 2 0 1 1-4 0v-.2a1.6 1.6 0 0 0-1-1.5 1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H5a2 2 0 1 1 0-4h.2a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3h0a1.6 1.6 0 0 0 1-1.5V5a2 2 0 1 1 4 0v.2a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8v0a1.6 1.6 0 0 0 1.5 1H19a2 2 0 1 1 0 4h-.2a1.6 1.6 0 0 0-1.5 1Z"/></symbol>
+<symbol id="i-chevron-l" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+<symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></symbol>
+<symbol id="i-arrow-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 19V5M6 11l6-6 6 6"/></symbol>
+<symbol id="i-arrow-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M6 13l6 6 6-6"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></symbol>
+<symbol id="i-inbox" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h4l2 3h4l2-3h4"/><path d="M5.5 5h13l2.5 7v7a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-7l2.5-7Z"/></symbol>
+<symbol id="i-key" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="15" r="4"/><path d="M11 12l8-8M16 7l2 2M19 4l1 1"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 11A8 8 0 1 0 18 16"/><path d="M20 5v6h-6"/></symbol>
+<symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></symbol>
+<symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a13 13 0 0 1 0 18M12 3a13 13 0 0 0 0 18"/></symbol>
+<symbol id="i-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 15l6-6M9 6H7a4 4 0 0 0 0 8h2M15 18h2a4 4 0 0 0 0-8h-2"/></symbol>
+<symbol id="i-undo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7v6h6"/><path d="M3.5 13a8.5 8.5 0 1 0 2.6-6.1L3 10"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 3.5v5.2c0 5-3.4 7.9-8 9.3-4.6-1.4-8-4.3-8-9.3V6.5L12 3Z"/><path d="M9.5 12l1.8 1.8L15 10"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></symbol>
+<symbol id="i-store" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l1-5h16l1 5M4 9v11h16V9M4 9a2 2 0 0 0 4 0M8 9a2 2 0 0 0 4 0M12 9a2 2 0 0 0 4 0M16 9a2 2 0 0 0 4 0"/></symbol>
+<symbol id="i-idcard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><circle cx="8" cy="11" r="2"/><path d="M5 17c.5-2 2-3 3-3s2.5 1 3 3M14 9h6M14 13h6M14 17h4"/></symbol>
+<symbol id="i-tag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.6 12.9 12.9 20.6a2 2 0 0 1-2.8 0l-6.7-6.7a2 2 0 0 1 0-2.8L11.1 3.4a2 2 0 0 1 1.4-.6h5.5a2 2 0 0 1 2 2v5.5a2 2 0 0 1-.6 1.4Z"/><circle cx="14.5" cy="8.5" r="1.5"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c1-3.4 3.5-5 6.5-5s5.5 1.6 6.5 5"/><circle cx="17.5" cy="9" r="2.4"/><path d="M15.5 12.3c2.3.3 4 1.8 4.9 4.7"/></symbol>
+<symbol id="i-code" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18 4 12l5-6M15 6l5 6-5 6"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m3 6 9 7 9-7"/></symbol>
+</defs>
+</svg>
+
+<div class="app-shell">
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="logo">DS</div>
+      <div class="txt"><div class="name">Dilnoza Style</div><div class="sub">Merchant kabinet</div></div>
+    </div>
+    <div class="nav-group">
+      <div class="gl">UMUMIY</div>
+      <button class="nav-item" data-page="dashboard"><svg><use href="#i-grid"/></svg><span>Bosh sahifa</span></button>
+    </div>
+    <div class="nav-group">
+      <div class="gl">TO\u2018LOVLAR</div>
+      <button class="nav-item" data-page="transactions"><svg><use href="#i-card"/></svg><span>Tranzaksiyalar</span></button>
+      <button class="nav-item" data-page="invoices"><svg><use href="#i-doc"/></svg><span>Hisob-fakturalar</span></button>
+      <button class="nav-item" data-page="links"><svg><use href="#i-link"/></svg><span>To\u2018lov havolalari</span></button>
+      <button class="nav-item" data-page="customers"><svg><use href="#i-store"/></svg><span>Mijozlar</span></button>
+    </div>
+    <div class="nav-group">
+      <div class="gl">PUL MABLAG\u2018I</div>
+      <button class="nav-item" data-page="balance"><svg><use href="#i-wallet"/></svg><span>Balans</span></button>
+      <button class="nav-item" data-page="settlements"><svg><use href="#i-bank"/></svg><span>Hisob-kitob</span></button>
+      <button class="nav-item" data-page="fees"><svg><use href="#i-tag"/></svg><span>Komissiya va tarif</span></button>
+    </div>
+    <div class="nav-group">
+      <div class="gl">HISOBOT</div>
+      <button class="nav-item" data-page="reports"><svg><use href="#i-chart"/></svg><span>Hisobotlar</span></button>
+    </div>
+    <div class="nav-group">
+      <div class="gl">BIZNES</div>
+      <button class="nav-item" data-page="business"><svg><use href="#i-idcard"/></svg><span>Biznes profili</span></button>
+      <button class="nav-item" data-page="bankaccount"><svg><use href="#i-bank"/></svg><span>Bank hisobi</span></button>
+      <button class="nav-item" data-page="team"><svg><use href="#i-users"/></svg><span>Jamoa</span></button>
+    </div>
+    <div class="nav-group">
+      <div class="gl">DASTURCHILAR</div>
+      <button class="nav-item" data-page="developers"><svg><use href="#i-code"/></svg><span>API va integratsiya</span></button>
+    </div>
+    <div class="nav-group">
+      <div class="gl">SOZLAMALAR</div>
+      <button class="nav-item" data-page="notifications"><svg><use href="#i-bell"/></svg><span>Bildirishnomalar</span><span class="badge-count" id="navBadgeNotif"></span></button>
+      <button class="nav-item" data-page="security"><svg><use href="#i-shield"/></svg><span>Xavfsizlik</span></button>
+    </div>
+    <div class="nav-group">
+      <div class="gl">YORDAM</div>
+      <button class="nav-item" data-page="support"><svg><use href="#i-life"/></svg><span>Yordam markazi</span><span class="badge-count" id="navBadgeSupport"></span></button>
+    </div>
+    <div class="sidebar-foot">
+      <button class="collapse-btn" id="collapseBtn"><svg><use href="#i-chevron-l"/></svg><span id="collapseLbl">Yig\u2018ish</span></button>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="acc-chip"><svg><use href="#i-bank"/></svg>Garant Bank <b>**** 4821</b></div>
+      <div class="search-wrap"><svg><use href="#i-search"/></svg><input type="text" id="globalSearch" placeholder="Tranzaksiya ID, mijoz, buyurtma raqami..."></div>
+      <div class="top-right">
+        <button class="icon-btn" id="notifBtn"><svg><use href="#i-bell"/></svg><span class="dot" id="notifDot"></span></button>
+        <div class="user-chip"><div class="av">DK</div><div><div class="nm">Dilnoza Karimova</div><div class="rl">Owner</div></div></div>
+      </div>
+    </div>
+    <div class="content">
+      <div class="page-scroll" id="pageScroll"><div id="pagesRoot"></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="drawerOverlay"><div class="drawer" id="drawerEl"></div></div>
+<div class="modal-center" id="modalCenter"><div class="modal-box" id="modalBox"></div></div>
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script>
+/* ================================================================
+   UTILITIES
+   ================================================================ */
+function rnd(min,max){return Math.random()*(max-min)+min;}
+function rndInt(min,max){return Math.floor(rnd(min,max+1));}
+function pick(arr){return arr[rndInt(0,arr.length-1)];}
+function pickW(items){ const total=items.reduce((s,i)=>s+i[1],0); let r=rnd(0,total); for(const [v,w] of items){ if(r<w) return v; r-=w; } return items[0][0]; }
+function uid(prefix,n){return prefix+'-'+String(n).padStart(5,'0');}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function fmtMoney(amount,currency){
+  const abs=Math.round(amount);
+  let s=Math.abs(abs).toLocaleString('ru-RU').replace(/,/g,' ');
+  const sign=amount<0?'-':'';
+  if(currency==='USD') return sign+'$'+s;
+  return sign+s+" so'm";
+}
+function fmtCompact(n){
+  if(Math.abs(n)>=1e9) return (n/1e9).toFixed(2)+' mlrd';
+  if(Math.abs(n)>=1e6) return (n/1e6).toFixed(1)+' mln';
+  if(Math.abs(n)>=1e3) return (n/1e3).toFixed(0)+' ming';
+  return String(Math.round(n));
+}
+function fmtDate(d){ const dt=(d instanceof Date)?d:new Date(d); return dt.toLocaleDateString('uz-UZ',{day:'2-digit',month:'2-digit',year:'numeric'}); }
+function fmtDateTime(d){ const dt=(d instanceof Date)?d:new Date(d); return fmtDate(dt)+' '+dt.toLocaleTimeString('uz-UZ',{hour:'2-digit',minute:'2-digit'}); }
+function daysBetween(a,b){return Math.ceil((b.getTime()-a.getTime())/86400000);}
+function daysAgo(n){return new Date(Date.now()-n*86400000-rndInt(0,80000)*1000);}
+function daysFromNow(n){return new Date(Date.now()+n*86400000);}
+
+/* ================================================================
+   REFERENCE DATA
+   ================================================================ */
+const CUSTOMER_FIRST=['Aziz','Dilnoza','Bekzod','Malika','Sardor','Nilufar','Jasur','Kamola','Otabek','Shahnoza','Farrux','Gulnora','Sherzod','Zarina','Ulug\u2018bek','Madina','Rustam','Sitora','Timur','Nodira','Jamshid','Feruza','Bobur','Lola','Anvar'];
+const CUSTOMER_LAST=['Rashidov','Yusupova','Tursunov','Karimova','Ahmedov','Nazarova','Sultonov','Aliyeva','Mirzoyev','Yoldasheva','Qodirov','Xoliqova'];
+const PAYMENT_METHODS=['Uzcard','Humo','Visa','Mastercard'];
+const PM_SHARE=[['Uzcard',44],['Humo',38],['Visa',12],['Mastercard',6]];
+const PRODUCTS=['Ayollar ko\u2018ylagi','Erkaklar kostyumi','Bolalar kurtkasi','Sport krossovka','Jinsi shim','Yozgi sarafan','Palto','Futbolka to\u2018plami','Sumka','Poyabzal'];
+const DECLINE_REASONS=['Yetarli mablag\u2018 yo\u2018q','Karta muddati tugagan','CVV xato','3DS/OTP tasdiqlanmadi','Limitdan oshib ketdi','Emitent bank rad etdi'];
+
+const STATE={
+  merchant:{
+    businessName:'Dilnoza Style', legalName:'"Dilnoza Style" MChJ', inn:'306481725',
+    businessType:'Yakka tartibdagi tadbirkor (YaTT)', regNumber:'YATT-2024-08841',
+    mcc:'5651', category:'Kiyim-kechak', website:'https://dilnozastyle.uz', address:'Toshkent sh., Chilonzor tumani, 14-mavze',
+    contactEmail:'info@dilnozastyle.uz', contactPhone:'+998 90 123 45 67',
+    contractNumber:'IE-1042/2025', contractDate:new Date('2025-11-12'),
+    bankAccount:'**** 4821', bankAccountOwner:'"Dilnoza Style" MChJ', bankName:'Garant Bank', settlementCycle:'T+1', bankVerified:true,
+    mdrUzcard:'1.20', mdrHumo:'1.20', mdrVisa:'1.60', mdrMastercard:'1.60', fixedFee:500,
+    kycStatus:'Tasdiqlangan',
+  },
+  transactions:[], settlements:[], refunds:[], links:[], notifications:[],
+  invoices:[], customers:[], team:[], apiKeys:[], webhooks:[], sessions:[], loginHistory:[], tickets:[],
+  notifSettings:{
+    email:{payment:true, refund:true, settlement:true, invoice:true},
+    sms:{payment:false, refund:true, settlement:true, invoice:false},
+    push:{payment:true, refund:true, settlement:true, invoice:true},
+  },
+  sidebarCollapsed:false, currentPage:'dashboard', filters:{}, seq:{tx:4000,rf:1,ln:1,inv:1,tk:1},
+};
+
+const STATUS_COLOR={
+  'Muvaffaqiyatli':'green','Rad etilgan':'red','Kutilmoqda':'amber','Qaytarilgan':'purple','Bekor qilingan':'gray',
+  'Bankka o\u2018tkazildi':'green','Yo\u2018lda':'blue','Tushdi':'green',
+  'Bajarildi':'green','Muvaffaqiyatsiz':'red',
+  'Faol':'green','Muddati tugagan':'gray','To\u2018landi':'green',
+  'Qisman qaytarilgan':'purple','Qoralama':'gray','Yuborilgan':'blue','Ko\u2018rilgan':'blue','Qisman to\u2018langan':'amber',
+  'Rejalashtirilgan':'blue','Jarayonda':'blue','Qaytarib olindi':'red',
+  'Taklif yuborilgan':'blue','Faol emas':'gray',
+  'Ochiq':'blue','Javob berilgan':'amber','Yopilgan':'gray',
+};
+function badge(text){ const c=STATUS_COLOR[text]||'gray'; return '<span class="badge '+c+'"><span class="dotb"></span>'+esc(text)+'</span>'; }
+function badgeC(text,color){ return '<span class="badge '+color+'"><span class="dotb"></span>'+esc(text)+'</span>'; }
+
+/* ================================================================
+   DATA GENERATION
+   ================================================================ */
+function genTransactions(n){
+  const out=[]; const now=Date.now();
+  for(let i=0;i<n;i++){
+    const status=pickW([['Muvaffaqiyatli',80],['Rad etilgan',9],['Kutilmoqda',3],['Qaytarilgan',3],['Qisman qaytarilgan',3],['Bekor qilingan',2]]);
+    const method=pickW(PM_SHARE);
+    const amount=Math.round(rnd(45000,1850000));
+    const created=new Date(now-rndInt(0,42)*86400000-rndInt(0,86400)*1000);
+    const approved=status==='Muvaffaqiyatli'||status==='Qaytarilgan'||status==='Qisman qaytarilgan';
+    const fn=pick(CUSTOMER_FIRST), ln=pick(CUSTOMER_LAST);
+    const fee=Math.round(amount*0.013);
+    let refundedAmount=0;
+    if(status==='Qaytarilgan') refundedAmount=amount;
+    else if(status==='Qisman qaytarilgan') refundedAmount=Math.round(amount*rnd(0.2,0.6));
+    out.push({
+      id:uid('TXN',STATE.seq.tx++),
+      orderId:'ORD-'+rndInt(100000,999999),
+      customerName:fn+' '+ln,
+      customerPhone:'+998 '+rndInt(90,99)+' '+rndInt(100,999)+' '+rndInt(10,99)+' '+rndInt(10,99),
+      customerEmail:fn.toLowerCase()+'.'+ln.toLowerCase()+'@mail.uz',
+      product:pick(PRODUCTS),
+      amount, currency:'UZS', paymentMethod:method,
+      last4:String(rndInt(1000,9999)),
+      status, fee, netAmount:amount-fee, refundedAmount,
+      authCode: approved? String(rndInt(100000,999999)) : '\u2014',
+      rrn:String(rndInt(100000000000,999999999999)).slice(0,12),
+      responseMessage: approved? 'Tasdiqlandi' : pick(DECLINE_REASONS),
+      createdAt:created,
+      completedAt: approved? new Date(created.getTime()+60000) : null,
+      settled: approved && daysBetween(created,new Date())>=1,
+      settlementStatus: !approved? '\u2014' : (daysBetween(created,new Date())>=1 ? 'Bajarildi' : 'Kutilmoqda'),
+    });
+  }
+  return out.sort((a,b)=>b.createdAt-a.createdAt);
+}
+function genSettlements(transactions){
+  const byDay={};
+  transactions.filter(t=>t.status==='Muvaffaqiyatli'||t.status==='Qisman qaytarilgan'||t.status==='Qaytarilgan').forEach(t=>{
+    const key=t.createdAt.toDateString();
+    if(!byDay[key]) byDay[key]={date:new Date(t.createdAt.getFullYear(),t.createdAt.getMonth(),t.createdAt.getDate()), gross:0, count:0, refunds:0, txIds:[]};
+    byDay[key].gross+=t.amount; byDay[key].count++; byDay[key].refunds+=t.refundedAmount||0; byDay[key].txIds.push(t.id);
+  });
+  const out=Object.values(byDay).map((d,i)=>{
+    const fees=Math.round(d.gross*0.013);
+    const net=d.gross-fees-d.refunds;
+    const daysSince=daysBetween(d.date,new Date());
+    let status, arrivalDate=null;
+    if(daysSince<1){ status='Rejalashtirilgan'; }
+    else if(daysSince===1){ status='Jarayonda'; }
+    else { status='Bajarildi'; arrivalDate=new Date(d.date.getTime()+2*86400000); }
+    return {
+      id:uid('SET',i+1), reference:'SET-2026-'+String(90000+i), date:d.date, gross:d.gross, txCount:d.count, txIds:d.txIds,
+      fees, refunds:d.refunds, net, status, arrivalDate, bankAccount:STATE.merchant.bankAccount,
+    };
+  });
+  return out.sort((a,b)=>b.date-a.date);
+}
+function genRefunds(transactions){
+  const pool=transactions.filter(t=>t.status==='Qaytarilgan'||t.status==='Qisman qaytarilgan');
+  return pool.map((t,i)=>({
+    id:uid('RF',i+1), transactionId:t.id, orderId:t.orderId, customerName:t.customerName,
+    amount:t.refundedAmount, currency:t.currency, type: t.status==='Qaytarilgan'?'To\u2018liq':'Qisman',
+    reason:pick(['Mijoz talabi','Tovar qaytarildi','O\u2018lchov mos kelmadi','Buyurtma bekor qilindi','Noto\u2018g\u2018ri summa']),
+    status:pickW([['Bajarildi',75],['Kutilmoqda',20],['Muvaffaqiyatsiz',5]]),
+    date:daysAgo(rndInt(0,20)),
+  })).sort((a,b)=>b.date-a.date);
+}
+function genLinks(){
+  const out=[];
+  for(let i=0;i<9;i++){
+    const amount=Math.round(rnd(80000,1200000));
+    const created=daysAgo(rndInt(0,15));
+    const status=pickW([['To\u2018landi',50],['Faol',32],['Muddati tugagan',13],['Faol emas',5]]);
+    const views=rndInt(40,900);
+    const attempts=Math.round(views*rnd(0.1,0.22));
+    const successful= status==='To\u2018landi'? Math.round(attempts*rnd(0.7,0.95)) : Math.round(attempts*rnd(0,0.6));
+    out.push({
+      id:uid('LNK',i+1), title:pick(PRODUCTS)+' uchun to\u2018lov', url:'pay.garantbank.uz/p/'+Math.random().toString(36).slice(2,9),
+      amount, currency:'UZS', description:pick(PRODUCTS)+' buyurtmasi uchun to\u2018lov havolasi',
+      customerPhone:'+998 '+rndInt(90,99)+' '+rndInt(100,999)+' '+rndInt(10,99)+' '+rndInt(10,99),
+      allowCustomAmount:Math.random()<0.2, methods:['Uzcard','Humo','Visa','Mastercard'],
+      status, created, expiresAt:new Date(created.getTime()+3*86400000),
+      views, attempts, successful, collected: successful*amount,
+    });
+  }
+  return out.sort((a,b)=>b.created-a.created);
+}
+function genCustomers(transactions){
+  const map={};
+  transactions.forEach(t=>{
+    if(!map[t.customerPhone]) map[t.customerPhone]={
+      name:t.customerName, phone:t.customerPhone, email:t.customerEmail,
+      totalPayments:0, totalSpent:0, refunds:0, lastPayment:t.createdAt, firstSeen:t.createdAt,
+    };
+    const c=map[t.customerPhone];
+    if(t.status==='Muvaffaqiyatli'||t.status==='Qisman qaytarilgan'||t.status==='Qaytarilgan'){ c.totalPayments++; c.totalSpent+=t.amount; }
+    if(t.refundedAmount) c.refunds++;
+    if(t.createdAt>c.lastPayment) c.lastPayment=t.createdAt;
+    if(t.createdAt<c.firstSeen) c.firstSeen=t.createdAt;
+  });
+  return Object.values(map).sort((a,b)=>b.totalSpent-a.totalSpent);
+}
+function genInvoices(customers){
+  const out=[];
+  const statuses=[['To\u2018langan',35],['Yuborilgan',18],['Ko\u2018rilgan',14],['Qisman to\u2018langan',8],['Muddati tugagan',12],['Bekor qilingan',6],['Qoralama',7]];
+  for(let i=0;i<16;i++){
+    const cust=pick(customers.length?customers:[{name:pick(CUSTOMER_FIRST)+' '+pick(CUSTOMER_LAST),phone:'+998901234567',email:'test@mail.uz'}]);
+    const itemCount=rndInt(1,3);
+    const items=[];
+    for(let j=0;j<itemCount;j++){
+      const qty=rndInt(1,3), price=Math.round(rnd(60000,400000));
+      items.push({name:pick(PRODUCTS), qty, price, tax:12, discount:0});
+    }
+    const subtotal=items.reduce((s,it)=>s+it.qty*it.price,0);
+    const tax=Math.round(subtotal*0.12);
+    const total=subtotal+tax;
+    const status=pickW(statuses);
+    const created=daysAgo(rndInt(0,40));
+    out.push({
+      id:uid('INV',STATE.seq.inv++), number:'INV-2026-'+String(1000+i),
+      customerName:cust.name, customerPhone:cust.phone, customerEmail:cust.email,
+      items, subtotal, tax, discount:0, total, currency:'UZS',
+      status, created, expiresAt:new Date(created.getTime()+7*86400000),
+      paidAmount: status==='To\u2018langan'?total : status==='Qisman to\u2018langan'? Math.round(total*rnd(0.3,0.7)) : 0,
+      url:'pay.garantbank.uz/inv/'+Math.random().toString(36).slice(2,9),
+    });
+  }
+  return out.sort((a,b)=>b.created-a.created);
+}
+function genTeam(){
+  return [
+    {id:uid('TM',1), name:'Dilnoza Karimova', email:'dilnoza@dilnozastyle.uz', role:'Owner', status:'Faol', lastActive:daysAgo(0)},
+    {id:uid('TM',2), name:'Sevara Tosheva', email:'sevara@dilnozastyle.uz', role:'Moliya menejeri', status:'Faol', lastActive:daysAgo(1)},
+    {id:uid('TM',3), name:'Jasur Ergashev', email:'jasur@dilnozastyle.uz', role:'Buxgalter', status:'Faol', lastActive:daysAgo(3)},
+    {id:uid('TM',4), name:'Nilufar Saidova', email:'nilufar@dilnozastyle.uz', role:'Qo\u2018llab-quvvatlash', status:'Taklif yuborilgan', lastActive:null},
+  ];
+}
+function genApiKeysWebhooks(){
+  STATE.apiKeys=[
+    {id:'pk', label:'Publishable key', value:'pk_live_'+Math.random().toString(36).slice(2,18), masked:false},
+    {id:'sk', label:'Secret key', value:'sk_live_'+Math.random().toString(36).slice(2,26), masked:true},
+  ];
+  STATE.webhooks=[
+    {id:'WH-1', url:'https://dilnozastyle.uz/api/webhooks/garant', events:['payment.succeeded','payment.failed','refund.completed'], status:'Faol', lastDelivery:daysAgo(0)},
+    {id:'WH-2', url:'https://dilnozastyle.uz/api/webhooks/invoices', events:['invoice.paid'], status:'Faol', lastDelivery:daysAgo(2)},
+  ];
+}
+function genSecurity(){
+  STATE.sessions=[
+    {id:'S1', device:'Chrome \u2014 Windows', location:'Toshkent, O\u2018zbekiston', ip:'84.54.12.'+rndInt(10,250), lastActive:daysAgo(0), current:true},
+    {id:'S2', device:'Safari \u2014 iPhone', location:'Toshkent, O\u2018zbekiston', ip:'84.54.18.'+rndInt(10,250), lastActive:daysAgo(2), current:false},
+  ];
+  STATE.loginHistory=[];
+  for(let i=0;i<6;i++){
+    STATE.loginHistory.push({date:daysAgo(rndInt(0,25)), device:pick(['Chrome \u2014 Windows','Safari \u2014 iPhone','Chrome \u2014 Android']), ip:'84.54.'+rndInt(10,99)+'.'+rndInt(10,250), status:Math.random()<0.9?'Muvaffaqiyatli':'Muvaffaqiyatsiz'});
+  }
+  STATE.loginHistory.sort((a,b)=>b.date-a.date);
+}
+function genTickets(){
+  return [
+    {id:uid('TCK',STATE.seq.tk++), subject:'Settlement bir kun kechikdi', category:'Hisob-kitob muammosi', status:'Javob berilgan', created:daysAgo(5)},
+    {id:uid('TCK',STATE.seq.tk++), subject:'Webhook ishlamayapti', category:'Texnik muammo', status:'Ochiq', created:daysAgo(1)},
+  ];
+}
+function genNotifications(){
+  return [
+    {level:'ok', text:'12 400 000 so\u2018m hisobingizga tushdi', meta:'Bugun, 09:14', page:'settlements', read:false},
+    {level:'info', text:'Yangi to\u2018lov havolasi orqali to\u2018lov qabul qilindi', meta:'Kecha, 18:40', page:'links', read:false},
+    {level:'warn', text:'1 ta refund so\u2018rovi kutilmoqda', meta:'2 kun oldin', page:'transactions', read:true},
+    {level:'info', text:'Ertaga T+1 settlement navbatga qo\u2018yiladi', meta:'3 soat oldin', page:'settlements', read:false},
+    {level:'ok', text:'INV-2026-1004 hisob-fakturasi to\u2018landi', meta:'2 kun oldin', page:'invoices', read:true},
+  ];
+}
+function initData(){
+  STATE.transactions=genTransactions(220);
+  STATE.refunds=genRefunds(STATE.transactions);
+  STATE.settlements=genSettlements(STATE.transactions);
+  STATE.links=genLinks();
+  STATE.customers=genCustomers(STATE.transactions);
+  STATE.invoices=genInvoices(STATE.customers);
+  STATE.team=genTeam();
+  genApiKeysWebhooks();
+  genSecurity();
+  STATE.tickets=genTickets();
+  STATE.notifications=genNotifications();
+  STATE.merchant.twoFA=false;
+}
+/* ================================================================
+   TABLE HELPERS
+   ================================================================ */
+function paginate(arr,page,pageSize){
+  const total=arr.length, totalPages=Math.max(1,Math.ceil(total/pageSize));
+  page=clamp(page,1,totalPages);
+  const start=(page-1)*pageSize;
+  return {rows:arr.slice(start,start+pageSize), page, totalPages, total, shown:Math.min(pageSize,total-start)};
+}
+function getFilter(key,defaults){
+  if(!STATE.filters[key]) STATE.filters[key]=Object.assign({search:'',status:'all',page:1,pageSize:8},defaults||{});
+  return STATE.filters[key];
+}
+function pagerHTML(key,p){
+  return '<div class="pager"><div>'+p.total+' ta yozuvdan '+((p.page-1)*8+1)+'\u2013'+((p.page-1)*8+p.rows.length)+' ko\u2018rsatilmoqda</div>'+
+    '<div class="pager-btns">'+
+    '<button data-action="page" data-key="'+key+'" data-dir="-1" '+(p.page<=1?'disabled':'')+'><svg style="width:13px;height:13px"><use href="#i-chevron-l"/></svg></button>'+
+    '<button data-action="page" data-key="'+key+'" data-dir="1" '+(p.page>=p.totalPages?'disabled':'')+' style="transform:scaleX(-1)"><svg style="width:13px;height:13px"><use href="#i-chevron-l"/></svg></button>'+
+    '</div></div>';
+}
+function toolbarHTML(key,placeholder,statusOptions){
+  const f=getFilter(key);
+  let html='<div class="table-toolbar">';
+  html+='<div class="tbl-search"><svg><use href="#i-search"/></svg><input type="text" data-action="search" data-key="'+key+'" placeholder="'+placeholder+'" value="'+esc(f.search)+'"></div>';
+  if(statusOptions){
+    html+='<select class="select-filter" data-action="filter-status" data-key="'+key+'">';
+    html+='<option value="all">Barcha holatlar</option>';
+    statusOptions.forEach(o=>{ html+='<option value="'+esc(o)+'" '+(f.status===o?'selected':'')+'>'+esc(o)+'</option>'; });
+    html+='</select>';
+  }
+  html+='</div>';
+  return html;
+}
+function applySearch(rows,search,fields){
+  if(!search) return rows;
+  const s=search.toLowerCase();
+  return rows.filter(r=>fields.some(f=>String(r[f]||'').toLowerCase().includes(s)));
+}
+
+/* ================================================================
+   PAGE: DASHBOARD
+   ================================================================ */
+function computeKPIs(){
+  const tx=STATE.transactions;
+  const today=new Date().toDateString();
+  const todayTx=tx.filter(t=>t.createdAt.toDateString()===today && t.status==='Muvaffaqiyatli');
+  const todayVol=todayTx.reduce((s,t)=>s+t.amount,0);
+  const monthStart=new Date(); monthStart.setDate(1); monthStart.setHours(0,0,0,0);
+  const monthTx=tx.filter(t=>t.createdAt>=monthStart && t.status==='Muvaffaqiyatli');
+  const monthVol=monthTx.reduce((s,t)=>s+t.amount,0);
+  const approved=tx.filter(t=>t.status==='Muvaffaqiyatli').length;
+  const approvalRate= tx.length? (approved/tx.length*100) : 0;
+  return {todayVol, todayCount:todayTx.length, monthVol, approvalRate};
+}
+function renderDashboard(){
+  const k=computeKPIs();
+  const lastSettled=STATE.settlements.find(s=>s.status==='Tushdi');
+  const pending=STATE.settlements.filter(s=>s.status!=='Tushdi').sort((a,b)=>a.date-b.date);
+  const nextPending=pending[pending.length-1];
+  const heroHTML = lastSettled ?
+    `<div class="status-hero ok">
+      <div class="ic"><svg><use href="#i-check"/></svg></div>
+      <div>
+        <div class="tt">Pul hisobingizga tushdi</div>
+        <div class="dd">${fmtDate(lastSettled.arrivalDate||lastSettled.date)} kuni ${esc(STATE.merchant.bankName)} ${esc(STATE.merchant.bankAccount)} hisobingizga o\u2018tkazildi</div>
+      </div>
+      <div class="amt"><div class="n">${fmtMoney(lastSettled.net,'UZS')}</div><div class="l">SOF SUMMA</div></div>
+    </div>` :
+    `<div class="status-hero pending">
+      <div class="ic"><svg><use href="#i-clock"/></svg></div>
+      <div>
+        <div class="tt">To\u2018lovingiz yo\u2018lda</div>
+        <div class="dd">Hozircha hisobingizga tushgan to\u2018lov yo\u2018q, birinchi settlement kutilmoqda</div>
+      </div>
+    </div>`;
+  const recentTx=STATE.transactions.slice(0,7);
+  return `
+  <div class="page-header">
+    <div><h1>Xush kelibsiz, Dilnoza!</h1><div class="desc">${esc(STATE.merchant.businessName)} do\u2018koningizning bugungi holati.</div></div>
+    <div class="header-actions"><button class="btn btn-primary" data-action="nav" data-page="links"><svg><use href="#i-link"/></svg>To\u2018lov havolasi yaratish</button></div>
+  </div>
+
+  ${heroHTML}
+
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="label">Bugungi tushum</div><div class="value">${fmtCompact(k.todayVol)}</div></div>
+    <div class="kpi-card"><div class="label">Bugungi to\u2018lovlar</div><div class="value">${k.todayCount}</div></div>
+    <div class="kpi-card"><div class="label">Bu oylik tushum</div><div class="value">${fmtCompact(k.monthVol)}</div></div>
+    <div class="kpi-card"><div class="label">Muvaffaqiyat darajasi</div><div class="value" style="color:var(--green)">${k.approvalRate.toFixed(1)}%</div></div>
+  </div>
+
+  <div class="grid-2">
+    <div class="panel">
+      <div class="panel-title"><h3>Oxirgi 14 kunlik tushum</h3></div>
+      <div class="chart-wrap"><canvas id="chartVolume"></canvas></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title"><h3>Keyingi to\u2018lov</h3></div>
+      ${nextPending ? `
+      <div class="kv-grid">
+        <div class="kv"><div class="k">Sana</div><div class="v">${fmtDate(nextPending.date)}</div></div>
+        <div class="kv"><div class="k">Holat</div><div class="v">${badge(nextPending.status)}</div></div>
+        <div class="kv"><div class="k">Tranzaksiyalar</div><div class="v">${nextPending.txCount} ta</div></div>
+        <div class="kv" style="border-bottom:none"><div class="k">Taxminiy sof summa</div><div class="v">${fmtMoney(nextPending.net,'UZS')}</div></div>
+      </div>
+      <div class="form-hint" style="margin-top:10px">${esc(STATE.merchant.settlementCycle)} sikli bo\u2018yicha hisobingizga o\u2018tkaziladi.</div>
+      ` : '<div style="color:var(--text-3);font-size:12.5px">Hozircha kutilayotgan to\u2018lov yo\u2018q</div>'}
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title"><h3>So\u2018nggi to\u2018lovlar</h3><span class="sub"><a data-action="nav" data-page="transactions" href="#">Barchasini ko\u2018rish</a></span></div>
+    <div class="table-scroll" style="border:none"><table class="data-table"><thead><tr><th>Mijoz</th><th>Mahsulot</th><th class="num">Summa</th><th>Usul</th><th>Holat</th><th>Vaqt</th></tr></thead>
+    <tbody>${recentTx.map(t=>`<tr data-action="open-tx" data-id="${t.id}"><td style="font-weight:600">${esc(t.customerName)}</td><td style="color:var(--text-2)">${esc(t.product)}</td><td class="num">${fmtMoney(t.amount,t.currency)}</td><td>${esc(t.paymentMethod)}</td><td>${badge(t.status)}</td><td style="color:var(--text-3)">${fmtDateTime(t.createdAt)}</td></tr>`).join('')}</tbody>
+    </table></div>
+  </div>
+  `;
+}
+function paintDashboardCharts(){
+  const days=[]; const vols=[];
+  for(let i=13;i>=0;i--){
+    const d=new Date(Date.now()-i*86400000);
+    days.push(d.toLocaleDateString('uz-UZ',{day:'2-digit',month:'2-digit'}));
+    const dayTx=STATE.transactions.filter(t=>t.createdAt.toDateString()===d.toDateString() && t.status==='Muvaffaqiyatli');
+    vols.push(dayTx.reduce((s,t)=>s+t.amount,0)/1000000);
+  }
+  const ctx=document.getElementById('chartVolume');
+  if(ctx){
+    charts.vol=new Chart(ctx,{type:'line',data:{labels:days,datasets:[{label:"Hajm (mln so'm)",data:vols,borderColor:'#2C4CE0',backgroundColor:'rgba(44,76,224,0.08)',fill:true,tension:.35,pointRadius:0,borderWidth:2}]},
+      options:{plugins:{legend:{display:false}},scales:{y:{grid:{color:'#EEF0F4'},ticks:{font:{size:10.5}}},x:{grid:{display:false},ticks:{font:{size:10.5}}}},maintainAspectRatio:false}});
+  }
+}
+
+/* ================================================================
+   PAGE: PAYMENTS (kim to'lov qildi)
+   ================================================================ */
+function renderPayments(){
+  const f=getFilter('tx');
+  let rows=applySearch(STATE.transactions,f.search,['id','orderId','customerName','customerPhone','customerEmail']);
+  if(f.status!=='all') rows=rows.filter(t=>t.status===f.status);
+  if(f.method && f.method!=='all') rows=rows.filter(t=>t.paymentMethod===f.method);
+  if(f.sort==='oldest') rows=rows.slice().sort((a,b)=>a.createdAt-b.createdAt);
+  else if(f.sort==='high') rows=rows.slice().sort((a,b)=>b.amount-a.amount);
+  else if(f.sort==='low') rows=rows.slice().sort((a,b)=>a.amount-b.amount);
+  const p=paginate(rows,f.page,10);
+  return `
+  <div class="page-header">
+    <div><h1>Tranzaksiyalar</h1><div class="desc">Mijozlaringiz tomonidan amalga oshirilgan barcha to\u2018lovlar \u2014 faqat sizning do\u2018koningizga tegishli.</div></div>
+    <div class="header-actions">
+      <button class="btn" data-action="export-tx" data-fmt="CSV"><svg><use href="#i-download"/></svg>CSV</button>
+      <button class="btn" data-action="export-tx" data-fmt="Excel"><svg><use href="#i-download"/></svg>Excel</button>
+      <button class="btn" data-action="export-tx" data-fmt="Statement"><svg><use href="#i-doc"/></svg>Statement</button>
+    </div>
+  </div>
+  ${toolbarHTML('tx',"ID, mijoz, buyurtma, telefon, email bo\u2018yicha qidirish...",['Muvaffaqiyatli','Rad etilgan','Kutilmoqda','Qaytarilgan','Qisman qaytarilgan','Bekor qilingan'])}
+  <div class="table-toolbar" style="margin-top:-6px">
+    <select class="select-filter" data-action="filter-method" data-key="tx">
+      <option value="all">Barcha usullar</option>
+      ${PAYMENT_METHODS.map(m=>'<option value="'+m+'" '+(f.method===m?'selected':'')+'>'+m+'</option>').join('')}
+    </select>
+    <select class="select-filter" data-action="sort-tx" data-key="tx">
+      <option value="newest" ${(!f.sort||f.sort==='newest')?'selected':''}>Eng yangi</option>
+      <option value="oldest" ${f.sort==='oldest'?'selected':''}>Eng eski</option>
+      <option value="high" ${f.sort==='high'?'selected':''}>Yuqori summa</option>
+      <option value="low" ${f.sort==='low'?'selected':''}>Past summa</option>
+    </select>
+    <span class="tbl-count">${p.total} ta natija</span>
+  </div>
+  <div class="table-scroll">
+  <table class="data-table"><thead><tr><th>Mijoz</th><th>Buyurtma</th><th class="num">Summa</th><th>Usul</th><th>Holat</th><th>Hisob-kitob</th><th>Vaqt</th></tr></thead>
+  <tbody>${p.rows.map(t=>`
+    <tr data-action="open-tx" data-id="${t.id}">
+      <td style="font-weight:600">${esc(t.customerName)}</td>
+      <td class="mono" style="color:var(--text-2)">${t.orderId}</td>
+      <td class="num" style="font-weight:600">${fmtMoney(t.amount,t.currency)}</td>
+      <td>${esc(t.paymentMethod)}</td>
+      <td>${badge(t.status)}</td>
+      <td>${t.settlementStatus==='\u2014'?'<span style="color:var(--text-3)">\u2014</span>':badge(t.settlementStatus)}</td>
+      <td style="color:var(--text-3)">${fmtDateTime(t.createdAt)}</td>
+    </tr>`).join('') || '<tr><td colspan="7"><div class="empty-state"><svg><use href="#i-inbox"/></svg><div class="t">Tranzaksiya topilmadi</div><div class="d">Mijozlar to\u2018lov qilganda, ular shu yerda ko\u2018rinadi.</div></div></td></tr>'}
+  </tbody></table>
+  ${pagerHTML('tx',p)}
+  </div>`;
+}
+function txDetailHTML(t){
+  const steps=[
+    {t:'To\u2018lov boshlandi', d:fmtDateTime(t.createdAt), done:true},
+    {t:'Mijoz karta ma\u2018lumotlarini kiritdi', d:esc(t.paymentMethod)+' **** '+t.last4, done:true},
+    {t:'OTP tasdiqlandi', d:t.status!=='Kutilmoqda'?'Tasdiqlandi':'Kutilmoqda', done:t.status!=='Kutilmoqda'},
+    {t: (t.status==='Muvaffaqiyatli'||t.status==='Qaytarilgan'||t.status==='Qisman qaytarilgan') ? 'To\u2018lov muvaffaqiyatli o\u2018tdi' : 'To\u2018lov rad etildi', d:esc(t.responseMessage), done:(t.status==='Muvaffaqiyatli'||t.status==='Qaytarilgan'||t.status==='Qisman qaytarilgan'), failed:t.status==='Rad etilgan'},
+    {t:'Hisobingizga o\u2018tkazilishi', d: t.settled? 'Hisobingizga tushdi' : 'Navbatda ('+STATE.merchant.settlementCycle+')', done:t.settled},
+  ];
+  const remainingRefundable=t.amount-(t.refundedAmount||0);
+  const canRefund=(t.status==='Muvaffaqiyatli'||t.status==='Qisman qaytarilgan') && remainingRefundable>0;
+  return {
+    body:`
+    <div class="breadcrumb" style="font-size:12px;color:var(--text-3);margin-bottom:8px">To\u2018lov tafsiloti</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+      <h2 class="mono" style="margin:0;font-size:16px">${t.id}</h2>${badge(t.status)}
+    </div>
+    <div style="color:var(--text-3);font-size:12px;margin-bottom:18px">${esc(t.customerName)} &middot; ${fmtDateTime(t.createdAt)}</div>
+    <div class="section-h" style="margin-top:0">To\u2018lov ma\u2018lumotlari</div>
+    <div class="kv-grid" style="margin-bottom:14px">
+      <div class="kv"><div class="k">Summa</div><div class="v" style="font-size:15px">${fmtMoney(t.amount,t.currency)}</div></div>
+      <div class="kv"><div class="k">Valyuta</div><div class="v">${t.currency}</div></div>
+      <div class="kv"><div class="k">To\u2018lov usuli</div><div class="v">${esc(t.paymentMethod)} **** ${t.last4}</div></div>
+      <div class="kv"><div class="k">Yaratilgan</div><div class="v">${fmtDateTime(t.createdAt)}</div></div>
+      <div class="kv"><div class="k">RRN</div><div class="v mono">${t.rrn}</div></div>
+      <div class="kv" style="border-bottom:none"><div class="k">Auth kod</div><div class="v mono">${t.authCode}</div></div>
+    </div>
+    <div class="section-h">Mijoz</div>
+    <div class="kv-grid" style="margin-bottom:14px">
+      <div class="kv"><div class="k">Ism</div><div class="v">${esc(t.customerName)}</div></div>
+      <div class="kv"><div class="k">Telefon</div><div class="v mono">${t.customerPhone}</div></div>
+      <div class="kv" style="grid-column:1/3;border-bottom:none"><div class="k">Email</div><div class="v">${esc(t.customerEmail)}</div></div>
+    </div>
+    <div class="section-h">Moliyaviy tafsilot</div>
+    <div class="panel" style="background:var(--surface-alt);margin-bottom:16px">
+      <div class="line-item"><span>To\u2018lov summasi</span><span style="font-weight:600">${fmtMoney(t.amount,t.currency)}</span></div>
+      <div class="line-item" style="color:var(--red)"><span>Bank komissiyasi</span><span>-${fmtMoney(t.fee,t.currency)}</span></div>
+      ${t.refundedAmount? `<div class="line-item" style="color:var(--purple)"><span>Qaytarilgan</span><span>-${fmtMoney(t.refundedAmount,t.currency)}</span></div>` : ''}
+      <div class="line-item" style="border-top:1.5px solid var(--border-strong);font-weight:800"><span>Sof summa</span><span>${fmtMoney(t.netAmount-(t.refundedAmount||0),t.currency)}</span></div>
+    </div>
+    <div class="kv-grid" style="margin-bottom:14px">
+      <div class="kv"><div class="k">Merchant</div><div class="v">${esc(STATE.merchant.businessName)}</div></div>
+      <div class="kv" style="border-bottom:none"><div class="k">Hisob-kitob holati</div><div class="v">${t.settlementStatus==='\u2014'?'\u2014':badge(t.settlementStatus)}</div></div>
+    </div>
+    <div class="section-h">Jarayon</div>
+    <div class="tl">${steps.map(s=>`<div class="tl-item ${s.done?'done':''} ${s.failed?'failed':''}"><div class="tt">${s.t}</div><div class="td">${s.d}</div></div>`).join('')}</div>
+    `,
+    canRefund, remainingRefundable,
+  };
+}
+
+/* ================================================================
+   PAGE: SETTLEMENTS (pul bankka keldimi)
+   ================================================================ */
+function renderSettlements(){
+  const f=getFilter('st');
+  let rows=STATE.settlements.slice();
+  if(f.status!=='all') rows=rows.filter(s=>s.status===f.status);
+  const p=paginate(rows,f.page,10);
+  const totalArrived=STATE.settlements.filter(s=>s.status==='Tushdi').reduce((s,x)=>s+x.net,0);
+  const totalPending=STATE.settlements.filter(s=>s.status!=='Tushdi').reduce((s,x)=>s+x.net,0);
+  const totalFees=STATE.settlements.reduce((s,x)=>s+x.fees,0);
+  return `
+  <div class="page-header">
+    <div><h1>Hisob-kitob (Settlement)</h1><div class="desc">To\u2018lovlaringiz qachon va qanday holatda ${esc(STATE.merchant.bankName)} hisobingizga o\u2018tkazilishini kuzating.</div></div>
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="label">Hisobingizga tushgan (jami)</div><div class="value" style="color:var(--green)">${fmtCompact(totalArrived)}</div></div>
+    <div class="kpi-card"><div class="label">Yo\u2018lda / kutilmoqda</div><div class="value" style="color:var(--amber)">${fmtCompact(totalPending)}</div></div>
+    <div class="kpi-card"><div class="label">Bank komissiyasi (jami)</div><div class="value">${fmtCompact(totalFees)}</div></div>
+    <div class="kpi-card"><div class="label">To\u2018lov sikli</div><div class="value" style="font-size:16px">${esc(STATE.merchant.settlementCycle)}</div></div>
+  </div>
+  ${toolbarHTML('st',"",['Tushdi','Yo\u2018lda','Kutilmoqda'])}
+  <div class="table-scroll">
+  <table class="data-table"><thead><tr><th>Sana</th><th class="num">Tranzaksiyalar</th><th class="num">Yalpi summa</th><th class="num">Bank komissiyasi</th><th class="num">Sof summa</th><th>Hisobga tushish holati</th><th>Tushgan sana</th></tr></thead>
+  <tbody>${p.rows.map(s=>`
+    <tr data-action="open-settlement" data-id="${s.id}">
+      <td style="font-weight:600">${fmtDate(s.date)}</td>
+      <td class="num">${s.txCount}</td>
+      <td class="num">${fmtMoney(s.gross,'UZS')}</td>
+      <td class="num" style="color:var(--red)">-${fmtMoney(s.fees,'UZS')}</td>
+      <td class="num" style="font-weight:700">${fmtMoney(s.net,'UZS')}</td>
+      <td>${badge(s.status)}</td>
+      <td style="color:var(--text-3)">${s.arrivalDate? fmtDate(s.arrivalDate) : '\u2014'}</td>
+    </tr>`).join('') || '<tr><td colspan="7" style="color:var(--text-3);padding:16px">Ma\u2018lumot topilmadi</td></tr>'}
+  </tbody></table>
+  ${pagerHTML('st',p)}
+  </div>`;
+}
+function settlementDetailHTML(s){
+  const includedTx=STATE.transactions.filter(t=>s.txIds && s.txIds.includes(t.id)).slice(0,12);
+  return `
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+    <h2 class="mono" style="margin:0;font-size:16px">${s.reference||s.id}</h2>${badge(s.status)}
+  </div>
+  <div style="color:var(--text-3);font-size:12px;margin-bottom:18px">${fmtDate(s.date)} kunlik to\u2018lovlar bo\u2018yicha hisob-kitob</div>
+  <div class="panel" style="background:var(--surface-alt);margin-bottom:16px">
+    <div class="line-item"><span>Yalpi savdo</span><span style="font-weight:700">${fmtMoney(s.gross,'UZS')}</span></div>
+    <div class="line-item" style="color:var(--red)"><span>&minus; Bank komissiyasi (MDR)</span><span>-${fmtMoney(s.fees,'UZS')}</span></div>
+    <div class="line-item" style="color:var(--red)"><span>&minus; Qaytarishlar</span><span>-${fmtMoney(s.refunds||0,'UZS')}</span></div>
+    <div class="line-item" style="border-top:1.5px solid var(--border-strong);font-weight:800;font-size:15px"><span>= Hisobingizga tushadigan summa</span><span>${fmtMoney(s.net,'UZS')}</span></div>
+  </div>
+  <div class="kv-grid" style="margin-bottom:16px">
+    <div class="kv"><div class="k">Tranzaksiyalar soni</div><div class="v">${s.txCount} ta</div></div>
+    <div class="kv"><div class="k">Bank hisobi</div><div class="v mono">${esc(STATE.merchant.bankName)} ${s.bankAccount}</div></div>
+    <div class="kv"><div class="k">Holat</div><div class="v">${badge(s.status)}</div></div>
+    <div class="kv" style="border-bottom:none"><div class="k">Hisobga tushgan sana</div><div class="v">${s.arrivalDate? fmtDate(s.arrivalDate) : 'Hali tushmagan'}</div></div>
+  </div>
+  <div class="section-h">Kiritilgan tranzaksiyalar</div>
+  <div class="table-scroll" style="margin-bottom:14px"><table class="data-table"><thead><tr><th>ID</th><th>Mijoz</th><th class="num">Summa</th></tr></thead>
+  <tbody>${includedTx.length? includedTx.map(t=>`<tr data-action="open-tx" data-id="${t.id}"><td class="mono">${t.id}</td><td>${esc(t.customerName)}</td><td class="num">${fmtMoney(t.amount,t.currency)}</td></tr>`).join('') : '<tr><td colspan="3" style="color:var(--text-3);padding:12px">Ma\u2018lumot yo\u2018q</td></tr>'}</tbody>
+  </table></div>
+  ${s.txCount>includedTx.length? '<div class="form-hint">va yana '+(s.txCount-includedTx.length)+' ta tranzaksiya...</div>' : ''}
+  `;
+}
+/* ================================================================
+   PAGE: REFUNDS
+   ================================================================ */
+function renderRefunds(){
+  const f=getFilter('rf');
+  let rows=STATE.refunds.slice();
+  if(f.status!=='all') rows=rows.filter(r=>r.status===f.status);
+  const p=paginate(rows,f.page,10);
+  const done=STATE.refunds.filter(r=>r.status==='Bajarildi');
+  const pending=STATE.refunds.filter(r=>r.status==='Kutilmoqda');
+  const amount=done.reduce((s,r)=>s+r.amount,0);
+  return `
+  <div class="page-header">
+    <div><h1>Qaytarishlar (Refund)</h1><div class="desc">Mijozlarga qaytarilgan yoki qaytarilishi kutilayotgan to\u2018lovlar.</div></div>
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="label">Qaytarilgan summa</div><div class="value">${fmtCompact(amount)}</div></div>
+    <div class="kpi-card"><div class="label">Kutilmoqda</div><div class="value" style="color:var(--amber)">${pending.length}</div></div>
+    <div class="kpi-card"><div class="label">Bajarilgan</div><div class="value" style="color:var(--green)">${done.length}</div></div>
+    <div class="kpi-card"><div class="label">Jami so\u2018rovlar</div><div class="value">${STATE.refunds.length}</div></div>
+  </div>
+  ${toolbarHTML('rf',"",['Bajarildi','Kutilmoqda','Muvaffaqiyatsiz'])}
+  <div class="table-scroll">
+  <table class="data-table"><thead><tr><th>Refund ID</th><th>Buyurtma</th><th>Mijoz</th><th class="num">Summa</th><th>Sabab</th><th>Holat</th><th>Sana</th></tr></thead>
+  <tbody>${p.rows.map(r=>`<tr data-action="open-tx" data-id="${r.transactionId}"><td class="mono">${r.id}</td><td class="mono" style="color:var(--text-2)">${r.orderId}</td><td>${esc(r.customerName)}</td><td class="num">${fmtMoney(r.amount,r.currency)}</td><td style="color:var(--text-2)">${esc(r.reason)}</td><td>${badge(r.status)}</td><td style="color:var(--text-3)">${fmtDate(r.date)}</td></tr>`).join('') || '<tr><td colspan="7"><div class="empty-state"><svg><use href="#i-undo"/></svg><div class="t">Refund topilmadi</div></div></td></tr>'}</tbody>
+  </table>
+  ${pagerHTML('rf',p)}
+  </div>`;
+}
+
+/* ================================================================
+   PAGE: PAYMENT LINKS (Invoice)
+   ================================================================ */
+function renderLinks(){
+  const active=STATE.links.filter(l=>l.status==='Faol').length;
+  const totalCollected=STATE.links.reduce((s,l)=>s+l.collected,0);
+  return `
+  <div class="page-header">
+    <div><h1>To\u2018lov havolalari</h1><div class="desc">Mijozga to\u2018lov havolasi yarating va ulashing \u2014 saytingiz bo\u2018lmasa ham to\u2018lov qabul qiling.</div></div>
+    <div class="header-actions"><button class="btn btn-primary" data-action="new-link"><svg><use href="#i-plus"/></svg>Yangi havola</button></div>
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="label">Faol havolalar</div><div class="value">${active}</div></div>
+    <div class="kpi-card"><div class="label">Jami yig\u2018ilgan</div><div class="value">${fmtCompact(totalCollected)}</div></div>
+    <div class="kpi-card"><div class="label">Jami havolalar</div><div class="value">${STATE.links.length}</div></div>
+    <div class="kpi-card"><div class="label">O\u2018rtacha konversiya</div><div class="value">${STATE.links.length? (STATE.links.reduce((s,l)=>s+(l.attempts?l.successful/l.attempts*100:0),0)/STATE.links.length).toFixed(1):0}%</div></div>
+  </div>
+  ${STATE.links.map(l=>`
+  <div class="link-card" style="flex-direction:column;align-items:stretch;gap:10px">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+          <span style="font-weight:700;font-size:13px">${esc(l.title)}</span>${badge(l.status)}
+        </div>
+        <div style="font-size:12px;color:var(--text-2)">${fmtMoney(l.amount,l.currency)}${l.allowCustomAmount?' (mijoz o\u2018zi kiritadi)':''} &middot; ${esc(l.customerPhone)}</div>
+      </div>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-sm" data-action="copy-link" data-id="${l.id}"><svg><use href="#i-copy"/></svg>Nusxalash</button>
+        ${l.status==='Faol'? '<button class="btn btn-sm btn-danger" data-action="disable-link" data-id="'+l.id+'">O\u2018chirish</button>' : ''}
+      </div>
+    </div>
+    <div class="lc-url">${l.url}</div>
+    <div style="display:flex;gap:22px;padding-top:6px;border-top:1px solid var(--border);flex-wrap:wrap">
+      <div><div style="font-size:10.5px;color:var(--text-3);font-weight:600">KO\u2018RISHLAR</div><div style="font-weight:700;font-size:13px">${l.views}</div></div>
+      <div><div style="font-size:10.5px;color:var(--text-3);font-weight:600">URINISHLAR</div><div style="font-weight:700;font-size:13px">${l.attempts}</div></div>
+      <div><div style="font-size:10.5px;color:var(--text-3);font-weight:600">MUVAFFAQIYATLI</div><div style="font-weight:700;font-size:13px;color:var(--green)">${l.successful}</div></div>
+      <div><div style="font-size:10.5px;color:var(--text-3);font-weight:600">KONVERSIYA</div><div style="font-weight:700;font-size:13px">${l.attempts?(l.successful/l.attempts*100).toFixed(1):'0.0'}%</div></div>
+      <div><div style="font-size:10.5px;color:var(--text-3);font-weight:600">YIG\u2018ILGAN</div><div style="font-weight:700;font-size:13px">${fmtCompact(l.collected)}</div></div>
+      <div style="margin-left:auto;text-align:right;font-size:11px;color:var(--text-3)">Yaratilgan: ${fmtDate(l.created)}<br>Amal qilish: ${fmtDate(l.expiresAt)}</div>
+    </div>
+  </div>`).join('') || '<div class="empty-state"><svg><use href="#i-link"/></svg><div class="t">Hali havola yo\u2018q</div><div class="d">Birinchi to\u2018lov havolangizni yarating.</div></div>'}
+  `;
+}
+
+/* ================================================================
+   PAGE: REPORTS
+   ================================================================ */
+function renderReports(){
+  const reportTypes=['To\u2018lovlar hisoboti','Settlement hisoboti','Refund hisoboti','Oylik moliyaviy hisobot'];
+  return `
+  <div class="page-header"><div><h1>Hisobotlar</h1><div class="desc">Do\u2018koningiz bo\u2018yicha hisobotlarni yuklab oling.</div></div></div>
+  <div class="grid-2">${reportTypes.map(r=>`
+  <div class="panel">
+    <div style="font-weight:700;font-size:13px;margin-bottom:4px">${r}</div>
+    <div style="font-size:11.5px;color:var(--text-3);margin-bottom:10px">Sana oralig\u2018ini tanlab, hisobotni yuklab oling</div>
+    <div class="form-row" style="margin-bottom:8px"><input type="date"></div>
+    <button class="btn btn-primary btn-sm" data-action="download-report" data-report="${esc(r)}"><svg><use href="#i-download"/></svg>Yuklab olish</button>
+  </div>`).join('')}</div>`;
+}
+
+/* ================================================================
+   PAGE: SETTINGS
+   ================================================================ */
+function renderSettings(){
+  const m=STATE.merchant;
+  return `
+  <div class="page-header"><div><h1>Sozlamalar</h1><div class="desc">Do\u2018kon ma\u2018lumotlari, bank hisobi va tariflar.</div></div></div>
+  <div class="grid-2">
+    <div class="panel">
+      <div class="panel-title"><h3>Biznes ma\u2018lumotlari</h3></div>
+      <div class="kv-grid">
+        <div class="kv"><div class="k">Yuridik nomi</div><div class="v">${esc(m.legalName)}</div></div>
+        <div class="kv"><div class="k">Savdo nomi</div><div class="v">${esc(m.businessName)}</div></div>
+        <div class="kv"><div class="k">INN</div><div class="v mono">${m.inn}</div></div>
+        <div class="kv"><div class="k">MCC</div><div class="v">${m.mcc} &mdash; ${esc(m.category)}</div></div>
+        <div class="kv"><div class="k">Veb-sayt</div><div class="v">${esc(m.website)}</div></div>
+        <div class="kv"><div class="k">Email</div><div class="v">${esc(m.contactEmail)}</div></div>
+        <div class="kv" style="grid-column:1/3;border-bottom:none"><div class="k">Telefon</div><div class="v mono">${m.contactPhone}</div></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-title"><h3>Bank hisobi</h3></div>
+      <div class="kv-grid">
+        <div class="kv"><div class="k">Bank</div><div class="v">${esc(m.bankName)}</div></div>
+        <div class="kv"><div class="k">Hisob raqami</div><div class="v mono">${m.bankAccount}</div></div>
+        <div class="kv" style="grid-column:1/3;border-bottom:none"><div class="k">Settlement sikli</div><div class="v">${esc(m.settlementCycle)}</div></div>
+      </div>
+      <div class="form-hint" style="margin-top:10px">Bank hisobini o\u2018zgartirish uchun bank bilan bog\u2018laning.</div>
+    </div>
+  </div>
+  <div class="panel" style="margin-top:14px">
+    <div class="panel-title"><h3>Komissiya stavkalari (MDR)</h3></div>
+    <div class="line-item"><span>Uzcard</span><span style="font-weight:700">${m.mdrUzcard}%</span></div>
+    <div class="line-item"><span>Humo</span><span style="font-weight:700">${m.mdrHumo}%</span></div>
+    <div class="line-item"><span>Visa</span><span style="font-weight:700">${m.mdrVisa}%</span></div>
+    <div class="line-item"><span>Mastercard</span><span style="font-weight:700">${m.mdrMastercard}%</span></div>
+    <div class="line-item" style="border-bottom:none"><span>Fiks to\u2018lov</span><span style="font-weight:700">${m.fixedFee} so'm</span></div>
+    <div class="form-hint" style="margin-top:6px">Tariflar Garant Bank bilan tuzilgan shartnomaga asosan belgilanadi.</div>
+  </div>
+  `;
+}
+
+/* ================================================================
+   PAGE: SUPPORT
+   ================================================================ */
+function renderSupport(){
+  return `
+  <div class="page-header">
+    <div><h1>Yordam markazi</h1><div class="desc">Savolingiz bo\u2018lsa, Garant Bank qo\u2018llab-quvvatlash xizmatiga murojaat qiling.</div></div>
+    <div class="header-actions"><button class="btn btn-primary" data-action="new-ticket"><svg><use href="#i-plus"/></svg>Murojaat yaratish</button></div>
+  </div>
+  <div class="panel" style="margin-bottom:14px">
+    <div class="tbl-search" style="max-width:100%"><svg><use href="#i-search"/></svg><input type="text" placeholder="Yordam maqolalarini qidirish... (masalan: 'settlement qachon keladi')"></div>
+  </div>
+  <div class="panel" style="margin-bottom:14px">
+    <div class="panel-title"><h3>Mening murojaatlarim</h3></div>
+    ${STATE.tickets.length? '<div class="table-scroll" style="border:none"><table class="data-table"><thead><tr><th>ID</th><th>Mavzu</th><th>Turkum</th><th>Holat</th><th>Sana</th></tr></thead><tbody>'+
+      STATE.tickets.map(tk=>`<tr data-action="open-ticket" data-id="${tk.id}"><td class="mono">${tk.id}</td><td>${esc(tk.subject)}</td><td style="color:var(--text-2)">${esc(tk.category)}</td><td>${badge(tk.status)}</td><td style="color:var(--text-3)">${fmtDate(tk.created)}</td></tr>`).join('')+
+      '</tbody></table></div>' : '<div style="color:var(--text-3);font-size:12.5px;padding:8px 0">Hozircha murojaatlar yo\u2018q</div>'}
+  </div>
+  <div class="panel">
+    <div class="panel-title"><h3>Tezkor aloqa</h3></div>
+    <div class="line-item"><span>Qo\u2018llab-quvvatlash telefoni</span><span class="mono">+998 71 200 00 00</span></div>
+    <div class="line-item" style="border-bottom:none"><span>Email</span><span>support@garantbank.uz</span></div>
+  </div>`;
+}
+function doNewTicket(){
+  openModalRaw(
+    '<h3>Yangi murojaat</h3>'+
+    '<div class="form-row"><label>Mavzu</label><input type="text" id="tkSubject" placeholder="Masalan: to\'lov hisobga tushmadi"></div>'+
+    '<div class="form-row"><label>Turkum</label><select id="tkCategory"><option>To\u2018lov muammosi</option><option>Refund muammosi</option><option>Hisob-kitob muammosi</option><option>Texnik muammo</option><option>Hisob muammosi</option><option>Boshqa</option></select></div>'+
+    '<div class="form-row"><label>Tranzaksiya ID (ixtiyoriy)</label><input type="text" id="tkTx" placeholder="TXN-000000"></div>'+
+    '<div class="form-row"><label>Tavsif</label><textarea rows="3" id="tkDesc" placeholder="Muammoingizni batafsil yozing..."></textarea></div>'+
+    '<div class="modal-actions"><button class="btn" data-action="close-modal">Bekor qilish</button><button class="btn btn-primary" id="tkSaveBtn">Yuborish</button></div>'
+  );
+  document.getElementById('tkSaveBtn').onclick=function(){
+    const subj=document.getElementById('tkSubject').value.trim();
+    if(!subj){ toast('Mavzuni kiriting','err'); return; }
+    const cat=document.getElementById('tkCategory').value;
+    STATE.tickets.unshift({id:uid('TCK',STATE.seq.tk++), subject:subj, category:cat, status:'Ochiq', created:new Date()});
+    closeModal(); refreshPage(); toast('Murojaat yuborildi, tez orada javob beramiz','ok');
+  };
+}
+function openTicketDrawer(id){
+  const tk=STATE.tickets.find(x=>x.id===id); if(!tk) return;
+  openDrawer(
+    '<h2 style="margin:0 0 4px 0;font-size:16px">'+esc(tk.subject)+'</h2>'+
+    '<div style="color:var(--text-3);font-size:12px;margin-bottom:16px">'+tk.id+' &middot; '+fmtDate(tk.created)+'</div>'+
+    '<div class="kv-grid"><div class="kv"><div class="k">Turkum</div><div class="v">'+esc(tk.category)+'</div></div><div class="kv" style="border-bottom:none"><div class="k">Holat</div><div class="v">'+badge(tk.status)+'</div></div></div>',
+    '<button class="btn" data-action="close-drawer">Yopish</button>'
+  );
+}
+
+/* ================================================================
+   PAGE: INVOICES
+   ================================================================ */
+function computeInvoiceTotals(items){
+  const subtotal=items.reduce((s,it)=>s+it.qty*it.price,0);
+  const tax=Math.round(subtotal*0.12);
+  return {subtotal, tax, total:subtotal+tax};
+}
+function renderInvoices(){
+  const f=getFilter('inv');
+  let rows=applySearch(STATE.invoices,f.search,['number','customerName','customerPhone']);
+  if(f.status!=='all') rows=rows.filter(i=>i.status===f.status);
+  const p=paginate(rows,f.page,10);
+  const paidCount=STATE.invoices.filter(i=>i.status==='To\u2018langan').length;
+  const outstanding=STATE.invoices.filter(i=>['Yuborilgan','Ko\u2018rilgan','Qisman to\u2018langan'].includes(i.status)).reduce((s,i)=>s+(i.total-i.paidAmount),0);
+  return `
+  <div class="page-header">
+    <div><h1>Hisob-fakturalar (Invoice)</h1><div class="desc">Mijozlar uchun hisob-faktura yarating, yuboring va to\u2018lov holatini kuzating.</div></div>
+    <div class="header-actions"><button class="btn btn-primary" data-action="new-invoice"><svg><use href="#i-plus"/></svg>Hisob-faktura yaratish</button></div>
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="label">Jami hisob-fakturalar</div><div class="value">${STATE.invoices.length}</div></div>
+    <div class="kpi-card"><div class="label">To\u2018langan</div><div class="value" style="color:var(--green)">${paidCount}</div></div>
+    <div class="kpi-card"><div class="label">Kutilayotgan summa</div><div class="value">${fmtCompact(outstanding)}</div></div>
+    <div class="kpi-card"><div class="label">To\u2018lov darajasi</div><div class="value">${STATE.invoices.length?(paidCount/STATE.invoices.length*100).toFixed(0):0}%</div></div>
+  </div>
+  ${toolbarHTML('inv',"Invoice raqami, mijoz bo\u2018yicha qidirish...",['Qoralama','Yuborilgan','Ko\u2018rilgan','Qisman to\u2018langan','To\u2018langan','Muddati tugagan','Bekor qilingan'])}
+  <div class="table-scroll">
+  <table class="data-table"><thead><tr><th>Invoice</th><th>Mijoz</th><th class="num">Summa</th><th>Holat</th><th>Yaratilgan</th><th>Muddat</th></tr></thead>
+  <tbody>${p.rows.map(i=>`<tr data-action="open-invoice" data-id="${i.id}">
+    <td class="mono" style="font-weight:600">${i.number}</td>
+    <td>${esc(i.customerName)}</td>
+    <td class="num">${fmtMoney(i.total,i.currency)}</td>
+    <td>${badge(i.status)}</td>
+    <td style="color:var(--text-3)">${fmtDate(i.created)}</td>
+    <td style="color:var(--text-3)">${fmtDate(i.expiresAt)}</td>
+  </tr>`).join('') || '<tr><td colspan="6"><div class="empty-state"><svg><use href="#i-doc"/></svg><div class="t">Hali hisob-faktura yo\u2018q</div><div class="d">Birinchi hisob-fakturangizni yarating.</div></div></td></tr>'}</tbody>
+  </table>
+  ${pagerHTML('inv',p)}
+  </div>`;
+}
+function invoiceDetailHTML(inv){
+  const relatedTx = inv.paidAmount>0 ? STATE.transactions.find(t=>t.customerName===inv.customerName && Math.abs(t.amount-inv.paidAmount)<inv.paidAmount*0.4) : null;
+  return `
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+    <h2 class="mono" style="margin:0;font-size:16px">${inv.number}</h2>${badge(inv.status)}
+  </div>
+  <div style="color:var(--text-3);font-size:12px;margin-bottom:16px">Yaratilgan: ${fmtDate(inv.created)} &middot; Muddati: ${fmtDate(inv.expiresAt)}</div>
+  <div class="section-h" style="margin-top:0">Mijoz</div>
+  <div class="kv-grid" style="margin-bottom:14px">
+    <div class="kv"><div class="k">Ism</div><div class="v">${esc(inv.customerName)}</div></div>
+    <div class="kv"><div class="k">Telefon</div><div class="v mono">${esc(inv.customerPhone)}</div></div>
+    <div class="kv" style="grid-column:1/3;border-bottom:none"><div class="k">Email</div><div class="v">${esc(inv.customerEmail)}</div></div>
+  </div>
+  <div class="section-h">Mahsulot/xizmatlar</div>
+  <div class="table-scroll" style="margin-bottom:14px"><table class="data-table"><thead><tr><th>Nomi</th><th class="num">Miqdor</th><th class="num">Narx</th><th class="num">Jami</th></tr></thead>
+  <tbody>${inv.items.map(it=>`<tr><td>${esc(it.name)}</td><td class="num">${it.qty}</td><td class="num">${fmtMoney(it.price,'UZS')}</td><td class="num">${fmtMoney(it.qty*it.price,'UZS')}</td></tr>`).join('')}</tbody>
+  </table></div>
+  <div class="panel" style="background:var(--surface-alt);margin-bottom:16px">
+    <div class="line-item"><span>Oraliq summa</span><span>${fmtMoney(inv.subtotal,'UZS')}</span></div>
+    <div class="line-item"><span>Soliq (12%)</span><span>${fmtMoney(inv.tax,'UZS')}</span></div>
+    ${inv.paidAmount>0? `<div class="line-item" style="color:var(--green)"><span>To\u2018langan</span><span>${fmtMoney(inv.paidAmount,'UZS')}</span></div>` : ''}
+    <div class="line-item" style="border-top:1.5px solid var(--border-strong);font-weight:800;font-size:15px"><span>Jami</span><span>${fmtMoney(inv.total,'UZS')}</span></div>
+  </div>
+  <div class="section-h">To\u2018lov havolasi</div>
+  <div class="lc-url" style="display:inline-block">${inv.url}</div>
+  ${relatedTx? `<div class="section-h">Bog\u2018liq tranzaksiya</div><div class="kv-grid"><div class="kv" style="border-bottom:none;grid-column:1/3"><div class="k">Tranzaksiya ID</div><div class="v mono"><a href="#" data-action="open-tx" data-id="${relatedTx.id}">${relatedTx.id}</a></div></div></div>` : ''}
+  `;
+}
+function doNewInvoice(){
+  openModalRaw(
+    '<h3>Hisob-faktura yaratish</h3>'+
+    '<div class="section-h" style="margin-top:0">Mijoz</div>'+
+    '<div class="form-row"><label>Ism</label><input type="text" id="invCustName" placeholder="Mijoz ismi"></div>'+
+    '<div class="form-row"><label>Telefon</label><input type="text" id="invCustPhone" placeholder="+998 90 123 45 67"></div>'+
+    '<div class="form-row"><label>Email</label><input type="text" id="invCustEmail" placeholder="mijoz@mail.uz"></div>'+
+    '<div class="section-h">Mahsulot/xizmatlar</div>'+
+    '<div id="invItemRows">'+
+      '<div class="form-row" style="display:flex;gap:6px"><input type="text" class="inv-item-name" placeholder="Mahsulot nomi" style="flex:2"><input type="number" class="inv-item-qty" placeholder="Soni" value="1" style="flex:1"><input type="number" class="inv-item-price" placeholder="Narx" style="flex:1"></div>'+
+      '<div class="form-row inv-row2" style="display:none;gap:6px"><input type="text" class="inv-item-name" placeholder="Mahsulot nomi" style="flex:2"><input type="number" class="inv-item-qty" placeholder="Soni" value="1" style="flex:1"><input type="number" class="inv-item-price" placeholder="Narx" style="flex:1"></div>'+
+      '<div class="form-row inv-row3" style="display:none;gap:6px"><input type="text" class="inv-item-name" placeholder="Mahsulot nomi" style="flex:2"><input type="number" class="inv-item-qty" placeholder="Soni" value="1" style="flex:1"><input type="number" class="inv-item-price" placeholder="Narx" style="flex:1"></div>'+
+    '</div>'+
+    '<button type="button" class="btn btn-sm" id="invAddRowBtn" style="margin-bottom:12px">+ Yana mahsulot</button>'+
+    '<div id="invTotalsBox" class="panel" style="background:var(--surface-alt)"></div>'+
+    '<div class="modal-actions" style="margin-top:14px"><button class="btn" data-action="close-modal">Bekor qilish</button><button class="btn" id="invDraftBtn">Qoralama saqlash</button><button class="btn btn-primary" id="invSendBtn">Yaratish va yuborish</button></div>'
+  );
+  let rowsShown=1;
+  document.getElementById('invAddRowBtn').onclick=function(){
+    if(rowsShown===1){ document.querySelector('.inv-row2').style.display='flex'; rowsShown=2; }
+    else if(rowsShown===2){ document.querySelector('.inv-row3').style.display='flex'; rowsShown=3; this.style.display='none'; }
+  };
+  function collectItems(){
+    const names=document.querySelectorAll('.inv-item-name'), qtys=document.querySelectorAll('.inv-item-qty'), prices=document.querySelectorAll('.inv-item-price');
+    const items=[];
+    for(let i=0;i<names.length;i++){
+      const name=names[i].value.trim();
+      if(!name) continue;
+      const qty=parseFloat(qtys[i].value)||1, price=parseFloat(prices[i].value)||0;
+      items.push({name, qty, price, tax:12, discount:0});
+    }
+    return items;
+  }
+  function recalc(){
+    const items=collectItems();
+    const t=computeInvoiceTotals(items);
+    document.getElementById('invTotalsBox').innerHTML=
+      '<div class="line-item"><span>Oraliq summa</span><span>'+fmtMoney(t.subtotal,'UZS')+'</span></div>'+
+      '<div class="line-item"><span>Soliq (12%)</span><span>'+fmtMoney(t.tax,'UZS')+'</span></div>'+
+      '<div class="line-item" style="border-bottom:none;font-weight:800"><span>Jami</span><span>'+fmtMoney(t.total,'UZS')+'</span></div>';
+  }
+  document.getElementById('modalBox').addEventListener('input', recalc);
+  recalc();
+  function saveInvoice(status){
+    const name=document.getElementById('invCustName').value.trim()||'Nomsiz mijoz';
+    const phone=document.getElementById('invCustPhone').value.trim()||'\u2014';
+    const email=document.getElementById('invCustEmail').value.trim()||'\u2014';
+    const items=collectItems();
+    if(!items.length){ toast('Kamida bitta mahsulot kiriting','err'); return; }
+    const t=computeInvoiceTotals(items);
+    const inv={id:uid('INV',STATE.seq.inv++), number:'INV-2026-'+String(1000+STATE.invoices.length), customerName:name, customerPhone:phone, customerEmail:email,
+      items, subtotal:t.subtotal, tax:t.tax, discount:0, total:t.total, currency:'UZS', status, created:new Date(), expiresAt:daysFromNow(7), paidAmount:0,
+      url:'pay.garantbank.uz/inv/'+Math.random().toString(36).slice(2,9)};
+    STATE.invoices.unshift(inv);
+    closeModal(); refreshPage();
+    toast(status==='Qoralama'?'Qoralama saqlandi':'Hisob-faktura yaratildi va yuborildi','ok');
+  }
+  document.getElementById('invDraftBtn').onclick=function(){ saveInvoice('Qoralama'); };
+  document.getElementById('invSendBtn').onclick=function(){ saveInvoice('Yuborilgan'); };
+}
+function doSendInvoice(id){
+  const inv=STATE.invoices.find(x=>x.id===id); if(!inv) return;
+  const before=inv.status; inv.status='Yuborilgan';
+  closeDrawer(); refreshPage(); toast(inv.number+' mijozga yuborildi','ok');
+}
+function doCopyInvoiceLink(id){ const inv=STATE.invoices.find(x=>x.id===id); if(!inv) return; toast('Havola nusxalandi: '+inv.url,'ok'); }
+function doDownloadInvoicePdf(id){ const inv=STATE.invoices.find(x=>x.id===id); if(!inv) return; toast(inv.number+' PDF formatida yuklab olinmoqda (demo)','ok'); }
+function doCancelInvoice(id){
+  const inv=STATE.invoices.find(x=>x.id===id); if(!inv) return;
+  openConfirm('Hisob-fakturani bekor qilish', inv.number+' ni bekor qilishni tasdiqlaysizmi?', 'Bekor qilish', true, ()=>{
+    inv.status='Bekor qilingan'; closeDrawer(); refreshPage(); toast(inv.number+' bekor qilindi','ok');
+  });
+}
+function openInvoiceDrawer(inv){
+  let foot='<button class="btn" data-action="close-drawer">Yopish</button>';
+  if(inv.status==='Qoralama') foot+='<button class="btn btn-primary" data-action="send-invoice" data-id="'+inv.id+'">Yuborish</button>';
+  if(['Yuborilgan','Ko\u2018rilgan','Qisman to\u2018langan'].includes(inv.status)){
+    foot+='<button class="btn" data-action="copy-invoice-link" data-id="'+inv.id+'"><svg><use href="#i-copy"/></svg></button>';
+    foot+='<button class="btn btn-danger" data-action="cancel-invoice" data-id="'+inv.id+'">Bekor qilish</button>';
+  }
+  foot+='<button class="btn" data-action="download-invoice-pdf" data-id="'+inv.id+'"><svg><use href="#i-download"/></svg>PDF</button>';
+  openDrawer(invoiceDetailHTML(inv), foot);
+}
+
+/* ================================================================
+   PAGE: CUSTOMERS
+   ================================================================ */
+function renderCustomers(){
+  const f=getFilter('cust');
+  let rows=applySearch(STATE.customers,f.search,['name','phone','email']);
+  const p=paginate(rows,f.page,10);
+  return `
+  <div class="page-header"><div><h1>Mijozlar</h1><div class="desc">Do\u2018koningizdan xarid qilgan mijozlar ro\u2018yxati.</div></div></div>
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="label">Jami mijozlar</div><div class="value">${STATE.customers.length}</div></div>
+    <div class="kpi-card"><div class="label">Qaytar mijozlar</div><div class="value">${STATE.customers.filter(c=>c.totalPayments>1).length}</div></div>
+    <div class="kpi-card"><div class="label">O\u2018rtacha xarid</div><div class="value">${fmtCompact(STATE.customers.length?STATE.customers.reduce((s,c)=>s+c.totalSpent,0)/STATE.customers.length:0)}</div></div>
+    <div class="kpi-card"><div class="label">Jami tushum</div><div class="value">${fmtCompact(STATE.customers.reduce((s,c)=>s+c.totalSpent,0))}</div></div>
+  </div>
+  ${toolbarHTML('cust',"Ism, telefon, email bo\u2018yicha qidirish...",null)}
+  <div class="table-scroll">
+  <table class="data-table"><thead><tr><th>Mijoz</th><th>Telefon</th><th class="num">To\u2018lovlar</th><th class="num">Jami xarid</th><th>Oxirgi xarid</th><th class="num">Refundlar</th></tr></thead>
+  <tbody>${p.rows.map(c=>`<tr data-action="open-customer" data-phone="${esc(c.phone)}">
+    <td style="font-weight:600">${esc(c.name)}</td>
+    <td class="mono" style="color:var(--text-2)">${esc(c.phone)}</td>
+    <td class="num">${c.totalPayments}</td>
+    <td class="num" style="font-weight:600">${fmtMoney(c.totalSpent,'UZS')}</td>
+    <td style="color:var(--text-3)">${fmtDate(c.lastPayment)}</td>
+    <td class="num">${c.refunds}</td>
+  </tr>`).join('') || '<tr><td colspan="6"><div class="empty-state"><svg><use href="#i-users"/></svg><div class="t">Hali mijoz yo\u2018q</div></div></td></tr>'}</tbody>
+  </table>
+  ${pagerHTML('cust',p)}
+  </div>`;
+}
+function openCustomerDrawer(phone){
+  const c=STATE.customers.find(x=>x.phone===phone); if(!c) return;
+  const tx=STATE.transactions.filter(t=>t.customerPhone===phone).slice(0,10);
+  openDrawer(`
+    <h2 style="margin:0 0 4px 0;font-size:16px">${esc(c.name)}</h2>
+    <div style="color:var(--text-3);font-size:12px;margin-bottom:16px">${esc(c.phone)} &middot; ${esc(c.email)}</div>
+    <div class="kv-grid" style="margin-bottom:16px">
+      <div class="kv"><div class="k">Jami xarid</div><div class="v" style="font-size:15px">${fmtMoney(c.totalSpent,'UZS')}</div></div>
+      <div class="kv"><div class="k">Tranzaksiyalar</div><div class="v">${c.totalPayments}</div></div>
+      <div class="kv"><div class="k">Refundlar</div><div class="v">${c.refunds}</div></div>
+      <div class="kv" style="border-bottom:none"><div class="k">Oxirgi xarid</div><div class="v">${fmtDate(c.lastPayment)}</div></div>
+    </div>
+    <div class="section-h">To\u2018lovlar tarixi</div>
+    <div class="table-scroll" style="border:none"><table class="data-table"><thead><tr><th>ID</th><th class="num">Summa</th><th>Holat</th><th>Sana</th></tr></thead>
+    <tbody>${tx.map(t=>`<tr data-action="open-tx" data-id="${t.id}"><td class="mono">${t.id}</td><td class="num">${fmtMoney(t.amount,t.currency)}</td><td>${badge(t.status)}</td><td style="color:var(--text-3)">${fmtDate(t.createdAt)}</td></tr>`).join('')}</tbody>
+    </table></div>
+  `, '<button class="btn" data-action="close-drawer">Yopish</button>');
+}
+
+/* ================================================================
+   PAGE: BALANCE
+   ================================================================ */
+function computeBalance(){
+  const pending=STATE.settlements.filter(s=>s.status==='Rejalashtirilgan').reduce((s,x)=>s+x.net,0);
+  const available=STATE.settlements.filter(s=>s.status==='Jarayonda').reduce((s,x)=>s+x.net,0);
+  const total=pending+available;
+  const nextSettlement=STATE.settlements.filter(s=>s.status!=='Bajarildi').sort((a,b)=>a.date-b.date)[0];
+  const lastSettlement=STATE.settlements.find(s=>s.status==='Bajarildi');
+  const periodFees=STATE.settlements.reduce((s,x)=>s+x.fees,0);
+  return {pending, available, total, nextSettlement, lastSettlement, periodFees};
+}
+function renderBalance(){
+  const b=computeBalance();
+  return `
+  <div class="page-header"><div><h1>Balans</h1><div class="desc">Pulingiz hozir qayerda ekanini aniq tushuning.</div></div></div>
+  <div class="grid-3">
+    <div class="panel">
+      <div class="label" style="font-size:11.5px;color:var(--text-2);font-weight:600;margin-bottom:6px">MAVJUD BALANS</div>
+      <div style="font-size:24px;font-weight:800">${fmtMoney(b.available,'UZS')}</div>
+      <div class="form-hint" style="margin-top:6px">Hisob-kitob qilinishga tayyor, tez orada bankka o\u2018tkaziladi.</div>
+    </div>
+    <div class="panel">
+      <div class="label" style="font-size:11.5px;color:var(--text-2);font-weight:600;margin-bottom:6px">KUTILAYOTGAN BALANS</div>
+      <div style="font-size:24px;font-weight:800;color:var(--amber)">${fmtMoney(b.pending,'UZS')}</div>
+      <div class="form-hint" style="margin-top:6px">Hali hisob-kitob qilish uchun tayyor emas (joriy kun yakunlanmagan).</div>
+    </div>
+    <div class="panel">
+      <div class="label" style="font-size:11.5px;color:var(--text-2);font-weight:600;margin-bottom:6px">JAMI BALANS</div>
+      <div style="font-size:24px;font-weight:800">${fmtMoney(b.total,'UZS')}</div>
+      <div class="form-hint" style="margin-top:6px">Mavjud + kutilayotgan balans yig\u2018indisi.</div>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="panel">
+      <div class="panel-title"><h3>Keyingi hisob-kitob</h3></div>
+      ${b.nextSettlement? `
+      <div class="kv-grid">
+        <div class="kv"><div class="k">Sana</div><div class="v">${fmtDate(b.nextSettlement.date)}</div></div>
+        <div class="kv"><div class="k">Holat</div><div class="v">${badge(b.nextSettlement.status)}</div></div>
+        <div class="kv" style="grid-column:1/3;border-bottom:none"><div class="k">Taxminiy summa</div><div class="v" style="font-size:15px">${fmtMoney(b.nextSettlement.net,'UZS')}</div></div>
+      </div>` : '<div style="color:var(--text-3);font-size:12.5px">Kutilayotgan hisob-kitob yo\u2018q</div>'}
+    </div>
+    <div class="panel">
+      <div class="panel-title"><h3>Oxirgi hisob-kitob</h3></div>
+      ${b.lastSettlement? `
+      <div class="kv-grid">
+        <div class="kv"><div class="k">Sana</div><div class="v">${fmtDate(b.lastSettlement.arrivalDate||b.lastSettlement.date)}</div></div>
+        <div class="kv"><div class="k">Holat</div><div class="v">${badge(b.lastSettlement.status)}</div></div>
+        <div class="kv" style="grid-column:1/3;border-bottom:none"><div class="k">Summa</div><div class="v" style="font-size:15px">${fmtMoney(b.lastSettlement.net,'UZS')}</div></div>
+      </div>` : '<div style="color:var(--text-3);font-size:12.5px">Hali hisob-kitob bo\u2018lmagan</div>'}
+    </div>
+  </div>
+  <div class="panel">
+    <div class="panel-title"><h3>Joriy davr komissiyalari</h3></div>
+    <div class="line-item" style="border-bottom:none"><span>Bank komissiyasi (jami)</span><span style="font-weight:700">${fmtMoney(b.periodFees,'UZS')}</span></div>
+    <div class="form-hint" style="margin-top:8px">Hisob-kitob sikli: ${esc(STATE.merchant.settlementCycle)} &middot; Bank hisobi: ${esc(STATE.merchant.bankName)} ${esc(STATE.merchant.bankAccount)}</div>
+  </div>`;
+}
+
+/* ================================================================
+   PAGE: FEES & PRICING
+   ================================================================ */
+function renderFees(){
+  const m=STATE.merchant;
+  const monthStart=new Date(); monthStart.setDate(1); monthStart.setHours(0,0,0,0);
+  const monthTx=STATE.transactions.filter(t=>t.createdAt>=monthStart && (t.status==='Muvaffaqiyatli'||t.status==='Qisman qaytarilgan'||t.status==='Qaytarilgan'));
+  const volume=monthTx.reduce((s,t)=>s+t.amount,0);
+  const txFees=monthTx.reduce((s,t)=>s+t.fee,0);
+  const refundFees=STATE.refunds.filter(r=>r.date>=monthStart && r.status==='Bajarildi').length*2000;
+  const totalFees=txFees+refundFees;
+  const effRate=volume? (totalFees/volume*100) : 0;
+  const monthName=new Date().toLocaleDateString('uz-UZ',{month:'long',year:'numeric'});
+  return `
+  <div class="page-header"><div><h1>Komissiya va tarif</h1><div class="desc">To\u2018lov qayta ishlash uchun bank qancha komissiya olayotganini ko\u2018ring.</div></div></div>
+  <div class="panel" style="margin-bottom:16px">
+    <div class="panel-title"><h3>${monthName}</h3></div>
+    <div class="line-item"><span>Jami qayta ishlangan summa</span><span style="font-weight:700">${fmtMoney(volume,'UZS')}</span></div>
+    <div class="line-item"><span>Tranzaksiya komissiyasi</span><span>${fmtMoney(txFees,'UZS')}</span></div>
+    <div class="line-item"><span>Refund komissiyasi</span><span>${fmtMoney(refundFees,'UZS')}</span></div>
+    <div class="line-item" style="border-top:1.5px solid var(--border-strong);font-weight:800"><span>Jami komissiya</span><span>${fmtMoney(totalFees,'UZS')}</span></div>
+    <div class="line-item" style="border-bottom:none"><span>Effektiv komissiya darajasi</span><span style="font-weight:700">${effRate.toFixed(2)}%</span></div>
+  </div>
+  <div class="panel">
+    <div class="panel-title"><h3>Tarif jadvali (MDR)</h3></div>
+    <div class="line-item"><span>Uzcard</span><span style="font-weight:700">${m.mdrUzcard}%</span></div>
+    <div class="line-item"><span>Humo</span><span style="font-weight:700">${m.mdrHumo}%</span></div>
+    <div class="line-item"><span>Visa</span><span style="font-weight:700">${m.mdrVisa}%</span></div>
+    <div class="line-item"><span>Mastercard</span><span style="font-weight:700">${m.mdrMastercard}%</span></div>
+    <div class="line-item" style="border-bottom:none"><span>Fiks to\u2018lov (tranzaksiya boshiga)</span><span style="font-weight:700">${m.fixedFee} so'm</span></div>
+    <div class="form-hint" style="margin-top:8px">Tariflar Garant Bank bilan tuzilgan shartnomaga asosan belgilanadi va faqat bank tomonidan o\u2018zgartiriladi.</div>
+  </div>`;
+}
+
+/* ================================================================
+   PAGE: BUSINESS PROFILE
+   ================================================================ */
+function renderBusiness(){
+  const m=STATE.merchant;
+  return `
+  <div class="page-header">
+    <div><h1>Biznes profili</h1><div class="desc">Do\u2018koningiz haqidagi rasmiy ma\u2018lumotlar.</div></div>
+    <div class="header-actions"><button class="btn" data-action="edit-business"><svg><use href="#i-cog"/></svg>Tahrirlash</button></div>
+  </div>
+  <div class="panel" style="margin-bottom:14px;display:flex;align-items:center;gap:14px">
+    <div class="avatar-circle" style="width:52px;height:52px;font-size:18px">${esc(m.businessName.slice(0,2).toUpperCase())}</div>
+    <div>
+      <div style="font-weight:700;font-size:15px">${esc(m.businessName)}</div>
+      <div style="color:var(--text-3);font-size:12px">Merchant ID: MRC-000124 &middot; Shartnoma: <span class="mono">${esc(m.contractNumber)}</span> &middot; ${badge(m.kycStatus)}</div>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="panel">
+      <div class="panel-title"><h3>Biznes ma\u2018lumotlari</h3></div>
+      <div class="kv-grid">
+        <div class="kv"><div class="k">Yuridik nomi</div><div class="v">${esc(m.legalName)}</div></div>
+        <div class="kv"><div class="k">Savdo nomi</div><div class="v">${esc(m.businessName)}</div></div>
+        <div class="kv"><div class="k">Biznes turi</div><div class="v">${esc(m.businessType)}</div></div>
+        <div class="kv"><div class="k">Ro\u2018yxat raqami</div><div class="v mono">${esc(m.regNumber)}</div></div>
+        <div class="kv"><div class="k">INN</div><div class="v mono">${m.inn}</div></div>
+        <div class="kv"><div class="k">MCC</div><div class="v">${m.mcc} &mdash; ${esc(m.category)}</div></div>
+        <div class="kv"><div class="k">Ekvayring shartnomasi raqami</div><div class="v mono">${esc(m.contractNumber)}</div></div>
+        <div class="kv" style="border-bottom:none"><div class="k">Shartnoma sanasi</div><div class="v">${fmtDate(m.contractDate)}</div></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-title"><h3>Aloqa</h3></div>
+      <div class="kv-grid">
+        <div class="kv" style="grid-column:1/3"><div class="k">Manzil</div><div class="v">${esc(m.address)}</div></div>
+        <div class="kv"><div class="k">Telefon</div><div class="v mono">${m.contactPhone}</div></div>
+        <div class="kv"><div class="k">Email</div><div class="v">${esc(m.contactEmail)}</div></div>
+        <div class="kv" style="grid-column:1/3;border-bottom:none"><div class="k">Veb-sayt</div><div class="v">${esc(m.website)}</div></div>
+      </div>
+    </div>
+  </div>`;
+}
+function doEditBusiness(){
+  const m=STATE.merchant;
+  openModalRaw(
+    '<h3>Biznes profilini tahrirlash</h3>'+
+    '<div class="form-row"><label>Savdo nomi</label><input type="text" id="bizName" value="'+esc(m.businessName)+'"></div>'+
+    '<div class="form-row"><label>Telefon</label><input type="text" id="bizPhone" value="'+esc(m.contactPhone)+'"></div>'+
+    '<div class="form-row"><label>Email</label><input type="text" id="bizEmail" value="'+esc(m.contactEmail)+'"></div>'+
+    '<div class="form-row"><label>Veb-sayt</label><input type="text" id="bizWebsite" value="'+esc(m.website)+'"></div>'+
+    '<div class="modal-actions"><button class="btn" data-action="close-modal">Bekor qilish</button><button class="btn btn-primary" id="bizSaveBtn">Saqlash</button></div>'
+  );
+  document.getElementById('bizSaveBtn').onclick=function(){
+    m.businessName=document.getElementById('bizName').value.trim()||m.businessName;
+    m.contactPhone=document.getElementById('bizPhone').value.trim()||m.contactPhone;
+    m.contactEmail=document.getElementById('bizEmail').value.trim()||m.contactEmail;
+    m.website=document.getElementById('bizWebsite').value.trim()||m.website;
+    closeModal(); refreshPage(); toast('Biznes profili yangilandi','ok');
+  };
+}
+
+/* ================================================================
+   PAGE: BANK ACCOUNT
+   ================================================================ */
+function renderBankAccount(){
+  const m=STATE.merchant;
+  return `
+  <div class="page-header"><div><h1>Bank hisobi</h1><div class="desc">To\u2018lovlaringiz qaysi hisobga o\u2018tkazilishini ko\u2018ring.</div></div></div>
+  <div class="panel" style="max-width:560px">
+    <div class="kv-grid">
+      <div class="kv"><div class="k">Bank</div><div class="v">${esc(m.bankName)}</div></div>
+      <div class="kv"><div class="k">Hisob raqami</div><div class="v mono">${m.bankAccount}</div></div>
+      <div class="kv"><div class="k">Hisob egasi</div><div class="v">${esc(m.bankAccountOwner)}</div></div>
+      <div class="kv"><div class="k">Valyuta</div><div class="v">UZS</div></div>
+      <div class="kv"><div class="k">Hisob-kitob jadvali</div><div class="v">${esc(m.settlementCycle)} (kunlik)</div></div>
+      <div class="kv" style="border-bottom:none"><div class="k">Holat</div><div class="v">${m.bankVerified? badge('Tasdiqlangan') : badge('Kutilmoqda')}</div></div>
+    </div>
+    <div class="form-hint" style="margin-top:10px">Xavfsizlik maqsadida hisob raqami qisman yashirilgan.</div>
+    <button class="btn" style="margin-top:12px" data-action="request-bank-change"><svg><use href="#i-bank"/></svg>O\u2018zgartirish so\u2018rovi yuborish</button>
+  </div>`;
+}
+function doRequestBankChange(){
+  openConfirm('Bank hisobini o\u2018zgartirish', 'Bank hisobini o\u2018zgartirish bo\u2018yicha so\u2018rov Garant Bank qo\u2018llab-quvvatlash xizmatiga yuborilsinmi? Xavfsizlik tekshiruvidan so\u2018ng siz bilan bog\u2018lanamiz.', 'So\u2018rov yuborish', false, ()=>{
+    STATE.tickets.unshift({id:uid('TCK',STATE.seq.tk++), subject:'Bank hisobini o\u2018zgartirish so\u2018rovi', category:'Hisob muammosi', status:'Ochiq', created:new Date()});
+    toast('So\u2018rov yuborildi, tez orada bog\u2018lanamiz','ok');
+  });
+}
+
+/* ================================================================
+   PAGE: TEAM
+   ================================================================ */
+const ROLE_DESC={
+  'Owner':'To\u2018liq huquq',
+  'Moliya menejeri':'Tranzaksiyalar, hisob-kitob, hisobotlar, refund',
+  'Buxgalter':'Hisobotlar, tranzaksiyalar, hisob-kitob',
+  'Qo\u2018llab-quvvatlash':'Mijozlar, tranzaksiyalar, moliyaviy amallarsiz',
+  'Kuzatuvchi':'Faqat ko\u2018rish huquqi',
+};
+function renderTeam(){
+  return `
+  <div class="page-header">
+    <div><h1>Jamoa</h1><div class="desc">Xodimlaringizga kabinetga kirish huquqini bering.</div></div>
+    <div class="header-actions"><button class="btn btn-primary" data-action="invite-team"><svg><use href="#i-plus"/></svg>Taklif qilish</button></div>
+  </div>
+  <div class="table-scroll" style="margin-bottom:16px">
+  <table class="data-table"><thead><tr><th>Ism</th><th>Email</th><th>Rol</th><th>Holat</th><th>Oxirgi faollik</th><th>Amallar</th></tr></thead>
+  <tbody>${STATE.team.map(u=>`<tr>
+    <td style="font-weight:600">${esc(u.name)}</td><td class="mono" style="color:var(--text-2)">${esc(u.email)}</td>
+    <td>${esc(u.role)}</td><td>${badge(u.status)}</td><td style="color:var(--text-3)">${u.lastActive?fmtDate(u.lastActive):'\u2014'}</td>
+    <td style="display:flex;gap:5px">
+      ${u.role!=='Owner'? '<button class="btn btn-sm" data-action="team-role" data-id="'+u.id+'">Rolni o\u2018zgartirish</button><button class="btn btn-sm btn-danger" data-action="team-remove" data-id="'+u.id+'">O\u2018chirish</button>' : '<span style="color:var(--text-3);font-size:11.5px">Asosiy hisob</span>'}
+    </td>
+  </tr>`).join('')}</tbody>
+  </table></div>
+  <div class="panel">
+    <div class="panel-title"><h3>Rollar va huquqlar</h3></div>
+    ${Object.entries(ROLE_DESC).map(([r,d])=>`<div class="line-item"><span style="font-weight:600">${r}</span><span style="color:var(--text-2)">${d}</span></div>`).join('')}
+  </div>`;
+}
+function doInviteTeam(){
+  openModalRaw(
+    '<h3>Jamoaga taklif qilish</h3>'+
+    '<div class="form-row"><label>Ism</label><input type="text" id="tmName" placeholder="Xodim ismi"></div>'+
+    '<div class="form-row"><label>Email</label><input type="text" id="tmEmail" placeholder="email@dilnozastyle.uz"></div>'+
+    '<div class="form-row"><label>Rol</label><select id="tmRole"><option>Moliya menejeri</option><option>Buxgalter</option><option>Qo\u2018llab-quvvatlash</option><option>Kuzatuvchi</option></select></div>'+
+    '<div class="modal-actions"><button class="btn" data-action="close-modal">Bekor qilish</button><button class="btn btn-primary" id="tmSaveBtn">Taklif yuborish</button></div>'
+  );
+  document.getElementById('tmSaveBtn').onclick=function(){
+    const name=document.getElementById('tmName').value.trim()||'Yangi xodim';
+    const email=document.getElementById('tmEmail').value.trim()||'\u2014';
+    const role=document.getElementById('tmRole').value;
+    STATE.team.push({id:uid('TM',STATE.team.length+1), name, email, role, status:'Taklif yuborilgan', lastActive:null});
+    closeModal(); refreshPage(); toast(name+' jamoaga taklif qilindi','ok');
+  };
+}
+function doTeamRoleChange(id){
+  const u=STATE.team.find(x=>x.id===id); if(!u) return;
+  const roles=['Moliya menejeri','Buxgalter','Qo\u2018llab-quvvatlash','Kuzatuvchi'];
+  const idx=roles.indexOf(u.role);
+  u.role=roles[(idx+1)%roles.length];
+  refreshPage(); toast(u.name+' roli: '+u.role,'ok');
+}
+function doTeamRemove(id){
+  const u=STATE.team.find(x=>x.id===id); if(!u) return;
+  openConfirm('Xodimni o\u2018chirish', u.name+'ni jamoadan o\u2018chirishni tasdiqlaysizmi?', 'O\u2018chirish', true, ()=>{
+    STATE.team=STATE.team.filter(x=>x.id!==id);
+    refreshPage(); toast(u.name+' o\u2018chirildi','ok');
+  });
+}
+
+/* ================================================================
+   PAGE: DEVELOPERS / API
+   ================================================================ */
+function maskKey(v){ return v.slice(0,12)+'\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022'; }
+function renderDevelopers(){
+  return `
+  <div class="page-header"><div><h1>API va integratsiya</h1><div class="desc">Saytingiz yoki ilovangizni Garant Bank to\u2018lov tizimiga ulang.</div></div></div>
+  <div class="panel" style="margin-bottom:16px">
+    <div class="panel-title"><h3>API kalitlar</h3></div>
+    ${STATE.apiKeys.map(k=>`<div class="line-item">
+      <span>${esc(k.label)}</span>
+      <span style="display:flex;align-items:center;gap:8px">
+        <span class="mono" style="font-size:11.5px">${k.masked? maskKey(k.value) : k.value}</span>
+        ${k.id==='sk'? '<button class="btn btn-sm" data-action="reveal-key" data-id="'+k.id+'">'+(k.masked?'Ko\u2018rsatish':'Yashirish')+'</button>' : ''}
+        <button class="btn btn-sm" data-action="copy-key" data-id="${k.id}"><svg><use href="#i-copy"/></svg></button>
+        <button class="btn btn-sm" data-action="regenerate-key" data-id="${k.id}"><svg><use href="#i-refresh"/></svg></button>
+      </span>
+    </div>`).join('')}
+  </div>
+  <div class="panel" style="margin-bottom:16px">
+    <div class="panel-title"><h3>Webhook\u2018lar</h3><button class="btn btn-sm" data-action="add-webhook"><svg><use href="#i-plus"/></svg>Qo\u2018shish</button></div>
+    ${STATE.webhooks.map(w=>`<div class="line-item" style="flex-direction:column;align-items:flex-start;gap:4px">
+      <div style="display:flex;justify-content:space-between;width:100%"><span class="mono" style="font-size:11.5px">${esc(w.url)}</span>${badge(w.status)}</div>
+      <div style="font-size:11px;color:var(--text-3)">${w.events.join(', ')} &middot; oxirgi yetkazish: ${fmtDateTime(w.lastDelivery)}</div>
+      <div style="display:flex;gap:6px;margin-top:2px">
+        <button class="btn btn-sm" data-action="test-webhook" data-id="${w.id}">Sinash</button>
+        <button class="btn btn-sm" data-action="disable-webhook" data-id="${w.id}">O\u2018chirish</button>
+      </div>
+    </div>`).join('')}
+  </div>
+  <div class="panel">
+    <div class="panel-title"><h3>Mavjud hodisalar (events)</h3></div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px">
+      ${['payment.created','payment.succeeded','payment.failed','refund.created','refund.completed','invoice.paid','settlement.completed'].map(e=>'<span class="badge blue mono">'+e+'</span>').join('')}
+    </div>
+  </div>`;
+}
+function doRevealKey(id){
+  const k=STATE.apiKeys.find(x=>x.id===id); if(!k) return;
+  k.masked=!k.masked; refreshPage();
+}
+function doCopyKey(id){ const k=STATE.apiKeys.find(x=>x.id===id); if(!k) return; toast(esc(k.label)+' nusxalandi','ok'); }
+function doRegenerateKey(id){
+  const k=STATE.apiKeys.find(x=>x.id===id); if(!k) return;
+  openConfirm('Kalitni qayta generatsiya qilish', esc(k.label)+' qayta generatsiya qilinsinmi? Eski kalit ishlamay qoladi va integratsiyalaringizni yangilashingiz kerak bo\u2018ladi.', 'Qayta generatsiya qilish', true, ()=>{
+    k.value=(k.id==='sk'?'sk_live_':'pk_live_')+Math.random().toString(36).slice(2,26);
+    refreshPage(); toast(esc(k.label)+' yangilandi','ok');
+  });
+}
+function doAddWebhook(){
+  openModalRaw(
+    '<h3>Yangi webhook</h3>'+
+    '<div class="form-row"><label>URL</label><input type="text" id="whUrl" placeholder="https://saytingiz.uz/webhook"></div>'+
+    '<div class="modal-actions"><button class="btn" data-action="close-modal">Bekor qilish</button><button class="btn btn-primary" id="whSaveBtn">Qo\u2018shish</button></div>'
+  );
+  document.getElementById('whSaveBtn').onclick=function(){
+    const url=document.getElementById('whUrl').value.trim(); if(!url){ toast('URL kiriting','err'); return; }
+    STATE.webhooks.push({id:'WH-'+(STATE.webhooks.length+1), url, events:['payment.succeeded'], status:'Faol', lastDelivery:new Date()});
+    closeModal(); refreshPage(); toast('Webhook qo\u2018shildi','ok');
+  };
+}
+function doTestWebhook(id){ toast('Test so\u2018rovi yuborildi \u2014 200 OK','ok'); }
+function doDisableWebhook(id){
+  STATE.webhooks=STATE.webhooks.filter(x=>x.id!==id);
+  refreshPage(); toast('Webhook o\u2018chirildi','ok');
+}
+
+/* ================================================================
+   PAGE: NOTIFICATIONS
+   ================================================================ */
+function renderNotifications(){
+  const unread=STATE.notifications.filter(n=>!n.read).length;
+  return `
+  <div class="page-header">
+    <div><h1>Bildirishnomalar</h1><div class="desc">${unread} ta o\u2018qilmagan bildirishnoma.</div></div>
+    <div class="header-actions"><button class="btn" data-action="mark-all-read">Barchasini o\u2018qilgan deb belgilash</button></div>
+  </div>
+  <div class="panel" style="margin-bottom:16px">
+    ${STATE.notifications.map((n,i)=>`<div class="line-item" style="align-items:flex-start;${n.read?'opacity:.55':''}" data-action="read-notif" data-idx="${i}">
+      <span style="display:flex;gap:9px"><span style="width:7px;height:7px;border-radius:50%;margin-top:5px;flex-shrink:0;background:${n.level==='ok'?'var(--green)':n.level==='warn'?'var(--amber)':'var(--blue)'}"></span>
+      <span><div style="font-weight:600;font-size:12.5px">${esc(n.text)}</div><div style="font-size:11px;color:var(--text-3);margin-top:2px">${esc(n.meta)}</div></span></span>
+      ${!n.read? '<span class="badge blue">Yangi</span>' : ''}
+    </div>`).join('')}
+  </div>
+  <div class="panel">
+    <div class="panel-title"><h3>Bildirishnoma sozlamalari</h3></div>
+    <div class="table-scroll" style="border:none"><table class="data-table"><thead><tr><th>Hodisa</th><th style="text-align:center">Email</th><th style="text-align:center">SMS</th><th style="text-align:center">Push</th></tr></thead>
+    <tbody>${['payment','refund','settlement','invoice'].map(ev=>{
+      const labels={payment:'To\u2018lov qabul qilindi',refund:'Refund yakunlandi',settlement:'Hisob-kitob amalga oshdi',invoice:'Invoice to\u2018landi'};
+      return `<tr><td>${labels[ev]}</td>`+['email','sms','push'].map(ch=>`<td style="text-align:center"><input type="checkbox" class="chk" data-action="toggle-notif-setting" data-ch="${ch}" data-ev="${ev}" ${STATE.notifSettings[ch][ev]?'checked':''}></td>`).join('')+`</tr>`;
+    }).join('')}</tbody></table></div>
+  </div>`;
+}
+
+/* ================================================================
+   PAGE: SECURITY
+   ================================================================ */
+function renderSecurity(){
+  const m=STATE.merchant;
+  return `
+  <div class="page-header"><div><h1>Xavfsizlik</h1><div class="desc">Hisobingiz xavfsizligini boshqaring.</div></div></div>
+  <div class="grid-2">
+    <div class="panel">
+      <div class="panel-title"><h3>Parol</h3></div>
+      <div class="form-row"><label>Joriy parol</label><input type="password" id="secOldPass" placeholder="\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022"></div>
+      <div class="form-row"><label>Yangi parol</label><input type="password" id="secNewPass" placeholder="\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022"></div>
+      <button class="btn btn-primary" data-action="change-password">Parolni o\u2018zgartirish</button>
+    </div>
+    <div class="panel">
+      <div class="panel-title"><h3>Ikki bosqichli tasdiqlash (2FA)</h3></div>
+      <div class="line-item" style="border-bottom:none">
+        <span>2FA holati</span>
+        <span>${m.twoFA? badge('Faol') : badge('Faol emas')} <button class="btn btn-sm" style="margin-left:8px" data-action="toggle-2fa">${m.twoFA?'O\u2018chirish':'Yoqish'}</button></span>
+      </div>
+      <div class="form-hint" style="margin-top:8px">2FA yoqilganda, har safar kirishda SMS orqali kod so\u2018raladi.</div>
+    </div>
+  </div>
+  <div class="panel" style="margin-bottom:16px">
+    <div class="panel-title"><h3>Faol seanslar</h3></div>
+    ${STATE.sessions.map(s=>`<div class="line-item">
+      <span>${esc(s.device)} ${s.current?'<span class="badge blue">Joriy</span>':''}<br><span style="font-size:11px;color:var(--text-3)">${esc(s.location)} &middot; ${s.ip} &middot; ${fmtDateTime(s.lastActive)}</span></span>
+      ${!s.current? '<button class="btn btn-sm btn-danger" data-action="revoke-session" data-id="'+s.id+'">Chiqish</button>' : ''}
+    </div>`).join('')}
+  </div>
+  <div class="panel">
+    <div class="panel-title"><h3>Kirish tarixi</h3></div>
+    <div class="table-scroll" style="border:none"><table class="data-table"><thead><tr><th>Sana</th><th>Qurilma</th><th>IP</th><th>Holat</th></tr></thead>
+    <tbody>${STATE.loginHistory.map(h=>`<tr><td style="color:var(--text-3)">${fmtDateTime(h.date)}</td><td>${esc(h.device)}</td><td class="mono">${h.ip}</td><td>${badge(h.status)}</td></tr>`).join('')}</tbody></table></div>
+  </div>`;
+}
+function doChangePassword(){
+  const oldP=document.getElementById('secOldPass').value, newP=document.getElementById('secNewPass').value;
+  if(!oldP||!newP){ toast('Ikkala maydonni ham to\u2018ldiring','err'); return; }
+  if(newP.length<8){ toast('Yangi parol kamida 8 ta belgidan iborat bo\u2018lishi kerak','err'); return; }
+  toast('Parol muvaffaqiyatli o\u2018zgartirildi','ok');
+  document.getElementById('secOldPass').value=''; document.getElementById('secNewPass').value='';
+}
+function doToggle2FA(){
+  const m=STATE.merchant;
+  if(!m.twoFA){
+    openConfirm('2FAni yoqish', 'Ikki bosqichli tasdiqlashni yoqishni tasdiqlaysizmi? Bundan buyon har safar kirishda SMS kod so\u2018raladi.', 'Yoqish', false, ()=>{ m.twoFA=true; refreshPage(); toast('2FA yoqildi','ok'); });
+  } else {
+    openConfirm('2FAni o\u2018chirish', '2FA ni o\u2018chirishni tasdiqlaysizmi? Bu hisobingiz xavfsizligini pasaytiradi.', 'O\u2018chirish', true, ()=>{ m.twoFA=false; refreshPage(); toast('2FA o\u2018chirildi','ok'); });
+  }
+}
+function doRevokeSession(id){
+  STATE.sessions=STATE.sessions.filter(x=>x.id!==id);
+  refreshPage(); toast('Seans yakunlandi','ok');
+}
+
+/* ================================================================
+   ROUTER
+   ================================================================ */
+let charts={};
+function destroyCharts(){ Object.values(charts).forEach(c=>{try{c.destroy();}catch(e){}}); charts={}; }
+const PAGE_RENDERERS={
+  dashboard:{render:renderDashboard, after:()=>{ destroyCharts(); paintDashboardCharts(); }},
+  transactions:{render:renderPayments},
+  invoices:{render:renderInvoices},
+  links:{render:renderLinks},
+  customers:{render:renderCustomers},
+  balance:{render:renderBalance},
+  settlements:{render:renderSettlements},
+  fees:{render:renderFees},
+  reports:{render:renderReports},
+  business:{render:renderBusiness},
+  bankaccount:{render:renderBankAccount},
+  team:{render:renderTeam},
+  developers:{render:renderDevelopers},
+  notifications:{render:renderNotifications},
+  security:{render:renderSecurity},
+  support:{render:renderSupport},
+};
+function showPage(key){
+  if(!PAGE_RENDERERS[key]) key='dashboard';
+  STATE.currentPage=key;
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active', n.dataset.page===key));
+  const root=document.getElementById('pagesRoot');
+  root.innerHTML=PAGE_RENDERERS[key].render();
+  const scroller=document.getElementById('pageScroll'); if(scroller) scroller.scrollTop=0;
+  if(PAGE_RENDERERS[key].after) PAGE_RENDERERS[key].after();
+  updateSidebarBadges();
+}
+function updateSidebarBadges(){
+  const unread=STATE.notifications.filter(n=>!n.read).length;
+  const nb=document.getElementById('navBadgeNotif');
+  if(nb){ nb.textContent=unread||''; nb.style.display=unread?'':'none'; }
+  const openTk=STATE.tickets.filter(t=>t.status!=='Yopilgan').length;
+  const sb=document.getElementById('navBadgeSupport');
+  if(sb){ sb.textContent=openTk||''; sb.style.display=openTk?'':'none'; }
+  const dot=document.getElementById('notifDot');
+  if(dot) dot.style.display=unread?'':'none';
+}
+function refreshPage(){ showPage(STATE.currentPage); }
+
+/* ================================================================
+   DRAWER / MODAL / TOAST
+   ================================================================ */
+function openDrawer(bodyHtml,footHtml){
+  const el=document.getElementById('drawerEl');
+  el.innerHTML='<div class="drawer-head" style="border-bottom:none;padding-bottom:0"><div></div><button class="drawer-close" data-action="close-drawer"><svg><use href="#i-close"/></svg></button></div>'+
+    '<div class="drawer-body">'+bodyHtml+'</div>'+(footHtml?'<div class="drawer-foot">'+footHtml+'</div>':'');
+  document.getElementById('drawerOverlay').classList.add('open');
+}
+function closeDrawer(){ document.getElementById('drawerOverlay').classList.remove('open'); }
+function openModalRaw(html){ document.getElementById('modalBox').innerHTML=html; document.getElementById('modalCenter').classList.add('open'); }
+function closeModal(){ document.getElementById('modalCenter').classList.remove('open'); }
+function openConfirm(title,desc,label,danger,onConfirm){
+  openModalRaw('<h3>'+esc(title)+'</h3><p>'+esc(desc)+'</p><div class="modal-actions">'+
+    '<button class="btn" data-action="close-modal">Bekor qilish</button>'+
+    '<button class="btn '+(danger?'btn-danger':'btn-primary')+'" id="modalConfirmBtn">'+esc(label)+'</button></div>');
+  document.getElementById('modalConfirmBtn').onclick=function(){ onConfirm(); closeModal(); };
+}
+let toastSeq=0;
+function toast(msg,type){
+  const wrap=document.getElementById('toastWrap');
+  const el=document.createElement('div');
+  el.className='toast '+(type==='err'?'err':'ok');
+  el.innerHTML='<svg><use href="#i-'+(type==='err'?'close':'check')+'"/></svg><span>'+esc(msg)+'</span>';
+  wrap.appendChild(el);
+  setTimeout(()=>{ el.style.transition='opacity .25s'; el.style.opacity='0'; setTimeout(()=>el.remove(),260); },3200);
+}
+
+/* ================================================================
+   DETAIL OPENERS / ACTIONS
+   ================================================================ */
+function openTxDrawer(t){
+  const d=txDetailHTML(t);
+  const canReceipt=t.status==='Muvaffaqiyatli'||t.status==='Qaytarilgan'||t.status==='Qisman qaytarilgan';
+  const foot='<button class="btn" data-action="close-drawer">Yopish</button>'+
+    (canReceipt? '<button class="btn" data-action="download-receipt" data-id="'+t.id+'"><svg><use href="#i-download"/></svg>Chek</button>' : '')+
+    (d.canRefund? '<button class="btn btn-danger" data-action="refund-tx" data-id="'+t.id+'">Refund</button>' : '');
+  openDrawer(d.body, foot);
+}
+function openSettlementDrawer(s){
+  openDrawer(settlementDetailHTML(s),
+    '<button class="btn" data-action="close-drawer">Yopish</button>'+
+    '<button class="btn btn-primary" data-action="download-statement" data-id="'+s.id+'"><svg><use href="#i-download"/></svg>Statement yuklab olish</button>');
+}
+function doRefundTx(id){
+  const t=STATE.transactions.find(x=>x.id===id); if(!t) return;
+  const remaining=t.amount-(t.refundedAmount||0);
+  openModalRaw(
+    '<h3>To\u2018lovni qaytarish</h3>'+
+    '<div class="kv-grid" style="margin-bottom:14px">'+
+      '<div class="kv"><div class="k">Tranzaksiya</div><div class="v mono">'+t.id+'</div></div>'+
+      '<div class="kv" style="border-bottom:none"><div class="k">Boshlang\u2018ich summa</div><div class="v">'+fmtMoney(t.amount,t.currency)+'</div></div>'+
+    '</div>'+
+    (t.refundedAmount? '<div class="form-hint" style="margin-bottom:10px">Allaqachon qaytarilgan: '+fmtMoney(t.refundedAmount,t.currency)+'. Maksimal qaytarish mumkin: <b>'+fmtMoney(remaining,t.currency)+'</b></div>' : '')+
+    '<div class="form-row"><label>Qaytarish turi</label><select id="rfType"><option value="full">To\u2018liq qaytarish</option><option value="partial">Qisman qaytarish</option></select></div>'+
+    '<div class="form-row" id="rfAmountRow" style="display:none"><label>Qaytariladigan summa (so\'m)</label><input type="number" id="rfAmount" value="'+remaining+'" max="'+remaining+'"><div class="form-hint">Maksimal: '+fmtMoney(remaining,t.currency)+'</div></div>'+
+    '<div class="form-row"><label>Sabab</label><select id="rfReason"><option>Mijoz talabi</option><option>Takroriy to\u2018lov</option><option>Mahsulot mavjud emas</option><option>Noto\u2018g\u2018ri summa</option><option>Boshqa</option></select></div>'+
+    '<div class="form-row"><label>Izoh (ixtiyoriy)</label><textarea id="rfNote" rows="2"></textarea></div>'+
+    '<div class="modal-actions"><button class="btn" data-action="close-modal">Bekor qilish</button><button class="btn btn-danger" id="rfConfirmBtn">Refundni tasdiqlash</button></div>'
+  );
+  const typeEl=document.getElementById('rfType'), rowEl=document.getElementById('rfAmountRow');
+  typeEl.onchange=function(){ rowEl.style.display=typeEl.value==='partial'?'':'none'; };
+  document.getElementById('rfConfirmBtn').onclick=function(){
+    const isPartial=typeEl.value==='partial';
+    let amount=remaining;
+    if(isPartial){
+      amount=parseFloat(document.getElementById('rfAmount').value)||0;
+      if(amount<=0 || amount>remaining){ toast('Summa 0 dan katta va '+fmtMoney(remaining,t.currency)+' dan kichik/teng bo\u2018lishi kerak','err'); return; }
+    }
+    const reason=document.getElementById('rfReason').value;
+    t.refundedAmount=(t.refundedAmount||0)+amount;
+    const before=t.status;
+    t.status = (t.refundedAmount>=t.amount) ? 'Qaytarilgan' : 'Qisman qaytarilgan';
+    const rf={id:uid('RF',STATE.refunds.length+1), transactionId:t.id, orderId:t.orderId, customerName:t.customerName, amount, currency:t.currency, type: isPartial?'Qisman':'To\u2018liq', reason, status:'Bajarildi', date:new Date()};
+    STATE.refunds.unshift(rf);
+    closeModal();
+    openModalRaw(
+      '<h3>Refund muvaffaqiyatli</h3>'+
+      '<div class="line-item"><span>Refund ID</span><span class="mono">'+rf.id+'</span></div>'+
+      '<div class="line-item"><span>Summa</span><span style="font-weight:700">'+fmtMoney(amount,t.currency)+'</span></div>'+
+      '<div class="line-item" style="border-bottom:none"><span>Holat</span><span>'+badge('Bajarildi')+'</span></div>'+
+      '<div class="modal-actions" style="margin-top:14px"><button class="btn btn-primary" data-action="close-modal">Yopish</button></div>'
+    );
+    closeDrawer(); refreshPage(); toast('Refund yuborildi: '+fmtMoney(amount,t.currency),'ok');
+  };
+}
+function doDownloadReceipt(id){ const t=STATE.transactions.find(x=>x.id===id); if(!t) return; toast('Chek yuklab olinmoqda: '+t.id+' (demo)','ok'); }
+function doDownloadStatement(id){ const s=STATE.settlements.find(x=>x.id===id); if(!s) return; toast('Statement yuklab olinmoqda: '+(s.reference||s.id)+' (demo)','ok'); }
+function doExportTx(fmt){ toast('Tranzaksiyalar '+fmt+' formatida eksport qilinmoqda (demo)','ok'); }
+function doNewLink(){
+  openModalRaw(
+    '<h3>Yangi to\u2018lov havolasi</h3>'+
+    '<div class="form-row"><label>Sarlavha</label><input type="text" id="lnkTitle" placeholder="Masalan: Sayt buyurtmasi #1024"></div>'+
+    '<div class="form-row"><label>Summa (so\'m)</label><input type="number" id="lnkAmount" value="150000"></div>'+
+    '<div class="form-row"><label><input type="checkbox" id="lnkCustomAmount" style="width:auto;display:inline-block;margin-right:6px">Mijoz summani o\u2018zi kiritsin</label></div>'+
+    '<div class="form-row"><label>Tavsif</label><input type="text" id="lnkDesc" placeholder="Masalan: Ayollar ko\u2018ylagi uchun to\u2018lov"></div>'+
+    '<div class="form-row"><label>Mijoz telefon raqami (ixtiyoriy)</label><input type="text" id="lnkPhone" placeholder="+998 90 123 45 67"></div>'+
+    '<div class="form-row"><label>Amal qilish muddati (kun)</label><input type="number" id="lnkExpiry" value="3"></div>'+
+    '<div class="modal-actions"><button class="btn" data-action="close-modal">Bekor qilish</button><button class="btn btn-primary" id="lnkSaveBtn">Havola yaratish</button></div>'
+  );
+  document.getElementById('lnkSaveBtn').onclick=function(){
+    const title=document.getElementById('lnkTitle').value.trim()||'To\u2018lov havolasi';
+    const amount=parseFloat(document.getElementById('lnkAmount').value)||100000;
+    const custom=document.getElementById('lnkCustomAmount').checked;
+    const desc=document.getElementById('lnkDesc').value.trim()||'To\u2018lov';
+    const phone=document.getElementById('lnkPhone').value.trim()||'\u2014';
+    const expDays=parseFloat(document.getElementById('lnkExpiry').value)||3;
+    STATE.links.unshift({id:uid('LNK',STATE.links.length+1), title, url:'pay.garantbank.uz/p/'+Math.random().toString(36).slice(2,9), amount, currency:'UZS', description:desc, customerPhone:phone, allowCustomAmount:custom, methods:['Uzcard','Humo','Visa','Mastercard'], status:'Faol', created:new Date(), expiresAt:daysFromNow(expDays), views:0, attempts:0, successful:0, collected:0});
+    closeModal(); refreshPage(); toast('Yangi to\u2018lov havolasi yaratildi','ok');
+  };
+}
+function doDisableLink(id){
+  const l=STATE.links.find(x=>x.id===id); if(!l) return;
+  openConfirm('Havolani o\u2018chirish', '"'+l.title+'" havolasini o\u2018chirishni tasdiqlaysizmi? Mijozlar endi bu havola orqali to\u2018lov qila olmaydi.', 'O\u2018chirish', true, ()=>{
+    l.status='Faol emas';
+    refreshPage(); toast('Havola o\u2018chirildi','ok');
+  });
+}
+function doCopyLink(id){
+  const l=STATE.links.find(x=>x.id===id); if(!l) return;
+  toast('Havola nusxalandi: '+l.url,'ok');
+}
+function doDownloadReport(name){ toast('"'+name+'" yuklab olinmoqda (demo)','ok'); }
+
+/* ================================================================
+   NOTIFICATION PANEL
+   ================================================================ */
+function toggleNotifPanel(){
+  let panel=document.getElementById('notifPanel');
+  if(panel){ panel.remove(); return; }
+  panel=document.createElement('div'); panel.id='notifPanel';
+  panel.style.cssText='position:fixed;top:56px;right:120px;width:340px;max-height:400px;overflow-y:auto;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow-lg);z-index:90;padding:14px 16px;';
+  panel.innerHTML='<div style="font-weight:700;font-size:13px;margin-bottom:8px">Bildirishnomalar</div>'+
+    STATE.notifications.map(n=>'<div style="display:flex;gap:9px;padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer" data-action="nav" data-page="'+n.page+'">'+
+      '<div style="width:7px;height:7px;border-radius:50%;margin-top:4px;flex-shrink:0;background:'+(n.level==='ok'?'var(--green)':n.level==='warn'?'var(--amber)':'var(--blue)')+'"></div>'+
+      '<div><div style="font-size:12px;font-weight:600">'+esc(n.text)+'</div><div style="font-size:11px;color:var(--text-3);margin-top:2px">'+esc(n.meta)+'</div></div></div>').join('');
+  document.body.appendChild(panel);
+  setTimeout(()=>{ document.addEventListener('click', outsideNotifClose); },0);
+}
+function outsideNotifClose(e){
+  const panel=document.getElementById('notifPanel');
+  if(panel && !panel.contains(e.target) && !e.target.closest('#notifBtn')){ panel.remove(); document.removeEventListener('click', outsideNotifClose); }
+}
+
+/* ================================================================
+   EVENT DELEGATION
+   ================================================================ */
+function mainClickDelegate(e){
+  const navBtn=e.target.closest('[data-action="nav"]');
+  if(navBtn){ e.preventDefault(); const panel=document.getElementById('notifPanel'); if(panel) panel.remove(); showPage(navBtn.dataset.page); closeDrawer(); return; }
+
+  let el;
+  if((el=e.target.closest('[data-action="open-tx"]'))){ const t=STATE.transactions.find(x=>x.id===el.dataset.id); if(t) openTxDrawer(t); return; }
+  if((el=e.target.closest('[data-action="open-settlement"]'))){ const s=STATE.settlements.find(x=>x.id===el.dataset.id); if(s) openSettlementDrawer(s); return; }
+  if((el=e.target.closest('[data-action="open-invoice"]'))){ const i=STATE.invoices.find(x=>x.id===el.dataset.id); if(i) openInvoiceDrawer(i); return; }
+  if((el=e.target.closest('[data-action="open-customer"]'))){ openCustomerDrawer(el.dataset.phone); return; }
+  if((el=e.target.closest('[data-action="open-ticket"]'))){ openTicketDrawer(el.dataset.id); return; }
+
+  if(e.target.closest('[data-action="close-drawer"]')){ closeDrawer(); return; }
+  if(e.target.id==='drawerOverlay'){ closeDrawer(); return; }
+  if(e.target.closest('[data-action="close-modal"]')){ closeModal(); return; }
+  if(e.target.id==='modalCenter'){ closeModal(); return; }
+
+  // Transactions / refunds
+  if((el=e.target.closest('[data-action="refund-tx"]'))){ doRefundTx(el.dataset.id); return; }
+  if((el=e.target.closest('[data-action="download-receipt"]'))){ doDownloadReceipt(el.dataset.id); return; }
+  if((el=e.target.closest('[data-action="download-statement"]'))){ doDownloadStatement(el.dataset.id); return; }
+  if((el=e.target.closest('[data-action="export-tx"]'))){ doExportTx(el.dataset.fmt); return; }
+
+  // Payment links
+  if(e.target.closest('[data-action="new-link"]')){ doNewLink(); return; }
+  if((el=e.target.closest('[data-action="copy-link"]'))){ doCopyLink(el.dataset.id); return; }
+  if((el=e.target.closest('[data-action="disable-link"]'))){ doDisableLink(el.dataset.id); return; }
+
+  // Invoices
+  if(e.target.closest('[data-action="new-invoice"]')){ doNewInvoice(); return; }
+  if((el=e.target.closest('[data-action="send-invoice"]'))){ doSendInvoice(el.dataset.id); return; }
+  if((el=e.target.closest('[data-action="copy-invoice-link"]'))){ doCopyInvoiceLink(el.dataset.id); return; }
+  if((el=e.target.closest('[data-action="download-invoice-pdf"]'))){ doDownloadInvoicePdf(el.dataset.id); return; }
+  if((el=e.target.closest('[data-action="cancel-invoice"]'))){ doCancelInvoice(el.dataset.id); return; }
+
+  // Reports
+  if((el=e.target.closest('[data-action="download-report"]'))){ doDownloadReport(el.dataset.report); return; }
+
+  // Support
+  if(e.target.closest('[data-action="new-ticket"]')){ doNewTicket(); return; }
+
+  // Business / bank account
+  if(e.target.closest('[data-action="edit-business"]')){ doEditBusiness(); return; }
+  if(e.target.closest('[data-action="request-bank-change"]')){ doRequestBankChange(); return; }
+
+  // Team
+  if(e.target.closest('[data-action="invite-team"]')){ doInviteTeam(); return; }
+  if((el=e.target.closest('[data-action="team-role"]'))){ doTeamRoleChange(el.dataset.id); return; }
+  if((el=e.target.closest('[data-action="team-remove"]'))){ doTeamRemove(el.dataset.id); return; }
+
+  // Developers
+  if((el=e.target.closest('[data-action="reveal-key"]'))){ doRevealKey(el.dataset.id); return; }
+  if((el=e.target.closest('[data-action="copy-key"]'))){ doCopyKey(el.dataset.id); return; }
+  if((el=e.target.closest('[data-action="regenerate-key"]'))){ doRegenerateKey(el.dataset.id); return; }
+  if(e.target.closest('[data-action="add-webhook"]')){ doAddWebhook(); return; }
+  if((el=e.target.closest('[data-action="test-webhook"]'))){ doTestWebhook(el.dataset.id); return; }
+  if((el=e.target.closest('[data-action="disable-webhook"]'))){ doDisableWebhook(el.dataset.id); return; }
+
+  // Notifications
+  if(e.target.closest('[data-action="mark-all-read"]')){ STATE.notifications.forEach(n=>n.read=true); refreshPage(); toast('Barchasi o\u2018qilgan deb belgilandi','ok'); return; }
+  if((el=e.target.closest('[data-action="read-notif"]'))){ const n=STATE.notifications[parseInt(el.dataset.idx,10)]; if(n){ n.read=true; refreshPage(); } return; }
+
+  // Security
+  if(e.target.closest('[data-action="change-password"]')){ doChangePassword(); return; }
+  if(e.target.closest('[data-action="toggle-2fa"]')){ doToggle2FA(); return; }
+  if((el=e.target.closest('[data-action="revoke-session"]'))){ doRevokeSession(el.dataset.id); return; }
+
+  if((el=e.target.closest('[data-action="page"]'))){ const key=el.dataset.key; const f=getFilter(key); f.page+=parseInt(el.dataset.dir,10); refreshPage(); return; }
+}
+function mainInputDelegate(e){
+  if(e.target.matches('[data-action="search"]')){
+    const key=e.target.dataset.key; const val=e.target.value;
+    const f=getFilter(key); f.search=val; f.page=1;
+    refreshPage();
+    const ni=document.querySelector('[data-action="search"][data-key="'+key+'"]');
+    if(ni){ ni.focus(); const p=val.length; try{ni.setSelectionRange(p,p);}catch(err){} }
+  }
+}
+function mainChangeDelegate(e){
+  if(e.target.matches('[data-action="filter-status"]')){
+    const key=e.target.dataset.key; const f=getFilter(key); f.status=e.target.value; f.page=1; refreshPage();
+  }
+  if(e.target.matches('[data-action="filter-method"]')){
+    const key=e.target.dataset.key; const f=getFilter(key); f.method=e.target.value; f.page=1; refreshPage();
+  }
+  if(e.target.matches('[data-action="sort-tx"]')){
+    const key=e.target.dataset.key; const f=getFilter(key); f.sort=e.target.value; refreshPage();
+  }
+  if(e.target.matches('[data-action="toggle-notif-setting"]')){
+    const ch=e.target.dataset.ch, ev=e.target.dataset.ev;
+    STATE.notifSettings[ch][ev]=e.target.checked;
+    toast('Bildirishnoma sozlamasi yangilandi','ok');
+  }
+}
+
+/* ================================================================
+   INIT
+   ================================================================ */
+function initChrome(){
+  document.querySelectorAll('.nav-item[data-page]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{ const panel=document.getElementById('notifPanel'); if(panel) panel.remove(); showPage(btn.dataset.page); });
+  });
+  document.getElementById('collapseBtn').addEventListener('click', function(){
+    STATE.sidebarCollapsed=!STATE.sidebarCollapsed;
+    document.getElementById('sidebar').classList.toggle('collapsed', STATE.sidebarCollapsed);
+  });
+  document.getElementById('notifBtn').addEventListener('click', function(e){ e.stopPropagation(); toggleNotifPanel(); });
+  document.getElementById('globalSearch').addEventListener('keydown', function(e){
+    if(e.key!=='Enter') return;
+    const q=e.target.value.trim(); if(!q) return;
+    const ql=q.toLowerCase();
+    let tx=STATE.transactions.find(t=>t.id.toLowerCase()===ql || t.orderId.toLowerCase()===ql || t.customerName.toLowerCase().includes(ql));
+    if(tx){ openTxDrawer(tx); return; }
+    let inv=STATE.invoices.find(i=>i.number.toLowerCase()===ql || i.customerName.toLowerCase().includes(ql));
+    if(inv){ openInvoiceDrawer(inv); return; }
+    let lnk=STATE.links.find(l=>l.id.toLowerCase()===ql || l.title.toLowerCase().includes(ql));
+    if(lnk){ showPage('links'); return; }
+    let cust=STATE.customers.find(c=>c.name.toLowerCase().includes(ql) || c.phone.includes(q) || c.email.toLowerCase().includes(ql));
+    if(cust){ openCustomerDrawer(cust.phone); return; }
+    let st=STATE.settlements.find(s=>s.id.toLowerCase()===ql || (s.reference&&s.reference.toLowerCase()===ql));
+    if(st){ openSettlementDrawer(st); return; }
+    toast('"'+q+'" bo\u2018yicha natija topilmadi','err');
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key==='/' && !['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)){ e.preventDefault(); document.getElementById('globalSearch').focus(); }
+    if(e.key==='Escape'){ closeDrawer(); closeModal(); }
+  });
+  document.addEventListener('click', mainClickDelegate);
+  document.addEventListener('input', mainInputDelegate);
+  document.addEventListener('change', mainChangeDelegate);
+}
+document.addEventListener('DOMContentLoaded', function(){
+  initData();
+  window.STATE=STATE;
+  initChrome();
+  showPage('dashboard');
+});
+</script>
+</body>
+</html>
