@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Garant Panels</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F5F6F9; --surface:#FFFFFF; --border:#E2E5EC;
+  --text-1:#0F1522; --text-2:#4B5468; --text-3:#8A93A3;
+  --blue:#2C4CE0; --blue-bg:#EAEEFC;
+  --radius-lg:10px; --shadow-md:0 4px 16px rgba(15,21,34,0.10);
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:var(--sans); background:var(--bg); color:var(--text-1);
+  min-height:100vh; display:flex; align-items:center; justify-content:center;
+}
+.wrap{max-width:720px;width:100%;padding:32px 20px;}
+h1{font-size:22px;font-weight:800;margin:0 0 6px;}
+p.sub{color:var(--text-2);font-size:14px;margin:0 0 28px;}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media (max-width:640px){.cards{grid-template-columns:1fr;}}
+a.card{
+  display:block;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
+  padding:22px;text-decoration:none;color:inherit;transition:box-shadow .15s ease,transform .15s ease;
+}
+a.card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);}
+.tag{display:inline-block;background:var(--blue-bg);color:var(--blue);font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;margin-bottom:10px;}
+.card h2{font-size:16px;font-weight:700;margin:0 0 6px;}
+.card p{font-size:13px;color:var(--text-3);margin:0;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Garant Panels</h1>
+  <p class="sub">Ikkita statik admin panel — birini tanlang.</p>
+  <div class="cards">
+    <a class="card" href="merchant-panel/">
+      <span class="tag">Merchant</span>
+      <h2>Dilnoza Style — Merchant Kabinet</h2>
+      <p>Savdo nuqtasi uchun boshqaruv paneli</p>
+    </a>
+    <a class="card" href="admin-panel/">
+      <span class="tag">Admin</span>
+      <h2>Garant Acquiring — Operations Console</h2>
+      <p>Acquiring operatsiyalari uchun admin konsol</p>
+    </a>
+  </div>
+</div>
+</body>
+</html>
