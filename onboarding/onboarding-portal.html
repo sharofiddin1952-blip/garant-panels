@@ -1,0 +1,1558 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Garant Merchant — Onboarding</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   DESIGN TOKENS — Garant Acquiring dizayn tizimi (admin/merchant panellar bilan bir xil)
+   ============================================================ */
+:root{
+  --bg:#F5F6F9; --surface:#FFFFFF; --surface-alt:#FAFBFC; --border:#E2E5EC; --border-strong:#CBD2DE;
+  --text-1:#0F1522; --text-2:#4B5468; --text-3:#8A93A3;
+  --blue:#2C4CE0; --blue-dark:#1E37AE; --blue-bg:#EAEEFC;
+  --green:#157A4A; --green-bg:#E4F5EC; --red:#B3261E; --red-bg:#FCEAE9;
+  --amber:#A15C00; --amber-bg:#FCEFDD; --purple:#6339B8; --purple-bg:#F0EBFB;
+  --navy-1:#0B1220; --navy-2:#121B2E; --navy-text:#C9D2E3; --navy-text-dim:#7C8AA6;
+  --radius-lg:10px; --radius-md:7px;
+  --shadow-sm:0 1px 2px rgba(15,21,34,0.06); --shadow-md:0 4px 16px rgba(15,21,34,0.10); --shadow-lg:0 12px 40px rgba(15,21,34,0.16);
+  --mono:'IBM Plex Mono',ui-monospace,monospace; --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--text-1);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:var(--blue);text-decoration:none} a:hover{text-decoration:underline}
+button{font-family:inherit;cursor:pointer}
+input,select,textarea{font-family:inherit;font-size:14px;color:var(--text-1)}
+:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
+.mono{font-family:var(--mono)}
+h1{font-size:24px;line-height:1.25;margin:0 0 6px;letter-spacing:-.01em}
+h2{font-size:18px;margin:0 0 4px} h3{font-size:15px;margin:0 0 4px}
+p{margin:0 0 10px}
+.muted{color:var(--text-2)} .dim{color:var(--text-3);font-size:12.5px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.sp{flex:1}
+.mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}.mt20{margin-top:20px}.mt24{margin-top:24px}
+
+/* ---------- topbar ---------- */
+.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:12px;height:60px;padding:0 20px;background:var(--navy-1);color:#fff}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;cursor:pointer;font-size:14px;background:none;border:0;color:#fff;padding:0}
+.brand .logo{width:32px;height:32px;border-radius:8px;background:var(--blue);display:flex;align-items:center;justify-content:center;font-weight:800}
+.brand small{display:block;font-size:11px;color:var(--navy-text-dim);font-weight:500;text-align:left}
+.proto-tag{font-size:11px;padding:3px 8px;border-radius:999px;background:rgba(255,255,255,.08);color:var(--navy-text)}
+.lvl{display:inline-flex;align-items:center;gap:8px;font-size:12px;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.08);color:var(--navy-text);border:1px solid rgba(255,255,255,.12)}
+.lvl b{color:#fff;font-family:var(--mono)}
+.tb-btn{background:transparent;border:1px solid rgba(255,255,255,.18);color:#fff;border-radius:8px;padding:6px 12px;font-size:13px;font-weight:600}
+.tb-btn:hover{border-color:#fff}
+.tb-btn.fill{background:var(--blue);border-color:var(--blue)}
+.who{font-size:13px;color:var(--navy-text)}
+.langs{display:inline-flex;border:1px solid rgba(255,255,255,.18);border-radius:8px;overflow:hidden}
+.langs button{background:transparent;border:0;color:var(--navy-text);font-size:11.5px;font-weight:700;padding:6px 8px}
+.langs button.on{background:rgba(255,255,255,.14);color:#fff}
+@media (max-width:480px){.langs{display:none}}
+.alt-login{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.or{display:flex;align-items:center;gap:10px;color:var(--text-3);font-size:12px;margin:16px 0 10px}
+.or::before,.or::after{content:"";flex:1;height:1px;background:var(--border)}
+
+.proto-banner{background:#FFF6E6;color:#7A4A00;font-size:12.5px;text-align:center;padding:6px 12px;border-bottom:1px solid #F2D3A6}
+/* ---------- layout ---------- */
+.wrap{max-width:1120px;margin:0 auto;padding:28px 20px 140px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;box-shadow:var(--shadow-sm)}
+.card + .card{margin-top:16px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px 18px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 18px}
+.span2{grid-column:1/-1}
+.page-head{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.crumbs{font-size:12.5px;color:var(--text-3);margin-bottom:6px}
+.crumbs a{color:var(--text-3)}
+
+/* ---------- controls ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:38px;padding:0 16px;border-radius:8px;border:1px solid var(--border-strong);background:var(--surface);color:var(--text-1);font-weight:600;font-size:13.5px;white-space:nowrap;text-decoration:none}
+.btn:hover{border-color:var(--blue);text-decoration:none}
+.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn.primary:hover{background:var(--blue-dark)}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--blue);padding:0 8px}
+.btn.danger{color:var(--red)}
+.btn.sm{height:30px;padding:0 10px;font-size:12.5px}
+.btn.lg{height:46px;padding:0 22px;font-size:15px}
+.btn[disabled]{opacity:.45;cursor:not-allowed;pointer-events:none}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600;white-space:nowrap}
+.badge::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.badge.gray{background:#EEF0F4;color:var(--text-2)} .badge.blue{background:var(--blue-bg);color:var(--blue)}
+.badge.green{background:var(--green-bg);color:var(--green)} .badge.amber{background:var(--amber-bg);color:var(--amber)}
+.badge.red{background:var(--red-bg);color:var(--red)} .badge.purple{background:var(--purple-bg);color:var(--purple)}
+.alert{display:flex;gap:12px;align-items:flex-start;padding:13px 16px;border-radius:var(--radius-lg);border:1px solid;font-size:13.5px}
+.alert .ic{font-weight:800;font-size:15px;line-height:1.3}
+.alert.info{background:var(--blue-bg);border-color:#C9D3F7} .alert.info .ic{color:var(--blue)}
+.alert.warn{background:var(--amber-bg);border-color:#F2D3A6} .alert.warn .ic{color:var(--amber)}
+.alert.err{background:var(--red-bg);border-color:#F1C4C0} .alert.err .ic{color:var(--red)}
+.alert.ok{background:var(--green-bg);border-color:#BFE3CE} .alert.ok .ic{color:var(--green)}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field label{font-size:12.5px;font-weight:600;color:var(--text-2)}
+.field input,.field select,.field textarea{height:40px;padding:0 12px;border:1px solid var(--border-strong);border-radius:8px;background:#fff;width:100%}
+.field textarea{height:auto;min-height:88px;padding:10px 12px;resize:vertical;line-height:1.45}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-bg)}
+.field input[readonly]{background:var(--surface-alt);color:var(--text-2)}
+.field.bad input,.field.bad select,.field.bad textarea{border-color:var(--red)}
+.field .err{color:var(--red);font-size:12px}
+.field .hint{color:var(--text-3);font-size:12px}
+.src{font-size:10.5px;font-weight:700;color:var(--green);background:var(--green-bg);padding:1px 6px;border-radius:4px;margin-left:6px;vertical-align:1px}
+.check{display:flex;gap:10px;align-items:flex-start;padding:11px 13px;border:1px solid var(--border);border-radius:9px;background:#fff;cursor:pointer;font-size:13.5px}
+.check input{margin:2px 0 0;width:16px;height:16px;accent-color:var(--blue);flex-shrink:0}
+.check.on{border-color:var(--blue);background:var(--blue-bg)}
+.check .sub{display:block;font-size:12px;color:var(--text-3);margin-top:2px}
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.seg{display:inline-flex;border:1px solid var(--border-strong);border-radius:8px;overflow:hidden;background:#fff}
+.seg button{border:0;border-right:1px solid var(--border);background:#fff;padding:9px 14px;font-weight:600;color:var(--text-2);font-size:13px}
+.seg button:last-child{border-right:0}
+.seg button.on{background:var(--blue);color:#fff}
+.sec{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3);margin:22px 0 10px}
+.sec:first-child{margin-top:0}
+.kv{display:grid;grid-template-columns:200px 1fr;gap:8px 16px;font-size:13.5px}
+.kv .k{color:var(--text-3)}
+table.t{width:100%;border-collapse:collapse;font-size:13.5px}
+.t th{text-align:left;font-size:12px;color:var(--text-3);font-weight:600;padding:8px;border-bottom:1px solid var(--border)}
+.t td{padding:8px;border-bottom:1px solid var(--border);vertical-align:middle}
+.t input,.t select{height:34px;padding:0 8px;border:1px solid var(--border-strong);border-radius:6px;width:100%;background:#fff}
+.t .bad{border-color:var(--red)}
+.sum{font-weight:700} .sum.ok{color:var(--green)} .sum.no{color:var(--red)}
+
+/* ---------- landing ---------- */
+.hero{display:grid;grid-template-columns:1.25fr 1fr;gap:28px;align-items:center;padding:18px 0 6px}
+.hero h1{font-size:34px;line-height:1.15}
+.hero .lead{font-size:16px;color:var(--text-2);margin:12px 0 20px}
+.hero-card{background:var(--navy-1);color:var(--navy-text);border-radius:14px;padding:22px}
+.hero-card h3{color:#fff}
+.hero-card .li{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:13.5px}
+.hero-card .li:last-child{border-bottom:0}
+.hero-card .li b{color:#fff;font-family:var(--mono);min-width:30px}
+.steps3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.step3 .n{width:30px;height:30px;border-radius:8px;background:var(--blue-bg);color:var(--blue);font-weight:800;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+ul.chk{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;font-size:13.5px}
+ul.chk li{display:flex;gap:9px}
+ul.chk li::before{content:"✓";color:var(--green);font-weight:800}
+ul.chk.x li::before{content:"✕";color:var(--red)}
+
+/* ---------- auth ---------- */
+.auth{max-width:460px;margin:12px auto}
+.auth .card{padding:28px}
+.stepdots{display:flex;gap:6px;margin-bottom:18px}
+.stepdots i{flex:1;height:4px;border-radius:2px;background:var(--border)}
+.stepdots i.on{background:var(--blue)}
+.phone{display:flex;align-items:stretch}
+.phone span{display:flex;align-items:center;padding:0 12px;border:1px solid var(--border-strong);border-right:0;border-radius:8px 0 0 8px;background:var(--surface-alt);font-weight:600;color:var(--text-2)}
+.phone input{border-radius:0 8px 8px 0!important}
+.otp{font-family:var(--mono)!important;font-size:26px!important;letter-spacing:14px;text-align:center;height:56px!important}
+.pw-meter{height:5px;border-radius:3px;background:var(--border);overflow:hidden;margin-top:4px}
+.pw-meter i{display:block;height:100%;transition:width .2s}
+
+/* ---------- home ---------- */
+.app-card{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.app-card .org{font-weight:700;font-size:15px}
+.mini-prog{display:flex;gap:4px;margin-top:8px}
+.mini-prog i{width:34px;height:5px;border-radius:3px;background:var(--border)}
+.mini-prog i.d{background:var(--green)} .mini-prog i.c{background:var(--blue)} .mini-prog i.w{background:var(--amber)}
+.empty{text-align:center;padding:40px 20px}
+.empty .big{width:56px;height:56px;border-radius:14px;background:var(--blue-bg);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800;margin:0 auto 14px}
+
+/* ---------- precheck ---------- */
+.pc-list{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.pc{display:flex;gap:10px;align-items:center;font-size:13.5px;color:var(--text-2)}
+.pc .d{width:18px;height:18px;border-radius:50%;border:2px solid var(--border-strong);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff}
+.pc.run .d{border-color:var(--blue);border-top-color:transparent;animation:spin .8s linear infinite}
+.pc.ok .d{background:var(--green);border-color:var(--green)} .pc.ok .d::after{content:"✓"}
+.pc.no .d{background:var(--red);border-color:var(--red)} .pc.no .d::after{content:"!"}
+.pc.w .d{background:var(--amber);border-color:var(--amber)} .pc.w .d::after{content:"!"}
+.pc.ok,.pc.no,.pc.w{color:var(--text-1)}
+.org-card{border:1px solid var(--border);border-radius:10px;padding:14px 16px;background:var(--surface-alt)}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ---------- wizard ---------- */
+.wiz{display:grid;grid-template-columns:250px 1fr;gap:22px;align-items:start}
+.steps{position:sticky;top:80px;background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:8px}
+.steps .st{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;color:var(--text-2);font-weight:500;font-size:13.5px;border:0;background:none;width:100%;text-align:left}
+.steps .st:hover{background:var(--surface-alt)}
+.steps .st.cur{background:var(--blue-bg);color:var(--blue);font-weight:700}
+.steps .num{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--border-strong);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;background:#fff}
+.steps .st.done .num{background:var(--green);border-color:var(--green);color:#fff}
+.steps .st.bad .num{background:var(--red-bg);border-color:var(--red);color:var(--red)}
+.steps .st.cur .num{border-color:var(--blue);color:var(--blue)}
+.steps .st.done.cur .num{color:#fff}
+.steps hr{border:0;border-top:1px solid var(--border);margin:6px 4px}
+.wiz-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.save{font-size:12px;color:var(--text-3);display:flex;align-items:center;gap:6px}
+.save .dotg{width:7px;height:7px;border-radius:50%;background:var(--green)}
+.wiz-foot{display:flex;justify-content:space-between;gap:10px;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
+
+/* ---------- docs ---------- */
+.docs{display:flex;flex-direction:column;gap:8px}
+.doc{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--border);border-radius:10px;background:#fff;flex-wrap:wrap}
+.doc.need{border-color:#F2D3A6;background:#FFFBF4}
+.doc .ic{width:38px;height:38px;border-radius:8px;background:var(--surface-alt);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700;color:var(--text-3);flex-shrink:0}
+.doc .ic.ok{background:var(--green-bg);border-color:#BFE3CE;color:var(--green)}
+.doc .meta{flex:1;min-width:200px}
+.doc .nm{font-weight:600;font-size:13.5px}
+.doc .why{font-size:12px;color:var(--text-3)}
+.doc .bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:6px;width:180px}
+.doc .bar i{display:block;height:100%;background:var(--blue);transition:width .15s}
+
+/* ---------- gate ---------- */
+.gate{display:flex;flex-direction:column;gap:5px}
+.g{display:flex;gap:10px;align-items:flex-start;padding:7px 10px;border-radius:8px;font-size:13px}
+.g.ok{background:var(--green-bg)} .g.no{background:var(--red-bg)} .g.w{background:var(--amber-bg)} .g.pend{background:var(--surface-alt)}
+.g .code{font-family:var(--mono);font-size:11.5px;font-weight:600;min-width:32px;color:var(--text-2);padding-top:1px}
+.g .mk{font-weight:800;width:14px}
+.g.ok .mk{color:var(--green)} .g.no .mk{color:var(--red)} .g.w .mk{color:var(--amber)}
+.g a{font-weight:600;white-space:nowrap}
+.review-sec{border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+.review-sec + .review-sec{margin-top:10px}
+.review-sec .h{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.review-sec .kv{grid-template-columns:190px 1fr;font-size:13px}
+
+/* ---------- status ---------- */
+.prog{display:flex;margin:10px 0 4px}
+.prog .ps{flex:1;min-width:0;overflow-wrap:anywhere;position:relative;text-align:center;padding:32px 4px 0;font-size:12.5px;color:var(--text-3);font-weight:500}
+.prog .ps::before{content:attr(data-n);position:absolute;top:0;left:50%;transform:translateX(-50%);width:26px;height:26px;border-radius:50%;background:#fff;border:2px solid var(--border-strong);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:var(--text-3);z-index:1;box-sizing:border-box}
+.prog .ps::after{content:"";position:absolute;top:12px;left:calc(-50% + 13px);right:calc(50% + 13px);height:2px;background:var(--border-strong)}
+.prog .ps:first-child::after{display:none}
+.prog .ps.done{color:var(--text-1)}
+.prog .ps.done::before{content:"✓";background:var(--green);border-color:var(--green);color:#fff}
+.prog .ps.done::after,.prog .ps.cur::after{background:var(--green)}
+.prog .ps.cur{color:var(--blue);font-weight:700}
+.prog .ps.cur::before{border-color:var(--blue);color:var(--blue);box-shadow:0 0 0 4px var(--blue-bg)}
+.prog .ps.warn{color:var(--amber);font-weight:700}
+.prog .ps.warn::before{border-color:var(--amber);color:var(--amber);box-shadow:0 0 0 4px var(--amber-bg)}
+.cols{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;align-items:start}
+.tl{position:relative;padding-left:20px}
+.tl::before{content:"";position:absolute;left:5px;top:6px;bottom:6px;width:2px;background:var(--border)}
+.tl .ti{position:relative;padding:0 0 14px 6px}
+.tl .ti::before{content:"";position:absolute;left:-20px;top:5px;width:12px;height:12px;border-radius:50%;background:#fff;border:2px solid var(--blue)}
+.tl .ti:first-child::before{background:var(--blue)}
+.tl .ti .tt{font-weight:600;font-size:13.5px}
+.tl .ti .td{font-size:12px;color:var(--text-3)}
+.keys{font-family:var(--mono);font-size:12.5px;background:var(--navy-1);color:#DDE4F3;border-radius:8px;padding:12px 14px;word-break:break-all;line-height:1.7}
+.keys span{color:var(--navy-text-dim)}
+.prov .pi{display:flex;gap:10px;align-items:center;padding:7px 0;font-size:13.5px;color:var(--text-3)}
+.prov .pi .dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--border-strong);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;font-weight:800}
+.prov .pi.done{color:var(--text-1)} .prov .pi.done .dot{background:var(--green);border-color:var(--green)} .prov .pi.done .dot::after{content:"✓"}
+.prov .pi.run{color:var(--blue);font-weight:600} .prov .pi.run .dot{border-color:var(--blue);border-top-color:transparent;animation:spin .8s linear infinite}
+
+/* ---------- contract ---------- */
+.contract-doc{border:1px solid var(--border);border-radius:10px;background:#FDFDFE;padding:22px 26px;font-size:13px;line-height:1.65;max-height:380px;overflow:auto;font-family:Georgia,'Times New Roman',serif}
+.contract-doc h4{text-align:center;margin:0 0 4px;font-size:14px}
+.contract-doc .c{text-align:center;color:var(--text-3);font-size:12px;margin-bottom:14px}
+.contract-doc b{font-family:var(--sans)}
+.sig{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sig .s{border:1px dashed var(--border-strong);border-radius:10px;padding:12px 14px;font-size:13px}
+.sig .s.ok{border-style:solid;border-color:#BFE3CE;background:var(--green-bg)}
+.sig .s .t{font-weight:700;margin-bottom:2px}
+.tariff{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.tariff .tc{border:1px solid var(--border);border-radius:10px;padding:12px}
+.tariff .tc b{display:block;font-size:18px}
+
+/* ---------- modal / toast ---------- */
+.modal-bg{position:fixed;inset:0;background:rgba(15,21,34,.45);display:flex;align-items:center;justify-content:center;z-index:60;padding:16px}
+.modal{background:#fff;border-radius:14px;max-width:480px;width:100%;padding:24px;box-shadow:var(--shadow-lg);max-height:calc(100vh - 32px);overflow:auto}
+.modal .foot{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+.key-opt{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--blue);background:var(--blue-bg);border-radius:10px;padding:12px;font-size:13px}
+#toasts{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:70;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none}
+.toast{background:var(--navy-1);color:#fff;padding:10px 16px;border-radius:10px;font-size:13px;box-shadow:var(--shadow-md);max-width:92vw}
+
+/* ---------- demo panel ---------- */
+.demo{position:fixed;right:16px;bottom:16px;width:330px;max-height:calc(100vh - 92px);overflow:auto;background:#fff;border:1px solid var(--border-strong);border-radius:12px;box-shadow:var(--shadow-lg);z-index:40;font-size:13px}
+.demo .dh{display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--purple-bg);color:var(--purple);font-weight:700;border:0;border-bottom:1px solid var(--border);width:100%;text-align:left;position:sticky;top:0;font-size:13px}
+.demo .db{padding:12px;display:flex;flex-direction:column;gap:7px}
+.demo.min{width:auto}
+.demo.min .db{display:none}
+.demo .btn{width:100%;justify-content:flex-start;height:auto;min-height:32px;padding:6px 10px;font-size:12.5px;text-align:left;white-space:normal}
+.demo .btn.primary{justify-content:center}
+.demo .int{font-family:var(--mono);font-size:11.5px;background:var(--surface-alt);border:1px solid var(--border);border-radius:6px;padding:7px 9px;line-height:1.5}
+.demo .int b{color:var(--purple)}
+@media (min-width:1200px){body.demo-open .wrap{padding-right:370px;max-width:1500px}}
+.demo .lbl{font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;margin-top:4px}
+
+@media (max-width: 900px){
+  .wiz{grid-template-columns:1fr}
+  .steps{position:static;display:flex;overflow-x:auto;gap:2px}
+  .steps .st{width:auto;flex-shrink:0}
+  .steps .st .lbl,.steps hr{display:none}
+  .hero,.cols,.grid2,.grid3,.steps3,.checks,.sig,.tariff{grid-template-columns:1fr}
+  .kv,.review-sec .kv{grid-template-columns:1fr}
+  .prog .ps{font-size:10.5px}
+  .demo{left:12px;right:12px;width:auto}
+  .topbar .proto-tag,.topbar .who,.lvl .nm,.brand small{display:none}
+  .topbar{gap:8px;padding:0 12px}
+  .tb-btn{padding:6px 9px}
+  .wrap{padding:20px 14px 120px}
+  .hero h1{font-size:27px}
+}
+</style>
+</head>
+<body>
+<header class="topbar" id="topbar"></header>
+<div class="proto-banner">Prototip — haqiqiy tizim emas. Kiritilgan ma’lumotlar hech qayerga yuborilmaydi, faqat shu brauzerda saqlanadi.</div>
+<main class="wrap" id="app"></main>
+<aside class="demo" id="demo"></aside>
+<div id="modal"></div>
+<div id="toasts"></div>
+
+<script>
+/* ==================================================================
+   Garant Merchant — onboarding prototipi (backend yo'q).
+   Qoidalar: docs/21 (akkaunt modeli), docs/22 (ariza shartlari),
+   docs/23 (end-to-end), bpmn/01–04. Holat brauzerda saqlanadi.
+   ================================================================== */
+
+/* ---------------- yordamchilar ---------------- */
+const $ = (s, r = document) => r.querySelector(s);
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const pad = (n) => String(n).padStart(2, '0');
+const fmtDate = (d) => { const x = new Date(d); return pad(x.getDate()) + '.' + pad(x.getMonth() + 1) + '.' + x.getFullYear(); };
+const fmtDT = (d) => { const x = new Date(d); return fmtDate(x) + ' ' + pad(x.getHours()) + ':' + pad(x.getMinutes()); };
+const fmtTime = (d) => { const x = new Date(d); return pad(x.getHours()) + ':' + pad(x.getMinutes()); };
+const money = (n) => (Number(n) || 0).toLocaleString('ru-RU').replace(/ |,/g, ' ') + ' so‘m';
+const DAY = 86400000;
+const todayISO = () => new Date().toISOString().slice(0, 10);
+const addDays = (n) => new Date(Date.now() + n * DAY);
+const rnd = (n) => Array.from({ length: n }, () => 'abcdefghijkmnpqrstuvwxyz23456789'[Math.floor(Math.random() * 32)]).join('');
+const maskPhone = (p) => { const d = String(p).replace(/\D/g, '').slice(-9); return d ? '+998 ' + d.slice(0, 1) + '* *** ** ' + d.slice(7) : ''; };
+const fmtPhone = (p) => { const d = String(p).replace(/\D/g, '').slice(-9); return d.length === 9 ? '+998 ' + d.slice(0, 2) + ' ' + d.slice(2, 5) + ' ' + d.slice(5, 7) + ' ' + d.slice(7) : p; };
+const fmtAcc = (n) => String(n).replace(/(\d{4})(?=\d)/g, '$1 ');
+
+/* ---------------- ma'lumotnomalar (mock) ---------------- */
+// Demo INN'lar. Registr va ABS javoblari simulyatsiya qilinadi (docs/22 §3).
+const REG = {
+  '306481725': { name: '“Dilnoza Style” MChJ', brand: 'Dilnoza Style', form: 'MChJ', dir: 'Yusupova Dilnoza Baxtiyorovna', oked: '47.71 — Kiyim-kechak chakana savdosi', addr: 'Toshkent sh., Chilonzor tumani, 14-mavze, 22-uy', regNo: '1184520', regDate: '2021-03-15', account: { no: '20208000900124821001', type: 'Asosiy', owner: '“Dilnoza Style” MChJ' }, industry: 'retail' },
+  '305555555': { name: 'Karimov Aziz Baxtiyorovich (YaTT)', brand: 'Aziz Print', form: 'YaTT', dir: 'Karimov Aziz Baxtiyorovich', oked: '18.12 — Bosmaxona faoliyati', addr: 'Samarqand sh., Registon ko‘chasi, 5-uy', regNo: 'YATT-2023-55120', regDate: '2023-06-02', account: { no: '20218000400877310002', type: 'Asosiy', owner: 'Karimov Aziz Baxtiyorovich' }, industry: 'services' },
+  '415555555': { name: 'Nazarova Malika Anvarovna (o‘zini o‘zi band)', brand: 'Malika Handmade', form: 'O‘zini o‘zi band', dir: 'Nazarova Malika Anvarovna', oked: '32.99 — Qo‘l mehnati buyumlari', addr: 'Buxoro sh., Mustaqillik ko‘chasi, 12-uy', regNo: 'SE-2025-004417', regDate: '2025-02-10', account: { no: '22618000700415555001', type: 'Asosiy', owner: 'Nazarova Malika Anvarovna' }, industry: 'retail' },
+  '207777777': { name: '“Asia Trade” MChJ Toshkent filiali', brand: 'Asia Trade', form: 'Filial', dir: 'Rahimov Jasur', oked: '46.90', addr: 'Toshkent sh.', regNo: 'F-2020-0071', regDate: '2020-05-05', account: { no: '20208000900777777001', type: 'Asosiy', owner: 'Asia Trade filiali' }, industry: 'ecom' },
+  '301234567': { name: '“ABC Trade” MChJ', brand: 'ABC Trade', form: 'MChJ', dir: 'Aliyev Bekzod Rustamovich', oked: '46.90 — Ixtisoslashmagan ulgurji savdo', addr: 'Toshkent sh., Yunusobod tumani, 4-mavze', regNo: '1098877', regDate: '2019-11-20', account: null, industry: 'ecom' },
+};
+const SPECIAL = { '302222222': 'MERCHANT', '303333333': 'OPEN_OTHER', '304444444': 'BLOCKED' };
+const ALLOWED_FORMS = ['MChJ', 'AJ', 'YaTT', 'O‘zini o‘zi band']; // Q-06
+const isIndForm = (f) => f === 'YaTT' || f === 'O‘zini o‘zi band';
+const isInd = (a) => isIndForm(a.form);
+const DEMO_INNS = [
+  ['306481725', 'hammasi joyida (Dilnoza Style)'],
+  ['301234567', 'Garant Bankda hisob yo‘q — ariza boshlanmaydi'],
+  ['305555555', 'YaTT'],
+  ['415555555', 'o‘zini o‘zi band qilgan'],
+  ['207777777', 'filial — qabul qilinmaydi'],
+  ['302222222', 'allaqachon merchant'],
+  ['303333333', 'boshqa foydalanuvchida ochiq ariza'],
+  ['304444444', 'qora ro‘yxat (sabab aytilmaydi)'],
+];
+const INDUSTRIES = [
+  ['retail', 'Chakana savdo (kiyim, poyabzal, aksessuar)', '5651'], ['ecom', 'Internet-do‘kon (umumiy tovarlar)', '5999'],
+  ['food', 'Restoran, kafe, ovqat yetkazish', '5812'], ['edu', 'Ta’lim va kurslar', '8299'], ['health', 'Tibbiy xizmatlar (litsenziya bilan)', '8099'],
+  ['tourism', 'Turizm va sayohat', '4722'], ['it', 'IT, dasturiy ta’minot', '5734'], ['services', 'Maishiy va professional xizmatlar', '7399'],
+  ['transport', 'Transport va logistika', '4215'],
+  ['gambling', 'Qimor, bukmeker, kazino', null], ['alcohol', 'Alkogol va tamaki mahsulotlari', null], ['pharma', 'Dori vositalari va BAD', null],
+  ['adult', 'Kattalar uchun kontent', null], ['dating', 'Tanishuv va nikoh xizmatlari', null],
+];
+const industryOf = (k) => INDUSTRIES.find((i) => i[0] === k);
+const isProhibited = (k) => { const i = industryOf(k); return !!i && i[2] === null; };
+
+const DOCS = {
+  CERT_REG: 'Davlat ro‘yxatidan o‘tganlik guvohnomasi',
+  CHARTER: 'Ustav',
+  FOUNDERS_AGREEMENT: 'Ta’sis shartnomasi',
+  PROTOCOL_DIR: 'Protokol (direktorni tayinlash)',
+  ORDER_DIR_ACC: 'Buyruq (direktor va buxgalter)',
+  PASSPORT_DIR: 'Direktor pasporti',
+  PASSPORT_ACC: 'Buxgalter pasporti',
+  PASSPORT_FOUNDER: 'Ta’sischi pasporti',
+  SEAL: 'Imzo va muhr namunalari kartochkasi',
+  FOUNDER_LE_CERT: 'Ta’sischi (yuridik shaxs) guvohnomasi',
+  FOUNDER_LE_DIR_PASSPORT: 'Ta’sischi (yuridik shaxs) direktorining pasporti',
+  DOMAIN_CONTRACT: 'Domen ro‘yxatdan o‘tkazish shartnomasi',
+  LICENSE: 'Litsenziya',
+  POA: 'Ishonchnoma (ariza beruvchi nomiga)',
+};
+const SERVICES = [
+  ['ecom', 'Onlayn karta to‘lovlari (saytda)', 'E-POS / internet-ekvayring — asosiy xizmat'],
+  ['links', 'To‘lov havolalari', 'Messenjer yoki SMS orqali havola yuborish'],
+  ['invoice', 'Invoyslar', 'Mijozga hisob-faktura yuborish'],
+  ['qr', 'QR to‘lovlar', 'Do‘konda statik / dinamik QR'],
+  ['api', 'API integratsiya', 'O‘z tizimingizdan to‘g‘ridan-to‘g‘ri'],
+  ['recurring', 'Takroriy to‘lovlar (obuna)', 'Kartani tokenizatsiya qilish'],
+  ['fiscal', 'Fiskal chek (OFD Soliq)', 'Har to‘lovga elektron chek'],
+];
+const STEPS = ['Biznes', 'Yuridik va soliq', 'Rahbariyat va egalik', 'Faoliyat va aylanma', 'Bank hisobi', 'Xizmatlar', 'Hujjatlar', 'Tasdiqlar'];
+const DECL = [
+  ['offer', 'Ommaviy oferta va xizmat shartlari bilan tanishdim'],
+  ['privacy', 'Maxfiylik siyosatiga roziman'],
+  ['pd', 'Shaxsga doir ma’lumotlarimni qayta ishlashga roziman'],
+  ['prohibited', 'Taqiqlangan faoliyat (BT §4.5) bilan shug‘ullanmayman'],
+  ['site', 'Saytim bankning sayt talablariga (BT §4) javob beradi'],
+  ['pep', 'Rahbar va ta’sischilar orasida siyosiy ta’sirchan shaxs (PEP) yo‘q yoki ko‘rsatilgan'],
+  ['truth', 'Taqdim etilgan ma’lumotlarning to‘liq va to‘g‘riligini tasdiqlayman'],
+];
+
+/* ---------------- holat ---------------- */
+const KEY = 'garant-onboarding-proto-v2';
+const REVIEW_ST = ['DOC_REVIEW', 'SITE_REVIEW', 'KYB_CHECK', 'RISK_ASSESSMENT', 'UNDER_REVIEW', 'COMPLIANCE_REVIEW', 'ESCALATED', 'PENDING_APPROVAL'];
+const TERMINAL = ['COMPLETED', 'REJECTED', 'CANCELLED', 'EXPIRED'];
+function fresh() { return { v: 2, screen: 'landing', user: null, users: {}, reg: { step: 1, phone: '', attempts: 0, sentAt: 0 }, apps: [], cur: null, wiz: 1, seq: 145, demoMin: window.innerWidth < 1200, pre: null }; }
+let S = (function () { try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.v === 2) return s; } catch (e) { /* xotira yopiq */ } return fresh(); })();
+let saveTimer = null;
+function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* prototip xotirasiz ham ishlaydi */ } }
+function saveSoon() { clearTimeout(saveTimer); saveTimer = setTimeout(save, 300); }
+const curApp = () => S.apps.find((a) => a.id === S.cur) || null;
+
+function level(a) {
+  a = a === undefined ? curApp() : a;
+  if (!S.user) return 'D0';
+  if (!a) return 'D1';
+  const st = a.status;
+  if (st === 'COMPLETED') return a.live ? 'D5' : 'D4';
+  if (['APPROVED', 'CONTRACT_PENDING', 'CONTRACT_SIGNED', 'PROVISIONING'].includes(st)) return 'D3';
+  if (st === 'SUBMITTED' || st === 'AUTO_VALIDATION' || st === 'NEEDS_INFO' || REVIEW_ST.includes(st)) return 'D2';
+  return 'D1';
+}
+const LEVEL_NAME = { D0: 'Mehmon', D1: 'Ro‘yxatdan o‘tgan', D2: 'Ariza beruvchi', D3: 'Tasdiqlangan', D4: 'Merchant (sandbox)', D5: 'Merchant (live)' };
+
+/* Mijoz ko'radigan status (ichki bosqichlar yashiriladi — docs/07 §1) */
+function ext(a) {
+  const st = a.status;
+  if (st === 'DRAFT') return ['Qoralama', 'gray'];
+  if (st === 'SUBMITTED') return ['Yuborildi', 'blue'];
+  if (st === 'AUTO_VALIDATION') return ['Dastlabki tekshiruv', 'blue'];
+  if (REVIEW_ST.includes(st)) return ['Ko‘rib chiqilmoqda', 'blue'];
+  if (st === 'NEEDS_INFO') return ['Sizdan ma’lumot kerak', 'amber'];
+  if (st === 'APPROVED') return ['Tasdiqlandi', 'green'];
+  if (st === 'CONTRACT_PENDING') return a.contract && a.contract.mSigned ? ['Bank imzosi kutilmoqda', 'blue'] : ['Shartnomani imzolang', 'amber'];
+  if (st === 'CONTRACT_SIGNED' || st === 'PROVISIONING') return ['Kabinet tayyorlanmoqda', 'blue'];
+  if (st === 'COMPLETED') return a.live ? ['Faol (live)', 'green'] : ['Faollashtirildi', 'green'];
+  if (st === 'REJECTED') return ['Rad etildi', 'red'];
+  if (st === 'CANCELLED') return ['Bekor qilindi', 'gray'];
+  if (st === 'EXPIRED') return ['Muddati o‘tdi', 'gray'];
+  return [st, 'gray'];
+}
+function extStep(a) { // 1..6 progress (docs/22 §9)
+  const st = a.status;
+  if (st === 'SUBMITTED') return 2;
+  if (st === 'AUTO_VALIDATION') return 2;
+  if (REVIEW_ST.includes(st) || st === 'NEEDS_INFO') return 3;
+  if (st === 'APPROVED' || st === 'CONTRACT_PENDING') return 4;
+  if (st === 'CONTRACT_SIGNED' || st === 'PROVISIONING') return 5;
+  if (st === 'COMPLETED') return 7;
+  return 1;
+}
+const INTERNAL = {
+  DRAFT: 'Qoralama — bankda «Qoralamalar (lidlar)» ro‘yxatida holati bilan (Q-19)',
+  SUBMITTED: 'Yuborildi — navbatga tushdi',
+  AUTO_VALIDATION: 'Avtomatik tekshiruv: L3 cross-check, ABS, registr',
+  DOC_REVIEW: 'Hujjatlar ko‘rigi — onboarding xodimi',
+  SITE_REVIEW: 'Sayt tekshiruvi — o‘sha onboarding xodimi (BT §4, 19 band)',
+  KYB_CHECK: 'KYC/KYB skrining — tizim',
+  RISK_ASSESSMENT: 'Risk-skoring — tizim',
+  COMPLIANCE_REVIEW: 'Compliance xodimi ko‘rigi',
+  ESCALATED: 'Yuqori risk — EDD (Compliance)',
+  PENDING_APPROVAL: 'Rais o‘rinbosari qarori kutilmoqda (shartnomani ham u imzolaydi)',
+  NEEDS_INFO: 'Qo‘shimcha ma’lumot kutilmoqda — SLA pauza',
+  APPROVED: 'Tasdiqlandi — shartnoma generatsiyasi',
+  CONTRACT_PENDING: 'Shartnoma: imzolar kutilmoqda',
+  CONTRACT_SIGNED: 'Ikkala imzo — provisioning boshlanadi',
+  PROVISIONING: 'Provisioning (Saga)',
+  COMPLETED: 'Merchant yaratildi',
+  REJECTED: 'Rad etilgan', CANCELLED: 'Bekor qilingan', EXPIRED: 'Muddati o‘tgan',
+};
+
+/* ---------------- ariza obyekti ---------------- */
+function newApp(inn, pre) {
+  const r = REG[inn];
+  const id = 'APP-2026-' + String(S.seq++).padStart(6, '0');
+  const a = {
+    id, inn, status: 'DRAFT', createdAt: Date.now(), updatedAt: Date.now(),
+    orgName: r ? r.name : 'INN ' + inn, form: r ? r.form : pre.form || 'MChJ', registry: r ? 'VERIFIED' : 'MANUAL',
+    accountFound: true, role: pre.role, // Q-07: hisob bo'lmasa qoralama yaratilmaydi industry: pre.industry,
+    show: {}, d: {
+      legalName: r ? r.name : '', brand: r ? r.brand : '', regNo: r ? r.regNo : '', regDate: r ? r.regDate : '', legalAddr: r ? r.addr : '',
+      factSame: true, factAddr: '', phone: '', email: S.user ? S.user.email : '', desc: '', employees: '',
+      taxStatus: '', vatNo: '', licensed: '', licNo: '', licDate: '', licOrg: '', ikpu: '', receipt: '', unit: '',
+      dirName: r ? r.dir : '', dirPinfl: '', dirPass: '', dirPassExp: '', dirPhone: '',
+      accName: '', accPinfl: '', accPass: '',
+      owners: (r && isIndForm(r.form)) ? [] : [{ type: 'JSH', name: r ? r.dir : '', share: '100', pep: false }],
+      channels: {}, turnover: '', txCount: '', avgCheck: '', maxTx: '', intl: '',
+      accountId: '', services: {}, website: '', integration: '', staticIp: '', callbackUrl: '', scan: null, decl: {},
+    },
+    docs: {}, timeline: [], info: null, cycles: 0, contract: null, prev: pre.prev || null, rejection: null, keys: null, live: false,
+  };
+  if (!r) a.accountNo = '2020800090' + inn.slice(0, 7) + '001';
+  if (pre.accountNo) a.accountNo = pre.accountNo;
+  push(a, 'Qoralama yaratildi', 'Siz');
+  return a;
+}
+function push(a, text, who) { a.timeline.unshift({ t: Date.now(), text, who: who || 'Tizim' }); a.updatedAt = Date.now(); }
+function accountsOf(a) {
+  if (!a.accountFound) return [];
+  const r = REG[a.inn];
+  if (r && r.account) return [r.account];
+  return [{ no: a.accountNo || ('2020800090' + a.inn.slice(0, 7) + '001'), type: 'Asosiy', owner: a.d.legalName || a.orgName }];
+}
+const hasAccount = (inn) => { const r = REG[inn]; return !r || !!r.account || !!(S.opened && S.opened[inn]); };
+
+/* ---------------- hujjatlar matritsasi (docs/04, data/document-matrix.csv) ---------------- */
+function requiredDocs(a) {
+  const d = a.d, out = [];
+  const add = (code, key, name, why) => out.push({ key: key || code, code, name: name || DOCS[code], why });
+  if (isInd(a)) {
+    if (a.form === 'YaTT') add('CERT_REG', null, null, 'Barcha biznes turlari');
+    else add('CERT_REG', null, 'O‘zini o‘zi band qilgan sifatida ro‘yxat ma’lumotnomasi (soliq)', 'O‘zini o‘zi band qilgan (taxmin — 18 §36)');
+    add('PASSPORT_DIR', null, 'Pasport', 'Jismoniy shaxs — egasi o‘zi');
+  } else {
+    add('CERT_REG', null, null, 'Barcha biznes turlari');
+    add('CHARTER', null, null, 'Yuridik shaxs');
+    if ((d.owners || []).length > 1) add('FOUNDERS_AGREEMENT', null, null, 'Ta’sischilar bir nechta');
+    add('PROTOCOL_DIR', null, null, 'Direktor vakolati');
+    add('ORDER_DIR_ACC', null, null, 'Direktor va buxgalter tayinlangan');
+    add('PASSPORT_DIR', null, null, 'Rahbar');
+    add('PASSPORT_ACC', null, null, 'Buxgalter');
+    (d.owners || []).forEach((o, i) => {
+      const nm = o.name || ('ta’sischi ' + (i + 1));
+      if (o.type === 'YUSH') {
+        add('FOUNDER_LE_CERT', 'FOUNDER_LE_CERT:' + i, DOCS.FOUNDER_LE_CERT + ' — ' + nm, 'Ta’sischi yuridik shaxs (bank javobi 22.09)');
+        add('FOUNDER_LE_DIR_PASSPORT', 'FOUNDER_LE_DIR_PASSPORT:' + i, DOCS.FOUNDER_LE_DIR_PASSPORT + ' — ' + nm, 'Ta’sischi yuridik shaxs (bank javobi 22.09)');
+      } else if (nm !== d.dirName) {
+        add('PASSPORT_FOUNDER', 'PASSPORT_FOUNDER:' + i, DOCS.PASSPORT_FOUNDER + ' — ' + nm, 'Jismoniy shaxs ta’sischi');
+      }
+    });
+    add('SEAL', null, null, 'Bank ro‘yxati (22.09)');
+  }
+  if (d.services && d.services.ecom) add('DOMAIN_CONTRACT', null, null, 'Sayt orqali to‘lov (BT §4.1)');
+  if (d.licensed === 'yes') add('LICENSE', null, null, 'Litsenziyalanadigan faoliyat (BT §4.4)');
+  if (a.role === 'REP') add('POA', null, null, 'Ariza beruvchi direktor emas (G13)');
+  return out;
+}
+const docOk = (a, key) => { const x = a.docs[key]; return !!x && ['UPLOADED', 'VERIFIED'].includes(x.status); };
+
+/* ---------------- validatsiya (L1) ---------------- */
+function validate(a, step) {
+  const d = a.d, e = {};
+  const req = (k, m) => { if (!String(d[k] == null ? '' : d[k]).trim()) e[k] = m || 'Majburiy maydon'; };
+  if (step === 1) {
+    req('legalName'); req('brand'); req('regNo'); req('regDate'); req('legalAddr');
+    if (d.regDate && d.regDate > todayISO()) e.regDate = 'Sana bugundan keyin bo‘lishi mumkin emas';
+    if (!d.factSame) req('factAddr');
+    const ph = String(d.phone || '').replace(/\D/g, '');
+    if (!(ph.length === 9 || (ph.length === 12 && ph.startsWith('998')))) e.phone = 'Format: +998 XX XXX XX XX';
+    if (!/^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i.test(d.email || '')) e.email = 'Email noto‘g‘ri';
+    if (String(d.desc || '').trim().length < 50) e.desc = 'Kamida 50 belgi (hozir: ' + String(d.desc || '').trim().length + ')';
+    if (!(Number(d.employees) >= 1)) e.employees = 'Kamida 1';
+  }
+  if (step === 2) {
+    req('taxStatus', 'Tanlang');
+    if (d.taxStatus === 'vat' && !/^\d{9,12}$/.test(d.vatNo || '')) e.vatNo = 'QQS registratsiya kodi (raqamlar)';
+    req('licensed', 'Tanlang');
+    if (d.licensed === 'yes') { req('licNo'); req('licDate'); req('licOrg'); }
+    if (!/^\d{17}$/.test(d.ikpu || '')) e.ikpu = 'IKPU (MXIK) — 17 raqam';
+    req('receipt', 'Tanlang'); req('unit', 'Tanlang');
+  }
+  if (step === 3) {
+    req('dirName');
+    if (!/^\d{14}$/.test(d.dirPinfl || '')) e.dirPinfl = 'JShShIR — 14 raqam';
+    if (!/^[A-Z]{2}\d{7}$/.test(d.dirPass || '')) e.dirPass = 'Format: AA1234567';
+    if (!d.dirPassExp) e.dirPassExp = 'Majburiy maydon';
+    else if (d.dirPassExp <= todayISO()) e.dirPassExp = 'Pasport muddati tugagan (G10)';
+    if (String(d.dirPhone).replace(/\D/g, '').length < 9) e.dirPhone = 'Telefon raqami';
+    if (!isInd(a)) {
+      req('accName');
+      if (!/^\d{14}$/.test(d.accPinfl || '')) e.accPinfl = 'JShShIR — 14 raqam';
+      if (!/^[A-Z]{2}\d{7}$/.test(d.accPass || '')) e.accPass = 'Format: AA1234567';
+      if (!d.owners.length) e.owners = 'Kamida bitta ta’sischi';
+      d.owners.forEach((o, i) => { if (!o.name.trim()) e['owners.' + i + '.name'] = 1; if (!(Number(o.share) > 0)) e['owners.' + i + '.share'] = 1; });
+      const s = ownersSum(a);
+      if (Math.abs(s - 100) > 0.001) e.owners = 'Ulushlar yig‘indisi 100% bo‘lishi kerak (hozir: ' + s + '%) — G08';
+    }
+  }
+  if (step === 4) {
+    if (!Object.values(d.channels || {}).some(Boolean)) e.channels = 'Kamida bitta kanal';
+    ['turnover', 'txCount', 'avgCheck', 'maxTx'].forEach((k) => { if (!(Number(d[k]) > 0)) e[k] = 'Musbat son'; });
+    if (Number(d.maxTx) > Number(d.turnover)) e.maxTx = 'Oylik aylanmadan katta bo‘lishi mumkin emas';
+    req('intl', 'Tanlang');
+  }
+  if (step === 5) {
+    if (!a.accountFound) e.accountId = 'Garant Bankda hisob topilmadi (G05)';
+    else if (!d.accountId) e.accountId = 'Hisobni tanlang';
+  }
+  if (step === 6) {
+    if (!Object.values(d.services || {}).some(Boolean)) e.services = 'Kamida bitta xizmat (G11)';
+    if (d.services.ecom) {
+      if (!/^https:\/\/[^\s.]+\.[^\s]{2,}/.test(d.website || '')) e.website = 'Sayt https:// bilan boshlanishi kerak (G12)';
+      req('integration', 'Tanlang');
+      if (!/^(\d{1,3}\.){3}\d{1,3}$/.test(d.staticIp || '')) e.staticIp = 'IPv4 manzil, masalan 185.74.5.210';
+      if (!d.scan || d.scan.url !== d.website) e.scan = 'Saytni avtomatik tekshirishdan o‘tkazing';
+      else if (!d.scan.https) e.scan = 'Sayt HTTPS/SSL talabiga javob bermaydi (G12)';
+    }
+    if (d.services.api && !/^https:\/\//.test(d.callbackUrl || '')) e.callbackUrl = 'https:// bilan';
+  }
+  if (step === 7) {
+    const miss = requiredDocs(a).filter((x) => !docOk(a, x.key));
+    if (miss.length) e.docs = miss.length + ' ta majburiy hujjat yuklanmagan';
+  }
+  if (step === 8) {
+    if (DECL.some(([k]) => !d.decl[k])) e.decl = 'Barcha tasdiqlarni belgilang (G14)';
+  }
+  return e;
+}
+const ownersSum = (a) => Math.round(a.d.owners.reduce((s, o) => s + (Number(o.share) || 0), 0) * 100) / 100;
+const stepOk = (a, n) => Object.keys(validate(a, n)).length === 0;
+
+/* ---------------- yuborish shartlari G01–G15 (docs/22 §6) ---------------- */
+function gate(a) {
+  const d = a.d;
+  const G = [];
+  const g = (code, ok, text, fix) => G.push({ code, ok, text, fix });
+  g('G01', !!(S.user && S.user.emailVerified), 'Telefon va email tasdiqlangan', S.user && !S.user.emailVerified ? 'verify-email' : null);
+  g('G02', true, 'INN to‘g‘ri' + (a.registry === 'MANUAL' ? ' (registrda topilmadi — qo‘lda tekshiriladi)' : ' va registrda mavjud'));
+  g('G03', true, 'INN bo‘yicha faol merchant yo‘q');
+  g('G04', true, 'INN bo‘yicha boshqa ochiq ariza yo‘q');
+  g('G05', a.accountFound && !!d.accountId, a.accountFound ? 'Garant Bankdagi hisob tanlangan (ABS)' : 'Garant Bankda faol hisob topilmadi (ABS)', 'step:5');
+  g('G06', !isProhibited(a.industry), 'Taqiqlangan faoliyat tanlanmagan');
+  const bad = [1, 2, 4].filter((n) => !stepOk(a, n));
+  g('G07', bad.length === 0, 'Barcha maydonlar to‘ldirilgan' + (bad.length ? ' — ' + bad.map((n) => n + '-qadam').join(', ') : ''), bad.length ? 'step:' + bad[0] : null);
+  g('G08', isInd(a) || Math.abs(ownersSum(a) - 100) < 0.001, 'Ulushlar yig‘indisi 100%' + (isInd(a) ? ' (jismoniy shaxs — talab qilinmaydi)' : ' (hozir: ' + ownersSum(a) + '%)'), 'step:3');
+  const docsMiss = requiredDocs(a).filter((x) => !docOk(a, x.key)).length;
+  g('G09', docsMiss === 0, 'Majburiy hujjatlar yuklangan' + (docsMiss ? ' — ' + docsMiss + ' ta yetishmaydi' : ''), 'step:7');
+  const st3 = validate(a, 3);
+  g('G10', !st3.dirPassExp && !st3.dirPass, 'Pasportlar amal qiladi', 'step:3');
+  const st3rest = Object.keys(st3).filter((k) => !['dirPassExp', 'dirPass', 'owners'].includes(k) && !k.startsWith('owners.'));
+  if (st3rest.length) G.find((x) => x.code === 'G07').ok = false;
+  g('G11', Object.values(d.services || {}).some(Boolean), 'Kamida bitta xizmat tanlangan', 'step:6');
+  const st6 = validate(a, 6);
+  g('G12', !d.services.ecom || (!st6.website && !st6.scan), d.services.ecom ? 'Sayt HTTPS va SSL amal qiladi (avto-tekshiruv)' : 'Sayt talabi (sayt orqali to‘lov tanlanmagan)', 'step:6');
+  if (Object.keys(st6).some((k) => !['website', 'scan', 'services'].includes(k))) G.find((x) => x.code === 'G07').ok = false;
+  g('G13', a.role !== 'REP' || docOk(a, 'POA'), a.role === 'REP' ? 'Ishonchnoma yuklangan' : 'Ariza beruvchi — direktor', 'step:7');
+  g('G14', DECL.every(([k]) => d.decl[k]), 'Barcha tasdiqlar belgilangan', 'step:8');
+  G.push({ code: 'G15', ok: null, text: 'SMS kod bilan tasdiqlash — «Yuborish» bosilganda' });
+  return G;
+}
+function warnings(a) {
+  const d = a.d, W = [];
+  if (d.dirPassExp && d.dirPassExp > todayISO() && new Date(d.dirPassExp) - Date.now() < 90 * DAY) W.push(['W02', 'Direktor pasporti ' + fmtDate(d.dirPassExp) + ' da tugaydi']);
+  const r = REG[a.inn];
+  if (r && d.legalName && d.legalName !== r.name) W.push(['W05', 'Yuridik nom registrdagidan farq qiladi: «' + r.name + '»']);
+  if (d.services.ecom && d.scan && d.scan.url === d.website && !d.scan.logos) W.push(['W06', 'Saytda UZCARD / HUMO logolari topilmadi — tekshiruvda rad etilishi mumkin']);
+  return W;
+}
+
+/* ---------------- render ---------------- */
+function render() {
+  const needUser = !['landing', 'register', 'login'].includes(S.screen);
+  if (needUser && !S.user) S.screen = 'landing';
+  renderTop();
+  const v = VIEWS[S.screen] || VIEWS.landing;
+  $('#app').innerHTML = v();
+  renderDemo();
+  save();
+}
+function go(screen, opts) {
+  S.screen = screen;
+  if (opts && opts.cur) S.cur = opts.cur;
+  if (opts && opts.wiz) S.wiz = opts.wiz;
+  render();
+  window.scrollTo(0, 0);
+}
+function toast(t) {
+  const el = document.createElement('div'); el.className = 'toast'; el.textContent = t;
+  $('#toasts').appendChild(el); setTimeout(() => el.remove(), 2800);
+}
+function renderTop() {
+  const a = curApp(), lv = level(a);
+  const showLvl = S.user && !['home', 'new', 'landing'].includes(S.screen);
+  const inCabinet = a && a.status === 'COMPLETED';
+  $('#topbar').innerHTML =
+    '<button class="brand" data-act="brand"><span class="logo">G</span><span>Garant Merchant<small>Onlayn ekvayring</small></span></button>' +
+    '<span class="proto-tag">Prototip · v2.1</span><span class="sp"></span>' +
+    '<span class="langs"><button class="on">UZ</button><button data-act="lang" data-v="RU">RU</button><button data-act="lang" data-v="EN">EN</button></span>' +
+    (showLvl ? '<span class="lvl" title="Dostup darajasi — akkaunt × tashkilot (docs/21 §4.2)">Dostup <b>' + lv + '</b> <span class="nm">' + esc(LEVEL_NAME[lv]) + '</span></span>' : '') +
+    (inCabinet ? '<a class="tb-btn fill" href="merchant-panel.html">Kabinet →</a>' : '') +
+    (S.user ? '<span class="who">' + esc(S.user.name.split(' ')[1] || S.user.name) + '</span><button class="tb-btn" data-act="logout">Chiqish</button>'
+      : '<button class="tb-btn" data-act="go" data-to="login">Kirish</button><button class="tb-btn fill" data-act="go" data-to="register">Ro‘yxatdan o‘tish</button>');
+}
+
+const VIEWS = {};
+
+/* ---------- B0: landing ---------- */
+VIEWS.landing = () => `
+  <section class="hero">
+    <div>
+      <span class="badge blue">Garant Bank mijozlari uchun</span>
+      <h1 class="mt12">Saytingizda va do‘koningizda karta orqali to‘lov qabul qiling</h1>
+      <p class="lead">UZCARD va HUMO kartalaridan onlayn to‘lovlar, to‘lov havolalari, QR va invoyslar. Ariza — onlayn, holatini o‘zingiz kuzatasiz.</p>
+      <div class="row">
+        <button class="btn primary lg" data-act="go" data-to="${S.user ? 'home' : 'register'}">${S.user ? 'Arizalarimga o‘tish' : 'Ariza berishni boshlash'}</button>
+        <a class="btn lg" href="#talablar">Nima kerak?</a>
+      </div>
+      <p class="dim mt12">Taxminiy muddat: past riskli biznes uchun 3 ish kuni, murakkab holatlarda 7 ish kunigacha.</p>
+    </div>
+    <div class="hero-card">
+      <h3>Jarayon qanday ketadi</h3>
+      <div class="li"><b>1</b><span>Akkaunt yaratasiz — telefon + SMS kod, yoki E-IMZO / OneID (3 daqiqa)</span></div>
+      <div class="li"><b>2</b><span>Shu akkauntda ariza to‘ldirasiz — qoralama 30 kun saqlanadi</span></div>
+      <div class="li"><b>3</b><span>Bank tekshiradi — holat va savollar shu yerda ko‘rinadi</span></div>
+      <div class="li"><b>4</b><span>Shartnomani E-IMZO bilan onlayn imzolaysiz (avval siz, keyin bank)</span></div>
+      <div class="li"><b>5</b><span>O‘sha akkauntda kabinet ochiladi — yangi login kerak emas</span></div>
+    </div>
+  </section>
+  <section class="steps3 mt24" id="talablar">
+    <div class="card step3"><div class="n">✓</div><h3>Kim ariza bera oladi</h3>
+      <ul class="chk mt8"><li>MChJ, AJ, YaTT va o‘zini o‘zi band qilganlar</li><li><b>Avval</b> Garant Bankda hisob (asosiy yoki ikkilamchi)</li><li>Taqiqlanmagan faoliyat turi</li><li>Sayt orqali to‘lov uchun — HTTPS saytingiz</li></ul><p class="dim mt8">Filial va xorijiy kompaniyalar qabul qilinmaydi.</p></div>
+    <div class="card step3"><div class="n">📄</div><h3>Hujjatlarni tayyorlang</h3>
+      <ul class="chk mt8"><li>Guvohnoma, Ustav, Ta’sis shartnomasi</li><li>Protokol va buyruq (direktor, buxgalter)</li><li>Direktor, buxgalter, ta’sischilar pasportlari</li><li>Imzo va muhr namunalari kartochkasi · domen shartnomasi</li></ul></div>
+    <div class="card step3"><div class="n">🌐</div><h3>Sayt talablari</h3>
+      <ul class="chk mt8"><li>HTTPS + amal qiluvchi SSL, statik IP</li><li>Bosh sahifada UZCARD va HUMO logolari</li><li>Oferta, maxfiylik siyosati, qaytarish shartlari</li><li>Kompaniya rekvizitlari va aloqa ma’lumotlari</li></ul></div>
+  </section>
+  <section class="card mt16">
+    <div class="row"><div class="sp"><h3>Qabul qilinmaydigan faoliyat turlari</h3><p class="dim">BT §4.5 — bu sohalar tanlansa ariza davom ettirilmaydi</p></div></div>
+    <ul class="chk x mt8" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))"><li>Qimor, bukmeker, kazino</li><li>Alkogol va tamaki</li><li>Dori vositalari va BAD</li><li>Kattalar uchun kontent</li><li>Tanishuv va nikoh xizmatlari</li><li>Masofaviy savdosi cheklangan tovarlar</li></ul>
+  </section>`;
+
+/* ---------- B1: ro'yxatdan o'tish ---------- */
+VIEWS.register = () => {
+  const r = S.reg;
+  const dots = '<div class="stepdots">' + [1, 2, 3].map((n) => '<i class="' + (n <= r.step ? 'on' : '') + '"></i>').join('') + '</div>';
+  let body = '';
+  if (r.step === 1) body = `
+    <h2>${r.idp ? 'Telefonni bog‘lash' : 'Ro‘yxatdan o‘tish'}</h2><p class="muted">${r.idp ? esc(r.idp.method === 'EIMZO' ? 'E-IMZO' : 'OneID') + ' orqali tasdiqlandi: <b>' + esc(r.idp.name) + '</b>. SMS bildirishnomalar uchun telefon raqamingizni bog‘lang.' : 'Akkaunt — sizniki (shaxsniki). Biznesingizni keyin ariza orqali qo‘shasiz.'}</p>
+    <div class="field mt16"><label>Telefon raqami</label><div class="phone"><span>+998</span><input id="regPhone" inputmode="numeric" maxlength="9" placeholder="90 123 45 67" value="${esc(r.phone)}"></div>
+    <div class="hint">SMS orqali 6 xonali kod yuboriladi. Bitta raqam — bitta akkaunt.</div><div class="err" id="regErr"></div></div>
+    <button class="btn primary lg mt16" style="width:100%" data-act="reg-send">Kod yuborish</button>
+    ${r.idp ? '' : '<div class="or">yoki</div><div class="alt-login"><button class="btn" data-act="idp" data-v="EIMZO">E-IMZO bilan</button><button class="btn" data-act="idp" data-v="ONEID">OneID bilan</button></div>'}
+    <p class="dim mt12">Akkauntingiz bormi? <a href="#" data-act="go" data-to="login">Kirish</a></p>`;
+  if (r.step === 2) {
+    const left = Math.max(0, 60 - Math.floor((Date.now() - r.sentAt) / 1000));
+    body = `
+    <h2>SMS kodni kiriting</h2><p class="muted">${esc(fmtPhone(r.phone))} raqamiga kod yuborildi. Kod 3 daqiqa amal qiladi.</p>
+    <div class="alert info mt12"><span class="ic">i</span><span>Prototip: SMS yuborilmaydi. Kod — <b class="mono">123456</b></span></div>
+    <div class="field mt16"><input id="otp" class="otp" inputmode="numeric" maxlength="6" placeholder="••••••" autocomplete="one-time-code"><div class="err" id="otpErr">${r.attempts ? 'Kod noto‘g‘ri. Qolgan urinishlar: ' + (5 - r.attempts) : ''}</div></div>
+    <button class="btn primary lg mt12" style="width:100%" data-act="reg-verify">Tasdiqlash</button>
+    <div class="row mt12"><button class="btn ghost" data-act="reg-back">← Raqamni o‘zgartirish</button><span class="sp"></span><span class="dim" id="resend">${left ? 'Qayta yuborish: ' + left + ' s' : '<a href="#" data-act="reg-resend">Kodni qayta yuborish</a>'}</span></div>`;
+  }
+  if (r.step === 3) body = `
+    <h2>Profil</h2><p class="muted">Telefon tasdiqlandi ✓. Oxirgi qadam.</p>
+    <div class="field mt16"><label>Familiya, ism, otasining ismi${r.idp ? '<span class="src">' + (r.idp.method === 'EIMZO' ? 'E-IMZO' : 'OneID') + 'dan</span>' : ''}</label><input id="rName" placeholder="Yusupova Dilnoza Baxtiyorovna" ${r.idp ? 'value="' + esc(r.idp.name) + '" readonly' : ''}></div>
+    <div class="field mt12"><label>Email</label><input id="rEmail" type="email" placeholder="info@kompaniya.uz"><div class="hint">Tasdiqlash havolasi yuboriladi. Arizani yuborish uchun email tasdiqlangan bo‘lishi kerak (G01).</div></div>
+    <div class="field mt12"><label>Parol${r.idp ? ' (ixtiyoriy — keyin ' + (r.idp.method === 'EIMZO' ? 'E-IMZO' : 'OneID') + ' bilan kirasiz)' : ''}</label><input id="rPw" type="password" placeholder="kamida 10 belgi" data-act-input="pw"><div class="pw-meter"><i id="pwm" style="width:0"></i></div><div class="hint" id="pwh">Kamida 10 belgi, harf va raqam</div></div>
+    <label class="check mt12"><input type="checkbox" id="rConsent"><span>Shaxsga doir ma’lumotlarimni qayta ishlashga roziman <span class="sub">Rozilik versiyasi v1.0 · vaqti va IP manzili qayd etiladi</span></span></label>
+    <div class="err mt8" id="rErr" style="color:var(--red);font-size:12.5px"></div>
+    <button class="btn primary lg mt16" style="width:100%" data-act="reg-complete">Akkaunt yaratish</button>`;
+  return '<div class="auth"><div class="card">' + dots + body + '</div><p class="dim mt12" style="text-align:center">BPMN: 01 · Akkaunt yaratish</p></div>';
+};
+VIEWS.login = () => `
+  <div class="auth"><div class="card">
+    <h2>Kirish</h2><p class="muted">Ariza va kabinet — bitta akkaunt.</p>
+    <div class="field mt16"><label>Telefon raqami</label><div class="phone"><span>+998</span><input id="lPhone" inputmode="numeric" maxlength="9" placeholder="90 123 45 67"></div></div>
+    <div class="field mt12"><label>Parol</label><input id="lPw" type="password"><div class="hint">Prototip: parol tekshirilmaydi va saqlanmaydi.</div></div>
+    <div class="err mt8" id="lErr" style="color:var(--red);font-size:12.5px"></div>
+    <button class="btn primary lg mt16" style="width:100%" data-act="login">Kirish</button>
+    <div class="or">yoki</div><div class="alt-login"><button class="btn" data-act="idp-login" data-v="EIMZO">E-IMZO bilan</button><button class="btn" data-act="idp-login" data-v="ONEID">OneID bilan</button></div>
+    <button class="btn lg mt8" style="width:100%" data-act="demo-login">Demo akkaunt bilan kirish</button>
+    <p class="dim mt12">Akkaunt yo‘qmi? <a href="#" data-act="go" data-to="register">Ro‘yxatdan o‘tish</a></p>
+  </div></div>`;
+
+/* ---------- Arizalarim ---------- */
+VIEWS.home = () => {
+  const u = S.user;
+  const banner = !u.emailVerified ? `<div class="alert warn"><span class="ic">!</span><div class="sp"><b>Emailingizni tasdiqlang</b> — ${esc(u.email)}. Qoralama yaratish mumkin, lekin arizani yuborish uchun email tasdiqlangan bo‘lishi kerak (G01).</div><button class="btn sm" data-act="verify-email">Havola orqali tasdiqlash (demo)</button></div>` : '';
+  const list = S.apps.slice().sort((x, y) => y.updatedAt - x.updatedAt).map((a) => {
+    const [lbl, col] = ext(a), step = extStep(a);
+    const bars = [1, 2, 3, 4, 5, 6].map((n) => '<i class="' + (n < step ? 'd' : n === step ? (a.status === 'NEEDS_INFO' || (a.status === 'CONTRACT_PENDING' && !(a.contract && a.contract.mSigned)) ? 'w' : 'c') : '') + '"></i>').join('');
+    const act = a.status === 'DRAFT' ? ['Davom ettirish', 'open-wiz'] : a.status === 'NEEDS_INFO' ? ['Javob berish', 'open-info'] : a.status === 'CONTRACT_PENDING' ? ['Shartnoma', 'open-contract'] : a.status === 'COMPLETED' ? ['Kabinet', 'open-done'] : a.status === 'REJECTED' ? ['Batafsil', 'open-rejected'] : ['Holatni ko‘rish', 'open-status'];
+    const days = a.status === 'DRAFT' ? Math.max(0, 30 - Math.floor((Date.now() - a.updatedAt) / DAY)) : null;
+    return `<div class="card app-card">
+      <div class="sp"><div class="org">${esc(a.d.legalName || a.orgName)}</div>
+        <div class="dim"><span class="mono">${a.id}</span> · INN <span class="mono">${a.inn}</span>${a.prev ? ' · qayta ariza (oldingi: ' + a.prev + ')' : ''}${days != null ? ' · qoralama yana ' + days + ' kun saqlanadi' : ''}</div>
+        ${TERMINAL.includes(a.status) && a.status !== 'COMPLETED' ? '' : '<div class="mini-prog">' + bars + '</div>'}</div>
+      <span class="badge ${col}">${lbl}</span>
+      <button class="btn ${a.status === 'NEEDS_INFO' || a.status === 'CONTRACT_PENDING' || a.status === 'DRAFT' ? 'primary' : ''}" data-act="${act[1]}" data-id="${a.id}">${act[0]}</button></div>`;
+  }).join('');
+  const empty = `<div class="card empty"><div class="big">+</div><h2>Birinchi arizangizni yarating</h2>
+    <p class="muted" style="max-width:520px;margin:6px auto 18px">Ariza INN bilan boshlanadi. Tizim darhol tekshiradi: tashkilot allaqachon ulanganmi, boshqa ariza bormi, Garant Bankda hisobingiz bormi.</p>
+    <button class="btn primary lg" data-act="new">Yangi ariza</button></div>`;
+  return `<div class="page-head"><div><div class="crumbs">Merchant portali · onboarding rejimi</div><h1>Arizalarim</h1>
+    <p class="muted">Salom, ${esc(u.name.split(' ')[1] || u.name)}. Bir akkaunt bilan bir nechta tashkilot uchun ariza berishingiz mumkin.</p></div>
+    ${S.apps.length ? '<button class="btn primary" data-act="new">+ Yangi ariza</button>' : ''}</div>
+    ${banner}${banner ? '<div class="mt16"></div>' : ''}${S.apps.length ? list : empty}`;
+};
+
+/* ---------- B2: INN va dastlabki tekshiruv ---------- */
+VIEWS.new = () => {
+  const p = S.pre || { inn: '', phase: 'input' };
+  const checks = p.checks || [];
+  const r = p.inn ? REG[p.inn] : null;
+  let result = '';
+  if (p.phase === 'result') {
+    const k = p.outcome;
+    if (k === 'MERCHANT') result = `<div class="alert info mt16"><span class="ic">i</span><div class="sp"><b>Bu tashkilot allaqachon Garant merchanti.</b><br>Yangi ariza kerak emas. Yangi xizmat yoki sayt qo‘shish — kabinetdagi «O‘zgartirish so‘rovi» orqali. Siz tashkilot jamoasida emassiz — egasidan kirish so‘rang.</div></div>
+      <div class="row mt12"><button class="btn primary" data-act="access-request">Egasidan kirish so‘rash</button><button class="btn" data-act="pre-reset">Boshqa INN</button></div>`;
+    else if (k === 'OPEN_OTHER') result = `<div class="alert warn mt16"><span class="ic">!</span><div><b>Bu tashkilot uchun ariza allaqachon boshlangan</b> (+998 9* *** ** 47 raqamli foydalanuvchi). Bir INN — bitta faol ariza.</div></div>
+      <div class="row mt12"><button class="btn primary" data-act="access-request">Ariza egasidan kirish so‘rash</button><button class="btn" data-act="toast" data-msg="Bank bilan bog‘lanish: 1234 (prototip)">Bank bilan bog‘lanish</button><button class="btn ghost" data-act="pre-reset">Boshqa INN</button></div>`;
+    else if (k === 'BLOCKED') result = `<div class="alert err mt16"><span class="ic">✕</span><div><b>Ariza qabul qilinmaydi.</b> Batafsil ma’lumot uchun bank bilan bog‘laning.<div class="dim mt8">Mijozga sabab aytilmaydi (sanksiya / taqiqlangan faoliyat bo‘yicha oldingi rad) — docs/22 §3, 7-natija.</div></div></div>
+      <button class="btn mt12" data-act="pre-reset">Boshqa INN</button>`;
+    else if (k === 'FORM') result = `<div class="alert err mt16"><span class="ic">✕</span><div><b>Bu tashkiliy shakl uchun onlayn ekvayring taqdim etilmaydi.</b> Ariza bera oladi: MChJ, AJ, YaTT va o‘zini o‘zi band qilganlar. Filial va xorijiy kompaniyalar qabul qilinmaydi (qaror Q-06).</div></div>
+      <button class="btn mt12" data-act="pre-reset">Boshqa INN</button>`;
+    else if (k === 'NO_ACCOUNT') result = `<div class="alert warn mt16"><span class="ic">!</span><div><b>Garant Bankda hisobingiz topilmadi.</b> Onlayn ekvayring faqat Garant Bank mijozlariga beriladi — avval asosiy yoki ikkilamchi hisob oching, keyin shu INN bilan qayta tekshiring. Ariza (qoralama) hisobsiz yaratilmaydi.<div class="dim mt8">Bank xodimi sizni «Qoralamalar (lidlar)» ro‘yxatida «hisob kutilmoqda» holatida ko‘radi va yordam berishi mumkin.</div></div></div>
+      <div class="row mt12"><button class="btn primary" data-act="toast" data-msg="Hisob ochish: Garant Bank ilovasi, garantbank.uz yoki istalgan filial (prototip)">Hisob qanday ochiladi</button><button class="btn" data-act="pre-recheck">Qayta tekshirish</button><button class="btn ghost" data-act="pre-reset">Boshqa INN</button></div>`;
+    else if (k === 'OWN_DRAFT') result = `<div class="alert info mt16"><span class="ic">i</span><div class="sp">Bu tashkilot uchun sizda qoralama bor: <b class="mono">${esc(p.appId)}</b>.</div></div>
+      <button class="btn primary mt12" data-act="open-wiz" data-id="${esc(p.appId)}">Qoralamani davom ettirish</button>`;
+    else if (k === 'OWN_ACTIVE') result = `<div class="alert info mt16"><span class="ic">i</span><div class="sp">Bu tashkilot uchun arizangiz ko‘rib chiqilmoqda: <b class="mono">${esc(p.appId)}</b>.</div></div>
+      <button class="btn primary mt12" data-act="open-status" data-id="${esc(p.appId)}">Holatni ko‘rish</button>`;
+    else {
+      const org = r ? r : null;
+      const prohibited = isProhibited(p.industry);
+      result = `<div class="org-card mt16">
+        <div class="row"><div class="sp"><div style="font-weight:700;font-size:15px">${esc(org ? org.name : 'INN ' + p.inn)}</div>
+        <div class="dim">${org ? esc(org.form) + ' · direktor: ' + esc(org.dir) + ' · OKED ' + esc(org.oked) : 'Registrda topilmadi — ma’lumotlarni qo‘lda kiritasiz, operator tekshiradi'}</div></div>
+        <span class="badge ${org ? 'green' : 'amber'}">${org ? 'Registrdan' : 'Qo‘lda'}</span></div></div>
+        ${p.reapply ? `<div class="alert info mt12"><span class="ic">i</span><div>Oldingi ariza <b class="mono">${esc(p.reapply)}</b> rad etilgan, qayta ariza mumkin. Ma’lumotlar nusxalanadi.</div></div>` : ''}
+        <div class="grid2 mt16">
+          <div class="field"><label>Sizning rolingiz</label>
+            ${p.eimzoDir ? '<div class="alert ok" style="padding:9px 12px"><span class="ic">✓</span><span>E-IMZO: siz shu tashkilot direktori sifatida tasdiqlangansiz — ishonchnoma kerak emas</span></div>' : ''}
+            <div class="seg" ${p.eimzoDir ? 'style="display:none"' : ''}><button class="${p.role === 'DIR' ? 'on' : ''}" data-act="pre-role" data-v="DIR">Direktor</button><button class="${p.role === 'REP' ? 'on' : ''}" data-act="pre-role" data-v="REP">Vakil (ishonchnoma bilan)</button></div>
+            <div class="hint">${p.role === 'REP' ? 'Ishonchnoma yuklash majburiy bo‘ladi (G13). Shartnomani baribir direktor imzolaydi.' : 'Faollashgach siz kabinet egasi (Owner) bo‘lasiz.'}</div></div>
+          <div class="field ${prohibited ? 'bad' : ''}"><label>Faoliyat sohasi</label><select data-act-change="pre-industry"><option value="">Tanlang…</option>
+            ${INDUSTRIES.map((i) => '<option value="' + i[0] + '"' + (p.industry === i[0] ? ' selected' : '') + '>' + esc(i[1]) + '</option>').join('')}</select>
+            ${prohibited ? '<div class="err">Bu faoliyat turi uchun onlayn ekvayring taqdim etilmaydi (BT §4.5, G06)</div>' : '<div class="hint">Taklif etilgan MCC tarifga ta’sir qiladi; yakuniy MCC ni bank belgilaydi</div>'}</div>
+        </div>
+        <div class="row mt20"><button class="btn primary lg" data-act="pre-create" ${!p.role || !p.industry || prohibited ? 'disabled' : ''}>Qoralama yaratish</button><button class="btn ghost" data-act="pre-reset">Boshqa INN</button></div>`;
+    }
+  }
+  return `<div class="page-head"><div><div class="crumbs"><a href="#" data-act="go" data-to="home">Arizalarim</a> / Yangi ariza</div><h1>Yangi ariza</h1>
+    <p class="muted">Ariza tashkilot INN bilan boshlanadi. BPMN: 02 · Ariza yaratish.</p></div></div>
+    <div class="card" style="max-width:760px">
+      <div class="row" style="align-items:flex-end">
+        <div class="field sp"><label>Tashkilot INN (STIR)</label><input id="preInn" inputmode="numeric" maxlength="9" placeholder="9 raqam" value="${esc(p.inn)}" ${p.phase !== 'input' ? 'readonly' : ''}></div>
+        ${p.phase === 'input' ? '<button class="btn primary" data-act="pre-check" style="height:40px">Tekshirish</button>' : ''}
+      </div>
+      <div class="err" id="preErr" style="color:var(--red);font-size:12.5px;margin-top:6px"></div>
+      ${p.phase === 'input' ? '<div class="dim mt8">Demo INN’lar: ' + DEMO_INNS.map((x) => '<a href="#" data-act="pre-fill" data-v="' + x[0] + '" class="mono">' + x[0] + '</a> — ' + esc(x[1])).join(' · ') + '</div>' : ''}
+      ${checks.length ? '<div class="pc-list">' + checks.map((c) => '<div class="pc ' + c.s + '"><span class="d"></span><span>' + esc(c.t) + (c.note ? ' <span class="dim">— ' + esc(c.note) + '</span>' : '') + '</span></div>').join('') + '</div>' : ''}
+      ${result}
+    </div>`;
+};
+
+/* ---------- B2: 8 qadamli forma ---------- */
+function fld(a, key, label, o) {
+  o = o || {};
+  const e = a.show[S.wiz] ? validate(a, S.wiz)[key] : null;
+  const val = a.d[key] == null ? '' : a.d[key];
+  const src = o.src ? '<span class="src">registrdan</span>' : '';
+  let input;
+  if (o.options) input = '<select data-bind="' + key + '"><option value="">Tanlang…</option>' + o.options.map(([v, l]) => '<option value="' + v + '"' + (String(val) === v ? ' selected' : '') + '>' + esc(l) + '</option>').join('') + '</select>';
+  else if (o.area) input = '<textarea data-bind="' + key + '" placeholder="' + esc(o.ph || '') + '">' + esc(val) + '</textarea>';
+  else input = '<input data-bind="' + key + '" type="' + (o.type || 'text') + '" value="' + esc(val) + '" placeholder="' + esc(o.ph || '') + '"' + (o.ro ? ' readonly' : '') + (o.max ? ' maxlength="' + o.max + '"' : '') + (o.num ? ' inputmode="numeric"' : '') + '>';
+  return '<div class="field ' + (e ? 'bad ' : '') + (o.span ? 'span2' : '') + '"><label>' + esc(label) + src + '</label>' + input + (e ? '<div class="err">' + esc(e) + '</div>' : o.hint ? '<div class="hint">' + o.hint + '</div>' : '') + '</div>';
+}
+const yesno = [['yes', 'Ha'], ['no', 'Yo‘q']];
+function stepBody(a) {
+  const d = a.d, n = S.wiz, reg = a.registry === 'VERIFIED';
+  const errs = a.show[n] ? validate(a, n) : {};
+  if (n === 1) return `
+    <div class="sec">Tashkilot</div><div class="grid2">
+      ${fld(a, 'legalName', 'Yuridik nomi', { src: reg, hint: 'Guvohnomadagi nom bilan bir xil bo‘lishi kerak' })}
+      ${fld(a, 'brand', 'Brend / savdo nomi', { hint: 'Mijozlaringiz ko‘radigan nom (chekda)' })}
+      <div class="field"><label>Tashkiliy shakl${reg ? '<span class="src">registrdan</span>' : ''}</label><input value="${esc(a.form)}" readonly></div>
+      <div class="field"><label>INN (STIR)</label><input value="${esc(a.inn)}" readonly></div>
+      ${fld(a, 'regNo', 'Ro‘yxat raqami', { src: reg })}
+      ${fld(a, 'regDate', 'Ro‘yxatdan o‘tgan sana', { type: 'date', src: reg })}
+    </div>
+    <div class="sec">Manzil va aloqa</div><div class="grid2">
+      ${fld(a, 'legalAddr', 'Yuridik manzil', { src: reg, span: true })}
+      <label class="check span2 ${d.factSame ? 'on' : ''}"><input type="checkbox" data-bind="factSame" ${d.factSame ? 'checked' : ''}><span>Faoliyat manzili yuridik manzil bilan bir xil</span></label>
+      ${d.factSame ? '' : fld(a, 'factAddr', 'Faoliyat (faktik) manzili', { span: true })}
+      ${fld(a, 'phone', 'Tashkilot telefoni', { ph: '+998 90 123 45 67' })}
+      ${fld(a, 'email', 'Tashkilot emaili', { type: 'email', hint: 'Rasmiy xabarlar va shartnoma nusxasi' })}
+    </div>
+    <div class="sec">Faoliyat</div><div class="grid2">
+      <div class="field"><label>Soha (tanlangan)</label><input value="${esc(industryOf(a.industry) ? industryOf(a.industry)[1] : '')}" readonly><div class="hint">Taklif etilgan MCC: <span class="mono">${esc(industryOf(a.industry) ? industryOf(a.industry)[2] : '')}</span> — yakuniy MCC ni bank belgilaydi</div></div>
+      ${fld(a, 'employees', 'Xodimlar soni', { num: true })}
+      ${fld(a, 'desc', 'Faoliyat tavsifi', { area: true, span: true, ph: 'Nima sotasiz, kimga, qanday yetkazasiz, qaytarish shartlari…', hint: 'Kamida 50 belgi. Compliance shu tavsifga qarab risk baholaydi.' })}
+    </div>`;
+  if (n === 2) return `
+    <div class="sec">Soliq</div><div class="grid2">
+      ${fld(a, 'taxStatus', 'Soliq to‘lovchi maqomi', { options: [['vat', 'QQS to‘lovchi'], ['novat', 'QQS to‘lovchi emas'], ['simple', 'Aylanmadan olinadigan soliq']] })}
+      ${d.taxStatus === 'vat' ? fld(a, 'vatNo', 'QQS registratsiya kodi', { num: true, max: 12 }) : '<div></div>'}
+    </div>
+    <div class="sec">Litsenziya (BT §4.4)</div><div class="grid2">
+      ${fld(a, 'licensed', 'Faoliyatingiz litsenziyalanadimi?', { options: yesno })}<div></div>
+      ${d.licensed === 'yes' ? fld(a, 'licNo', 'Litsenziya raqami') + fld(a, 'licDate', 'Berilgan sana', { type: 'date' }) + fld(a, 'licOrg', 'Bergan organ', { span: true }) : ''}
+    </div>
+    <div class="sec">Fiskalizatsiya (OFD Soliq, BT §5.5)</div><div class="grid3">
+      ${fld(a, 'ikpu', 'IKPU (MXIK) kodi', { num: true, max: 17, hint: '17 raqam, tasnif.soliq.uz' })}
+      ${fld(a, 'receipt', 'Chek turi', { options: [['goods', 'Tovar'], ['service', 'Xizmat']] })}
+      ${fld(a, 'unit', 'O‘lchov birligi', { options: [['dona', 'dona'], ['kg', 'kg'], ['xizmat', 'xizmat'], ['litr', 'litr']] })}
+    </div>`;
+  if (n === 3) {
+    const sum = ownersSum(a);
+    const owners = isInd(a) ? '<div class="alert info"><span class="ic">i</span><span>' + esc(a.form) + ' — egasi shaxsning o‘zi. Ta’sischilar bo‘limi talab qilinmaydi.</span></div>' : `
+      <table class="t"><thead><tr><th style="width:150px">Turi</th><th>F.I.Sh / tashkilot nomi</th><th style="width:110px">Ulush, %</th><th style="width:70px">PEP</th><th style="width:40px"></th></tr></thead><tbody>
+      ${d.owners.map((o, i) => `<tr>
+        <td><select data-bind="owners.${i}.type"><option value="JSH"${o.type === 'JSH' ? ' selected' : ''}>Jismoniy shaxs</option><option value="YUSH"${o.type === 'YUSH' ? ' selected' : ''}>Yuridik shaxs</option></select></td>
+        <td><input data-bind="owners.${i}.name" value="${esc(o.name)}" class="${errs['owners.' + i + '.name'] ? 'bad' : ''}"></td>
+        <td><input data-bind="owners.${i}.share" value="${esc(o.share)}" inputmode="decimal" class="${errs['owners.' + i + '.share'] ? 'bad' : ''}"></td>
+        <td style="text-align:center"><input type="checkbox" data-bind="owners.${i}.pep" ${o.pep ? 'checked' : ''} style="width:16px;height:16px"></td>
+        <td>${d.owners.length > 1 ? '<button class="btn ghost sm" data-act="owner-del" data-i="' + i + '" title="O‘chirish">✕</button>' : ''}</td></tr>`).join('')}
+      </tbody></table>
+      <div class="row mt8"><button class="btn sm" data-act="owner-add">+ Ta’sischi qo‘shish</button><span class="sp"></span>
+        <span>Jami: <span class="sum ${Math.abs(sum - 100) < 0.001 ? 'ok' : 'no'}" id="ownSum">${sum}%</span> <span class="dim">/ 100%</span></span></div>
+      ${errs.owners ? '<div class="err mt8" style="color:var(--red);font-size:12.5px">' + esc(errs.owners) + '</div>' : ''}
+      <p class="dim mt8">Ta’sischi yuridik shaxs bo‘lsa — uning guvohnomasi va direktori pasporti ham so‘raladi (bank javobi, 22.09). 25% dan ortiq ulush — foydali ega (UBO).</p>`;
+    return `
+    <div class="sec">${isInd(a) ? 'Egasi (jismoniy shaxs)' : 'Direktor'}</div><div class="grid2">
+      ${fld(a, 'dirName', 'F.I.Sh', { src: a.registry === 'VERIFIED' })}
+      ${fld(a, 'dirPinfl', 'JShShIR (PINFL)', { num: true, max: 14 })}
+      ${fld(a, 'dirPass', 'Pasport seriya va raqami', { ph: 'AA1234567', max: 9 })}
+      ${fld(a, 'dirPassExp', 'Pasport amal qilish muddati', { type: 'date' })}
+      ${fld(a, 'dirPhone', 'Telefon', { ph: '+998 90 123 45 67' })}
+    </div>
+    ${isInd(a) ? '' : `<div class="sec">Bosh buxgalter</div><div class="grid3">
+      ${fld(a, 'accName', 'F.I.Sh')}${fld(a, 'accPinfl', 'JShShIR (PINFL)', { num: true, max: 14 })}${fld(a, 'accPass', 'Pasport', { ph: 'AA1234567', max: 9 })}</div>`}
+    <div class="sec">Ta’sischilar va foydali egalar</div>${owners}`;
+  }
+  if (n === 4) return `
+    <div class="sec">Savdo kanallari</div>
+    <div class="checks">${[['web', 'Veb-sayt'], ['app', 'Mobil ilova'], ['shop', 'Jismoniy do‘kon'], ['social', 'Ijtimoiy tarmoqlar'], ['market', 'Marketpleys']].map(([k, l]) => '<label class="check ' + (d.channels[k] ? 'on' : '') + '"><input type="checkbox" data-bind="channels.' + k + '" ' + (d.channels[k] ? 'checked' : '') + '><span>' + l + '</span></label>').join('')}</div>
+    ${errs.channels ? '<div class="err mt8" style="color:var(--red);font-size:12.5px">' + errs.channels + '</div>' : ''}
+    <div class="sec">Kutilayotgan hajm</div><div class="grid2">
+      ${fld(a, 'turnover', 'Oylik aylanma (so‘m)', { num: true, hint: d.turnover ? money(d.turnover) : 'Taxminiy' })}
+      ${fld(a, 'txCount', 'Oylik tranzaksiyalar soni', { num: true })}
+      ${fld(a, 'avgCheck', 'O‘rtacha chek (so‘m)', { num: true, hint: d.avgCheck ? money(d.avgCheck) : '' })}
+      ${fld(a, 'maxTx', 'Maksimal bitta to‘lov (so‘m)', { num: true, hint: d.maxTx ? money(d.maxTx) : '' })}
+      ${fld(a, 'intl', 'Xorijiy kartalardan to‘lov bo‘ladimi?', { options: yesno })}
+    </div>`;
+  if (n === 5) {
+    const accs = accountsOf(a);
+    return `
+    <div class="sec">Hisob-kitob hisobi (BT §4.7)</div>
+    ${a.accountFound ? `<p class="muted">ABS dan INN bo‘yicha topilgan hisoblar. Tushumlar shu hisobga o‘tkaziladi. Hisob egasi tashkilot nomi bilan aynan mos bo‘lishi shart.</p>
+      <div class="docs">${accs.map((x) => `<label class="check ${d.accountId === x.no ? 'on' : ''}"><input type="radio" name="acc" data-bind="accountId" value="${x.no}" ${d.accountId === x.no ? 'checked' : ''}>
+        <span><b class="mono">${fmtAcc(x.no)}</b> · ${esc(x.type)} hisob · Garant Bank, MFO 00000<span class="sub">Egasi: ${esc(x.owner)} ✓ ABS tasdiqladi</span></span></label>`).join('')}</div>
+      ${errs.accountId ? '<div class="err mt8" style="color:var(--red);font-size:12.5px">' + esc(errs.accountId) + '</div>' : ''}`
+      : `<div class="alert warn"><span class="ic">!</span><div><b>Garant Bankda hisobingiz topilmadi.</b> Formani to‘ldirishda davom eting — hisob ochilgach shu yerda paydo bo‘ladi va «Yuborish» faollashadi (G05).<div class="row mt8"><button class="btn sm" data-act="abs-recheck">ABS da qayta tekshirish</button><a href="#" data-act="toast" data-msg="Hisob ochish: garantbank.uz yoki filial (prototip)">Hisob qanday ochiladi →</a></div></div></div>`}
+    <p class="dim mt12">Hisob raqamini keyinchalik o‘zgartirish — faqat kabinetdagi «O‘zgartirish so‘rovi» + Compliance tasdig‘i orqali (xavfsizlik).</p>`;
+  }
+  if (n === 6) {
+    const sc = d.scan && d.scan.url === d.website ? d.scan : null;
+    return `
+    <div class="sec">Qaysi xizmatlar kerak?</div>
+    <div class="checks">${SERVICES.map(([k, l, s]) => '<label class="check ' + (d.services[k] ? 'on' : '') + '"><input type="checkbox" data-bind="services.' + k + '" ' + (d.services[k] ? 'checked' : '') + '><span>' + l + '<span class="sub">' + s + '</span></span></label>').join('')}</div>
+    ${errs.services ? '<div class="err mt8" style="color:var(--red);font-size:12.5px">' + errs.services + '</div>' : ''}
+    ${d.services.ecom ? `<div class="sec">Sayt (BT §4.1–4.6)</div><div class="grid2">
+      ${fld(a, 'website', 'Sayt manzili', { ph: 'https://kompaniya.uz' })}
+      ${fld(a, 'staticIp', 'Serverning statik IP manzili', { ph: '185.74.5.210' })}
+      ${fld(a, 'integration', 'Integratsiya turi', { options: [['hosted', 'Bankning to‘lov sahifasi (tavsiya)'], ['own', 'O‘z formam (PCI DSS kerak)']] })}
+      <div class="field ${errs.scan ? 'bad' : ''}"><label>Sayt avto-tekshiruvi</label><button class="btn" data-act="scan" ${/^https?:\/\//.test(d.website || '') ? '' : 'disabled'}>${sc ? 'Qayta tekshirish' : 'Saytni tekshirish'}</button>${errs.scan ? '<div class="err">' + esc(errs.scan) + '</div>' : '<div class="hint">HTTPS, SSL, logolar, oferta sahifasi</div>'}</div>
+      ${sc ? `<div class="span2 pc-list" style="margin-top:0">
+        <div class="pc ${sc.https ? 'ok' : 'no'}"><span class="d"></span>HTTPS va SSL sertifikat${sc.https ? ' — amal qiladi ' + esc(sc.ssl) + ' gacha' : ' — topilmadi'}</div>
+        <div class="pc ok"><span class="d"></span>Sayt javob beradi (HTTP 200)</div>
+        <div class="pc ${sc.logos ? 'ok' : 'w'}"><span class="d"></span>UZCARD / HUMO logolari bosh sahifada${sc.logos ? '' : ' — topilmadi (W06)'}</div>
+        <div class="pc ok"><span class="d"></span>Oferta va maxfiylik siyosati sahifalari</div></div>` : ''}
+    </div>` : ''}
+    ${d.services.api ? '<div class="sec">API</div><div class="grid2">' + fld(a, 'callbackUrl', 'Callback (notify) URL', { ph: 'https://kompaniya.uz/pay/notify' }) + '</div>' : ''}`;
+  }
+  if (n === 7) {
+    const list = requiredDocs(a);
+    const done = list.filter((x) => docOk(a, x.key)).length;
+    return `<div class="row"><p class="muted sp" style="margin:0">Ro‘yxat biznes turi, ta’sischilar va xizmatlarga qarab avtomatik tuziladi. PDF, JPG, PNG · 10 MB gacha.</p>
+      <b>${done} / ${list.length}</b><button class="btn sm" data-act="docs-all">Hammasini yuklash (demo)</button></div>
+      <div class="docs mt12">${list.map((x) => docRow(a, x)).join('')}</div>
+      ${errs.docs ? '<div class="err mt8" style="color:var(--red);font-size:12.5px">' + esc(errs.docs) + ' (G09)</div>' : ''}
+      <input type="file" id="filePick" accept=".pdf,.jpg,.jpeg,.png,.heic" style="display:none">`;
+  }
+  if (n === 8) return `<p class="muted">Yuborishdan oldin tasdiqlang. Bu belgilar arizaning yuborilgan nusxasiga (snapshot) kiradi.</p>
+    <div class="docs">${DECL.map(([k, l]) => '<label class="check ' + (d.decl[k] ? 'on' : '') + '"><input type="checkbox" data-bind="decl.' + k + '" ' + (d.decl[k] ? 'checked' : '') + '><span>' + esc(l) + '</span></label>').join('')}</div>
+    ${errs.decl ? '<div class="err mt8" style="color:var(--red);font-size:12.5px">' + esc(errs.decl) + '</div>' : ''}`;
+  return '';
+}
+function docRow(a, x) {
+  const s = a.docs[x.key] || { status: 'MISSING' };
+  const ok = ['UPLOADED', 'VERIFIED'].includes(s.status);
+  const need = s.status === 'REPLACEMENT_REQUIRED';
+  let right;
+  if (s.status === 'UPLOADING') right = '<div><div class="dim">Yuklanmoqda va tekshirilmoqda (format, hajm, antivirus)…</div><div class="bar"><i style="width:' + (s.p || 0) + '%"></i></div></div>';
+  else if (ok) right = '<span class="badge ' + (s.status === 'VERIFIED' ? 'green' : 'blue') + '">' + (s.status === 'VERIFIED' ? 'Tasdiqlangan' : 'Yuklandi') + '</span>' + (a.status === 'DRAFT' ? '<button class="btn ghost sm" data-act="doc-del" data-k="' + x.key + '">Almashtirish</button>' : '');
+  else right = '<button class="btn sm primary" data-act="doc-pick" data-k="' + x.key + '">Fayl tanlash</button><button class="btn ghost sm" data-act="doc-demo" data-k="' + x.key + '">namuna</button>';
+  return '<div class="doc ' + (need ? 'need' : '') + '"><div class="ic ' + (ok ? 'ok' : '') + '">' + (ok ? 'PDF' : '—') + '</div><div class="meta"><div class="nm">' + esc(x.name) + '</div><div class="why">' +
+    (ok ? esc(s.file) + ' · ' + esc(s.size) + ' · ' + fmtDT(s.at) : need ? '<span style="color:var(--amber);font-weight:600">Qayta yuklash so‘raldi: ' + esc(s.note) + '</span>' : esc(x.why)) + '</div></div>' + right + '</div>';
+}
+VIEWS.wizard = () => {
+  const a = curApp(); if (!a) return VIEWS.home();
+  if (a.status !== 'DRAFT') return VIEWS.status(); // yuborilgan ariza qulflangan (R7)
+  const n = S.wiz;
+  const nav = STEPS.map((t, i) => {
+    const k = i + 1, ok = stepOk(a, k), bad = a.show[k] && !ok;
+    return '<button class="st ' + (k === n ? 'cur ' : '') + (ok && a.show[k] ? 'done ' : '') + (bad ? 'bad' : '') + '" data-act="wiz-go" data-n="' + k + '"><span class="num">' + (ok && a.show[k] ? '✓' : k) + '</span><span class="lbl">' + t + '</span></button>';
+  }).join('') + '<hr><button class="st" data-act="go" data-to="review"><span class="num">✓</span><span class="lbl">Ko‘rib chiqish va yuborish</span></button>';
+  return `<div class="page-head"><div><div class="crumbs"><a href="#" data-act="go" data-to="home">Arizalarim</a> / <span class="mono">${a.id}</span></div>
+      <h1>${esc(a.d.legalName || a.orgName)}</h1><div class="row"><span class="badge gray">Qoralama</span><span class="save" id="saveInd"><span class="dotg"></span>Saqlandi ${fmtTime(a.updatedAt)}</span>
+      <span class="dim">· 30 kun faolsiz qolsa muddati o‘tadi</span></div></div></div>
+    ${!a.accountFound ? '<div class="alert warn" style="margin-bottom:16px"><span class="ic">!</span><span>Garant Bankda hisob topilmadi — to‘ldirishni davom ettiring, yuborish hisob ochilgach mumkin (G05).</span></div>' : ''}
+    <div class="wiz"><nav class="steps">${nav}</nav>
+      <div class="card"><div class="wiz-head"><div><div class="dim">${n}-qadam / 8</div><h2>${STEPS[n - 1]}</h2></div></div>
+        <div id="stepBody">${stepBody(a)}</div>
+        <div class="wiz-foot"><button class="btn" data-act="wiz-prev" ${n === 1 ? 'disabled' : ''}>← Orqaga</button>
+          <button class="btn primary" data-act="wiz-next">${n === 8 ? 'Ko‘rib chiqishga o‘tish →' : 'Keyingi →'}</button></div></div></div>`;
+};
+
+/* ---------- yig'ma ko'rinish + yuborish shartlari ---------- */
+VIEWS.review = () => {
+  const a = curApp(); if (!a) return VIEWS.home();
+  [1, 2, 3, 4, 5, 6, 7, 8].forEach((k) => { a.show[k] = true; });
+  const d = a.d, G = gate(a), W = warnings(a);
+  const allOk = G.every((x) => x.ok !== false);
+  const ind = industryOf(a.industry);
+  const sec = (n, title, rows) => '<div class="review-sec"><div class="h"><b>' + n + '. ' + title + '</b>' + (stepOk(a, n) ? '<span class="badge green">To‘liq</span>' : '<span class="badge red">Xato bor</span>') + '<a href="#" data-act="wiz-go" data-n="' + n + '">Tahrirlash</a></div><div class="kv">' + rows.map(([k, v]) => '<div class="k">' + k + '</div><div>' + (v || '<span class="dim">—</span>') + '</div>').join('') + '</div></div>';
+  const svc = SERVICES.filter(([k]) => d.services[k]).map(([, l]) => l).join(', ');
+  return `<div class="page-head"><div><div class="crumbs"><a href="#" data-act="go" data-to="home">Arizalarim</a> / <span class="mono">${a.id}</span> / Ko‘rib chiqish</div>
+      <h1>Ko‘rib chiqish va yuborish</h1><p class="muted">Yuborilgandan keyin ariza qulflanadi — faqat bank so‘ragan maydonlarni tuzatish mumkin bo‘ladi.</p></div></div>
+    <div class="cols"><div>
+      ${sec(1, 'Biznes', [['Yuridik nom', esc(d.legalName)], ['Brend', esc(d.brand)], ['INN · shakl', '<span class="mono">' + a.inn + '</span> · ' + esc(a.form)], ['Soha · MCC', esc(ind ? ind[1] + ' · ' + ind[2] : '')], ['Manzil', esc(d.legalAddr)], ['Aloqa', esc(d.phone) + ' · ' + esc(d.email)]])}
+      ${sec(2, 'Yuridik va soliq', [['Soliq maqomi', esc({ vat: 'QQS to‘lovchi', novat: 'QQS to‘lovchi emas', simple: 'Aylanmadan olinadigan soliq' }[d.taxStatus] || '')], ['Litsenziya', d.licensed === 'yes' ? esc(d.licNo) : d.licensed === 'no' ? 'Talab qilinmaydi' : ''], ['IKPU', '<span class="mono">' + esc(d.ikpu) + '</span>']])}
+      ${sec(3, 'Rahbariyat va egalik', [[isInd(a) ? 'Egasi' : 'Direktor', esc(d.dirName)], ['Pasport', esc(d.dirPass) + (d.dirPassExp ? ' · ' + fmtDate(d.dirPassExp) + ' gacha' : '')], ...(isInd(a) ? [] : [['Buxgalter', esc(d.accName)], ['Ta’sischilar', d.owners.map((o) => esc(o.name) + ' — ' + esc(o.share) + '%' + (o.type === 'YUSH' ? ' (yur. shaxs)' : '')).join('<br>')]])])}
+      ${sec(4, 'Faoliyat va aylanma', [['Oylik aylanma', d.turnover ? money(d.turnover) : ''], ['Tranzaksiyalar / oy', esc(d.txCount)], ['O‘rtacha chek', d.avgCheck ? money(d.avgCheck) : '']])}
+      ${sec(5, 'Bank hisobi', [['Hisob', d.accountId ? '<span class="mono">' + fmtAcc(d.accountId) + '</span>' : '']])}
+      ${sec(6, 'Xizmatlar', [['Tanlangan', esc(svc)], ['Sayt', esc(d.website)]])}
+      ${sec(7, 'Hujjatlar', [['Yuklangan', requiredDocs(a).filter((x) => docOk(a, x.key)).length + ' / ' + requiredDocs(a).length]])}
+      ${sec(8, 'Tasdiqlar', [['Belgilangan', DECL.filter(([k]) => d.decl[k]).length + ' / ' + DECL.length]])}
+    </div>
+    <div class="card" style="position:sticky;top:80px"><h3>Yuborish shartlari</h3><p class="dim">docs/22 §6 · server yuborishda hammasini qayta tekshiradi</p>
+      <div class="gate mt12">${G.map((x) => '<div class="g ' + (x.ok === null ? 'pend' : x.ok ? 'ok' : 'no') + '"><span class="mk">' + (x.ok === null ? '·' : x.ok ? '✓' : '✕') + '</span><span class="code">' + x.code + '</span><span class="sp">' + esc(x.text) + '</span>' + (x.ok === false && x.fix ? (x.fix === 'verify-email' ? '<a href="#" data-act="verify-email">Tasdiqlash</a>' : '<a href="#" data-act="wiz-go" data-n="' + x.fix.split(':')[1] + '">Tuzatish</a>') : '') + '</div>').join('')}
+      ${W.map(([c, t]) => '<div class="g w"><span class="mk">!</span><span class="code">' + c + '</span><span class="sp">' + esc(t) + '</span></div>').join('')}</div>
+      <button class="btn primary lg mt16" style="width:100%" data-act="submit" ${allOk ? '' : 'disabled'}>Arizani yuborish</button>
+      <p class="dim mt8" style="text-align:center">${allOk ? 'SMS kod bilan tasdiqlaysiz (G15)' : G.filter((x) => x.ok === false).length + ' ta shart bajarilmagan'}</p>
+      <button class="btn ghost mt8" style="width:100%" data-act="cancel-app">Qoralamani bekor qilish</button></div></div>`;
+};
+
+/* ---------- B3–B5: holat ---------- */
+VIEWS.status = () => {
+  const a = curApp(); if (!a) return VIEWS.home();
+  const step = extStep(a), [lbl, col] = ext(a);
+  const names = ['Ariza yuborildi', 'Dastlabki tekshiruv', 'Ko‘rib chiqilmoqda', 'Tasdiqlash va shartnoma', 'Kabinet tayyorlanmoqda', 'Faollashtirildi'];
+  const prog = '<div class="prog">' + names.map((t, i) => { const k = i + 1; const cls = k < step ? 'done' : k === step ? (a.status === 'NEEDS_INFO' || (k === 4 && !(a.contract && a.contract.mSigned)) ? 'warn' : 'cur') : ''; return '<div class="ps ' + cls + '" data-n="' + k + '">' + t + '</div>'; }).join('') + '</div>';
+  const eta = REVIEW_ST.includes(a.status) || a.status === 'AUTO_VALIDATION' || a.status === 'SUBMITTED' ? '<div class="alert info mt16"><span class="ic">i</span><span>Arizangiz ko‘rib chiqilmoqda. Taxminiy muddat: <b>2–3 ish kuni</b>. Savol tug‘ilsa, bank shu yerda va SMS orqali xabar beradi.</span></div>' : '';
+  const info = a.status === 'NEEDS_INFO' ? `<div class="alert warn mt16"><span class="ic">!</span><div class="sp"><b>Bank qo‘shimcha ma’lumot so‘radi</b> — ${a.info.items.length} ta band. Javob muddati: <b>${fmtDate(a.info.deadline)}</b> (14 kun). ${a.info.cycle}-so‘rov / 3.</div><button class="btn primary" data-act="open-info" data-id="${a.id}">Javob berish</button></div>` : '';
+  const contract = a.status === 'CONTRACT_PENDING' ? `<div class="alert ${a.contract.mSigned ? 'info' : 'ok'} mt16"><span class="ic">${a.contract.mSigned ? 'i' : '✓'}</span><div class="sp">${a.contract.mSigned ? 'Siz imzoladingiz. <b>Bank imzosi kutilmoqda</b> (Rais o‘rinbosari, odatda 1 ish kuni).' : '<b>Arizangiz tasdiqlandi!</b> Shartnomani 14 kun ichida imzolang.'}</div><button class="btn ${a.contract.mSigned ? '' : 'primary'}" data-act="open-contract" data-id="${a.id}">Shartnoma</button></div>` : '';
+  const term = ['CANCELLED', 'EXPIRED'].includes(a.status) ? '<div class="alert warn mt16"><span class="ic">!</span><div class="sp"><b>' + (a.status === 'CANCELLED' ? 'Ariza bekor qilingan.' : 'Ariza muddati o‘tgan.') + '</b> Ma’lumotlar saqlanadi — yangi ariza yaratishingiz mumkin.</div><button class="btn primary" data-act="new">Yangi ariza</button></div>' : a.status === 'COMPLETED' ? '<div class="alert ok mt16"><span class="ic">✓</span><div class="sp"><b>Kabinetingiz tayyor.</b> Shu akkaunt bilan kiring — yangi login kerak emas.</div><button class="btn primary" data-act="open-done" data-id="' + a.id + '">Davom etish</button></div>' : '';
+  const prov = ['CONTRACT_SIGNED', 'PROVISIONING'].includes(a.status) ? '<div class="card mt16"><h3>Kabinetingiz tayyorlanmoqda</h3><div class="prov mt12" id="prov">' + provHTML(a) + '</div></div>' : '';
+  const keys = ''; // sandbox kalitlari — shartnomadan keyin, kabinet ochilganda (Q-16)
+  return `<div class="page-head"><div><div class="crumbs"><a href="#" data-act="go" data-to="home">Arizalarim</a> / <span class="mono">${a.id}</span></div>
+      <h1>${esc(a.d.legalName || a.orgName)}</h1><div class="row"><span class="badge ${col}">${lbl}</span><span class="dim">Yuborilgan: ${a.submittedAt ? fmtDT(a.submittedAt) : '—'}</span></div></div>
+      <div class="row"><button class="btn sm" data-act="toast" data-msg="Ariza nusxasi (PDF) — prototipda yuklanmaydi. Snapshot SHA-256: ${a.hash || ''}">Ariza nusxasi (PDF)</button>
+      ${['SUBMITTED', 'AUTO_VALIDATION', 'NEEDS_INFO'].concat(REVIEW_ST).includes(a.status) ? '<button class="btn sm danger" data-act="withdraw">Arizani qaytarib olish</button>' : ''}</div></div>
+    <div class="card">${prog}</div>
+    ${term}${info}${contract}${eta}${prov}
+    <div class="cols mt16"><div class="card"><h3>Jarayon tarixi</h3><p class="dim">Siz ko‘radigan hodisalar. Ichki bosqichlar (hujjat ko‘rigi, KYB, Compliance…) umumiy «Ko‘rib chiqilmoqda» sifatida ko‘rsatiladi.</p>
+        <div class="tl mt12">${a.timeline.map((t) => '<div class="ti"><div class="tt">' + esc(t.text) + '</div><div class="td">' + fmtDT(t.t) + ' · ' + esc(t.who) + '</div></div>').join('')}</div></div>
+      <div>${keys}<div class="card"><h3>Hujjatlar</h3><div class="docs mt8">${requiredDocs(a).map((x) => { const s = a.docs[x.key] || {}; const st = s.status === 'VERIFIED' ? ['Tasdiqlangan', 'green'] : s.status === 'REPLACEMENT_REQUIRED' ? ['Qayta yuklash', 'amber'] : ['Tekshirilmoqda', 'blue']; return '<div class="row" style="font-size:13px"><span class="sp">' + esc(x.name) + '</span><span class="badge ' + st[1] + '">' + st[0] + '</span></div>'; }).join('')}</div></div></div></div>`;
+};
+function provHTML(a) {
+  const steps = ['Shartnoma ikkala tomondan imzolandi', 'Merchant yozuvi yaratildi (MER-000892) — ariza ma’lumotlari nusxalandi', 'Tarif, limitlar va settlement (T+1) o‘rnatildi', 'Uzcard / Humo protsessingda ro‘yxatga olindi (MID, TID)', 'ABS: hisob raqami bog‘landi', 'Sandbox kalitlari yaratildi (shartnomadan keyin — Q-16)', 'Rolingiz: ariza beruvchi → kabinet egasi (Owner)'];
+  const k = a.provStep || 0;
+  return steps.map((t, i) => '<div class="pi ' + (i < k ? 'done' : i === k ? 'run' : '') + '"><span class="dot"></span>' + esc(t) + '</div>').join('');
+}
+
+/* ---------- 03a: qo'shimcha ma'lumotga javob ---------- */
+VIEWS.info = () => {
+  const a = curApp(); if (!a || !a.info) return VIEWS.status();
+  const items = a.info.items.map((it, i) => {
+    let ctl = '';
+    if (it.kind === 'doc') { const x = requiredDocs(a).find((y) => y.key === it.key) || { key: it.key, name: DOCS[it.key] || it.key, why: '' }; ctl = docRow(a, x); }
+    if (it.kind === 'site') ctl = `<label class="check ${it.done ? 'on' : ''}"><input type="checkbox" data-act-change="info-done" data-i="${i}" ${it.done ? 'checked' : ''}><span>Saytni tuzatdim<span class="sub">Tekshiruvchi saytni qayta ko‘radi: ${esc(a.d.website)}</span></span></label>`;
+    if (it.kind === 'field') ctl = `<div class="field"><label>${esc(it.label)}</label><textarea data-bind="${it.field}">${esc(a.d[it.field])}</textarea><div class="hint">Faqat shu maydon ochiq — qolgan ariza qulflangan (R7)</div></div>`;
+    return `<div class="card"><div class="row"><span class="badge amber">${i + 1}</span><b class="sp">${esc(it.text)}</b><span class="dim mono">${esc(it.code)}</span></div><div class="mt12">${ctl}</div></div>`;
+  }).join('');
+  const ready = infoReady(a);
+  return `<div class="page-head"><div><div class="crumbs"><a href="#" data-act="go" data-to="home">Arizalarim</a> / <a href="#" data-act="open-status" data-id="${a.id}" class="mono">${a.id}</a> / Qo‘shimcha ma’lumot</div>
+      <h1>Bank qo‘shimcha ma’lumot so‘radi</h1><p class="muted">Muddat: <b>${fmtDate(a.info.deadline)}</b> · ${a.info.cycle}-so‘rov (3 tagacha) · BPMN 03a</p></div></div>
+    ${items}<input type="file" id="filePick" accept=".pdf,.jpg,.jpeg,.png,.heic" style="display:none">
+    <div class="row mt16"><button class="btn primary lg" data-act="info-send" ${ready ? '' : 'disabled'}>Javobni yuborish</button><span class="dim">${ready ? 'Javob tegishli bosqichga qaytadi — tekshiruv boshidan boshlanmaydi' : 'Barcha bandlarni bajaring'}</span></div>`;
+};
+function infoReady(a) {
+  return a.info.items.every((it) => it.kind === 'doc' ? docOk(a, it.key) : it.kind === 'site' ? it.done : String(a.d[it.field] || '').trim() !== (it.orig || '').trim() && String(a.d[it.field] || '').trim().length >= 50);
+}
+
+/* ---------- B6: shartnoma ---------- */
+VIEWS.contract = () => {
+  const a = curApp(); if (!a || !a.contract) return VIEWS.status();
+  const c = a.contract, d = a.d, ind = industryOf(a.industry);
+  return `<div class="page-head"><div><div class="crumbs"><a href="#" data-act="go" data-to="home">Arizalarim</a> / <a href="#" data-act="open-status" data-id="${a.id}" class="mono">${a.id}</a> / Shartnoma</div>
+      <h1>Internet-ekvayring xizmati shartnomasi</h1><p class="muted"><span class="mono">${c.no}</span> · tuzilgan sana: ${fmtDate(c.at)} · imzolash muddati: ${fmtDate(c.at + 14 * DAY)}</p></div></div>
+    <div class="tariff">
+      <div class="tc"><div class="dim">UZCARD</div><b>1,20%</b></div>
+      <div class="tc"><div class="dim">HUMO</div><b>1,30%</b></div>
+      <div class="tc"><div class="dim">Visa / Mastercard</div><b>${d.intl === 'yes' ? '1,60%' : '—'}</b></div>
+      <div class="tc"><div class="dim">Risk · hisob-kitob</div><b>Past · T+1</b></div>
+    </div>
+    <p class="dim mt8">Tarif karta tizimi va risk darajasiga qarab belgilanadi (Q-20). Foizlar — namuna, qiymatlarni Moliya tasdiqlaydi (18 §37). MCC: <span class="mono">${esc(ind ? ind[2] : '')}</span>.</p>
+    <div class="cols mt16"><div class="contract-doc">
+      <h4>INTERNET-EKVAYRING XIZMATLARINI KO‘RSATISH SHARTNOMASI № ${c.no}</h4><div class="c">Toshkent sh. · ${fmtDate(c.at)} · namuna matn — haqiqiy shablonni bank beradi (18 §13)</div>
+      <p><b>“Garant Bank” AJ</b> (keyingi o‘rinlarda — Bank), Rais o‘rinbosari nomidan, bir tomondan, va <b>${esc(d.legalName)}</b> (STIR ${a.inn}, keyingi o‘rinlarda — Merchant), direktor ${esc(d.dirName)} nomidan, ikkinchi tomondan, quyidagilar haqida shartnoma tuzdilar:</p>
+      <p><b>1. Shartnoma predmeti.</b> Bank Merchantga to‘lov kartalari orqali tovar va xizmatlar uchun to‘lovlarni qabul qilish xizmatini ko‘rsatadi: ${esc(SERVICES.filter(([k]) => d.services[k]).map(([, l]) => l).join(', '))}.</p>
+      <p><b>2. Komissiya.</b> UZCARD kartalari bo‘yicha — 1,20%, HUMO kartalari bo‘yicha — 1,30% (risk darajasi: past). Komissiya hisob-kitob vaqtida ushlab qolinadi.</p>
+      <p><b>3. Hisob-kitob.</b> Tushumlar keyingi ish kuni (T+1) Merchantning Garant Bankdagi ${fmtAcc(d.accountId)} hisob raqamiga o‘tkaziladi.</p>
+      <p><b>4. Limitlar.</b> Bitta to‘lov — 20 000 000 so‘mgacha, kunlik aylanma — 200 000 000 so‘mgacha [TAXMIN]. Limitlar risk darajasiga qarab qayta ko‘rib chiqiladi.</p>
+      <p><b>5. Merchant majburiyatlari.</b> Saytda bankning talablariga (BT §4) rioya qilish, karta rekvizitlarini saqlamaslik, qaytarish so‘rovlarini o‘z vaqtida ko‘rib chiqish.</p>
+      <p><b>6. Muddat.</b> Shartnoma ikkala tomon imzolagan kundan kuchga kiradi va bir yil amal qiladi, avtomatik uzaytiriladi.</p>
+    </div>
+    <div><div class="card"><h3>Imzolar</h3><p class="dim">Tartib: avval Merchant, keyin Bank (bank javobi, 22.09)</p>
+      <div class="sig mt12" style="grid-template-columns:1fr">
+        <div class="s ${c.mSigned ? 'ok' : ''}"><div class="t">1. Merchant — ${esc(d.dirName)}</div>${c.mSigned ? 'E-IMZO bilan imzolandi · ' + fmtDT(c.mSigned) + '<br><span class="dim">Sertifikat: STIR ' + a.inn + ', PINFL ' + esc(String(d.dirPinfl).slice(0, 3)) + '•••••••' + esc(String(d.dirPinfl).slice(-2)) + '</span>' : '<span class="dim">Imzo kutilmoqda</span>'}</div>
+        <div class="s ${c.bSigned ? 'ok' : ''}"><div class="t">2. Bank — Rais o‘rinbosari (arizani tasdiqlagan rahbar)</div>${c.bSigned ? 'Imzolandi · ' + fmtDT(c.bSigned) : '<span class="dim">' + (c.mSigned ? 'Navbatda — odatda 1 ish kuni' : 'Sizdan keyin') + '</span>'}</div>
+      </div>
+      ${c.mSigned ? '' : '<button class="btn primary lg mt16" style="width:100%" data-act="sign">E-IMZO bilan imzolash</button><p class="dim mt8">Imzo tizim ichida E-IMZO bilan (Q-09). Sertifikatdagi STIR va PINFL tekshiriladi.</p>'}
+      ${a.role === 'REP' && !c.mSigned ? '<div class="alert warn mt12"><span class="ic">!</span><span>Siz vakil sifatida ariza berdingiz. Shartnomani <b>direktor</b> o‘z E-IMZO kaliti bilan imzolaydi.</span></div>' : ''}
+      <button class="btn ghost mt8" style="width:100%" data-act="decline">Shartnomadan voz kechish</button></div></div></div>`;
+};
+
+/* ---------- B7–B8: kabinet tayyor ---------- */
+VIEWS.done = () => {
+  const a = curApp(); if (!a) return VIEWS.home();
+  const g = a.golive || {};
+  const items = [['test', 'Sandbox’da muvaffaqiyatli test to‘lov'], ['refund', 'Test to‘lovni qaytarish (refund)'], ['webhook', 'Webhook (notify_url) 200 qaytaradi'], ['mfa', 'Kabinetda ikki bosqichli himoya (MFA) yoqilgan']];
+  return `<div class="card" style="text-align:center;padding:36px 22px">
+      <div class="empty" style="padding:0"><div class="big" style="background:var(--green-bg);color:var(--green)">✓</div></div>
+      <h1>Kabinetingiz tayyor!</h1>
+      <p class="muted" style="max-width:600px;margin:6px auto 0"><b>${esc(a.d.legalName)}</b> Garant merchanti sifatida ro‘yxatga olindi. Yangi login yoki parol kerak emas — kabinetga <b>shu akkaunt</b> bilan kirasiz. Sizning rolingiz: <b>Owner</b>.</p>
+      <div class="row mt20" style="justify-content:center"><a class="btn primary lg" href="merchant-panel.html">Kabinetga o‘tish →</a><button class="btn lg" data-act="go" data-to="home">Arizalarim</button></div></div>
+    <div class="cols mt16"><div class="card"><div class="row"><h3 class="sp">Go-live cheklist (D4 → D5)</h3><span class="badge ${a.live ? 'green' : 'purple'}">${a.live ? 'Live' : 'Sandbox'}</span></div>
+        <p class="dim">Real to‘lovlarni qabul qilish uchun. Tekshiruvlar avtomatik, oxirida Operatsiya xodimi tasdiqlaydi (docs/09 §3.2).</p>
+        <div class="prov mt8">${items.map(([k, t]) => '<div class="pi ' + (g[k] || a.live ? 'done' : '') + '"><span class="dot"></span>' + t + '</div>').join('')}
+        <div class="pi ${a.live ? 'done' : ''}"><span class="dot"></span>Operatsiya xodimi tasdig‘i → production kalitlar</div></div></div>
+      <div>${a.keys ? '<div class="card"><div class="row"><h3 class="sp">Sandbox kalitlari</h3><span class="badge purple">Test muhit</span></div><p class="dim">Shartnomadan keyin, kabinet bilan birga berildi (Q-16). Real pul yo‘q.</p><div class="keys mt8"><span>merchant_id:</span> ' + a.keys.mid + '<br><span>secret_key:</span> ' + a.keys.sk.slice(0, 10) + '••••••••••••' + a.keys.sk.slice(-4) + '<br><span>api_url:</span> https://sandbox.pay.garantbank.uz/v1</div></div>' : ''}<div class="card"><h3>Merchant ma’lumotlari</h3><div class="kv mt8" style="grid-template-columns:130px 1fr;font-size:13px">
+        <div class="k">Merchant ID</div><div class="mono">MER-000892</div><div class="k">MID / TID</div><div class="mono">90510047 / 10047001</div>
+        <div class="k">Shartnoma</div><div class="mono">${a.contract ? a.contract.no : ''}</div><div class="k">Manba ariza</div><div class="mono">${a.id}</div>
+        <div class="k">Dostup</div><div>${level(a)} · ${LEVEL_NAME[level(a)]}</div></div></div></div></div>`;
+};
+
+/* ---------- rad etildi ---------- */
+VIEWS.rejected = () => {
+  const a = curApp(); if (!a || !a.rejection) return VIEWS.home();
+  const r = a.rejection;
+  return `<div class="page-head"><div><div class="crumbs"><a href="#" data-act="go" data-to="home">Arizalarim</a> / <span class="mono">${a.id}</span></div>
+      <h1>Ariza rad etildi</h1><p class="muted">${fmtDT(r.at)} · BPMN 03b</p></div></div>
+    <div class="card" style="max-width:760px">
+      <div class="alert err"><span class="ic">✕</span><div><b>${esc(r.reason)}</b></div></div>
+      ${r.remarks.length ? '<div class="sec">Bartaraf etilishi kerak bo‘lgan kamchiliklar</div><ul class="chk x">' + r.remarks.map((x) => '<li>' + esc(x) + '</li>').join('') + '</ul>' : ''}
+      ${r.canReapply ? '<div class="alert info mt16"><span class="ic">i</span><span>Kamchiliklarni bartaraf etgach, qayta ariza berishingiz mumkin. Majburiy kutish muddati yo‘q. Ma’lumotlar yangi arizaga nusxalanadi.</span></div><button class="btn primary lg mt16" data-act="reapply">Qayta ariza berish</button>' : '<p class="dim mt12">Batafsil ma’lumot uchun bank bilan bog‘laning.</p>'}
+    </div>`;
+};
+
+/* ---------------- demo paneli (bank tomoni simulyatsiyasi) ---------------- */
+function renderDemo() {
+  const el = $('#demo');
+  el.className = 'demo' + (S.demoMin ? ' min' : '');
+  document.body.classList.toggle('demo-open', !S.demoMin);
+  const a = curApp();
+  const B = (act, label, primary) => '<button class="btn ' + (primary ? 'primary' : '') + '" data-act="' + act + '">' + label + '</button>';
+  let body = '<div class="dim">Backend yo‘q. Bu panel bank xodimlarining Admin paneldagi harakatlarini va vaqt o‘tishini simulyatsiya qiladi.</div>';
+  if (!S.user) body += '<div class="lbl">Tez boshlash</div>' + B('demo-login', 'Demo akkaunt bilan kirish (email tasdiqlangan)', true);
+  else if (!a || ['home', 'new'].includes(S.screen)) {
+    body += '<div class="lbl">Maslahat</div><div class="dim">«Yangi ariza» → INN <span class="mono">306481725</span> (Dilnoza Style) — asosiy ssenariy.</div>';
+    if (S.screen === 'new' && S.pre && S.pre.outcome === 'NO_ACCOUNT' && S.pre.phase === 'result') body += '<div class="lbl">Harakatlar</div>' + B('demo-open-account', 'ABS: mijoz Garant Bankda hisob ochdi', true);
+  }
+  if (S.user && a && !['home', 'new'].includes(S.screen)) {
+    const [lbl] = ext(a);
+    body += '<div class="lbl">Ariza <span class="mono">' + a.id + '</span></div><div class="int">Bank ko‘radi: <b>' + a.status + '</b><br>' + esc(INTERNAL[a.status] || '') + '<br>Mijoz ko‘radi: ' + esc(lbl) + '<br>Dostup: ' + level(a) + '</div><div class="lbl">Harakatlar</div>';
+    const st = a.status;
+    if (st === 'DRAFT') {
+      const rd = requiredDocs(a);
+      body += '<div class="int">Lid kartochkasi: ' + [1, 2, 3, 4, 5, 6, 7, 8].filter((n) => stepOk(a, n)).length + '/8 qadam · hujjatlar ' + rd.filter((x) => docOk(a, x.key)).length + '/' + rd.length + ' · hisob: topildi</div>';
+      body += B('demo-fill', 'Formani namunaviy ma’lumot bilan to‘ldirish');
+      if (S.user && !S.user.emailVerified) body += B('verify-email', 'Email havolasini bosish');
+      body += B('demo-expire', '30 kun o‘tdi (faolsizlik → EXPIRED)');
+    }
+    if (st === 'SUBMITTED' || st === 'AUTO_VALIDATION') body += B('demo-next', 'Avto-tekshiruv yakunlandi → hujjat ko‘rigi', true);
+    if (st === 'DOC_REVIEW') body += B('demo-next', 'Onboarding xodimi: hujjatlar to‘g‘ri → sayt', true) + B('demo-info', 'Onboarding xodimi: qo‘shimcha ma’lumot (pasport)');
+    if (st === 'SITE_REVIEW') body += B('demo-next', 'Onboarding xodimi: sayt mos → KYB', true) + B('demo-info', 'Onboarding xodimi: sayt mos emas (logolar yo‘q)');
+    if (st === 'KYB_CHECK' || st === 'RISK_ASSESSMENT') body += B('demo-next', 'KYC/KYB toza, risk LOW (24) → Compliance', true);
+    if (st === 'COMPLIANCE_REVIEW') body += B('demo-next', 'Compliance: ijobiy → Rais o‘rinbosari', true) + B('demo-info', 'Compliance: bartaraf etsa bo‘ladi (tavsif)') + B('demo-reject-final', 'Compliance: yakuniy rad (sanksiya)');
+    if (st === 'PENDING_APPROVAL') body += B('demo-approve', 'Rais o‘rinbosari: tasdiqlash', true) + B('demo-info', 'Rais o‘rinbosari: kamchilik bilan qaytarish') + B('demo-reject', 'Rais o‘rinbosari: rad etish (qayta ariza mumkin)');
+    if (st === 'NEEDS_INFO') body += B('demo-info-expire', '14 kun o‘tdi (javobsiz → EXPIRED)');
+    if (st === 'CONTRACT_PENDING') body += a.contract.mSigned ? B('demo-bank-sign', 'Rais o‘rinbosari E-IMZO bilan imzoladi', true) : '<div class="dim">Mijoz imzosi kutilmoqda → «Shartnoma» → «E-IMZO bilan imzolash»</div>' + B('demo-expire', '14 kun o‘tdi (imzolanmadi → EXPIRED)');
+    if (st === 'COMPLETED' && !a.live) body += B('demo-golive', 'Test to‘lov, refund, webhook ✓ → Operatsiya: go-live', true);
+    if (REVIEW_ST.includes(st) || st === 'SUBMITTED' || st === 'AUTO_VALIDATION') body += '<div class="dim">Tez yo‘l:</div>' + B('demo-fast', 'Tasdiqlashgacha o‘tkazib yuborish ⏩');
+  }
+  body += '<div class="lbl">Prototip</div>' + B('demo-reset', 'Demo’ni qayta boshlash') + '<div class="dim">Hujjatlar: docs/21–24 · BPMN: bpmn/viewer.html</div>';
+  el.innerHTML = '<button class="dh" data-act="demo-toggle">⚙ Demo boshqaruvi — bank tomoni<span class="sp"></span>' + (S.demoMin ? '▲' : '▼') + '</button><div class="db">' + body + '</div>';
+}
+
+/* ---------------- harakatlar ---------------- */
+const ACT = {};
+ACT.brand = () => go(S.user ? 'home' : 'landing');
+ACT.go = (el) => go(el.dataset.to);
+ACT.toast = (el) => toast(el.dataset.msg);
+ACT.logout = () => { S.user = null; S.cur = null; go('landing'); };
+ACT['demo-toggle'] = () => { S.demoMin = !S.demoMin; renderDemo(); save(); };
+ACT['demo-reset'] = () => { if (confirm('Barcha demo ma’lumotlari o‘chiriladi. Davom etasizmi?')) { S = fresh(); go('landing'); } };
+
+/* ro'yxatdan o'tish */
+ACT['reg-send'] = () => {
+  const v = ($('#regPhone').value || '').replace(/\D/g, '');
+  if (v.length !== 9) { $('#regErr').textContent = '9 ta raqam kiriting (operator kodi bilan)'; return; }
+  if (S.users[v]) { $('#regErr').innerHTML = 'Bu raqam bilan akkaunt bor. <a href="#" data-act="go" data-to="login">Kirish</a>'; return; }
+  S.reg = { step: 2, phone: v, attempts: 0, sentAt: Date.now(), idp: S.reg.idp }; render(); tickResend();
+  setTimeout(() => { const o = $('#otp'); if (o) o.focus(); }, 30);
+};
+ACT['reg-resend'] = () => { S.reg.sentAt = Date.now(); S.reg.attempts = 0; toast('Kod qayta yuborildi (prototip: 123456)'); render(); tickResend(); };
+ACT['reg-back'] = () => { S.reg.step = 1; render(); };
+ACT['reg-verify'] = () => {
+  const v = ($('#otp').value || '').trim();
+  if (v === '123456') { S.reg.step = 3; render(); return; }
+  S.reg.attempts++;
+  if (S.reg.attempts >= 5) { S.reg = { step: 1, phone: '', attempts: 0, sentAt: 0, idp: S.reg.idp }; render(); $('#regErr').textContent = '5 marta xato kod — raqam 15 daqiqaga bloklandi (prototip: darhol qayta urinish mumkin)'; return; }
+  render();
+};
+ACT['reg-complete'] = () => {
+  const name = $('#rName').value.trim(), email = $('#rEmail').value.trim(), pw = $('#rPw').value;
+  const idp = S.reg.idp;
+  const pwBad = idp && !pw ? false : (pw.length < 10 || !/\d/.test(pw) || !/[a-z]/i.test(pw));
+  const err = !name || name.split(/\s+/).length < 2 ? 'F.I.Sh ni to‘liq kiriting' : !/^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i.test(email) ? 'Email noto‘g‘ri' : pwBad ? 'Parol: kamida 10 belgi, harf va raqam' : !$('#rConsent').checked ? 'Shaxsiy ma’lumotlarga rozilik majburiy' : '';
+  if (err) { $('#rErr').textContent = err; return; }
+  S.users[S.reg.phone] = { name, email, methods: ['PHONE'].concat(idp ? [idp.method] : []), pinfl: idp ? idp.pinfl : null, eimzoInn: idp ? idp.inn : null };
+  S.user = { phone: S.reg.phone, name, email, emailVerified: false, since: Date.now(), methods: S.users[S.reg.phone].methods, eimzoInn: idp ? idp.inn : null };
+  S.reg = { step: 1, phone: '', attempts: 0, sentAt: 0 };
+  toast('Akkaunt yaratildi · dostup D1'); go('home');
+};
+ACT.login = () => {
+  const v = ($('#lPhone').value || '').replace(/\D/g, '');
+  const u = S.users[v];
+  if (!u) { $('#lErr').textContent = 'Bu raqam bilan akkaunt topilmadi'; return; }
+  if (!$('#lPw').value) { $('#lErr').textContent = 'Parolni kiriting'; return; }
+  S.user = { phone: v, name: u.name, email: u.email, emailVerified: !!u.emailVerified }; go('home');
+};
+ACT['demo-login'] = () => {
+  S.users['901234567'] = { name: 'Yusupova Dilnoza Baxtiyorovna', email: 'dilnoza@dilnozastyle.uz', emailVerified: true };
+  S.user = { phone: '901234567', name: 'Yusupova Dilnoza Baxtiyorovna', email: 'dilnoza@dilnozastyle.uz', emailVerified: true };
+  toast('Demo akkaunt · dostup D1'); go('home');
+};
+ACT.idp = (el) => {
+  const m = el.dataset.v;
+  if (m === 'EIMZO') {
+    modal('<h2>E-IMZO bilan ro‘yxatdan o‘tish</h2><p class="muted">Kalitni tanlang (prototip — kompyuteringizdagi E-IMZO simulyatsiya qilinadi).</p>' +
+      '<label class="key-opt mt12"><input type="radio" name="k" value="LE" checked style="margin-top:3px"><div><b>YUSUPOVA DILNOZA BAXTIYOROVNA</b><br>“DILNOZA STYLE” MChJ · direktor · yuridik shaxs kaliti<br><span class="dim">STIR 306481725 · PINFL 428•••••••21</span></div></label>' +
+      '<label class="key-opt mt8" style="border-color:var(--border);background:#fff"><input type="radio" name="k" value="IND" style="margin-top:3px"><div><b>YUSUPOVA DILNOZA BAXTIYOROVNA</b><br>Jismoniy shaxs kaliti<br><span class="dim">PINFL 428•••••••21</span></div></label>' +
+      '<div class="field mt12"><label>Kalit paroli</label><input id="idpPin" type="password" placeholder="prototip: istalgan"></div>' +
+      '<div class="foot"><button class="btn" data-act="modal-close">Bekor</button><button class="btn primary" data-act="idp-ok" data-v="EIMZO">Kirish</button></div>');
+  } else {
+    modal('<h2>OneID — id.egov.uz</h2><p class="muted">Prototip: davlat identifikatsiya tizimiga yo‘naltirish simulyatsiya qilinadi.</p>' +
+      '<div class="key-opt mt12"><div><b>Yusupova Dilnoza Baxtiyorovna</b><br><span class="dim">PINFL 428•••••••21 · pasport AD1•••567</span><br>Garant Merchant quyidagilarni so‘ramoqda: F.I.Sh, PINFL, pasport ma’lumoti</div></div>' +
+      '<div class="foot"><button class="btn" data-act="modal-close">Bekor</button><button class="btn primary" data-act="idp-ok" data-v="ONEID">Ruxsat berish</button></div>');
+  }
+};
+ACT['idp-ok'] = (el) => {
+  const m = el.dataset.v;
+  if (m === 'EIMZO' && !($('#idpPin') || {}).value) { $('#idpPin').focus(); return; }
+  const le = m === 'EIMZO' && (document.querySelector('input[name="k"]:checked') || {}).value === 'LE';
+  S.reg = { step: 1, phone: '', attempts: 0, sentAt: 0, idp: { method: m, name: 'Yusupova Dilnoza Baxtiyorovna', pinfl: '42805896540021', inn: le ? '306481725' : null } };
+  closeModal(); toast((m === 'EIMZO' ? 'E-IMZO' : 'OneID') + ': shaxs tasdiqlandi. Endi telefonni bog‘lang'); go('register');
+};
+ACT['idp-login'] = (el) => {
+  const m = el.dataset.v;
+  const u = Object.entries(S.users).find(([, x]) => x.pinfl === '42805896540021');
+  if (!u) { toast('Bu ' + (m === 'EIMZO' ? 'E-IMZO kaliti' : 'OneID') + ' bilan akkaunt topilmadi — ro‘yxatdan o‘ting'); ACT.idp(el); return; }
+  S.user = { phone: u[0], name: u[1].name, email: u[1].email, emailVerified: !!u[1].emailVerified, methods: u[1].methods, eimzoInn: u[1].eimzoInn };
+  toast((m === 'EIMZO' ? 'E-IMZO' : 'OneID') + ' bilan kirildi'); go('home');
+};
+ACT.lang = (el) => toast('Prototip faqat o‘zbekcha. Tizimda 3 til: o‘zbek, rus, ingliz (Q-21) — tanlangan: ' + el.dataset.v);
+ACT['verify-email'] = () => { S.user.emailVerified = true; if (S.users[S.user.phone]) S.users[S.user.phone].emailVerified = true; toast('Email tasdiqlandi ✓'); render(); };
+function tickResend() {
+  clearInterval(window.__rt);
+  window.__rt = setInterval(() => {
+    const el = $('#resend'); if (!el || S.screen !== 'register' || S.reg.step !== 2) { clearInterval(window.__rt); return; }
+    const left = Math.max(0, 60 - Math.floor((Date.now() - S.reg.sentAt) / 1000));
+    el.innerHTML = left ? 'Qayta yuborish: ' + left + ' s' : '<a href="#" data-act="reg-resend">Kodni qayta yuborish</a>';
+    if (!left) clearInterval(window.__rt);
+  }, 1000);
+}
+
+/* INN va dastlabki tekshiruv (docs/22 §3) */
+ACT.new = () => { S.pre = { inn: '', phase: 'input' }; go('new'); };
+ACT['pre-fill'] = (el) => { $('#preInn').value = el.dataset.v; };
+ACT['pre-reset'] = () => { S.pre = { inn: '', phase: 'input' }; render(); };
+ACT['pre-role'] = (el) => { S.pre.role = el.dataset.v; render(); };
+ACT['pre-recheck'] = () => { const inn = S.pre.inn; S.pre = { inn: '', phase: 'input' }; render(); $('#preInn').value = inn; ACT['pre-check'](); };
+ACT['demo-open-account'] = () => { S.opened = S.opened || {}; S.opened[S.pre.inn] = true; toast('ABS: mijoz Garant Bankda hisob ochdi — «Qayta tekshirish» ni bosing'); save(); renderDemo(); };
+ACT['access-request'] = () => { toast('Kirish so‘rovi yuborildi — egasi tasdiqlasa, tashkilot «Arizalarim»da paydo bo‘ladi'); };
+ACT['pre-check'] = () => {
+  const inn = ($('#preInn').value || '').replace(/\D/g, '');
+  if (inn.length !== 9) { $('#preErr').textContent = 'INN 9 ta raqamdan iborat bo‘lishi kerak'; return; }
+  const own = S.apps.find((x) => x.inn === inn && !TERMINAL.includes(x.status));
+  const rej = S.apps.find((x) => x.inn === inn && x.status === 'REJECTED' && x.rejection && x.rejection.canReapply);
+  const sp = SPECIAL[inn], r = REG[inn];
+  const plan = [['INN formati va nazorat raqami', 'ok']];
+  let outcome = 'OK';
+  if (sp === 'BLOCKED') { plan.push(['Dublikat va cheklovlar', 'no']); outcome = 'BLOCKED'; }
+  else if (sp === 'MERCHANT') { plan.push(['Faol merchant', 'no', 'topildi']); outcome = 'MERCHANT'; }
+  else if (sp === 'OPEN_OTHER') { plan.push(['Ochiq arizalar', 'no', 'boshqa foydalanuvchida']); outcome = 'OPEN_OTHER'; }
+  else if (own) { plan.push(['Ochiq arizalar', 'w', 'sizda bor']); outcome = own.status === 'DRAFT' ? 'OWN_DRAFT' : 'OWN_ACTIVE'; }
+  else {
+    plan.push(['Faol merchant va ochiq arizalar', 'ok', 'topilmadi']);
+    plan.push(['Davlat registri', r ? 'ok' : 'w', r ? r.name : 'topilmadi — qo‘lda kiritiladi']);
+    if (r && !ALLOWED_FORMS.includes(r.form)) { plan.push(['Tashkiliy shakl', 'no', r.form + ' — qabul qilinmaydi (Q-06)']); outcome = 'FORM'; }
+    else {
+      plan.push(['Tashkiliy shakl', 'ok', r ? r.form : 'qo‘lda tekshiriladi']);
+      if (hasAccount(inn)) plan.push(['Garant Bank hisobi (ABS)', 'ok', 'faol hisob topildi']);
+      else { plan.push(['Garant Bank hisobi (ABS)', 'no', 'topilmadi — ariza boshlanmaydi (Q-07)']); outcome = 'NO_ACCOUNT'; }
+    }
+  }
+  S.pre = { inn, phase: 'checking', checks: [], outcome, appId: own ? own.id : null, reapply: rej ? rej.id : null, role: 'DIR', eimzoDir: !!(S.user && S.user.eimzoInn === inn), industry: r ? r.industry : '' };
+  let i = 0;
+  const step = () => {
+    if (S.screen !== 'new' || !S.pre || S.pre.inn !== inn) return;
+    if (i < plan.length) { S.pre.checks.push({ t: plan[i][0], s: 'run' }); render(); setTimeout(() => { const p = plan[i]; Object.assign(S.pre.checks[i], { s: p[1], note: p[2] }); i++; render(); setTimeout(step, 120); }, 380); }
+    else { S.pre.phase = 'result'; render(); }
+  };
+  render(); step();
+};
+ACT['pre-create'] = () => {
+  const p = S.pre; if (!p.role || !p.industry || isProhibited(p.industry)) return;
+  const old = p.reapply ? S.apps.find((x) => x.id === p.reapply) : null;
+  const a = newApp(p.inn, { role: p.role, industry: p.industry, prev: old ? old.id : null, accountFound: old ? old.accountFound : null, accountNo: old ? old.accountNo : null });
+  if (old) { a.d = JSON.parse(JSON.stringify(old.d)); a.docs = JSON.parse(JSON.stringify(old.docs)); a.d.decl = {}; push(a, 'Qayta ariza: ma’lumotlar ' + old.id + ' dan nusxalandi', 'Tizim'); }
+  S.apps.push(a); S.pre = null; toast('Qoralama yaratildi: ' + a.id); go('wizard', { cur: a.id, wiz: 1 });
+};
+
+/* forma */
+ACT['open-wiz'] = (el) => go('wizard', { cur: el.dataset.id, wiz: 1 });
+ACT['open-status'] = (el) => go('status', { cur: el.dataset.id });
+ACT['open-info'] = (el) => go('info', { cur: el.dataset.id });
+ACT['open-contract'] = (el) => go('contract', { cur: el.dataset.id });
+ACT['open-done'] = (el) => go('done', { cur: el.dataset.id });
+ACT['open-rejected'] = (el) => go('rejected', { cur: el.dataset.id });
+ACT['wiz-go'] = (el) => { const a = curApp(); if (a && a.status !== 'DRAFT') { go('status'); return; } a.show[S.wiz] = true; go('wizard', { wiz: Number(el.dataset.n) }); };
+ACT['wiz-prev'] = () => { S.wiz = Math.max(1, S.wiz - 1); go('wizard'); };
+ACT['wiz-next'] = () => {
+  const a = curApp(); a.show[S.wiz] = true;
+  const e = validate(a, S.wiz);
+  if (Object.keys(e).length) { render(); toast(Object.keys(e).length + ' ta maydonni tuzating'); const f = document.querySelector('.field.bad, .err'); if (f) f.scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }
+  if (S.wiz === 8) go('review'); else go('wizard', { wiz: S.wiz + 1 });
+};
+ACT['owner-add'] = () => { const a = curApp(); a.d.owners.push({ type: 'JSH', name: '', share: '', pep: false }); touch(a); render(); };
+ACT['owner-del'] = (el) => { const a = curApp(); a.d.owners.splice(Number(el.dataset.i), 1); touch(a); render(); };
+ACT['abs-recheck'] = () => toast('ABS: hisob hali topilmadi (demo panel → «ABS: mijoz hisob ochdi»)');
+ACT.scan = () => {
+  const a = curApp();
+  toast('Sayt tekshirilmoqda…');
+  setTimeout(() => {
+    const https = /^https:\/\//.test(a.d.website);
+    const prev = a.d.scan;
+    a.d.scan = { url: a.d.website, https, ssl: fmtDate(addDays(142)), logos: !!(prev && prev.url === a.d.website && prev.logosFixed), at: Date.now() };
+    touch(a); render();
+  }, 700);
+};
+/* hujjatlar */
+let pickKey = null;
+ACT['doc-pick'] = (el) => { pickKey = el.dataset.k; const f = $('#filePick'); f.value = ''; f.click(); };
+ACT['doc-demo'] = (el) => simulateUpload(curApp(), el.dataset.k, sampleName(el.dataset.k), (0.4 + Math.random() * 2.4).toFixed(1) + ' MB');
+ACT['doc-del'] = (el) => { const a = curApp(); delete a.docs[el.dataset.k]; touch(a); render(); };
+ACT['docs-all'] = () => { const a = curApp(); requiredDocs(a).filter((x) => !docOk(a, x.key)).forEach((x, i) => setTimeout(() => simulateUpload(a, x.key, sampleName(x.key), (0.4 + Math.random() * 2.4).toFixed(1) + ' MB'), i * 150)); };
+const sampleName = (k) => k.split(':')[0].toLowerCase().replace(/_/g, '-') + '.pdf';
+function simulateUpload(a, key, file, size) {
+  a.docs[key] = { status: 'UPLOADING', p: 0 };
+  render();
+  const t = setInterval(() => {
+    const s = a.docs[key]; if (!s || s.status !== 'UPLOADING') { clearInterval(t); return; }
+    s.p = Math.min(100, s.p + 25);
+    if (s.p >= 100) { clearInterval(t); a.docs[key] = { status: 'UPLOADED', file, size, at: Date.now() }; touch(a); render(); } else render();
+  }, 160);
+}
+/* yuborish (G15 + snapshot) */
+ACT.submit = () => {
+  const a = curApp();
+  if (!gate(a).every((x) => x.ok !== false)) return;
+  modal(`<h2>Arizani yuborish</h2><p class="muted">${esc(fmtPhone(S.user.phone))} raqamiga SMS kod yuborildi (G15).</p>
+    <div class="alert info mt12"><span class="ic">i</span><span>Prototip: kod — <b class="mono">123456</b></span></div>
+    <div class="field mt12"><input id="subOtp" class="otp" maxlength="6" inputmode="numeric" placeholder="••••••"><div class="err" id="subErr"></div></div>
+    <p class="dim">Yuborilgach ariza qulflanadi, nusxasi (snapshot + SHA-256) saqlanadi va bank navbatiga tushadi.</p>
+    <div class="foot"><button class="btn" data-act="modal-close">Bekor</button><button class="btn" data-act="submit-eimzo">E-IMZO bilan</button><button class="btn primary" data-act="submit-confirm">Tasdiqlash va yuborish</button></div>`);
+  setTimeout(() => $('#subOtp') && $('#subOtp').focus(), 30);
+};
+ACT['submit-confirm'] = async () => {
+  if (($('#subOtp').value || '').trim() !== '123456') { $('#subErr').textContent = 'Kod noto‘g‘ri'; return; }
+  const a = curApp();
+  a.hash = await sha256(JSON.stringify({ id: a.id, d: a.d, docs: a.docs }));
+  a.status = 'SUBMITTED'; a.submittedAt = Date.now();
+  requiredDocs(a).forEach((x) => { if (a.docs[x.key]) a.docs[x.key].status = 'UPLOADED'; });
+  push(a, 'Ariza yuborildi · nusxa saqlandi (SHA-256 ' + a.hash.slice(0, 12) + '…)', 'Siz');
+  closeModal(); toast('Ariza yuborildi · dostup D2'); go('status');
+  setTimeout(() => { if (a.status === 'SUBMITTED') { a.status = 'AUTO_VALIDATION'; push(a, 'Dastlabki avtomatik tekshiruv boshlandi', 'Tizim'); rerenderIf(a); } }, 1200);
+  setTimeout(() => { if (a.status === 'AUTO_VALIDATION') { a.status = 'DOC_REVIEW'; push(a, 'Dastlabki tekshiruv yakunlandi — ariza ko‘rib chiqilmoqda', 'Tizim'); rerenderIf(a); } }, 3200);
+};
+ACT['submit-eimzo'] = () => { $('#subOtp').value = '123456'; toast('E-IMZO imzosi bilan tasdiqlandi (prototip)'); ACT['submit-confirm'](); };
+async function sha256(s) {
+  try { const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)); return Array.from(new Uint8Array(b)).map((x) => x.toString(16).padStart(2, '0')).join(''); }
+  catch (e) { let h = 0; for (const c of s) h = (h * 31 + c.charCodeAt(0)) | 0; return (h >>> 0).toString(16).padStart(8, '0').repeat(8); }
+}
+function rerenderIf(a) { if (curApp() === a) render(); else save(); }
+ACT['cancel-app'] = () => { if (!confirm('Qoralama bekor qilinsinmi?')) return; const a = curApp(); a.status = 'CANCELLED'; push(a, 'Qoralama bekor qilindi', 'Siz'); go('home'); };
+ACT.withdraw = () => { if (!confirm('Arizani qaytarib olasizmi? Ko‘rib chiqish to‘xtatiladi.')) return; const a = curApp(); a.status = 'CANCELLED'; push(a, 'Ariza qaytarib olindi', 'Siz'); go('home'); };
+
+/* qo'shimcha ma'lumot */
+ACT['info-send'] = () => {
+  const a = curApp(); if (!infoReady(a)) return;
+  const back = a.info.returnTo;
+  a.info.items.forEach((it) => { if (it.kind === 'doc' && a.docs[it.key]) a.docs[it.key].status = 'UPLOADED'; if (it.kind === 'site') { a.d.scan = Object.assign({}, a.d.scan, { logos: true, logosFixed: true }); } });
+  a.cycles++; a.info = null; a.status = back;
+  push(a, 'Javobingiz qabul qilindi — ariza tegishli bosqichda davom etmoqda', 'Siz');
+  toast('Javob yuborildi'); go('status');
+};
+
+/* shartnoma (E-IMZO simulyatsiyasi) */
+ACT.sign = () => {
+  const a = curApp();
+  modal(`<h2>E-IMZO bilan imzolash</h2><p class="muted">Kalitni tanlang. Tizim sertifikatdagi STIR va PINFL ni arizadagi direktor bilan solishtiradi.</p>
+    <div class="key-opt mt12"><input type="radio" checked style="margin-top:3px"><div><b>${esc(String(a.d.dirName).toUpperCase())}</b><br>${esc(a.d.legalName)} · direktor<br><span class="dim">STIR ${a.inn} · PINFL ${esc(String(a.d.dirPinfl).slice(0, 3))}•••••••${esc(String(a.d.dirPinfl).slice(-2))} · amal qiladi: 12.2027</span></div></div>
+    <div class="field mt12"><label>Kalit paroli</label><input id="eimzo" type="password" placeholder="prototip: istalgan"></div>
+    <div class="foot"><button class="btn" data-act="modal-close">Bekor</button><button class="btn primary" data-act="sign-confirm">Imzolash</button></div>`);
+};
+ACT['sign-confirm'] = () => {
+  const a = curApp();
+  if (!$('#eimzo').value) { $('#eimzo').focus(); return; }
+  a.contract.mSigned = Date.now();
+  push(a, 'Siz shartnomani imzoladingiz (E-IMZO) — bank imzosi kutilmoqda', 'Siz');
+  closeModal(); toast('Imzolandi ✓'); go('contract');
+};
+ACT.decline = () => { if (!confirm('Shartnomadan voz kechasizmi? Ariza bekor qilinadi.')) return; const a = curApp(); a.status = 'CANCELLED'; push(a, 'Mijoz shartnomadan voz kechdi', 'Siz'); go('home'); };
+ACT.reapply = () => { const a = curApp(); S.pre = { inn: a.inn, phase: 'result', checks: [{ t: 'Oldingi ariza rad etilgan — qayta ariza mumkin', s: 'ok' }], outcome: 'OK', noAccount: !a.accountFound, reapply: a.id, role: a.role, industry: a.industry }; go('new'); };
+
+/* ---------------- demo: bank tomoni ---------------- */
+const FLOW = ['SUBMITTED', 'AUTO_VALIDATION', 'DOC_REVIEW', 'SITE_REVIEW', 'KYB_CHECK', 'COMPLIANCE_REVIEW', 'PENDING_APPROVAL'];
+ACT['demo-next'] = () => {
+  const a = curApp(), i = FLOW.indexOf(a.status);
+  const nxt = FLOW[i + 1];
+  if (a.status === 'DOC_REVIEW') requiredDocs(a).forEach((x) => { if (a.docs[x.key]) a.docs[x.key].status = 'VERIFIED'; });
+  if (a.status === 'AUTO_VALIDATION' || a.status === 'SUBMITTED') push(a, 'Dastlabki tekshiruv yakunlandi — ariza ko‘rib chiqilmoqda', 'Tizim');
+  a.status = nxt; render();
+};
+ACT['demo-fast'] = () => { const a = curApp(); requiredDocs(a).forEach((x) => { if (a.docs[x.key]) a.docs[x.key].status = 'VERIFIED'; }); if (!a.timeline.some((t) => /ko‘rib chiqilmoqda/.test(t.text))) push(a, 'Dastlabki tekshiruv yakunlandi — ariza ko‘rib chiqilmoqda', 'Tizim'); a.status = 'PENDING_APPROVAL'; render(); };
+ACT['demo-info'] = () => {
+  const a = curApp();
+  if (a.cycles >= 3) { reject(a, 'Qo‘shimcha ma’lumot sikli limiti (3) tugadi', ['Oldingi so‘rovlardagi kamchiliklar to‘liq bartaraf etilmadi'], true); return; }
+  let items, back = a.status;
+  if (a.status === 'DOC_REVIEW') { items = [{ kind: 'doc', key: 'PASSPORT_DIR', code: 'DOC_UNREADABLE', text: 'Direktor pasporti — skan o‘qilmaydi, sifatli nusxa yuklang' }]; }
+  else if (a.status === 'SITE_REVIEW') { items = [{ kind: 'site', code: 'CMP_SITE_NONCOMPLIANT', text: 'Saytning bosh sahifasida UZCARD va HUMO logolari yo‘q (BT §4.2)' }]; }
+  else if (a.status === 'COMPLIANCE_REVIEW') { items = [{ kind: 'field', field: 'desc', label: 'Faoliyat tavsifi', code: 'CMP_DATA_MISMATCH', text: 'Faoliyat tavsifini aniqlashtiring: yetkazib berish muddatlari va qaytarish shartlari', orig: a.d.desc }]; }
+  else { items = [{ kind: 'doc', key: requiredDocs(a).some((x) => x.key === 'SEAL') ? 'SEAL' : 'CERT_REG', code: 'APR_REMARKS', text: 'Muhr namunasi — imzo va muhr aniq ko‘rinmaydi' }]; back = 'DOC_REVIEW'; }
+  items.forEach((it) => { if (it.kind === 'doc') a.docs[it.key] = { status: 'REPLACEMENT_REQUIRED', note: it.text }; });
+  a.info = { items, deadline: Date.now() + 14 * DAY, cycle: a.cycles + 1, returnTo: back };
+  a.status = 'NEEDS_INFO';
+  push(a, 'Bank qo‘shimcha ma’lumot so‘radi (' + items.length + ' ta band) — muddat ' + fmtDate(a.info.deadline), 'Bank');
+  render();
+};
+ACT['demo-info-expire'] = () => { const a = curApp(); a.status = 'EXPIRED'; a.info = null; push(a, '14 kun ichida javob berilmadi — ariza muddati o‘tdi', 'Tizim'); render(); };
+function reject(a, reason, remarks, canReapply) { a.status = 'REJECTED'; a.info = null; a.rejection = { at: Date.now(), reason, remarks, canReapply }; push(a, 'Ariza rad etildi', 'Bank'); go('rejected'); }
+ACT['demo-reject'] = () => reject(curApp(), 'Ariza rad etildi: kamchiliklar mavjud', ['Saytda qaytarish va yetkazib berish shartlari to‘liq yoritilmagan', 'Ta’sischi yuridik shaxsning foydali egasi (UBO) haqida ma’lumot yetarli emas'], true);
+ACT['demo-reject-final'] = () => reject(curApp(), 'Ariza qabul qilinmadi. Batafsil ma’lumot uchun bank bilan bog‘laning.', [], false);
+ACT['demo-approve'] = () => {
+  const a = curApp();
+  a.status = 'APPROVED'; push(a, 'Ariza tasdiqlandi', 'Bank');
+  a.status = 'CONTRACT_PENDING'; a.contract = { no: 'CTR-2026-000318', at: Date.now(), mSigned: null, bSigned: null };
+  push(a, 'Shartnoma imzolash uchun tayyor (CTR-2026-000318) — 14 kun ichida imzolang', 'Tizim');
+  render();
+};
+ACT['demo-bank-sign'] = () => {
+  const a = curApp();
+  a.contract.bSigned = Date.now(); a.status = 'CONTRACT_SIGNED'; push(a, 'Bank shartnomani imzoladi (Rais o‘rinbosari)', 'Bank');
+  a.status = 'PROVISIONING'; a.provStep = 0; push(a, 'Kabinet tayyorlanmoqda', 'Tizim');
+  go('status');
+  const t = setInterval(() => {
+    a.provStep++;
+    if (a.provStep >= 7) {
+      a.keys = { mid: 'sbx_' + a.inn, sk: 'sk_test_' + rnd(28) };
+      clearInterval(t); a.status = 'COMPLETED'; push(a, 'Kabinetingiz tayyor — o‘sha akkaunt bilan kiring (Merchant MER-000892)', 'Tizim');
+      if (curApp() === a) go('done'); else save();
+    } else if (curApp() === a && $('#prov')) { $('#prov').innerHTML = provHTML(a); save(); }
+  }, 650);
+};
+ACT['demo-golive'] = () => { const a = curApp(); a.golive = { test: 1, refund: 1, webhook: 1, mfa: 1 }; a.live = true; push(a, 'Go-live tasdiqlandi — production kalitlar berildi', 'Bank'); toast('Merchant ACTIVE · dostup D5'); render(); };
+ACT['demo-expire'] = () => { const a = curApp(); a.status = 'EXPIRED'; push(a, a.contract ? 'Shartnoma 14 kun ichida imzolanmadi — muddat o‘tdi' : 'Qoralama 30 kun faolsiz qoldi — muddat o‘tdi', 'Tizim'); go('home'); };
+ACT['demo-account'] = () => { const a = curApp(); a.accountFound = true; a.accountNo = '20208000900' + a.inn.slice(0, 6) + '009'; a.d.accountId = ''; push(a, 'ABS: Garant Bankda hisob ochildi', 'Tizim'); toast('ABS: hisob topildi — 5-qadamda tanlang'); render(); };
+ACT['demo-fill'] = () => {
+  const a = curApp(), r = REG[a.inn] || {}, d = a.d;
+  Object.assign(d, {
+    legalName: d.legalName || a.orgName, brand: d.brand || r.brand || 'Brend', regNo: d.regNo || '1200001', regDate: d.regDate || '2022-01-10', legalAddr: d.legalAddr || 'Toshkent sh., Mirobod tumani, 1-uy',
+    phone: '+998 90 123 45 67', email: d.email || 'info@example.uz', employees: '8',
+    desc: 'Ayollar kiyimi va aksessuarlarini internet-do‘kon va Chilonzordagi do‘kon orqali sotamiz. Toshkent bo‘ylab yetkazib berish 1–2 kun, qaytarish 14 kun ichida.',
+    taxStatus: 'vat', vatNo: '326010012345', licensed: 'no', ikpu: '06109001001000000', receipt: 'goods', unit: 'dona',
+    dirPinfl: '42805896540021', dirPass: 'AD1234567', dirPassExp: '2031-05-20', dirPhone: '+998 90 123 45 67',
+    channels: { web: true, shop: true }, turnover: '180000000', txCount: '900', avgCheck: '200000', maxTx: '5000000', intl: 'no',
+    services: { ecom: true, links: true, fiscal: true }, website: 'https://dilnozastyle.uz', integration: 'hosted', staticIp: '185.74.5.210',
+  });
+  if (!isInd(a)) Object.assign(d, { accName: 'Rahimova Malika Anvarovna', accPinfl: '41207925430018', accPass: 'AC7654321', owners: [{ type: 'JSH', name: d.dirName, share: '70', pep: false }, { type: 'YUSH', name: '“Style Invest” MChJ', share: '30', pep: false }] });
+  if (a.accountFound) d.accountId = accountsOf(a)[0].no;
+  d.scan = { url: d.website, https: true, ssl: fmtDate(addDays(142)), logos: false, at: Date.now() };
+  [1, 2, 3, 4, 5, 6].forEach((k) => { a.show[k] = true; });
+  touch(a); toast('1–6-qadamlar to‘ldirildi. Hujjatlar va tasdiqlar — o‘zingiz'); go('wizard', { wiz: 7 });
+};
+
+/* ---------------- modal ---------------- */
+function modal(html) { $('#modal').innerHTML = '<div class="modal-bg" data-act="modal-bg"><div class="modal" role="dialog" aria-modal="true">' + html + '</div></div>'; }
+function closeModal() { $('#modal').innerHTML = ''; }
+ACT['modal-close'] = closeModal;
+ACT['modal-bg'] = (el, ev) => { if (ev.target === el) closeModal(); };
+
+/* ---------------- hodisalar ---------------- */
+function touch(a) {
+  a.updatedAt = Date.now(); saveSoon();
+  const s = $('#saveInd'); if (s) s.innerHTML = '<span class="dotg"></span>Saqlandi ' + fmtTime(a.updatedAt);
+}
+function setPath(obj, path, val) {
+  const parts = path.split('.'); let o = obj;
+  for (let i = 0; i < parts.length - 1; i++) { if (o[parts[i]] == null) o[parts[i]] = {}; o = o[parts[i]]; }
+  o[parts[parts.length - 1]] = val;
+}
+document.addEventListener('click', (ev) => {
+  const el = ev.target.closest('[data-act]');
+  if (!el) return;
+  const fn = ACT[el.dataset.act];
+  if (!fn) return;
+  if (el.tagName === 'A' || el.tagName === 'BUTTON') ev.preventDefault();
+  if (el.dataset.act === 'modal-bg' && ev.target !== el) return;
+  fn(el, ev);
+});
+document.addEventListener('input', (ev) => {
+  const el = ev.target;
+  if (el.id === 'rPw') { const v = el.value; const sc = (v.length >= 10) + /\d/.test(v) + /[a-z]/i.test(v) + /[^a-z0-9]/i.test(v) + (v.length >= 14); const m = $('#pwm'); m.style.width = sc * 20 + '%'; m.style.background = sc < 3 ? 'var(--red)' : sc < 4 ? 'var(--amber)' : 'var(--green)'; return; }
+  if (!el.dataset || !el.dataset.bind || el.type === 'checkbox' || el.type === 'radio' || el.tagName === 'SELECT') return;
+  const a = curApp(); if (!a) return;
+  let v = el.value;
+  if (el.dataset.bind === 'dirPass' || el.dataset.bind === 'accPass') { v = v.toUpperCase(); el.value = v; }
+  setPath(a.d, el.dataset.bind, v); touch(a);
+  if (/^owners\.\d+\.share$/.test(el.dataset.bind)) { const s = ownersSum(a), n = $('#ownSum'); if (n) { n.textContent = s + '%'; n.className = 'sum ' + (Math.abs(s - 100) < 0.001 ? 'ok' : 'no'); } }
+  if (S.screen === 'info') { const b = document.querySelector('[data-act="info-send"]'); if (b) b.disabled = !infoReady(a); }
+});
+document.addEventListener('change', (ev) => {
+  const el = ev.target;
+  if (el.dataset && el.dataset.actChange === 'pre-industry') { S.pre.industry = el.value; render(); return; }
+  if (el.dataset && el.dataset.actChange === 'info-done') { const a = curApp(); a.info.items[Number(el.dataset.i)].done = el.checked; render(); return; }
+  if (el.id === 'filePick') {
+    const f = el.files && el.files[0]; if (!f || !pickKey) return;
+    const okType = /\.(pdf|jpe?g|png|heic)$/i.test(f.name), okSize = f.size <= 10 * 1024 * 1024;
+    if (!okType || !okSize) { toast(!okType ? 'Ruxsat etilmagan format (L2): PDF, JPG, PNG, HEIC' : 'Fayl 10 MB dan katta (L2)'); return; }
+    simulateUpload(curApp(), pickKey, f.name, (f.size / 1048576).toFixed(1) + ' MB'); return;
+  }
+  if (!el.dataset || !el.dataset.bind) return;
+  const a = curApp(); if (!a) return;
+  const v = el.type === 'checkbox' ? el.checked : el.value;
+  setPath(a.d, el.dataset.bind, v); touch(a);
+  if (el.type === 'checkbox' || el.type === 'radio' || el.tagName === 'SELECT') render();
+});
+document.addEventListener('keydown', (ev) => {
+  if (ev.key !== 'Enter') return;
+  const id = ev.target && ev.target.id;
+  const map = { regPhone: 'reg-send', otp: 'reg-verify', preInn: 'pre-check', subOtp: 'submit-confirm', lPw: 'login', eimzo: 'sign-confirm' };
+  if (map[id]) { ev.preventDefault(); ACT[map[id]](ev.target); }
+});
+
+render();
+if (S.screen === 'register' && S.reg.step === 2) tickResend();
+</script>
+</body>
+</html>

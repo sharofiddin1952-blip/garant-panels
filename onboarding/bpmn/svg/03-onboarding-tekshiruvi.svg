@@ -1,0 +1,150 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2518" height="1000" viewBox="0 0 2518 1000" font-family="Segoe UI, Arial, Helvetica, sans-serif">
+<title>03 · Onboarding tekshiruvi</title>
+<defs><marker id="arr" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3A4254"/></marker></defs>
+<rect x="0" y="0" width="2518" height="1000" fill="#FFFFFF"/>
+<text x="10" y="24" font-size="16" font-weight="700" fill="#0F1522">03 · Onboarding tekshiruvi</text>
+<text x="10" y="40" font-size="11" fill="#4B5468">Avto tekshiruv → hujjat va sayt (bitta xodim) → KYC/KYB + risk → Compliance (yuqori riskda EDD) → Rais o'rinbosari. Link-hodisalar (↩ / →) 03a ga ulaydi.</text>
+<rect x="10" y="46" width="2496" height="940" fill="#FFFFFF" stroke="#0F1522" stroke-width="1.5"/>
+<rect x="10" y="46" width="30" height="940" fill="#EEF0F5" stroke="#0F1522" stroke-width="1.5"/>
+<g transform="translate(25,516) rotate(-90)"><text x="0" y="4" text-anchor="middle" font-size="12" font-weight="700" fill="#0F1522">Garant Bank · Onboarding ish joyi (Admin panel)</text></g>
+<rect x="40" y="46" width="2466" height="180" fill="#F8F9FB" stroke="#C9CFDB"/>
+<rect x="40" y="46" width="34" height="180" fill="#FFFFFF" stroke="#C9CFDB"/>
+<g transform="translate(57,136) rotate(-90)"><text x="0" y="3.5" text-anchor="middle" font-size="10.5" font-weight="600" fill="#4B5468">Platforma (avtomatik)</text></g>
+<rect x="40" y="226" width="2466" height="190" fill="#FBF8FF" stroke="#C9CFDB"/>
+<rect x="40" y="226" width="34" height="190" fill="#FFFFFF" stroke="#C9CFDB"/>
+<g transform="translate(57,321) rotate(-90)"><text x="0" y="3.5" text-anchor="middle" font-size="10.5" font-weight="600" fill="#4B5468">Onboarding xodimi (hujjat + sayt)</text></g>
+<rect x="40" y="416" width="2466" height="200" fill="#FBF8FF" stroke="#C9CFDB"/>
+<rect x="40" y="416" width="34" height="200" fill="#FFFFFF" stroke="#C9CFDB"/>
+<g transform="translate(57,516) rotate(-90)"><text x="0" y="3.5" text-anchor="middle" font-size="10.5" font-weight="600" fill="#4B5468">Compliance xodimi</text></g>
+<rect x="40" y="616" width="2466" height="170" fill="#FBF8FF" stroke="#C9CFDB"/>
+<rect x="40" y="616" width="34" height="170" fill="#FFFFFF" stroke="#C9CFDB"/>
+<g transform="translate(57,701) rotate(-90)"><text x="0" y="3.5" text-anchor="middle" font-size="10.5" font-weight="600" fill="#4B5468">Tasdiqlovchi — Rais o'rinbosari</text></g>
+<rect x="40" y="786" width="2466" height="200" fill="#F6F8FF" stroke="#C9CFDB"/>
+<rect x="40" y="786" width="34" height="200" fill="#FFFFFF" stroke="#C9CFDB"/>
+<g transform="translate(57,886) rotate(-90)"><text x="0" y="3.5" text-anchor="middle" font-size="10.5" font-weight="600" fill="#4B5468">Ariza beruvchi</text></g>
+<path d="M175,136 L245,136" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M369,136 L395,136" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M519,136 L607,136 L607,283" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M475,321 L545,321" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M669,321 L732,321" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M757,346 L757,359" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M782,321 L995,321" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M925,263 L1057,263 L1057,283" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M1119,321 L1182,321" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M1207,346 L1207,359" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M1232,321 L1357,321 L1357,174" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M1419,136 L1482,136" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M1507,161 L1507,478" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M1532,136 L1657,136 L1657,478" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M1569,516 L1595,516" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M1485,584 L1657,584 L1657,554" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M1719,516 L1782,516" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M1807,541 L1807,566" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M1807,491 L1807,456 L1939,456" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M1832,516 L1957,516 L1957,663" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M2019,701 L2082,701" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M2107,726 L2107,735" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M2107,676 L2107,651 L2239,651" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M2132,701 L2389,701" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M625,886 L695,886" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M819,886 L882,886" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M932,886 L1182,886" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M907,911 L907,930" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M907,861 L907,840" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M1232,886 L1339,886" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M1207,861 L1207,826 L1339,826" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M1207,911 L1207,946 L1339,946" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M457,88 L457,98" stroke="#8A93A3" stroke-dasharray="2,3" fill="none"/>
+<rect x="402" y="52" width="330" height="36" fill="#FFFFFF" fill-opacity="0.9" stroke="none"/>
+<path d="M414,52 L402,52 L402,88 L414,88" fill="none" stroke="#8A93A3" stroke-width="1.2"/>
+<text x="409" y="67" font-size="10.5" fill="#4B5468" font-style="italic">SLA (ish soati): DOC 8 · SITE 8 · KYB 16 · COMP 16 ·</text>
+<text x="409" y="80" font-size="10.5" fill="#4B5468" font-style="italic">APPROVAL 8. 75% da ogohlantirish, buzilsa eskalatsiya</text>
+<path d="M1057,374 L1057,359" stroke="#8A93A3" stroke-dasharray="2,3" fill="none"/>
+<rect x="972" y="374" width="230" height="36" fill="#FFFFFF" fill-opacity="0.9" stroke="none"/>
+<path d="M984,374 L972,374 L972,410 L984,410" fill="none" stroke="#8A93A3" stroke-width="1.2"/>
+<text x="979" y="389" font-size="10.5" fill="#4B5468" font-style="italic">Hujjat va saytni bitta onboarding xodimi</text>
+<text x="979" y="402" font-size="10.5" fill="#4B5468" font-style="italic">tekshiradi (Q-11, Q-12)</text>
+<path d="M1452,445 L1507,478" stroke="#8A93A3" stroke-dasharray="2,3" fill="none"/>
+<rect x="1242" y="422" width="210" height="23" fill="#FFFFFF" fill-opacity="0.9" stroke="none"/>
+<path d="M1254,422 L1242,422 L1242,445 L1254,445" fill="none" stroke="#8A93A3" stroke-width="1.2"/>
+<text x="1249" y="437" font-size="10.5" fill="#4B5468" font-style="italic">Alohida «katta Compliance» yo'q (Q-13)</text>
+<path d="M1812,695.5 L1957,663" stroke="#8A93A3" stroke-dasharray="2,3" fill="none"/>
+<rect x="1602" y="671" width="210" height="49" fill="#FFFFFF" fill-opacity="0.9" stroke="none"/>
+<path d="M1614,671 L1602,671 L1602,720 L1614,720" fill="none" stroke="#8A93A3" stroke-width="1.2"/>
+<text x="1609" y="686" font-size="10.5" fill="#4B5468" font-style="italic">approved_by ≠ reviewed_by (serverda).</text>
+<text x="1609" y="699" font-size="10.5" fill="#4B5468" font-style="italic">Shu rahbar 04 da shartnomani imzolaydi</text>
+<text x="1609" y="712" font-size="10.5" fill="#4B5468" font-style="italic">(Q-14)</text>
+<path d="M757,936 L757,924" stroke="#8A93A3" stroke-dasharray="2,3" fill="none"/>
+<rect x="677" y="936" width="160" height="36" fill="#FFFFFF" fill-opacity="0.9" stroke="none"/>
+<path d="M689,936 L677,936 L677,972 L689,972" fill="none" stroke="#8A93A3" stroke-width="1.2"/>
+<text x="684" y="951" font-size="10.5" fill="#4B5468" font-style="italic">Merchant faqat so'ralgan</text>
+<text x="684" y="964" font-size="10.5" fill="#4B5468" font-style="italic">maydonlarni tahrirlaydi</text>
+<circle cx="157" cy="136" r="18" fill="#E7F6EE" stroke="#157A4A" stroke-width="1.6"/><rect x="149" y="130.5" width="16" height="11" fill="#FFFFFF" stroke="#157A4A" stroke-width="1.3"/><path d="M149,130.5 L157,137 L165,130.5" fill="none" stroke="#157A4A" stroke-width="1.3"/><text x="157" y="168.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">Ariza yuborildi</text><text x="157" y="181.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">(SUBMITTED)</text>
+<rect x="245" y="98" width="124" height="76" rx="9" fill="#EEF1F5" stroke="#4B5468" stroke-width="1.6"/><circle cx="258" cy="111" r="5.5" fill="none" stroke="#4B5468" stroke-width="2.4" stroke-dasharray="2.2,1.7"/><circle cx="258" cy="111" r="2.2" fill="none" stroke="#4B5468" stroke-width="1.1"/><text x="307" y="129.3" text-anchor="middle" font-size="11" fill="#0F1522">L3 cross-check</text><text x="307" y="142.7" text-anchor="middle" font-size="11" fill="#0F1522">(X01–X13) + L4: ABS,</text><text x="307" y="156.1" text-anchor="middle" font-size="11" fill="#0F1522">registr</text>
+<rect x="395" y="98" width="124" height="76" rx="9" fill="#EEF1F5" stroke="#4B5468" stroke-width="1.6"/><circle cx="408" cy="111" r="5.5" fill="none" stroke="#4B5468" stroke-width="2.4" stroke-dasharray="2.2,1.7"/><circle cx="408" cy="111" r="2.2" fill="none" stroke="#4B5468" stroke-width="1.1"/><text x="457" y="129.3" text-anchor="middle" font-size="11" fill="#0F1522">Issue'lar; vazifa +</text><text x="457" y="142.7" text-anchor="middle" font-size="11" fill="#0F1522">SLA taymer;</text><text x="457" y="156.1" text-anchor="middle" font-size="11" fill="#0F1522">xodimga biriktirish</text>
+<circle cx="457" cy="321" r="18" fill="#F1F3F7" stroke="#4B5468" stroke-width="1.6"/><circle cx="457" cy="321" r="14.5" fill="none" stroke="#4B5468" stroke-width="1.2"/><path d="M450,318 L458,318 L458,314 L465,321 L458,328 L458,324 L450,324 Z" fill="none" stroke="#4B5468" stroke-width="1.3"/><text x="457" y="353.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">↩ Hujjat ko'rigi</text>
+<rect x="545" y="283" width="124" height="76" rx="9" fill="#EAEEFC" stroke="#2C4CE0" stroke-width="1.6"/><circle cx="558" cy="293" r="3.6" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><path d="M552,304 Q558,294 564,304 Z" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><text x="607" y="321" text-anchor="middle" font-size="11" fill="#0F1522">Hujjatlar ko'rigi</text><text x="607" y="334.4" text-anchor="middle" font-size="11" fill="#0F1522">(DOC_REVIEW)</text>
+<path d="M757,296 L782,321 L757,346 L732,321 Z" fill="#FFF6E6" stroke="#A15C00" stroke-width="1.6"/><path d="M749,313 L765,329 M765,313 L749,329" stroke="#A15C00" stroke-width="3.2" stroke-linecap="round"/><text x="828" y="291.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">Hujjatlar to'g'rimi?</text>
+<circle cx="757" cy="377" r="18" fill="#F1F3F7" stroke="#4B5468" stroke-width="1.6"/><circle cx="757" cy="377" r="14.5" fill="none" stroke="#4B5468" stroke-width="1.2"/><path d="M750,374 L758,374 L758,370 L765,377 L758,384 L758,380 L750,380 Z" fill="#4B5468" stroke="#4B5468" stroke-width="1.3"/><text x="839.9" y="381" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">→ Qo'shimcha ma'lumot</text>
+<circle cx="907" cy="263" r="18" fill="#F1F3F7" stroke="#4B5468" stroke-width="1.6"/><circle cx="907" cy="263" r="14.5" fill="none" stroke="#4B5468" stroke-width="1.2"/><path d="M900,260 L908,260 L908,256 L915,263 L908,270 L908,266 L900,266 Z" fill="none" stroke="#4B5468" stroke-width="1.3"/><text x="837.9" y="267" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">↩ Sayt tekshiruvi</text>
+<rect x="995" y="283" width="124" height="76" rx="9" fill="#EAEEFC" stroke="#2C4CE0" stroke-width="1.6"/><circle cx="1008" cy="293" r="3.6" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><path d="M1002,304 Q1008,294 1014,304 Z" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><text x="1057" y="321" text-anchor="middle" font-size="11" fill="#0F1522">Sayt tekshiruvi: BT</text><text x="1057" y="334.4" text-anchor="middle" font-size="11" fill="#0F1522">§4 cheklist (19 band)</text>
+<path d="M1207,296 L1232,321 L1207,346 L1182,321 Z" fill="#FFF6E6" stroke="#A15C00" stroke-width="1.6"/><path d="M1199,313 L1215,329 M1215,313 L1199,329" stroke="#A15C00" stroke-width="3.2" stroke-linecap="round"/><text x="1278.1" y="291.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">Sayt mos keladimi?</text>
+<circle cx="1207" cy="377" r="18" fill="#F1F3F7" stroke="#4B5468" stroke-width="1.6"/><circle cx="1207" cy="377" r="14.5" fill="none" stroke="#4B5468" stroke-width="1.2"/><path d="M1200,374 L1208,374 L1208,370 L1215,377 L1208,384 L1208,380 L1200,380 Z" fill="#4B5468" stroke="#4B5468" stroke-width="1.3"/><text x="1289.9" y="381" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">→ Qo'shimcha ma'lumot</text>
+<rect x="1295" y="98" width="124" height="76" rx="9" fill="#EEF1F5" stroke="#4B5468" stroke-width="1.6"/><circle cx="1308" cy="111" r="5.5" fill="none" stroke="#4B5468" stroke-width="2.4" stroke-dasharray="2.2,1.7"/><circle cx="1308" cy="111" r="2.2" fill="none" stroke="#4B5468" stroke-width="1.1"/><text x="1357" y="129.3" text-anchor="middle" font-size="11" fill="#0F1522">KYC/KYB skrining</text><text x="1357" y="142.7" text-anchor="middle" font-size="11" fill="#0F1522">(sanksiya, PEP) +</text><text x="1357" y="156.1" text-anchor="middle" font-size="11" fill="#0F1522">risk-skoring 0–100</text>
+<path d="M1507,111 L1532,136 L1507,161 L1482,136 Z" fill="#FFF6E6" stroke="#A15C00" stroke-width="1.6"/><path d="M1499,128 L1515,144 M1515,128 L1499,144" stroke="#A15C00" stroke-width="3.2" stroke-linecap="round"/><text x="1566.4" y="93.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">Risk / skrining</text><text x="1566.4" y="106.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">natijasi?</text>
+<rect x="1445" y="478" width="124" height="76" rx="9" fill="#EAEEFC" stroke="#2C4CE0" stroke-width="1.6"/><circle cx="1458" cy="488" r="3.6" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><path d="M1452,499 Q1458,489 1464,499 Z" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><text x="1507" y="509.3" text-anchor="middle" font-size="11" fill="#0F1522">EDD: kuchaytirilgan</text><text x="1507" y="522.7" text-anchor="middle" font-size="11" fill="#0F1522">tekshiruv (yuqori risk</text><text x="1507" y="536.1" text-anchor="middle" font-size="11" fill="#0F1522">/ PEP)</text>
+<circle cx="1467" cy="584" r="18" fill="#F1F3F7" stroke="#4B5468" stroke-width="1.6"/><circle cx="1467" cy="584" r="14.5" fill="none" stroke="#4B5468" stroke-width="1.2"/><path d="M1460,581 L1468,581 L1468,577 L1475,584 L1468,591 L1468,587 L1460,587 Z" fill="none" stroke="#4B5468" stroke-width="1.3"/><text x="1408.5" y="588" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">↩ Compliance</text>
+<rect x="1595" y="478" width="124" height="76" rx="9" fill="#EAEEFC" stroke="#2C4CE0" stroke-width="1.6"/><circle cx="1608" cy="488" r="3.6" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><path d="M1602,499 Q1608,489 1614,499 Z" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><text x="1657" y="516" text-anchor="middle" font-size="11" fill="#0F1522">Compliance xulosasi</text><text x="1657" y="529.4" text-anchor="middle" font-size="11" fill="#0F1522">(COMPLIANCE_REVIEW)</text>
+<path d="M1807,491 L1832,516 L1807,541 L1782,516 Z" fill="#FFF6E6" stroke="#A15C00" stroke-width="1.6"/><path d="M1799,508 L1815,524 M1815,508 L1799,524" stroke="#A15C00" stroke-width="3.2" stroke-linecap="round"/><text x="1736.4" y="486.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">Compliance qarori?</text>
+<circle cx="1807" cy="584" r="18" fill="#F1F3F7" stroke="#4B5468" stroke-width="1.6"/><circle cx="1807" cy="584" r="14.5" fill="none" stroke="#4B5468" stroke-width="1.2"/><path d="M1800,581 L1808,581 L1808,577 L1815,584 L1808,591 L1808,587 L1800,587 Z" fill="#4B5468" stroke="#4B5468" stroke-width="1.3"/><text x="1889.9" y="588" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">→ Qo'shimcha ma'lumot</text>
+<circle cx="1957" cy="456" r="18" fill="#FDECEA" stroke="#B3261E" stroke-width="3.2"/><text x="2031" y="453.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">REJECTED — qayta</text><text x="2031" y="466.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">ariza yo'q</text>
+<rect x="1895" y="663" width="124" height="76" rx="9" fill="#EAEEFC" stroke="#2C4CE0" stroke-width="1.6"/><circle cx="1908" cy="673" r="3.6" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><path d="M1902,684 Q1908,674 1914,684 Z" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><text x="1957" y="694.3" text-anchor="middle" font-size="11" fill="#0F1522">Yakuniy qaror</text><text x="1957" y="707.7" text-anchor="middle" font-size="11" fill="#0F1522">(PENDING_APPROVAL)</text><text x="1957" y="721.1" text-anchor="middle" font-size="11" fill="#0F1522">· four-eyes</text>
+<path d="M2107,676 L2132,701 L2107,726 L2082,701 Z" fill="#FFF6E6" stroke="#A15C00" stroke-width="1.6"/><path d="M2099,693 L2115,709 M2115,693 L2099,709" stroke="#A15C00" stroke-width="3.2" stroke-linecap="round"/><text x="2065.9" y="671.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">Qaror?</text>
+<circle cx="2107" cy="753" r="18" fill="#F1F3F7" stroke="#4B5468" stroke-width="1.6"/><circle cx="2107" cy="753" r="14.5" fill="none" stroke="#4B5468" stroke-width="1.2"/><path d="M2100,750 L2108,750 L2108,746 L2115,753 L2108,760 L2108,756 L2100,756 Z" fill="#4B5468" stroke="#4B5468" stroke-width="1.3"/><text x="2189.9" y="757" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">→ Qo'shimcha ma'lumot</text>
+<circle cx="2257" cy="651" r="18" fill="#FDECEA" stroke="#B3261E" stroke-width="3.2"/><text x="2334.6" y="648.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">REJECTED → 03b</text><text x="2334.6" y="661.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">(qayta ariza mumkin)</text>
+<circle cx="2407" cy="701" r="18" fill="#E7F6EE" stroke="#157A4A" stroke-width="3.2"/><rect x="2399" y="695.5" width="16" height="11" fill="#157A4A" stroke="#157A4A" stroke-width="1.3"/><path d="M2399,695.5 L2407,702 L2415,695.5" fill="none" stroke="#FFFFFF" stroke-width="1.3"/><text x="2407" y="733.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">APPROVED → 04</text><text x="2407" y="746.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">Shartnoma</text>
+<circle cx="607" cy="886" r="18" fill="#F1F3F7" stroke="#4B5468" stroke-width="1.6"/><circle cx="607" cy="886" r="14.5" fill="none" stroke="#4B5468" stroke-width="1.2"/><path d="M600,883 L608,883 L608,879 L615,886 L608,893 L608,889 L600,889 Z" fill="none" stroke="#4B5468" stroke-width="1.3"/><text x="607" y="918.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">Qo'shimcha ma'lumot</text>
+<rect x="695" y="848" width="124" height="76" rx="9" fill="#FFFFFF" stroke="#0F1522" stroke-width="3.2"/><rect x="750" y="907" width="14" height="14" fill="#FFFFFF" stroke="#0F1522" stroke-width="1.2"/><path d="M757,910 L757,918 M753,914 L761,914" stroke="#0F1522" stroke-width="1.4"/><text x="757" y="870.3" text-anchor="middle" font-size="11" fill="#0F1522">03a · Qo'shimcha</text><text x="757" y="883.7" text-anchor="middle" font-size="11" fill="#0F1522">ma'lumot sikli</text><text x="757" y="897.1" text-anchor="middle" font-size="11" fill="#0F1522">(NEEDS_INFO)</text>
+<path d="M907,861 L932,886 L907,911 L882,886 Z" fill="#FFF6E6" stroke="#A15C00" stroke-width="1.6"/><path d="M899,878 L915,894 M915,878 L899,894" stroke="#A15C00" stroke-width="3.2" stroke-linecap="round"/><text x="865.7" y="856.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">Natija?</text>
+<circle cx="907" cy="948" r="18" fill="#F1F3F7" stroke="#4B5468" stroke-width="3.2"/><text x="976.7" y="945.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">EXPIRED (14 kun</text><text x="976.7" y="958.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">javobsiz)</text>
+<circle cx="907" cy="822" r="18" fill="#FDECEA" stroke="#B3261E" stroke-width="3.2"/><text x="977.5" y="819.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">REJECTED (3 sikl</text><text x="977.5" y="832.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">limiti)</text>
+<path d="M1207,861 L1232,886 L1207,911 L1182,886 Z" fill="#FFF6E6" stroke="#A15C00" stroke-width="1.6"/><path d="M1199,878 L1215,894 M1215,878 L1199,894" stroke="#A15C00" stroke-width="3.2" stroke-linecap="round"/><text x="1128.5" y="843.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">Qaytish nuqtasi (sabab</text><text x="1128.5" y="856.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">kodi)?</text>
+<circle cx="1357" cy="886" r="18" fill="#F1F3F7" stroke="#4B5468" stroke-width="1.6"/><circle cx="1357" cy="886" r="14.5" fill="none" stroke="#4B5468" stroke-width="1.2"/><path d="M1350,883 L1358,883 L1358,879 L1365,886 L1358,893 L1358,889 L1350,889 Z" fill="#4B5468" stroke="#4B5468" stroke-width="1.3"/><text x="1419.6" y="890" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">→ Hujjat ko'rigi</text>
+<circle cx="1357" cy="826" r="18" fill="#F1F3F7" stroke="#4B5468" stroke-width="1.6"/><circle cx="1357" cy="826" r="14.5" fill="none" stroke="#4B5468" stroke-width="1.2"/><path d="M1350,823 L1358,823 L1358,819 L1365,826 L1358,833 L1358,829 L1350,829 Z" fill="#4B5468" stroke="#4B5468" stroke-width="1.3"/><text x="1426.1" y="830" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">→ Sayt tekshiruvi</text>
+<circle cx="1357" cy="946" r="18" fill="#F1F3F7" stroke="#4B5468" stroke-width="1.6"/><circle cx="1357" cy="946" r="14.5" fill="none" stroke="#4B5468" stroke-width="1.2"/><path d="M1350,943 L1358,943 L1358,939 L1365,946 L1358,953 L1358,949 L1350,949 Z" fill="#4B5468" stroke="#4B5468" stroke-width="1.3"/><text x="1415.5" y="950" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">→ Compliance</text>
+<rect x="760" y="350" width="28.8" height="15" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
+<text x="762" y="360.5" font-size="10.5" fill="#0F1522">Yo'q</text>
+<rect x="786" y="305" width="20.4" height="15" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
+<text x="788" y="315.5" font-size="10.5" fill="#0F1522">Ha</text>
+<rect x="1210" y="350" width="28.8" height="15" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
+<text x="1212" y="360.5" font-size="10.5" fill="#0F1522">Yo'q</text>
+<rect x="1236" y="305" width="20.4" height="15" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
+<text x="1238" y="315.5" font-size="10.5" fill="#0F1522">Ha</text>
+<rect x="1510" y="165" width="110.9" height="28" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
+<text x="1512" y="175.5" font-size="10.5" fill="#0F1522">HIGH / CRITICAL /</text>
+<text x="1512" y="188.5" font-size="10.5" fill="#0F1522">PEP</text>
+<rect x="1536" y="120" width="88" height="15" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
+<text x="1538" y="130.5" font-size="10.5" fill="#0F1522">LOW / MEDIUM</text>
+<rect x="1810" y="545" width="111.5" height="15" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
+<text x="1812" y="555.5" font-size="10.5" fill="#0F1522">Bartaraf etsa bo'ladi</text>
+<rect x="1810" y="461" width="125.4" height="28" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
+<text x="1812" y="471.5" font-size="10.5" fill="#0F1522">Sanksiya / taqiqlangan /</text>
+<text x="1812" y="484.5" font-size="10.5" fill="#0F1522">AML</text>
+<rect x="1836" y="500" width="37.2" height="15" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
+<text x="1838" y="510.5" font-size="10.5" fill="#0F1522">Ijobiy</text>
+<rect x="1977" y="731" width="79.8" height="28" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
+<text x="1979" y="741.5" font-size="10.5" fill="#0F1522">Kamchilik bilan</text>
+<text x="1979" y="754.5" font-size="10.5" fill="#0F1522">qaytarish</text>
+<rect x="2110" y="659" width="25.9" height="15" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
+<text x="2112" y="669.5" font-size="10.5" fill="#0F1522">Rad</text>
+<rect x="2136" y="685" width="62" height="15" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
+<text x="2138" y="695.5" font-size="10.5" fill="#0F1522">Tasdiqlandi</text>
+<rect x="936" y="870" width="95.6" height="15" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
+<text x="938" y="880.5" font-size="10.5" fill="#0F1522">Javob qabul qilindi</text>
+<rect x="1236" y="870" width="37.2" height="15" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
+<text x="1238" y="880.5" font-size="10.5" fill="#0F1522">Hujjat</text>
+<rect x="1210" y="844" width="31.3" height="15" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
+<text x="1212" y="854.5" font-size="10.5" fill="#0F1522">Sayt</text>
+<rect x="1210" y="915" width="94.7" height="15" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
+<text x="1212" y="925.5" font-size="10.5" fill="#0F1522">KYB / Compliance</text>
+</svg>
