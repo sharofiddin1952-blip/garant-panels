@@ -88,7 +88,7 @@ nav{display:flex;gap:6px;padding:8px 16px;background:var(--surface);border-botto
     <bpmn:startEvent id="N00_s0" name="Onlayn to'lov qabul qilish ehtiyoji">
       <bpmn:outgoing>Flow_00_01</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:callActivity id="N00_c1" name="01 · Akkaunt yaratish (telefon / E-IMZO / OneID)" calledElement="Process_01">
+    <bpmn:callActivity id="N00_c1" name="01 · Akkaunt yaratish (telefon + SMS)" calledElement="Process_01">
       <bpmn:incoming>Flow_00_01</bpmn:incoming>
       <bpmn:outgoing>Flow_00_02</bpmn:outgoing>
     </bpmn:callActivity>
@@ -112,7 +112,7 @@ nav{display:flex;gap:6px;padding:8px 16px;background:var(--surface);border-botto
     <bpmn:endEvent id="N00_e6" name="Rad etildi → 03b qayta ariza">
       <bpmn:incoming>Flow_00_07</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:serviceTask id="N00_t6" name="Shartnoma generatsiyasi (CTR-…)">
+    <bpmn:serviceTask id="N00_t6" name="Yangi hisob (kerak bo'lsa, ABS) → shartnoma (CTR-…)">
       <bpmn:incoming>Flow_00_06</bpmn:incoming>
       <bpmn:outgoing>Flow_00_08</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -165,7 +165,7 @@ nav{display:flex;gap:6px;padding:8px 16px;background:var(--surface);border-botto
     </bpmn:textAnnotation>
     <bpmn:association id="Assoc_00_1" associationDirection="None" sourceRef="N00_c1" targetRef="Note_00_1" />
     <bpmn:textAnnotation id="Note_00_2">
-      <bpmn:text>Garant hisobi bo'lmasa ariza boshlanmaydi. G01–G15 (22)</bpmn:text>
+      <bpmn:text>Hisob yo'q bo'lsa ham ariza beriladi (Q-24). 7 qadam, G01–G15 (22)</bpmn:text>
     </bpmn:textAnnotation>
     <bpmn:association id="Assoc_00_2" associationDirection="None" sourceRef="N00_c2" targetRef="Note_00_2" />
     <bpmn:textAnnotation id="Note_00_3">
@@ -214,7 +214,7 @@ nav{display:flex;gap:6px;padding:8px 16px;background:var(--surface);border-botto
       <bpmndi:BPMNShape id="N00_t11_di" bpmnElement="N00_t11" bioc:stroke="#2C4CE0" bioc:fill="#EAEEFC" color:background-color="#EAEEFC" color:border-color="#2C4CE0"><dc:Bounds x="1745" y="483" width="124" height="76" /></bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="N00_e12_di" bpmnElement="N00_e12" bioc:stroke="#157A4A" bioc:fill="#E7F6EE" color:background-color="#E7F6EE" color:border-color="#157A4A"><dc:Bounds x="1939" y="128" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="1900" y="168" width="115" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="N00_e2x_di" bpmnElement="N00_e2x" bioc:stroke="#4B5468" bioc:fill="#F1F3F7" color:background-color="#F1F3F7" color:border-color="#4B5468"><dc:Bounds x="408" y="318" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="294" y="330" width="108" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N00_b2_di" bpmnElement="N00_b2" bioc:stroke="#A15C00" bioc:fill="#FFF6E6" color:background-color="#FFF6E6" color:border-color="#A15C00"><dc:Bounds x="408" y="166" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="363" y="171" width="39" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N00_b2_di" bpmnElement="N00_b2" bioc:stroke="#A15C00" bioc:fill="#FFF6E6" color:background-color="#FFF6E6" color:border-color="#A15C00"><dc:Bounds x="408" y="166" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="371" y="200" width="39" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_00_01_di" bpmnElement="Flow_00_01" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="175" y="146" /><di:waypoint x="245" y="146" /></bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_00_02_di" bpmnElement="Flow_00_02" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="369" y="146" /><di:waypoint x="395" y="146" /></bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_00_03_di" bpmnElement="Flow_00_03" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="519" y="146" /><di:waypoint x="532" y="146" /><di:waypoint x="532" y="336" /><di:waypoint x="545" y="336" /></bpmndi:BPMNEdge>
@@ -231,8 +231,8 @@ nav{display:flex;gap:6px;padding:8px 16px;background:var(--surface);border-botto
       <bpmndi:BPMNEdge id="Flow_00_14_di" bpmnElement="Flow_00_14" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="426" y="202" /><di:waypoint x="426" y="318" /></bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Note_00_1_di" bpmnElement="Note_00_1"><dc:Bounds x="232" y="52" width="150" height="49" /></bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Assoc_00_1_di" bpmnElement="Assoc_00_1"><di:waypoint x="307" y="101" /><di:waypoint x="307" y="108" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="Note_00_2_di" bpmnElement="Note_00_2"><dc:Bounds x="372" y="52" width="170" height="36" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Assoc_00_2_di" bpmnElement="Assoc_00_2"><di:waypoint x="457" y="88" /><di:waypoint x="457" y="108" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Note_00_2_di" bpmnElement="Note_00_2"><dc:Bounds x="370" y="52" width="175" height="49" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Assoc_00_2_di" bpmnElement="Assoc_00_2"><di:waypoint x="457" y="101" /><di:waypoint x="457" y="108" /></bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Note_00_3_di" bpmnElement="Note_00_3"><dc:Bounds x="492" y="384" width="230" height="36" /></bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Assoc_00_3_di" bpmnElement="Assoc_00_3"><di:waypoint x="607" y="384" /><di:waypoint x="607" y="374" /></bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Note_00_4_di" bpmnElement="Note_00_4"><dc:Bounds x="602" y="574" width="250" height="36" /></bpmndi:BPMNShape>
@@ -249,7 +249,7 @@ nav{display:flex;gap:6px;padding:8px 16px;background:var(--surface);border-botto
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>
 </script>
-<script type="text/plain" id="x1" data-name="01-akkaunt-yaratish" data-sub="Uch usul (Q-17): telefon + SMS + parol · E-IMZO · OneID. Akkaunt — shaxsniki; biznes keyin ariza orqali bog'lanadi. Natija: D1."><?xml version="1.0" encoding="UTF-8"?>
+<script type="text/plain" id="x1" data-name="01-akkaunt-yaratish" data-sub="MVP (Q-22): telefon + SMS kod + parol. E-IMZO / OneID bilan kirish — Faza 2. Akkaunt — shaxsniki; biznes keyin ariza orqali bog'lanadi. Natija: D1."><?xml version="1.0" encoding="UTF-8"?>
 <!-- 01 · Akkaunt yaratish (ro'yxatdan o'tish) — tools/bpmn/models/models.mjs dan generatsiya qilingan. Qo'lda tahrirlamang: modelni o'zgartiring va "node tools/bpmn/build.mjs" ni ishga tushiring. -->
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:color="http://www.omg.org/spec/BPMN/non-normative/color/1.0" id="Defs_01" targetNamespace="https://garantbank.uz/bpmn/merchant-onboarding" exporter="garant-onboarding/tools/bpmn" exporterVersion="2.0.0">
   <bpmn:collaboration id="Collab_01">
@@ -261,7 +261,6 @@ nav{display:flex;gap:6px;padding:8px 16px;background:var(--surface);border-botto
       <bpmn:lane id="Lane_01_A" name="Foydalanuvchi (bo'lajak merchant)">
         <bpmn:flowNodeRef>N01_s0</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>N01_t1</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>N01_g1</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>N01_t2</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>N01_t4</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>N01_t6</bpmn:flowNodeRef>
@@ -270,14 +269,12 @@ nav{display:flex;gap:6px;padding:8px 16px;background:var(--surface);border-botto
         <bpmn:flowNodeRef>N01_b4</bpmn:flowNodeRef>
       </bpmn:lane>
       <bpmn:lane id="Lane_01_S" name="Platforma: Auth servis">
-        <bpmn:flowNodeRef>N01_tE2</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>N01_t3</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>N01_g5</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>N01_e5</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>N01_t7</bpmn:flowNodeRef>
       </bpmn:lane>
-      <bpmn:lane id="Lane_01_X" name="Tashqi: E-IMZO / OneID, SMS shlyuz, Email">
-        <bpmn:flowNodeRef>N01_tE</bpmn:flowNodeRef>
+      <bpmn:lane id="Lane_01_X" name="Tashqi: SMS shlyuz, Email">
         <bpmn:flowNodeRef>N01_t3x</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>N01_t8</bpmn:flowNodeRef>
       </bpmn:lane>
@@ -289,98 +286,80 @@ nav{display:flex;gap:6px;padding:8px 16px;background:var(--surface);border-botto
       <bpmn:incoming>Flow_01_01</bpmn:incoming>
       <bpmn:outgoing>Flow_01_02</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:exclusiveGateway id="N01_g1" name="Kirish usuli?">
+    <bpmn:userTask id="N01_t2" name="Telefon raqamini kiritish (+998)">
       <bpmn:incoming>Flow_01_02</bpmn:incoming>
       <bpmn:outgoing>Flow_01_03</bpmn:outgoing>
-      <bpmn:outgoing>Flow_01_04</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
-    <bpmn:userTask id="N01_tE" name="E-IMZO kaliti yoki OneID (id.egov.uz) orqali identifikatsiya">
-      <bpmn:incoming>Flow_01_04</bpmn:incoming>
-      <bpmn:outgoing>Flow_01_05</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:serviceTask id="N01_tE2" name="F.I.Sh, PINFL (yur. shaxs kaliti — STIR) olinadi; PINFL bo'yicha akkaunt bormi?">
-      <bpmn:incoming>Flow_01_05</bpmn:incoming>
-      <bpmn:outgoing>Flow_01_06</bpmn:outgoing>
-    </bpmn:serviceTask>
-    <bpmn:userTask id="N01_t2" name="Telefon raqamini kiritish / bog'lash (+998)">
-      <bpmn:incoming>Flow_01_03</bpmn:incoming>
-      <bpmn:incoming>Flow_01_06</bpmn:incoming>
-      <bpmn:outgoing>Flow_01_07</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:serviceTask id="N01_t3" name="Rate-limit; OTP yaratish (6 raqam, 3 daq)">
-      <bpmn:incoming>Flow_01_07</bpmn:incoming>
-      <bpmn:incoming>Flow_01_14</bpmn:incoming>
-      <bpmn:outgoing>Flow_01_08</bpmn:outgoing>
+      <bpmn:incoming>Flow_01_03</bpmn:incoming>
+      <bpmn:incoming>Flow_01_10</bpmn:incoming>
+      <bpmn:outgoing>Flow_01_04</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sendTask id="N01_t3x" name="SMS yuborish (SMS shlyuz)">
-      <bpmn:incoming>Flow_01_08</bpmn:incoming>
-      <bpmn:outgoing>Flow_01_09</bpmn:outgoing>
+      <bpmn:incoming>Flow_01_04</bpmn:incoming>
+      <bpmn:outgoing>Flow_01_05</bpmn:outgoing>
     </bpmn:sendTask>
     <bpmn:userTask id="N01_t4" name="SMS koddagi 6 raqamni kiritish">
-      <bpmn:incoming>Flow_01_09</bpmn:incoming>
-      <bpmn:incoming>Flow_01_12</bpmn:incoming>
-      <bpmn:outgoing>Flow_01_10</bpmn:outgoing>
+      <bpmn:incoming>Flow_01_05</bpmn:incoming>
+      <bpmn:incoming>Flow_01_08</bpmn:incoming>
+      <bpmn:outgoing>Flow_01_06</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:exclusiveGateway id="N01_g5" name="Kod to'g'rimi?">
-      <bpmn:incoming>Flow_01_10</bpmn:incoming>
-      <bpmn:outgoing>Flow_01_11</bpmn:outgoing>
-      <bpmn:outgoing>Flow_01_12</bpmn:outgoing>
-      <bpmn:outgoing>Flow_01_13</bpmn:outgoing>
+      <bpmn:incoming>Flow_01_06</bpmn:incoming>
+      <bpmn:outgoing>Flow_01_07</bpmn:outgoing>
+      <bpmn:outgoing>Flow_01_08</bpmn:outgoing>
+      <bpmn:outgoing>Flow_01_09</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:endEvent id="N01_e5" name="Vaqtincha bloklandi (15 daq)">
-      <bpmn:incoming>Flow_01_13</bpmn:incoming>
+      <bpmn:incoming>Flow_01_09</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:userTask id="N01_t6" name="Profil: F.I.Sh, email, parol; shaxsiy ma'lumotlarga rozilik">
-      <bpmn:incoming>Flow_01_11</bpmn:incoming>
-      <bpmn:outgoing>Flow_01_15</bpmn:outgoing>
+      <bpmn:incoming>Flow_01_07</bpmn:incoming>
+      <bpmn:outgoing>Flow_01_11</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:serviceTask id="N01_t7" name="Akkaunt: ACTIVE, dostup D1; kirish usullari bog'landi">
-      <bpmn:incoming>Flow_01_15</bpmn:incoming>
-      <bpmn:outgoing>Flow_01_16</bpmn:outgoing>
+    <bpmn:serviceTask id="N01_t7" name="Akkaunt: ACTIVE, dostup D1">
+      <bpmn:incoming>Flow_01_11</bpmn:incoming>
+      <bpmn:outgoing>Flow_01_12</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sendTask id="N01_t8" name="Email tasdiqlash havolasi (24 soat)">
-      <bpmn:incoming>Flow_01_16</bpmn:incoming>
-      <bpmn:outgoing>Flow_01_17</bpmn:outgoing>
+      <bpmn:incoming>Flow_01_12</bpmn:incoming>
+      <bpmn:outgoing>Flow_01_13</bpmn:outgoing>
     </bpmn:sendTask>
     <bpmn:userTask id="N01_t9" name="«Arizalarim» sahifasi (D1)">
-      <bpmn:incoming>Flow_01_17</bpmn:incoming>
-      <bpmn:outgoing>Flow_01_18</bpmn:outgoing>
+      <bpmn:incoming>Flow_01_13</bpmn:incoming>
+      <bpmn:outgoing>Flow_01_14</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:endEvent id="N01_e10" name="Akkaunt faol — ariza yaratish mumkin">
-      <bpmn:incoming>Flow_01_18</bpmn:incoming>
+      <bpmn:incoming>Flow_01_14</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:boundaryEvent id="N01_b4" name="3 daqiqa" attachedToRef="N01_t4">
-      <bpmn:outgoing>Flow_01_14</bpmn:outgoing>
+      <bpmn:outgoing>Flow_01_10</bpmn:outgoing>
       <bpmn:timerEventDefinition id="TimerDef_N01_b4"><bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT3M</bpmn:timeDuration></bpmn:timerEventDefinition>
     </bpmn:boundaryEvent>
     <bpmn:sequenceFlow id="Flow_01_01" sourceRef="N01_s0" targetRef="N01_t1" />
-    <bpmn:sequenceFlow id="Flow_01_02" sourceRef="N01_t1" targetRef="N01_g1" />
-    <bpmn:sequenceFlow id="Flow_01_03" name="Telefon + SMS" sourceRef="N01_g1" targetRef="N01_t2" />
-    <bpmn:sequenceFlow id="Flow_01_04" name="E-IMZO / OneID" sourceRef="N01_g1" targetRef="N01_tE" />
-    <bpmn:sequenceFlow id="Flow_01_05" sourceRef="N01_tE" targetRef="N01_tE2" />
-    <bpmn:sequenceFlow id="Flow_01_06" sourceRef="N01_tE2" targetRef="N01_t2" />
-    <bpmn:sequenceFlow id="Flow_01_07" sourceRef="N01_t2" targetRef="N01_t3" />
-    <bpmn:sequenceFlow id="Flow_01_08" sourceRef="N01_t3" targetRef="N01_t3x" />
-    <bpmn:sequenceFlow id="Flow_01_09" sourceRef="N01_t3x" targetRef="N01_t4" />
-    <bpmn:sequenceFlow id="Flow_01_10" sourceRef="N01_t4" targetRef="N01_g5" />
-    <bpmn:sequenceFlow id="Flow_01_11" name="Ha" sourceRef="N01_g5" targetRef="N01_t6" />
-    <bpmn:sequenceFlow id="Flow_01_12" name="Yo'q, urinish qoldi (≤5)" sourceRef="N01_g5" targetRef="N01_t4" />
-    <bpmn:sequenceFlow id="Flow_01_13" name="5 marta xato" sourceRef="N01_g5" targetRef="N01_e5" />
-    <bpmn:sequenceFlow id="Flow_01_14" name="Kod eskirdi → qayta yuborish (60 s)" sourceRef="N01_b4" targetRef="N01_t3" />
-    <bpmn:sequenceFlow id="Flow_01_15" sourceRef="N01_t6" targetRef="N01_t7" />
-    <bpmn:sequenceFlow id="Flow_01_16" sourceRef="N01_t7" targetRef="N01_t8" />
-    <bpmn:sequenceFlow id="Flow_01_17" sourceRef="N01_t8" targetRef="N01_t9" />
-    <bpmn:sequenceFlow id="Flow_01_18" sourceRef="N01_t9" targetRef="N01_e10" />
+    <bpmn:sequenceFlow id="Flow_01_02" sourceRef="N01_t1" targetRef="N01_t2" />
+    <bpmn:sequenceFlow id="Flow_01_03" sourceRef="N01_t2" targetRef="N01_t3" />
+    <bpmn:sequenceFlow id="Flow_01_04" sourceRef="N01_t3" targetRef="N01_t3x" />
+    <bpmn:sequenceFlow id="Flow_01_05" sourceRef="N01_t3x" targetRef="N01_t4" />
+    <bpmn:sequenceFlow id="Flow_01_06" sourceRef="N01_t4" targetRef="N01_g5" />
+    <bpmn:sequenceFlow id="Flow_01_07" name="Ha" sourceRef="N01_g5" targetRef="N01_t6" />
+    <bpmn:sequenceFlow id="Flow_01_08" name="Yo'q, urinish qoldi (≤5)" sourceRef="N01_g5" targetRef="N01_t4" />
+    <bpmn:sequenceFlow id="Flow_01_09" name="5 marta xato" sourceRef="N01_g5" targetRef="N01_e5" />
+    <bpmn:sequenceFlow id="Flow_01_10" name="Kod eskirdi → qayta yuborish (60 s)" sourceRef="N01_b4" targetRef="N01_t3" />
+    <bpmn:sequenceFlow id="Flow_01_11" sourceRef="N01_t6" targetRef="N01_t7" />
+    <bpmn:sequenceFlow id="Flow_01_12" sourceRef="N01_t7" targetRef="N01_t8" />
+    <bpmn:sequenceFlow id="Flow_01_13" sourceRef="N01_t8" targetRef="N01_t9" />
+    <bpmn:sequenceFlow id="Flow_01_14" sourceRef="N01_t9" targetRef="N01_e10" />
     <bpmn:textAnnotation id="Note_01_1">
-      <bpmn:text>Bitta shaxs = bitta akkaunt (telefon va PINFL unikal)</bpmn:text>
+      <bpmn:text>Bitta shaxs = bitta akkaunt (telefon unikal)</bpmn:text>
     </bpmn:textAnnotation>
     <bpmn:association id="Assoc_01_1" associationDirection="None" sourceRef="N01_t1" targetRef="Note_01_1" />
     <bpmn:textAnnotation id="Note_01_2">
-      <bpmn:text>Direktorning yuridik shaxs kaliti → STIR ham keladi, ariza beruvchi roli avtomatik «direktor»</bpmn:text>
+      <bpmn:text>MVP da yagona usul (Q-22); E-IMZO / OneID — Faza 2</bpmn:text>
     </bpmn:textAnnotation>
-    <bpmn:association id="Assoc_01_2" associationDirection="None" sourceRef="N01_tE" targetRef="Note_01_2" />
+    <bpmn:association id="Assoc_01_2" associationDirection="None" sourceRef="N01_t2" targetRef="Note_01_2" />
     <bpmn:textAnnotation id="Note_01_3">
-      <bpmn:text>E-IMZO / OneID bilan kelsa F.I.Sh tayyor; parol ixtiyoriy</bpmn:text>
+      <bpmn:text>Rozilik versiyasi, vaqti va IP qayd etiladi</bpmn:text>
     </bpmn:textAnnotation>
     <bpmn:association id="Assoc_01_3" associationDirection="None" sourceRef="N01_t6" targetRef="Note_01_3" />
     <bpmn:textAnnotation id="Note_01_4">
@@ -394,60 +373,53 @@ nav{display:flex;gap:6px;padding:8px 16px;background:var(--surface);border-botto
   </bpmn:process>
   <bpmndi:BPMNDiagram id="Diagram_01" name="01 · Akkaunt yaratish (ro'yxatdan o'tish)">
     <bpmndi:BPMNPlane id="Plane_01" bpmnElement="Collab_01">
-      <bpmndi:BPMNShape id="Pool_01_di" bpmnElement="Pool_01" isHorizontal="true" bioc:stroke="#0F1522" bioc:fill="#FFFFFF"><dc:Bounds x="10" y="46" width="2046" height="540" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_01_A_di" bpmnElement="Lane_01_A" isHorizontal="true" bioc:stroke="#C9CFDB" bioc:fill="#F6F8FF" color:background-color="#F6F8FF" color:border-color="#C9CFDB"><dc:Bounds x="40" y="46" width="2016" height="200" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_01_S_di" bpmnElement="Lane_01_S" isHorizontal="true" bioc:stroke="#C9CFDB" bioc:fill="#F8F9FB" color:background-color="#F8F9FB" color:border-color="#C9CFDB"><dc:Bounds x="40" y="246" width="2016" height="190" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_01_X_di" bpmnElement="Lane_01_X" isHorizontal="true" bioc:stroke="#C9CFDB" bioc:fill="#FFFBF3" color:background-color="#FFFBF3" color:border-color="#C9CFDB"><dc:Bounds x="40" y="436" width="2016" height="150" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Pool_01_di" bpmnElement="Pool_01" isHorizontal="true" bioc:stroke="#0F1522" bioc:fill="#FFFFFF"><dc:Bounds x="10" y="46" width="1746" height="540" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_01_A_di" bpmnElement="Lane_01_A" isHorizontal="true" bioc:stroke="#C9CFDB" bioc:fill="#F6F8FF" color:background-color="#F6F8FF" color:border-color="#C9CFDB"><dc:Bounds x="40" y="46" width="1716" height="200" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_01_S_di" bpmnElement="Lane_01_S" isHorizontal="true" bioc:stroke="#C9CFDB" bioc:fill="#F8F9FB" color:background-color="#F8F9FB" color:border-color="#C9CFDB"><dc:Bounds x="40" y="246" width="1716" height="190" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_01_X_di" bpmnElement="Lane_01_X" isHorizontal="true" bioc:stroke="#C9CFDB" bioc:fill="#FFFBF3" color:background-color="#FFFBF3" color:border-color="#C9CFDB"><dc:Bounds x="40" y="436" width="1716" height="150" /></bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="N01_s0_di" bpmnElement="N01_s0" bioc:stroke="#157A4A" bioc:fill="#E7F6EE" color:background-color="#E7F6EE" color:border-color="#157A4A"><dc:Bounds x="139" y="128" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="106" y="168" width="101" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="N01_t1_di" bpmnElement="N01_t1" bioc:stroke="#2C4CE0" bioc:fill="#EAEEFC" color:background-color="#EAEEFC" color:border-color="#2C4CE0"><dc:Bounds x="245" y="108" width="124" height="76" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N01_g1_di" bpmnElement="N01_g1" isMarkerVisible="true" bioc:stroke="#A15C00" bioc:fill="#FFF6E6" color:background-color="#FFF6E6" color:border-color="#A15C00"><dc:Bounds x="432" y="121" width="50" height="50" /><bpmndi:BPMNLabel><dc:Bounds x="478" y="106" width="66" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N01_tE_di" bpmnElement="N01_tE" bioc:stroke="#2C4CE0" bioc:fill="#EAEEFC" color:background-color="#EAEEFC" color:border-color="#2C4CE0"><dc:Bounds x="395" y="473" width="124" height="76" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N01_tE2_di" bpmnElement="N01_tE2" bioc:stroke="#4B5468" bioc:fill="#EEF1F5" color:background-color="#EEF1F5" color:border-color="#4B5468"><dc:Bounds x="545" y="303" width="124" height="76" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N01_t2_di" bpmnElement="N01_t2" bioc:stroke="#2C4CE0" bioc:fill="#EAEEFC" color:background-color="#EAEEFC" color:border-color="#2C4CE0"><dc:Bounds x="695" y="108" width="124" height="76" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N01_t3_di" bpmnElement="N01_t3" bioc:stroke="#4B5468" bioc:fill="#EEF1F5" color:background-color="#EEF1F5" color:border-color="#4B5468"><dc:Bounds x="845" y="303" width="124" height="76" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N01_t3x_di" bpmnElement="N01_t3x" bioc:stroke="#6339B8" bioc:fill="#F3EEFC" color:background-color="#F3EEFC" color:border-color="#6339B8"><dc:Bounds x="845" y="473" width="124" height="76" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N01_t4_di" bpmnElement="N01_t4" bioc:stroke="#2C4CE0" bioc:fill="#EAEEFC" color:background-color="#EAEEFC" color:border-color="#2C4CE0"><dc:Bounds x="995" y="108" width="124" height="76" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N01_g5_di" bpmnElement="N01_g5" isMarkerVisible="true" bioc:stroke="#A15C00" bioc:fill="#FFF6E6" color:background-color="#FFF6E6" color:border-color="#A15C00"><dc:Bounds x="1182" y="316" width="50" height="50" /><bpmndi:BPMNLabel><dc:Bounds x="1228" y="301" width="75" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N01_e5_di" bpmnElement="N01_e5" bioc:stroke="#B3261E" bioc:fill="#FDECEA" color:background-color="#FDECEA" color:border-color="#B3261E"><dc:Bounds x="1339" y="368" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="1299" y="408" width="116" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N01_t6_di" bpmnElement="N01_t6" bioc:stroke="#2C4CE0" bioc:fill="#EAEEFC" color:background-color="#EAEEFC" color:border-color="#2C4CE0"><dc:Bounds x="1295" y="108" width="124" height="76" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N01_t7_di" bpmnElement="N01_t7" bioc:stroke="#4B5468" bioc:fill="#EEF1F5" color:background-color="#EEF1F5" color:border-color="#4B5468"><dc:Bounds x="1445" y="303" width="124" height="76" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N01_t8_di" bpmnElement="N01_t8" bioc:stroke="#6339B8" bioc:fill="#F3EEFC" color:background-color="#F3EEFC" color:border-color="#6339B8"><dc:Bounds x="1595" y="473" width="124" height="76" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N01_t9_di" bpmnElement="N01_t9" bioc:stroke="#2C4CE0" bioc:fill="#EAEEFC" color:background-color="#EAEEFC" color:border-color="#2C4CE0"><dc:Bounds x="1745" y="108" width="124" height="76" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N01_e10_di" bpmnElement="N01_e10" bioc:stroke="#157A4A" bioc:fill="#E7F6EE" color:background-color="#E7F6EE" color:border-color="#157A4A"><dc:Bounds x="1939" y="128" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="1905" y="168" width="104" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N01_b4_di" bpmnElement="N01_b4" bioc:stroke="#A15C00" bioc:fill="#FFF6E6" color:background-color="#FFF6E6" color:border-color="#A15C00"><dc:Bounds x="997" y="166" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="946" y="178" width="45" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N01_t2_di" bpmnElement="N01_t2" bioc:stroke="#2C4CE0" bioc:fill="#EAEEFC" color:background-color="#EAEEFC" color:border-color="#2C4CE0"><dc:Bounds x="395" y="108" width="124" height="76" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N01_t3_di" bpmnElement="N01_t3" bioc:stroke="#4B5468" bioc:fill="#EEF1F5" color:background-color="#EEF1F5" color:border-color="#4B5468"><dc:Bounds x="545" y="303" width="124" height="76" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N01_t3x_di" bpmnElement="N01_t3x" bioc:stroke="#6339B8" bioc:fill="#F3EEFC" color:background-color="#F3EEFC" color:border-color="#6339B8"><dc:Bounds x="545" y="473" width="124" height="76" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N01_t4_di" bpmnElement="N01_t4" bioc:stroke="#2C4CE0" bioc:fill="#EAEEFC" color:background-color="#EAEEFC" color:border-color="#2C4CE0"><dc:Bounds x="695" y="108" width="124" height="76" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N01_g5_di" bpmnElement="N01_g5" isMarkerVisible="true" bioc:stroke="#A15C00" bioc:fill="#FFF6E6" color:background-color="#FFF6E6" color:border-color="#A15C00"><dc:Bounds x="882" y="316" width="50" height="50" /><bpmndi:BPMNLabel><dc:Bounds x="928" y="301" width="75" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N01_e5_di" bpmnElement="N01_e5" bioc:stroke="#B3261E" bioc:fill="#FDECEA" color:background-color="#FDECEA" color:border-color="#B3261E"><dc:Bounds x="1039" y="368" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="999" y="408" width="116" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N01_t6_di" bpmnElement="N01_t6" bioc:stroke="#2C4CE0" bioc:fill="#EAEEFC" color:background-color="#EAEEFC" color:border-color="#2C4CE0"><dc:Bounds x="995" y="108" width="124" height="76" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N01_t7_di" bpmnElement="N01_t7" bioc:stroke="#4B5468" bioc:fill="#EEF1F5" color:background-color="#EEF1F5" color:border-color="#4B5468"><dc:Bounds x="1145" y="303" width="124" height="76" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N01_t8_di" bpmnElement="N01_t8" bioc:stroke="#6339B8" bioc:fill="#F3EEFC" color:background-color="#F3EEFC" color:border-color="#6339B8"><dc:Bounds x="1295" y="473" width="124" height="76" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N01_t9_di" bpmnElement="N01_t9" bioc:stroke="#2C4CE0" bioc:fill="#EAEEFC" color:background-color="#EAEEFC" color:border-color="#2C4CE0"><dc:Bounds x="1445" y="108" width="124" height="76" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N01_e10_di" bpmnElement="N01_e10" bioc:stroke="#157A4A" bioc:fill="#E7F6EE" color:background-color="#E7F6EE" color:border-color="#157A4A"><dc:Bounds x="1639" y="128" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="1605" y="168" width="104" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N01_b4_di" bpmnElement="N01_b4" bioc:stroke="#A15C00" bioc:fill="#FFF6E6" color:background-color="#FFF6E6" color:border-color="#A15C00"><dc:Bounds x="697" y="166" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="646" y="178" width="45" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_01_01_di" bpmnElement="Flow_01_01" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="175" y="146" /><di:waypoint x="245" y="146" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_01_02_di" bpmnElement="Flow_01_02" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="369" y="146" /><di:waypoint x="432" y="146" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_01_03_di" bpmnElement="Flow_01_03" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="482" y="146" /><di:waypoint x="695" y="146" /><bpmndi:BPMNLabel><dc:Bounds x="488" y="130" width="75" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_01_04_di" bpmnElement="Flow_01_04" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="457" y="171" /><di:waypoint x="457" y="473" /><bpmndi:BPMNLabel><dc:Bounds x="462" y="175" width="89" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_01_05_di" bpmnElement="Flow_01_05" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="519" y="511" /><di:waypoint x="607" y="511" /><di:waypoint x="607" y="379" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_01_06_di" bpmnElement="Flow_01_06" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="669" y="341" /><di:waypoint x="727" y="341" /><di:waypoint x="727" y="184" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_01_07_di" bpmnElement="Flow_01_07" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="819" y="146" /><di:waypoint x="832" y="146" /><di:waypoint x="832" y="341" /><di:waypoint x="845" y="341" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_01_08_di" bpmnElement="Flow_01_08" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="907" y="379" /><di:waypoint x="907" y="473" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_01_09_di" bpmnElement="Flow_01_09" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="969" y="511" /><di:waypoint x="1059" y="511" /><di:waypoint x="1059" y="184" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_01_10_di" bpmnElement="Flow_01_10" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="1119" y="146" /><di:waypoint x="1151" y="146" /><di:waypoint x="1151" y="341" /><di:waypoint x="1182" y="341" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_01_11_di" bpmnElement="Flow_01_11" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="1207" y="316" /><di:waypoint x="1207" y="146" /><di:waypoint x="1295" y="146" /><bpmndi:BPMNLabel><dc:Bounds x="1212" y="299" width="16" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_01_12_di" bpmnElement="Flow_01_12" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="1207" y="366" /><di:waypoint x="1207" y="403" /><di:waypoint x="1099" y="403" /><di:waypoint x="1099" y="184" /><bpmndi:BPMNLabel><dc:Bounds x="1099" y="405" width="109" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_01_13_di" bpmnElement="Flow_01_13" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="1232" y="341" /><di:waypoint x="1357" y="341" /><di:waypoint x="1357" y="368" /><bpmndi:BPMNLabel><dc:Bounds x="1238" y="325" width="68" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_01_14_di" bpmnElement="Flow_01_14" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="1015" y="202" /><di:waypoint x="1015" y="341" /><di:waypoint x="969" y="341" /><bpmndi:BPMNLabel><dc:Bounds x="973" y="345" width="97" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_01_15_di" bpmnElement="Flow_01_15" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="1419" y="146" /><di:waypoint x="1432" y="146" /><di:waypoint x="1432" y="341" /><di:waypoint x="1445" y="341" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_01_16_di" bpmnElement="Flow_01_16" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="1569" y="341" /><di:waypoint x="1582" y="341" /><di:waypoint x="1582" y="511" /><di:waypoint x="1595" y="511" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_01_17_di" bpmnElement="Flow_01_17" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="1719" y="511" /><di:waypoint x="1732" y="511" /><di:waypoint x="1732" y="146" /><di:waypoint x="1745" y="146" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_01_18_di" bpmnElement="Flow_01_18" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="1869" y="146" /><di:waypoint x="1939" y="146" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_01_02_di" bpmnElement="Flow_01_02" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="369" y="146" /><di:waypoint x="395" y="146" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_01_03_di" bpmnElement="Flow_01_03" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="519" y="146" /><di:waypoint x="532" y="146" /><di:waypoint x="532" y="341" /><di:waypoint x="545" y="341" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_01_04_di" bpmnElement="Flow_01_04" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="607" y="379" /><di:waypoint x="607" y="473" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_01_05_di" bpmnElement="Flow_01_05" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="669" y="511" /><di:waypoint x="759" y="511" /><di:waypoint x="759" y="184" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_01_06_di" bpmnElement="Flow_01_06" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="819" y="146" /><di:waypoint x="851" y="146" /><di:waypoint x="851" y="341" /><di:waypoint x="882" y="341" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_01_07_di" bpmnElement="Flow_01_07" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="907" y="316" /><di:waypoint x="907" y="146" /><di:waypoint x="995" y="146" /><bpmndi:BPMNLabel><dc:Bounds x="912" y="299" width="16" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_01_08_di" bpmnElement="Flow_01_08" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="907" y="366" /><di:waypoint x="907" y="403" /><di:waypoint x="799" y="403" /><di:waypoint x="799" y="184" /><bpmndi:BPMNLabel><dc:Bounds x="799" y="405" width="109" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_01_09_di" bpmnElement="Flow_01_09" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="932" y="341" /><di:waypoint x="1057" y="341" /><di:waypoint x="1057" y="368" /><bpmndi:BPMNLabel><dc:Bounds x="938" y="325" width="68" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_01_10_di" bpmnElement="Flow_01_10" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="715" y="202" /><di:waypoint x="715" y="341" /><di:waypoint x="669" y="341" /><bpmndi:BPMNLabel><dc:Bounds x="673" y="345" width="97" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_01_11_di" bpmnElement="Flow_01_11" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="1119" y="146" /><di:waypoint x="1132" y="146" /><di:waypoint x="1132" y="341" /><di:waypoint x="1145" y="341" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_01_12_di" bpmnElement="Flow_01_12" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="1269" y="341" /><di:waypoint x="1282" y="341" /><di:waypoint x="1282" y="511" /><di:waypoint x="1295" y="511" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_01_13_di" bpmnElement="Flow_01_13" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="1419" y="511" /><di:waypoint x="1432" y="511" /><di:waypoint x="1432" y="146" /><di:waypoint x="1445" y="146" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_01_14_di" bpmnElement="Flow_01_14" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="1569" y="146" /><di:waypoint x="1639" y="146" /></bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Note_01_1_di" bpmnElement="Note_01_1"><dc:Bounds x="222" y="52" width="170" height="36" /></bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Assoc_01_1_di" bpmnElement="Assoc_01_1"><di:waypoint x="307" y="88" /><di:waypoint x="307" y="108" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="Note_01_2_di" bpmnElement="Note_01_2"><dc:Bounds x="372" y="544" width="250" height="36" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Assoc_01_2_di" bpmnElement="Assoc_01_2"><di:waypoint x="457" y="562" /><di:waypoint x="457" y="549" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="Note_01_3_di" bpmnElement="Note_01_3"><dc:Bounds x="1257" y="52" width="200" height="36" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Assoc_01_3_di" bpmnElement="Assoc_01_3"><di:waypoint x="1357" y="88" /><di:waypoint x="1357" y="108" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="Note_01_4_di" bpmnElement="Note_01_4"><dc:Bounds x="1420" y="394" width="175" height="36" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Assoc_01_4_di" bpmnElement="Assoc_01_4"><di:waypoint x="1507" y="394" /><di:waypoint x="1507" y="379" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="Note_01_5_di" bpmnElement="Note_01_5"><dc:Bounds x="1715" y="52" width="185" height="49" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Assoc_01_5_di" bpmnElement="Assoc_01_5"><di:waypoint x="1807" y="101" /><di:waypoint x="1807" y="108" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Note_01_2_di" bpmnElement="Note_01_2"><dc:Bounds x="372" y="52" width="170" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Assoc_01_2_di" bpmnElement="Assoc_01_2"><di:waypoint x="457" y="88" /><di:waypoint x="457" y="108" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Note_01_3_di" bpmnElement="Note_01_3"><dc:Bounds x="962" y="52" width="190" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Assoc_01_3_di" bpmnElement="Assoc_01_3"><di:waypoint x="1057" y="88" /><di:waypoint x="1057" y="108" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Note_01_4_di" bpmnElement="Note_01_4"><dc:Bounds x="1120" y="394" width="175" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Assoc_01_4_di" bpmnElement="Assoc_01_4"><di:waypoint x="1207" y="394" /><di:waypoint x="1207" y="379" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Note_01_5_di" bpmnElement="Note_01_5"><dc:Bounds x="1415" y="52" width="185" height="49" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Assoc_01_5_di" bpmnElement="Assoc_01_5"><di:waypoint x="1507" y="101" /><di:waypoint x="1507" y="108" /></bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>
 </script>
-<script type="text/plain" id="x2" data-name="02-ariza-yaratish-va-yuborish" data-sub="INN → dublikat → registr + ABS → shakl va hisob (yo'q bo'lsa — to'xtaydi, Q-06/Q-07) → qoralama → 8 qadam → hujjatlar → G01–G15 → SUBMITTED."><?xml version="1.0" encoding="UTF-8"?>
+<script type="text/plain" id="x2" data-name="02-ariza-yaratish-va-yuborish" data-sub="INN → dublikat → registr + ABS → shakl (filial — bosh tashkilotga, xorijiy — yo'q) → qoralama (hisob yo'q — «yangi hisob», Q-24) → 7 qadam → hujjatlar → G01–G15 → SUBMITTED."><?xml version="1.0" encoding="UTF-8"?>
 <!-- 02 · Ariza yaratish va yuborish — tools/bpmn/models/models.mjs dan generatsiya qilingan. Qo'lda tahrirlamang: modelni o'zgartiring va "node tools/bpmn/build.mjs" ni ishga tushiring. -->
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:color="http://www.omg.org/spec/BPMN/non-normative/color/1.0" id="Defs_02" targetNamespace="https://garantbank.uz/bpmn/merchant-onboarding" exporter="garant-onboarding/tools/bpmn" exporterVersion="2.0.0">
   <bpmn:collaboration id="Collab_02">
@@ -510,27 +482,27 @@ nav{display:flex;gap:6px;padding:8px 16px;background:var(--surface);border-botto
     <bpmn:endEvent id="N02_e3b" name="Ochiq ariza boshqa foydalanuvchida: kirish so'rovi">
       <bpmn:incoming>Flow_02_05</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:serviceTask id="N02_t4" name="Registr: nom, shakl, direktor, OKED · ABS: hisob va egasi">
+    <bpmn:serviceTask id="N02_t4" name="Registr: nom, shakl, direktor, OKED, ta'sischilar · ABS: hisoblar">
       <bpmn:incoming>Flow_02_06</bpmn:incoming>
       <bpmn:outgoing>Flow_02_07</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:exclusiveGateway id="N02_g4" name="Shakl va hisob?">
+    <bpmn:exclusiveGateway id="N02_g4" name="Tashkiliy shakl?">
       <bpmn:incoming>Flow_02_07</bpmn:incoming>
       <bpmn:outgoing>Flow_02_08</bpmn:outgoing>
       <bpmn:outgoing>Flow_02_09</bpmn:outgoing>
       <bpmn:outgoing>Flow_02_10</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:endEvent id="N02_e4a" name="Hisob yo'q: avval Garant Bankda hisob oching (bankda lid)">
+    <bpmn:endEvent id="N02_e4a" name="Filial: ariza bosh tashkilot INN'i bilan (Q-23)">
       <bpmn:incoming>Flow_02_08</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:endEvent id="N02_e4b" name="Filial / xorijiy — qabul qilinmaydi">
+    <bpmn:endEvent id="N02_e4b" name="Xorijiy — qabul qilinmaydi">
       <bpmn:incoming>Flow_02_09</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:serviceTask id="N02_t5" name="Qoralama: APP-2026-…, DRAFT; registrdan oldindan to'ldirish">
+    <bpmn:serviceTask id="N02_t5" name="Qoralama: APP-…, DRAFT; registrdan to'ldirish; hisob yo'q → «yangi hisob»">
       <bpmn:incoming>Flow_02_10</bpmn:incoming>
       <bpmn:outgoing>Flow_02_11</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:userTask id="N02_t6" name="Soha, ariza beruvchi roli (direktor / vakil)">
+    <bpmn:userTask id="N02_t6" name="Soha, ariza beruvchi roli (direktor / xodim)">
       <bpmn:incoming>Flow_02_11</bpmn:incoming>
       <bpmn:outgoing>Flow_02_12</bpmn:outgoing>
     </bpmn:userTask>
@@ -546,7 +518,7 @@ nav{display:flex;gap:6px;padding:8px 16px;background:var(--surface);border-botto
     <bpmn:endEvent id="N02_e8" name="Ariza davom ettirilmaydi (sabab ko'rsatiladi)">
       <bpmn:incoming>Flow_02_14</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:subProcess id="N02_sp9" name="Formani to'ldirish: 8 qadam, autosave">
+    <bpmn:subProcess id="N02_sp9" name="Formani to'ldirish: 7 qadam, autosave">
       <bpmn:incoming>Flow_02_15</bpmn:incoming>
       <bpmn:incoming>Flow_02_20</bpmn:incoming>
       <bpmn:outgoing>Flow_02_17</bpmn:outgoing>
@@ -558,7 +530,7 @@ nav{display:flex;gap:6px;padding:8px 16px;background:var(--surface);border-botto
       <bpmn:incoming>Flow_02_17</bpmn:incoming>
       <bpmn:outgoing>Flow_02_18</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:serviceTask id="N02_t11" name="L1+L2 validatsiya; G01–G15; ABS qayta so'rovi">
+    <bpmn:serviceTask id="N02_t11" name="L1+L2 validatsiya; G01–G15; ABS qayta so'rovi (mavjud hisob)">
       <bpmn:incoming>Flow_02_18</bpmn:incoming>
       <bpmn:outgoing>Flow_02_19</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -567,7 +539,7 @@ nav{display:flex;gap:6px;padding:8px 16px;background:var(--surface);border-botto
       <bpmn:outgoing>Flow_02_20</bpmn:outgoing>
       <bpmn:outgoing>Flow_02_21</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:userTask id="N02_t13" name="Deklaratsiyalar; «Yuborish» — SMS kod yoki E-IMZO">
+    <bpmn:userTask id="N02_t13" name="Tasdiqlar; «Yuborish» — SMS kod">
       <bpmn:incoming>Flow_02_21</bpmn:incoming>
       <bpmn:outgoing>Flow_02_22</bpmn:outgoing>
     </bpmn:userTask>
@@ -590,8 +562,8 @@ nav{display:flex;gap:6px;padding:8px 16px;background:var(--surface);border-botto
     <bpmn:sequenceFlow id="Flow_02_05" name="Ochiq ariza (boshqa foydalanuvchi)" sourceRef="N02_g3" targetRef="N02_e3b" />
     <bpmn:sequenceFlow id="Flow_02_06" name="Yangi / o'z qoralamasi" sourceRef="N02_g3" targetRef="N02_t4" />
     <bpmn:sequenceFlow id="Flow_02_07" sourceRef="N02_t4" targetRef="N02_g4" />
-    <bpmn:sequenceFlow id="Flow_02_08" name="Hisob yo'q" sourceRef="N02_g4" targetRef="N02_e4a" />
-    <bpmn:sequenceFlow id="Flow_02_09" name="Filial / xorijiy" sourceRef="N02_g4" targetRef="N02_e4b" />
+    <bpmn:sequenceFlow id="Flow_02_08" name="Filial" sourceRef="N02_g4" targetRef="N02_e4a" />
+    <bpmn:sequenceFlow id="Flow_02_09" name="Xorijiy" sourceRef="N02_g4" targetRef="N02_e4b" />
     <bpmn:sequenceFlow id="Flow_02_10" name="OK" sourceRef="N02_g4" targetRef="N02_t5" />
     <bpmn:sequenceFlow id="Flow_02_11" sourceRef="N02_t5" targetRef="N02_t6" />
     <bpmn:sequenceFlow id="Flow_02_12" sourceRef="N02_t6" targetRef="N02_t7" />
@@ -611,15 +583,15 @@ nav{display:flex;gap:6px;padding:8px 16px;background:var(--surface);border-botto
     </bpmn:textAnnotation>
     <bpmn:association id="Assoc_02_1" associationDirection="None" sourceRef="N02_t1" targetRef="Note_02_1" />
     <bpmn:textAnnotation id="Note_02_2">
-      <bpmn:text>Garant Bankda hisob bo'lmasa ariza boshlanmaydi (Q-07). Faqat MChJ, AJ, YaTT, o'zini o'zi band (Q-06)</bpmn:text>
+      <bpmn:text>Hisob yo'q bo'lsa ham ariza davom etadi — hisob tasdiqdan keyin ochiladi (Q-24). Ta'sischilar registrdan (Q-28)</bpmn:text>
     </bpmn:textAnnotation>
     <bpmn:association id="Assoc_02_2" associationDirection="None" sourceRef="N02_t4" targetRef="Note_02_2" />
     <bpmn:textAnnotation id="Note_02_3">
-      <bpmn:text>Vakil bo'lsa — ishonchnoma majburiy (G13)</bpmn:text>
+      <bpmn:text>Ishonchnoma kerak emas (Q-25)</bpmn:text>
     </bpmn:textAnnotation>
     <bpmn:association id="Assoc_02_3" associationDirection="None" sourceRef="N02_t6" targetRef="Note_02_3" />
     <bpmn:textAnnotation id="Note_02_4">
-      <bpmn:text>8 qadam: 03-hujjat. required = visible</bpmn:text>
+      <bpmn:text>7 qadam: 03-hujjat. required = visible</bpmn:text>
     </bpmn:textAnnotation>
     <bpmn:association id="Assoc_02_4" associationDirection="None" sourceRef="N02_sp9" targetRef="Note_02_4" />
     <bpmn:textAnnotation id="Note_02_5">
@@ -644,9 +616,9 @@ nav{display:flex;gap:6px;padding:8px 16px;background:var(--surface);border-botto
       <bpmndi:BPMNShape id="N02_e3a_di" bpmnElement="N02_e3a" bioc:stroke="#4B5468" bioc:fill="#F1F3F7" color:background-color="#F1F3F7" color:border-color="#4B5468"><dc:Bounds x="589" y="133" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="557" y="90" width="100" height="39" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="N02_e3b_di" bpmnElement="N02_e3b" bioc:stroke="#4B5468" bioc:fill="#F1F3F7" color:background-color="#F1F3F7" color:border-color="#4B5468"><dc:Bounds x="739" y="133" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="699" y="90" width="116" height="39" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="N02_t4_di" bpmnElement="N02_t4" bioc:stroke="#4B5468" bioc:fill="#EEF1F5" color:background-color="#EEF1F5" color:border-color="#4B5468"><dc:Bounds x="545" y="503" width="124" height="76" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N02_g4_di" bpmnElement="N02_g4" isMarkerVisible="true" bioc:stroke="#A15C00" bioc:fill="#FFF6E6" color:background-color="#FFF6E6" color:border-color="#A15C00"><dc:Bounds x="882" y="331" width="50" height="50" /><bpmndi:BPMNLabel><dc:Bounds x="807" y="316" width="79" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N02_e4a_di" bpmnElement="N02_e4a" bioc:stroke="#B3261E" bioc:fill="#FDECEA" color:background-color="#FDECEA" color:border-color="#B3261E"><dc:Bounds x="889" y="133" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="854" y="90" width="105" height="39" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N02_e4b_di" bpmnElement="N02_e4b" bioc:stroke="#B3261E" bioc:fill="#FDECEA" color:background-color="#FDECEA" color:border-color="#B3261E"><dc:Bounds x="889" y="402" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="931" y="407" width="108" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N02_g4_di" bpmnElement="N02_g4" isMarkerVisible="true" bioc:stroke="#A15C00" bioc:fill="#FFF6E6" color:background-color="#FFF6E6" color:border-color="#A15C00"><dc:Bounds x="882" y="331" width="50" height="50" /><bpmndi:BPMNLabel><dc:Bounds x="804" y="316" width="82" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N02_e4a_di" bpmnElement="N02_e4a" bioc:stroke="#4B5468" bioc:fill="#F1F3F7" color:background-color="#F1F3F7" color:border-color="#4B5468"><dc:Bounds x="889" y="133" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="855" y="90" width="105" height="39" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N02_e4b_di" bpmnElement="N02_e4b" bioc:stroke="#B3261E" bioc:fill="#FDECEA" color:background-color="#FDECEA" color:border-color="#B3261E"><dc:Bounds x="889" y="402" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="931" y="407" width="74" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="N02_t5_di" bpmnElement="N02_t5" bioc:stroke="#4B5468" bioc:fill="#EEF1F5" color:background-color="#EEF1F5" color:border-color="#4B5468"><dc:Bounds x="995" y="318" width="124" height="76" /></bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="N02_t6_di" bpmnElement="N02_t6" bioc:stroke="#2C4CE0" bioc:fill="#EAEEFC" color:background-color="#EAEEFC" color:border-color="#2C4CE0"><dc:Bounds x="1145" y="113" width="124" height="76" /></bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="N02_t7_di" bpmnElement="N02_t7" bioc:stroke="#4B5468" bioc:fill="#EEF1F5" color:background-color="#EEF1F5" color:border-color="#4B5468"><dc:Bounds x="1295" y="318" width="124" height="76" /></bpmndi:BPMNShape>
@@ -668,8 +640,8 @@ nav{display:flex;gap:6px;padding:8px 16px;background:var(--surface);border-botto
       <bpmndi:BPMNEdge id="Flow_02_05_di" bpmnElement="Flow_02_05" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="632" y="356" /><di:waypoint x="757" y="356" /><di:waypoint x="757" y="169" /><bpmndi:BPMNLabel><dc:Bounds x="637" y="322" width="97" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_02_06_di" bpmnElement="Flow_02_06" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="607" y="381" /><di:waypoint x="607" y="503" /><bpmndi:BPMNLabel><dc:Bounds x="612" y="385" width="112" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_02_07_di" bpmnElement="Flow_02_07" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="669" y="541" /><di:waypoint x="776" y="541" /><di:waypoint x="776" y="356" /><di:waypoint x="882" y="356" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_02_08_di" bpmnElement="Flow_02_08" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="907" y="331" /><di:waypoint x="907" y="169" /><bpmndi:BPMNLabel><dc:Bounds x="912" y="314" width="53" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_02_09_di" bpmnElement="Flow_02_09" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="907" y="381" /><di:waypoint x="907" y="402" /><bpmndi:BPMNLabel><dc:Bounds x="815" y="386" width="70" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_02_08_di" bpmnElement="Flow_02_08" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="907" y="331" /><di:waypoint x="907" y="169" /><bpmndi:BPMNLabel><dc:Bounds x="912" y="314" width="28" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_02_09_di" bpmnElement="Flow_02_09" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="907" y="381" /><di:waypoint x="907" y="402" /><bpmndi:BPMNLabel><dc:Bounds x="847" y="386" width="36" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_02_10_di" bpmnElement="Flow_02_10" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="932" y="356" /><di:waypoint x="995" y="356" /><bpmndi:BPMNLabel><dc:Bounds x="938" y="340" width="18" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_02_11_di" bpmnElement="Flow_02_11" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="1119" y="356" /><di:waypoint x="1132" y="356" /><di:waypoint x="1132" y="151" /><di:waypoint x="1145" y="151" /></bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_02_12_di" bpmnElement="Flow_02_12" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="1269" y="151" /><di:waypoint x="1282" y="151" /><di:waypoint x="1282" y="356" /><di:waypoint x="1295" y="356" /></bpmndi:BPMNEdge>
@@ -688,8 +660,8 @@ nav{display:flex;gap:6px;padding:8px 16px;background:var(--surface);border-botto
       <bpmndi:BPMNEdge id="Assoc_02_1_di" bpmnElement="Assoc_02_1"><di:waypoint x="307" y="75" /><di:waypoint x="307" y="113" /></bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Note_02_2_di" bpmnElement="Note_02_2"><dc:Bounds x="477" y="584" width="300" height="36" /></bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Assoc_02_2_di" bpmnElement="Assoc_02_2"><di:waypoint x="607" y="584" /><di:waypoint x="607" y="579" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="Note_02_3_di" bpmnElement="Note_02_3"><dc:Bounds x="1120" y="52" width="175" height="36" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Assoc_02_3_di" bpmnElement="Assoc_02_3"><di:waypoint x="1207" y="88" /><di:waypoint x="1207" y="113" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Note_02_3_di" bpmnElement="Note_02_3"><dc:Bounds x="1120" y="52" width="175" height="23" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Assoc_02_3_di" bpmnElement="Assoc_02_3"><di:waypoint x="1207" y="75" /><di:waypoint x="1207" y="113" /></bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Note_02_4_di" bpmnElement="Note_02_4"><dc:Bounds x="1575" y="52" width="165" height="36" /></bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Assoc_02_4_di" bpmnElement="Assoc_02_4"><di:waypoint x="1657" y="88" /><di:waypoint x="1657" y="113" /></bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Note_02_5_di" bpmnElement="Note_02_5"><dc:Bounds x="2170" y="52" width="175" height="36" /></bpmndi:BPMNShape>
@@ -1334,12 +1306,12 @@ nav{display:flex;gap:6px;padding:8px 16px;background:var(--surface);border-botto
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>
 </script>
-<script type="text/plain" id="x6" data-name="04-shartnoma-va-faollashtirish" data-sub="APPROVED → 1-imzo (mijoz) → 2-imzo (Rais o'rinbosari) → provisioning → kabinet (D4, sandbox) → go-live → LIVE (D5)."><?xml version="1.0" encoding="UTF-8"?>
+<script type="text/plain" id="x6" data-name="04-shartnoma-va-faollashtirish" data-sub="APPROVED → (yangi hisob so'ralgan bo'lsa — ABS da hisob ochiladi, Q-24) → 1-imzo (direktor) → 2-imzo (Rais o'rinbosari) → provisioning → kabinet (D4, sandbox) → go-live → LIVE (D5)."><?xml version="1.0" encoding="UTF-8"?>
 <!-- 04 · Shartnoma va faollashtirish — tools/bpmn/models/models.mjs dan generatsiya qilingan. Qo'lda tahrirlamang: modelni o'zgartiring va "node tools/bpmn/build.mjs" ni ishga tushiring. -->
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:color="http://www.omg.org/spec/BPMN/non-normative/color/1.0" id="Defs_04" targetNamespace="https://garantbank.uz/bpmn/merchant-onboarding" exporter="garant-onboarding/tools/bpmn" exporterVersion="2.0.0">
   <bpmn:collaboration id="Collab_04">
     <bpmn:documentation>04 · Shartnoma va faollashtirish</bpmn:documentation>
-    <bpmn:participant id="Pool_04" name="Garant Bank · Shartnoma, provisioning, go-live" processRef="Process_04" />
+    <bpmn:participant id="Pool_04" name="Garant Bank · Hisob, shartnoma, provisioning, go-live" processRef="Process_04" />
   </bpmn:collaboration>
   <bpmn:process id="Process_04" name="04 · Shartnoma va faollashtirish" isExecutable="false">
     <bpmn:laneSet id="LaneSet_04">
@@ -1352,6 +1324,7 @@ nav{display:flex;gap:6px;padding:8px 16px;background:var(--surface);border-botto
       </bpmn:lane>
       <bpmn:lane id="Lane_04_S" name="Platforma">
         <bpmn:flowNodeRef>N04_s0</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>N04_g0</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>N04_t1</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>N04_g4</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>N04_sp7</bpmn:flowNodeRef>
@@ -1369,6 +1342,7 @@ nav{display:flex;gap:6px;padding:8px 16px;background:var(--surface);border-botto
         <bpmn:flowNodeRef>N04_g6</bpmn:flowNodeRef>
       </bpmn:lane>
       <bpmn:lane id="Lane_04_P" name="Operatsiya xodimi">
+        <bpmn:flowNodeRef>N04_tA</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>N04_t7p</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>N04_t12</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>N04_g13</bpmn:flowNodeRef>
@@ -1378,182 +1352,206 @@ nav{display:flex;gap:6px;padding:8px 16px;background:var(--surface);border-botto
       <bpmn:outgoing>Flow_04_01</bpmn:outgoing>
       <bpmn:messageEventDefinition id="EvDef_N04_s0" />
     </bpmn:startEvent>
-    <bpmn:serviceTask id="N04_t1" name="Shartnoma: shablon + tarif, MCC, limit (CTR-…); xabar">
+    <bpmn:exclusiveGateway id="N04_g0" name="Yangi hisob so'ralganmi?">
       <bpmn:incoming>Flow_04_01</bpmn:incoming>
-      <bpmn:incoming>Flow_04_09</bpmn:incoming>
       <bpmn:outgoing>Flow_04_02</bpmn:outgoing>
-    </bpmn:serviceTask>
-    <bpmn:userTask id="N04_t2" name="1-imzo: direktor E-IMZO bilan (tizim ichida)">
-      <bpmn:incoming>Flow_04_02</bpmn:incoming>
-      <bpmn:incoming>Flow_04_06</bpmn:incoming>
+      <bpmn:outgoing>Flow_04_03</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="N04_tA" name="ABS da hisob ochish (ariza hujjatlari bilan)">
+      <bpmn:incoming>Flow_04_03</bpmn:incoming>
       <bpmn:outgoing>Flow_04_04</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:endEvent id="N04_e2x" name="EXPIRED: 14 kun imzolanmadi">
-      <bpmn:incoming>Flow_04_03</bpmn:incoming>
-    </bpmn:endEvent>
-    <bpmn:serviceTask id="N04_t3" name="Sertifikat va imzo tekshiruvi (INN, PINFL)">
+    <bpmn:serviceTask id="N04_t1" name="Shartnoma: tarif, MCC, limit, hisob raqami (CTR-…)">
+      <bpmn:incoming>Flow_04_02</bpmn:incoming>
       <bpmn:incoming>Flow_04_04</bpmn:incoming>
+      <bpmn:incoming>Flow_04_12</bpmn:incoming>
       <bpmn:outgoing>Flow_04_05</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:exclusiveGateway id="N04_g4" name="Imzo haqiqiy va vakolatli?">
+    <bpmn:userTask id="N04_t2" name="1-imzo: direktor E-IMZO bilan (tizim ichida)">
       <bpmn:incoming>Flow_04_05</bpmn:incoming>
-      <bpmn:outgoing>Flow_04_06</bpmn:outgoing>
+      <bpmn:incoming>Flow_04_09</bpmn:incoming>
       <bpmn:outgoing>Flow_04_07</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
-    <bpmn:userTask id="N04_t5" name="2-imzo: bank nomidan imzolash">
+    </bpmn:userTask>
+    <bpmn:endEvent id="N04_e2x" name="EXPIRED: 14 kun imzolanmadi">
+      <bpmn:incoming>Flow_04_06</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:serviceTask id="N04_t3" name="Sertifikat va imzo tekshiruvi (INN, PINFL)">
       <bpmn:incoming>Flow_04_07</bpmn:incoming>
       <bpmn:outgoing>Flow_04_08</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:exclusiveGateway id="N04_g6" name="Imzolandimi?">
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="N04_g4" name="Imzo haqiqiy va vakolatli?">
       <bpmn:incoming>Flow_04_08</bpmn:incoming>
       <bpmn:outgoing>Flow_04_09</bpmn:outgoing>
       <bpmn:outgoing>Flow_04_10</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:subProcess id="N04_sp7" name="Provisioning (Saga): Merchant MER-…, profil, tarif, limit">
+    <bpmn:userTask id="N04_t5" name="2-imzo: bank nomidan imzolash">
       <bpmn:incoming>Flow_04_10</bpmn:incoming>
-      <bpmn:incoming>Flow_04_12</bpmn:incoming>
-      <bpmn:outgoing>Flow_04_13</bpmn:outgoing>
-    </bpmn:subProcess>
-    <bpmn:userTask id="N04_t7p" name="Qo'lda hal qilish / kompensatsiya">
+      <bpmn:outgoing>Flow_04_11</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="N04_g6" name="Imzolandimi?">
       <bpmn:incoming>Flow_04_11</bpmn:incoming>
       <bpmn:outgoing>Flow_04_12</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:serviceTask id="N04_t8" name="Uzcard/Humo PC: MID, TID · ABS hisob · OFD">
+      <bpmn:outgoing>Flow_04_13</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:subProcess id="N04_sp7" name="Provisioning (Saga): Merchant MER-…, profil, tarif, limit">
       <bpmn:incoming>Flow_04_13</bpmn:incoming>
-      <bpmn:outgoing>Flow_04_14</bpmn:outgoing>
-    </bpmn:serviceTask>
-    <bpmn:serviceTask id="N04_t9" name="Rol → MERCHANT_OWNER; kabinet D4; sandbox kalitlari (Q-16)">
+      <bpmn:incoming>Flow_04_15</bpmn:incoming>
+      <bpmn:outgoing>Flow_04_16</bpmn:outgoing>
+    </bpmn:subProcess>
+    <bpmn:userTask id="N04_t7p" name="Qo'lda hal qilish / kompensatsiya">
       <bpmn:incoming>Flow_04_14</bpmn:incoming>
       <bpmn:outgoing>Flow_04_15</bpmn:outgoing>
-    </bpmn:serviceTask>
-    <bpmn:userTask id="N04_t10" name="Integratsiya: test to'lov, refund, webhook (sandbox)">
-      <bpmn:incoming>Flow_04_15</bpmn:incoming>
-      <bpmn:incoming>Flow_04_19</bpmn:incoming>
-      <bpmn:outgoing>Flow_04_16</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:serviceTask id="N04_t11" name="Go-live cheklist avtotekshiruvi">
+    <bpmn:serviceTask id="N04_t8" name="Uzcard/Humo PC: MID, TID · ABS hisob · OFD">
       <bpmn:incoming>Flow_04_16</bpmn:incoming>
       <bpmn:outgoing>Flow_04_17</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:userTask id="N04_t12" name="Go-live tasdig'i (sayt, test natijalari)">
+    <bpmn:serviceTask id="N04_t9" name="Rol → OWNER (xodim — ADMIN); kabinet D4; sandbox">
       <bpmn:incoming>Flow_04_17</bpmn:incoming>
       <bpmn:outgoing>Flow_04_18</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:exclusiveGateway id="N04_g13" name="Tayyormi?">
+    </bpmn:serviceTask>
+    <bpmn:userTask id="N04_t10" name="Dasturchi: IP, callback (Q-30); test to'lov, refund">
       <bpmn:incoming>Flow_04_18</bpmn:incoming>
+      <bpmn:incoming>Flow_04_22</bpmn:incoming>
       <bpmn:outgoing>Flow_04_19</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="N04_t11" name="Go-live cheklist avtotekshiruvi">
+      <bpmn:incoming>Flow_04_19</bpmn:incoming>
       <bpmn:outgoing>Flow_04_20</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
-    <bpmn:serviceTask id="N04_t14" name="Production kalitlar; Merchant ACTIVE (D5); xabar">
+    </bpmn:serviceTask>
+    <bpmn:userTask id="N04_t12" name="Go-live tasdig'i (sayt, test natijalari)">
       <bpmn:incoming>Flow_04_20</bpmn:incoming>
       <bpmn:outgoing>Flow_04_21</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="N04_g13" name="Tayyormi?">
+      <bpmn:incoming>Flow_04_21</bpmn:incoming>
+      <bpmn:outgoing>Flow_04_22</bpmn:outgoing>
+      <bpmn:outgoing>Flow_04_23</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="N04_t14" name="Production kalitlar; Merchant ACTIVE (D5); xabar">
+      <bpmn:incoming>Flow_04_23</bpmn:incoming>
+      <bpmn:outgoing>Flow_04_24</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:endEvent id="N04_e15" name="Merchant LIVE — birinchi real to'lov">
-      <bpmn:incoming>Flow_04_21</bpmn:incoming>
+      <bpmn:incoming>Flow_04_24</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:boundaryEvent id="N04_b2" name="14 kun" attachedToRef="N04_t2">
-      <bpmn:outgoing>Flow_04_03</bpmn:outgoing>
+      <bpmn:outgoing>Flow_04_06</bpmn:outgoing>
       <bpmn:timerEventDefinition id="TimerDef_N04_b2"><bpmn:timeDuration xsi:type="bpmn:tFormalExpression">P14D</bpmn:timeDuration></bpmn:timerEventDefinition>
     </bpmn:boundaryEvent>
     <bpmn:boundaryEvent id="N04_b7" name="Qadam xatosi" attachedToRef="N04_sp7">
-      <bpmn:outgoing>Flow_04_11</bpmn:outgoing>
+      <bpmn:outgoing>Flow_04_14</bpmn:outgoing>
       <bpmn:errorEventDefinition id="EvDef_N04_b7" />
     </bpmn:boundaryEvent>
-    <bpmn:sequenceFlow id="Flow_04_01" sourceRef="N04_s0" targetRef="N04_t1" />
-    <bpmn:sequenceFlow id="Flow_04_02" sourceRef="N04_t1" targetRef="N04_t2" />
-    <bpmn:sequenceFlow id="Flow_04_03" sourceRef="N04_b2" targetRef="N04_e2x" />
-    <bpmn:sequenceFlow id="Flow_04_04" sourceRef="N04_t2" targetRef="N04_t3" />
-    <bpmn:sequenceFlow id="Flow_04_05" sourceRef="N04_t3" targetRef="N04_g4" />
-    <bpmn:sequenceFlow id="Flow_04_06" name="Yo'q: qayta imzolash" sourceRef="N04_g4" targetRef="N04_t2" />
-    <bpmn:sequenceFlow id="Flow_04_07" name="Ha" sourceRef="N04_g4" targetRef="N04_t5" />
-    <bpmn:sequenceFlow id="Flow_04_08" sourceRef="N04_t5" targetRef="N04_g6" />
-    <bpmn:sequenceFlow id="Flow_04_09" name="Izoh bilan qaytarildi" sourceRef="N04_g6" targetRef="N04_t1" />
-    <bpmn:sequenceFlow id="Flow_04_10" name="Imzolandi" sourceRef="N04_g6" targetRef="N04_sp7" />
-    <bpmn:sequenceFlow id="Flow_04_11" sourceRef="N04_b7" targetRef="N04_t7p" />
-    <bpmn:sequenceFlow id="Flow_04_12" sourceRef="N04_t7p" targetRef="N04_sp7" />
-    <bpmn:sequenceFlow id="Flow_04_13" sourceRef="N04_sp7" targetRef="N04_t8" />
-    <bpmn:sequenceFlow id="Flow_04_14" sourceRef="N04_t8" targetRef="N04_t9" />
-    <bpmn:sequenceFlow id="Flow_04_15" sourceRef="N04_t9" targetRef="N04_t10" />
-    <bpmn:sequenceFlow id="Flow_04_16" sourceRef="N04_t10" targetRef="N04_t11" />
-    <bpmn:sequenceFlow id="Flow_04_17" sourceRef="N04_t11" targetRef="N04_t12" />
-    <bpmn:sequenceFlow id="Flow_04_18" sourceRef="N04_t12" targetRef="N04_g13" />
-    <bpmn:sequenceFlow id="Flow_04_19" name="Yo'q: kamchiliklar" sourceRef="N04_g13" targetRef="N04_t10" />
-    <bpmn:sequenceFlow id="Flow_04_20" name="Ha" sourceRef="N04_g13" targetRef="N04_t14" />
-    <bpmn:sequenceFlow id="Flow_04_21" sourceRef="N04_t14" targetRef="N04_e15" />
+    <bpmn:sequenceFlow id="Flow_04_01" sourceRef="N04_s0" targetRef="N04_g0" />
+    <bpmn:sequenceFlow id="Flow_04_02" name="Yo'q (mavjud hisob)" sourceRef="N04_g0" targetRef="N04_t1" />
+    <bpmn:sequenceFlow id="Flow_04_03" name="Ha (Q-24)" sourceRef="N04_g0" targetRef="N04_tA" />
+    <bpmn:sequenceFlow id="Flow_04_04" name="Hisob raqami" sourceRef="N04_tA" targetRef="N04_t1" />
+    <bpmn:sequenceFlow id="Flow_04_05" sourceRef="N04_t1" targetRef="N04_t2" />
+    <bpmn:sequenceFlow id="Flow_04_06" sourceRef="N04_b2" targetRef="N04_e2x" />
+    <bpmn:sequenceFlow id="Flow_04_07" sourceRef="N04_t2" targetRef="N04_t3" />
+    <bpmn:sequenceFlow id="Flow_04_08" sourceRef="N04_t3" targetRef="N04_g4" />
+    <bpmn:sequenceFlow id="Flow_04_09" name="Yo'q: qayta imzolash" sourceRef="N04_g4" targetRef="N04_t2" />
+    <bpmn:sequenceFlow id="Flow_04_10" name="Ha" sourceRef="N04_g4" targetRef="N04_t5" />
+    <bpmn:sequenceFlow id="Flow_04_11" sourceRef="N04_t5" targetRef="N04_g6" />
+    <bpmn:sequenceFlow id="Flow_04_12" name="Izoh bilan qaytarildi" sourceRef="N04_g6" targetRef="N04_t1" />
+    <bpmn:sequenceFlow id="Flow_04_13" name="Imzolandi" sourceRef="N04_g6" targetRef="N04_sp7" />
+    <bpmn:sequenceFlow id="Flow_04_14" sourceRef="N04_b7" targetRef="N04_t7p" />
+    <bpmn:sequenceFlow id="Flow_04_15" sourceRef="N04_t7p" targetRef="N04_sp7" />
+    <bpmn:sequenceFlow id="Flow_04_16" sourceRef="N04_sp7" targetRef="N04_t8" />
+    <bpmn:sequenceFlow id="Flow_04_17" sourceRef="N04_t8" targetRef="N04_t9" />
+    <bpmn:sequenceFlow id="Flow_04_18" sourceRef="N04_t9" targetRef="N04_t10" />
+    <bpmn:sequenceFlow id="Flow_04_19" sourceRef="N04_t10" targetRef="N04_t11" />
+    <bpmn:sequenceFlow id="Flow_04_20" sourceRef="N04_t11" targetRef="N04_t12" />
+    <bpmn:sequenceFlow id="Flow_04_21" sourceRef="N04_t12" targetRef="N04_g13" />
+    <bpmn:sequenceFlow id="Flow_04_22" name="Yo'q: kamchiliklar" sourceRef="N04_g13" targetRef="N04_t10" />
+    <bpmn:sequenceFlow id="Flow_04_23" name="Ha" sourceRef="N04_g13" targetRef="N04_t14" />
+    <bpmn:sequenceFlow id="Flow_04_24" sourceRef="N04_t14" targetRef="N04_e15" />
     <bpmn:textAnnotation id="Note_04_1">
+      <bpmn:text>ACCOUNT_OPENING: hujjatlar qayta so'ralmaydi (VERIFIED to'plam) · 18 §39</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Assoc_04_1" associationDirection="None" sourceRef="N04_tA" targetRef="Note_04_1" />
+    <bpmn:textAnnotation id="Note_04_2">
       <bpmn:text>Tartib: avval mijoz, keyin bank (bank javobi 22.09)</bpmn:text>
     </bpmn:textAnnotation>
-    <bpmn:association id="Assoc_04_1" associationDirection="None" sourceRef="N04_t1" targetRef="Note_04_1" />
-    <bpmn:textAnnotation id="Note_04_2">
+    <bpmn:association id="Assoc_04_2" associationDirection="None" sourceRef="N04_t1" targetRef="Note_04_2" />
+    <bpmn:textAnnotation id="Note_04_3">
       <bpmn:text>Merchant yozuvi faqat shu yerda yaratiladi (R5). Idempotent</bpmn:text>
     </bpmn:textAnnotation>
-    <bpmn:association id="Assoc_04_2" associationDirection="None" sourceRef="N04_sp7" targetRef="Note_04_2" />
-    <bpmn:textAnnotation id="Note_04_3">
+    <bpmn:association id="Assoc_04_3" associationDirection="None" sourceRef="N04_sp7" targetRef="Note_04_3" />
+    <bpmn:textAnnotation id="Note_04_4">
       <bpmn:text>Yangi login berilmaydi — o'sha akkaunt kabinetga kiradi</bpmn:text>
     </bpmn:textAnnotation>
-    <bpmn:association id="Assoc_04_3" associationDirection="None" sourceRef="N04_t9" targetRef="Note_04_3" />
-    <bpmn:textAnnotation id="Note_04_4">
+    <bpmn:association id="Assoc_04_4" associationDirection="None" sourceRef="N04_t9" targetRef="Note_04_4" />
+    <bpmn:textAnnotation id="Note_04_5">
       <bpmn:text>D5: to'liq kabinet; to'lov webhook'lari ishlaydi</bpmn:text>
     </bpmn:textAnnotation>
-    <bpmn:association id="Assoc_04_4" associationDirection="None" sourceRef="N04_t14" targetRef="Note_04_4" />
+    <bpmn:association id="Assoc_04_5" associationDirection="None" sourceRef="N04_t14" targetRef="Note_04_5" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="Diagram_04" name="04 · Shartnoma va faollashtirish">
     <bpmndi:BPMNPlane id="Plane_04" bpmnElement="Collab_04">
-      <bpmndi:BPMNShape id="Pool_04_di" bpmnElement="Pool_04" isHorizontal="true" bioc:stroke="#0F1522" bioc:fill="#FFFFFF"><dc:Bounds x="10" y="46" width="2496" height="840" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_04_A_di" bpmnElement="Lane_04_A" isHorizontal="true" bioc:stroke="#C9CFDB" bioc:fill="#F6F8FF" color:background-color="#F6F8FF" color:border-color="#C9CFDB"><dc:Bounds x="40" y="46" width="2466" height="200" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_04_S_di" bpmnElement="Lane_04_S" isHorizontal="true" bioc:stroke="#C9CFDB" bioc:fill="#F8F9FB" color:background-color="#F8F9FB" color:border-color="#C9CFDB"><dc:Bounds x="40" y="246" width="2466" height="190" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_04_X_di" bpmnElement="Lane_04_X" isHorizontal="true" bioc:stroke="#C9CFDB" bioc:fill="#FFFBF3" color:background-color="#FFFBF3" color:border-color="#C9CFDB"><dc:Bounds x="40" y="436" width="2466" height="150" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_04_D_di" bpmnElement="Lane_04_D" isHorizontal="true" bioc:stroke="#C9CFDB" bioc:fill="#FBF8FF" color:background-color="#FBF8FF" color:border-color="#C9CFDB"><dc:Bounds x="40" y="586" width="2466" height="150" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_04_P_di" bpmnElement="Lane_04_P" isHorizontal="true" bioc:stroke="#C9CFDB" bioc:fill="#F5FAF7" color:background-color="#F5FAF7" color:border-color="#C9CFDB"><dc:Bounds x="40" y="736" width="2466" height="150" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Pool_04_di" bpmnElement="Pool_04" isHorizontal="true" bioc:stroke="#0F1522" bioc:fill="#FFFFFF"><dc:Bounds x="10" y="46" width="2796" height="840" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_04_A_di" bpmnElement="Lane_04_A" isHorizontal="true" bioc:stroke="#C9CFDB" bioc:fill="#F6F8FF" color:background-color="#F6F8FF" color:border-color="#C9CFDB"><dc:Bounds x="40" y="46" width="2766" height="200" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_04_S_di" bpmnElement="Lane_04_S" isHorizontal="true" bioc:stroke="#C9CFDB" bioc:fill="#F8F9FB" color:background-color="#F8F9FB" color:border-color="#C9CFDB"><dc:Bounds x="40" y="246" width="2766" height="190" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_04_X_di" bpmnElement="Lane_04_X" isHorizontal="true" bioc:stroke="#C9CFDB" bioc:fill="#FFFBF3" color:background-color="#FFFBF3" color:border-color="#C9CFDB"><dc:Bounds x="40" y="436" width="2766" height="150" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_04_D_di" bpmnElement="Lane_04_D" isHorizontal="true" bioc:stroke="#C9CFDB" bioc:fill="#FBF8FF" color:background-color="#FBF8FF" color:border-color="#C9CFDB"><dc:Bounds x="40" y="586" width="2766" height="150" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_04_P_di" bpmnElement="Lane_04_P" isHorizontal="true" bioc:stroke="#C9CFDB" bioc:fill="#F5FAF7" color:background-color="#F5FAF7" color:border-color="#C9CFDB"><dc:Bounds x="40" y="736" width="2766" height="150" /></bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="N04_s0_di" bpmnElement="N04_s0" bioc:stroke="#157A4A" bioc:fill="#E7F6EE" color:background-color="#E7F6EE" color:border-color="#157A4A"><dc:Bounds x="139" y="323" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="113" y="363" width="88" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N04_t1_di" bpmnElement="N04_t1" bioc:stroke="#4B5468" bioc:fill="#EEF1F5" color:background-color="#EEF1F5" color:border-color="#4B5468"><dc:Bounds x="245" y="303" width="124" height="76" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N04_t2_di" bpmnElement="N04_t2" bioc:stroke="#2C4CE0" bioc:fill="#EAEEFC" color:background-color="#EAEEFC" color:border-color="#2C4CE0"><dc:Bounds x="395" y="108" width="124" height="76" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N04_e2x_di" bpmnElement="N04_e2x" bioc:stroke="#4B5468" bioc:fill="#F1F3F7" color:background-color="#F1F3F7" color:border-color="#4B5468"><dc:Bounds x="589" y="64" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="631" y="69" width="91" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N04_t3_di" bpmnElement="N04_t3" bioc:stroke="#4B5468" bioc:fill="#EEF1F5" color:background-color="#EEF1F5" color:border-color="#4B5468"><dc:Bounds x="545" y="473" width="124" height="76" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N04_g4_di" bpmnElement="N04_g4" isMarkerVisible="true" bioc:stroke="#A15C00" bioc:fill="#FFF6E6" color:background-color="#FFF6E6" color:border-color="#A15C00"><dc:Bounds x="732" y="316" width="50" height="50" /><bpmndi:BPMNLabel><dc:Bounds x="778" y="288" width="83" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N04_t5_di" bpmnElement="N04_t5" bioc:stroke="#2C4CE0" bioc:fill="#EAEEFC" color:background-color="#EAEEFC" color:border-color="#2C4CE0"><dc:Bounds x="845" y="623" width="124" height="76" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N04_g6_di" bpmnElement="N04_g6" isMarkerVisible="true" bioc:stroke="#A15C00" bioc:fill="#FFF6E6" color:background-color="#FFF6E6" color:border-color="#A15C00"><dc:Bounds x="1032" y="636" width="50" height="50" /><bpmndi:BPMNLabel><dc:Bounds x="1088" y="655" width="73" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N04_sp7_di" bpmnElement="N04_sp7" isExpanded="false" bioc:stroke="#0F1522" bioc:fill="#FFFFFF" color:background-color="#FFFFFF" color:border-color="#0F1522"><dc:Bounds x="1145" y="303" width="124" height="76" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N04_t7p_di" bpmnElement="N04_t7p" bioc:stroke="#2C4CE0" bioc:fill="#EAEEFC" color:background-color="#EAEEFC" color:border-color="#2C4CE0"><dc:Bounds x="1110" y="773" width="124" height="76" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N04_t8_di" bpmnElement="N04_t8" bioc:stroke="#4B5468" bioc:fill="#EEF1F5" color:background-color="#EEF1F5" color:border-color="#4B5468"><dc:Bounds x="1295" y="473" width="124" height="76" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N04_t9_di" bpmnElement="N04_t9" bioc:stroke="#4B5468" bioc:fill="#EEF1F5" color:background-color="#EEF1F5" color:border-color="#4B5468"><dc:Bounds x="1445" y="303" width="124" height="76" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N04_t10_di" bpmnElement="N04_t10" bioc:stroke="#2C4CE0" bioc:fill="#EAEEFC" color:background-color="#EAEEFC" color:border-color="#2C4CE0"><dc:Bounds x="1595" y="108" width="124" height="76" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N04_t11_di" bpmnElement="N04_t11" bioc:stroke="#4B5468" bioc:fill="#EEF1F5" color:background-color="#EEF1F5" color:border-color="#4B5468"><dc:Bounds x="1745" y="303" width="124" height="76" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N04_t12_di" bpmnElement="N04_t12" bioc:stroke="#2C4CE0" bioc:fill="#EAEEFC" color:background-color="#EAEEFC" color:border-color="#2C4CE0"><dc:Bounds x="1895" y="773" width="124" height="76" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N04_g13_di" bpmnElement="N04_g13" isMarkerVisible="true" bioc:stroke="#A15C00" bioc:fill="#FFF6E6" color:background-color="#FFF6E6" color:border-color="#A15C00"><dc:Bounds x="2082" y="786" width="50" height="50" /><bpmndi:BPMNLabel><dc:Bounds x="2078" y="840" width="58" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N04_t14_di" bpmnElement="N04_t14" bioc:stroke="#4B5468" bioc:fill="#EEF1F5" color:background-color="#EEF1F5" color:border-color="#4B5468"><dc:Bounds x="2195" y="303" width="124" height="76" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N04_e15_di" bpmnElement="N04_e15" bioc:stroke="#157A4A" bioc:fill="#E7F6EE" color:background-color="#E7F6EE" color:border-color="#157A4A"><dc:Bounds x="2389" y="128" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="2359" y="168" width="95" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N04_b2_di" bpmnElement="N04_b2" bioc:stroke="#A15C00" bioc:fill="#FFF6E6" color:background-color="#FFF6E6" color:border-color="#A15C00"><dc:Bounds x="404" y="90" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="361" y="102" width="37" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N04_b7_di" bpmnElement="N04_b7" bioc:stroke="#B3261E" bioc:fill="#FDECEA" color:background-color="#FDECEA" color:border-color="#B3261E"><dc:Bounds x="1154" y="361" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="1137" y="401" width="72" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Flow_04_01_di" bpmnElement="Flow_04_01" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="175" y="341" /><di:waypoint x="245" y="341" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_04_02_di" bpmnElement="Flow_04_02" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="369" y="341" /><di:waypoint x="382" y="341" /><di:waypoint x="382" y="146" /><di:waypoint x="395" y="146" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_04_03_di" bpmnElement="Flow_04_03" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="422" y="90" /><di:waypoint x="422" y="82" /><di:waypoint x="589" y="82" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_04_04_di" bpmnElement="Flow_04_04" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="519" y="146" /><di:waypoint x="607" y="146" /><di:waypoint x="607" y="473" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_04_05_di" bpmnElement="Flow_04_05" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="669" y="511" /><di:waypoint x="701" y="511" /><di:waypoint x="701" y="341" /><di:waypoint x="732" y="341" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_04_06_di" bpmnElement="Flow_04_06" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="757" y="316" /><di:waypoint x="757" y="216" /><di:waypoint x="493" y="216" /><di:waypoint x="493" y="184" /><bpmndi:BPMNLabel><dc:Bounds x="637" y="198" width="103" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_04_07_di" bpmnElement="Flow_04_07" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="757" y="366" /><di:waypoint x="757" y="661" /><di:waypoint x="845" y="661" /><bpmndi:BPMNLabel><dc:Bounds x="762" y="370" width="16" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_04_08_di" bpmnElement="Flow_04_08" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="969" y="661" /><di:waypoint x="1032" y="661" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_04_09_di" bpmnElement="Flow_04_09" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="1057" y="686" /><di:waypoint x="1057" y="717" /><di:waypoint x="343" y="717" /><di:waypoint x="343" y="379" /><bpmndi:BPMNLabel><dc:Bounds x="457" y="703" width="102" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_04_10_di" bpmnElement="Flow_04_10" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="1057" y="636" /><di:waypoint x="1057" y="341" /><di:waypoint x="1145" y="341" /><bpmndi:BPMNLabel><dc:Bounds x="1062" y="619" width="53" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_04_11_di" bpmnElement="Flow_04_11" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="1172" y="397" /><di:waypoint x="1172" y="773" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_04_12_di" bpmnElement="Flow_04_12" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="1222" y="773" /><di:waypoint x="1222" y="379" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_04_13_di" bpmnElement="Flow_04_13" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="1269" y="341" /><di:waypoint x="1357" y="341" /><di:waypoint x="1357" y="473" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_04_14_di" bpmnElement="Flow_04_14" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="1419" y="511" /><di:waypoint x="1507" y="511" /><di:waypoint x="1507" y="379" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_04_15_di" bpmnElement="Flow_04_15" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="1569" y="341" /><di:waypoint x="1582" y="341" /><di:waypoint x="1582" y="146" /><di:waypoint x="1595" y="146" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_04_16_di" bpmnElement="Flow_04_16" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="1719" y="146" /><di:waypoint x="1732" y="146" /><di:waypoint x="1732" y="341" /><di:waypoint x="1745" y="341" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_04_17_di" bpmnElement="Flow_04_17" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="1869" y="341" /><di:waypoint x="1882" y="341" /><di:waypoint x="1882" y="811" /><di:waypoint x="1895" y="811" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_04_18_di" bpmnElement="Flow_04_18" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="2019" y="811" /><di:waypoint x="2082" y="811" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_04_19_di" bpmnElement="Flow_04_19" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="2107" y="786" /><di:waypoint x="2107" y="72" /><di:waypoint x="1693" y="72" /><di:waypoint x="1693" y="108" /><bpmndi:BPMNLabel><dc:Bounds x="1787" y="57" width="90" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_04_20_di" bpmnElement="Flow_04_20" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="2132" y="811" /><di:waypoint x="2257" y="811" /><di:waypoint x="2257" y="379" /><bpmndi:BPMNLabel><dc:Bounds x="2138" y="795" width="16" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_04_21_di" bpmnElement="Flow_04_21" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="2319" y="341" /><di:waypoint x="2354" y="341" /><di:waypoint x="2354" y="146" /><di:waypoint x="2389" y="146" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="Note_04_1_di" bpmnElement="Note_04_1"><dc:Bounds x="222" y="252" width="170" height="36" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Assoc_04_1_di" bpmnElement="Assoc_04_1"><di:waypoint x="307" y="288" /><di:waypoint x="307" y="303" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="Note_04_2_di" bpmnElement="Note_04_2"><dc:Bounds x="1115" y="252" width="185" height="36" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Assoc_04_2_di" bpmnElement="Assoc_04_2"><di:waypoint x="1207" y="288" /><di:waypoint x="1207" y="303" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="Note_04_3_di" bpmnElement="Note_04_3"><dc:Bounds x="1527" y="381" width="150" height="49" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Assoc_04_3_di" bpmnElement="Assoc_04_3"><di:waypoint x="1527" y="381" /><di:waypoint x="1507" y="379" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="Note_04_4_di" bpmnElement="Note_04_4"><dc:Bounds x="2172" y="252" width="170" height="36" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Assoc_04_4_di" bpmnElement="Assoc_04_4"><di:waypoint x="2257" y="288" /><di:waypoint x="2257" y="303" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="N04_g0_di" bpmnElement="N04_g0" isMarkerVisible="true" bioc:stroke="#A15C00" bioc:fill="#FFF6E6" color:background-color="#FFF6E6" color:border-color="#A15C00"><dc:Bounds x="282" y="316" width="50" height="50" /><bpmndi:BPMNLabel><dc:Bounds x="218" y="288" width="68" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N04_tA_di" bpmnElement="N04_tA" bioc:stroke="#2C4CE0" bioc:fill="#EAEEFC" color:background-color="#EAEEFC" color:border-color="#2C4CE0"><dc:Bounds x="395" y="773" width="124" height="76" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N04_t1_di" bpmnElement="N04_t1" bioc:stroke="#4B5468" bioc:fill="#EEF1F5" color:background-color="#EEF1F5" color:border-color="#4B5468"><dc:Bounds x="545" y="303" width="124" height="76" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N04_t2_di" bpmnElement="N04_t2" bioc:stroke="#2C4CE0" bioc:fill="#EAEEFC" color:background-color="#EAEEFC" color:border-color="#2C4CE0"><dc:Bounds x="695" y="108" width="124" height="76" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N04_e2x_di" bpmnElement="N04_e2x" bioc:stroke="#4B5468" bioc:fill="#F1F3F7" color:background-color="#F1F3F7" color:border-color="#4B5468"><dc:Bounds x="889" y="64" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="931" y="69" width="91" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N04_t3_di" bpmnElement="N04_t3" bioc:stroke="#4B5468" bioc:fill="#EEF1F5" color:background-color="#EEF1F5" color:border-color="#4B5468"><dc:Bounds x="845" y="473" width="124" height="76" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N04_g4_di" bpmnElement="N04_g4" isMarkerVisible="true" bioc:stroke="#A15C00" bioc:fill="#FFF6E6" color:background-color="#FFF6E6" color:border-color="#A15C00"><dc:Bounds x="1032" y="316" width="50" height="50" /><bpmndi:BPMNLabel><dc:Bounds x="1078" y="288" width="83" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N04_t5_di" bpmnElement="N04_t5" bioc:stroke="#2C4CE0" bioc:fill="#EAEEFC" color:background-color="#EAEEFC" color:border-color="#2C4CE0"><dc:Bounds x="1145" y="623" width="124" height="76" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N04_g6_di" bpmnElement="N04_g6" isMarkerVisible="true" bioc:stroke="#A15C00" bioc:fill="#FFF6E6" color:background-color="#FFF6E6" color:border-color="#A15C00"><dc:Bounds x="1332" y="636" width="50" height="50" /><bpmndi:BPMNLabel><dc:Bounds x="1388" y="655" width="73" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N04_sp7_di" bpmnElement="N04_sp7" isExpanded="false" bioc:stroke="#0F1522" bioc:fill="#FFFFFF" color:background-color="#FFFFFF" color:border-color="#0F1522"><dc:Bounds x="1445" y="303" width="124" height="76" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N04_t7p_di" bpmnElement="N04_t7p" bioc:stroke="#2C4CE0" bioc:fill="#EAEEFC" color:background-color="#EAEEFC" color:border-color="#2C4CE0"><dc:Bounds x="1410" y="773" width="124" height="76" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N04_t8_di" bpmnElement="N04_t8" bioc:stroke="#4B5468" bioc:fill="#EEF1F5" color:background-color="#EEF1F5" color:border-color="#4B5468"><dc:Bounds x="1595" y="473" width="124" height="76" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N04_t9_di" bpmnElement="N04_t9" bioc:stroke="#4B5468" bioc:fill="#EEF1F5" color:background-color="#EEF1F5" color:border-color="#4B5468"><dc:Bounds x="1745" y="303" width="124" height="76" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N04_t10_di" bpmnElement="N04_t10" bioc:stroke="#2C4CE0" bioc:fill="#EAEEFC" color:background-color="#EAEEFC" color:border-color="#2C4CE0"><dc:Bounds x="1895" y="108" width="124" height="76" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N04_t11_di" bpmnElement="N04_t11" bioc:stroke="#4B5468" bioc:fill="#EEF1F5" color:background-color="#EEF1F5" color:border-color="#4B5468"><dc:Bounds x="2045" y="303" width="124" height="76" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N04_t12_di" bpmnElement="N04_t12" bioc:stroke="#2C4CE0" bioc:fill="#EAEEFC" color:background-color="#EAEEFC" color:border-color="#2C4CE0"><dc:Bounds x="2195" y="773" width="124" height="76" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N04_g13_di" bpmnElement="N04_g13" isMarkerVisible="true" bioc:stroke="#A15C00" bioc:fill="#FFF6E6" color:background-color="#FFF6E6" color:border-color="#A15C00"><dc:Bounds x="2382" y="786" width="50" height="50" /><bpmndi:BPMNLabel><dc:Bounds x="2378" y="840" width="58" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N04_t14_di" bpmnElement="N04_t14" bioc:stroke="#4B5468" bioc:fill="#EEF1F5" color:background-color="#EEF1F5" color:border-color="#4B5468"><dc:Bounds x="2495" y="303" width="124" height="76" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N04_e15_di" bpmnElement="N04_e15" bioc:stroke="#157A4A" bioc:fill="#E7F6EE" color:background-color="#E7F6EE" color:border-color="#157A4A"><dc:Bounds x="2689" y="128" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="2659" y="168" width="95" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N04_b2_di" bpmnElement="N04_b2" bioc:stroke="#A15C00" bioc:fill="#FFF6E6" color:background-color="#FFF6E6" color:border-color="#A15C00"><dc:Bounds x="704" y="90" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="661" y="102" width="37" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N04_b7_di" bpmnElement="N04_b7" bioc:stroke="#B3261E" bioc:fill="#FDECEA" color:background-color="#FDECEA" color:border-color="#B3261E"><dc:Bounds x="1454" y="361" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="1437" y="401" width="72" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_04_01_di" bpmnElement="Flow_04_01" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="175" y="341" /><di:waypoint x="282" y="341" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04_02_di" bpmnElement="Flow_04_02" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="332" y="341" /><di:waypoint x="545" y="341" /><bpmndi:BPMNLabel><dc:Bounds x="417" y="323" width="95" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04_03_di" bpmnElement="Flow_04_03" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="307" y="366" /><di:waypoint x="307" y="811" /><di:waypoint x="395" y="811" /><bpmndi:BPMNLabel><dc:Bounds x="313" y="511" width="49" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04_04_di" bpmnElement="Flow_04_04" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="519" y="811" /><di:waypoint x="607" y="811" /><di:waypoint x="607" y="379" /><bpmndi:BPMNLabel><dc:Bounds x="613" y="661" width="67" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04_05_di" bpmnElement="Flow_04_05" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="669" y="341" /><di:waypoint x="682" y="341" /><di:waypoint x="682" y="146" /><di:waypoint x="695" y="146" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04_06_di" bpmnElement="Flow_04_06" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="722" y="90" /><di:waypoint x="722" y="82" /><di:waypoint x="889" y="82" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04_07_di" bpmnElement="Flow_04_07" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="819" y="146" /><di:waypoint x="907" y="146" /><di:waypoint x="907" y="473" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04_08_di" bpmnElement="Flow_04_08" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="969" y="511" /><di:waypoint x="1001" y="511" /><di:waypoint x="1001" y="341" /><di:waypoint x="1032" y="341" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04_09_di" bpmnElement="Flow_04_09" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="1057" y="316" /><di:waypoint x="1057" y="216" /><di:waypoint x="793" y="216" /><di:waypoint x="793" y="184" /><bpmndi:BPMNLabel><dc:Bounds x="937" y="198" width="103" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04_10_di" bpmnElement="Flow_04_10" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="1057" y="366" /><di:waypoint x="1057" y="661" /><di:waypoint x="1145" y="661" /><bpmndi:BPMNLabel><dc:Bounds x="1062" y="370" width="16" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04_11_di" bpmnElement="Flow_04_11" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="1269" y="661" /><di:waypoint x="1332" y="661" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04_12_di" bpmnElement="Flow_04_12" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="1357" y="686" /><di:waypoint x="1357" y="717" /><di:waypoint x="643" y="717" /><di:waypoint x="643" y="379" /><bpmndi:BPMNLabel><dc:Bounds x="907" y="703" width="102" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04_13_di" bpmnElement="Flow_04_13" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="1357" y="636" /><di:waypoint x="1357" y="341" /><di:waypoint x="1445" y="341" /><bpmndi:BPMNLabel><dc:Bounds x="1362" y="619" width="53" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04_14_di" bpmnElement="Flow_04_14" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="1472" y="397" /><di:waypoint x="1472" y="773" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04_15_di" bpmnElement="Flow_04_15" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="1522" y="773" /><di:waypoint x="1522" y="379" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04_16_di" bpmnElement="Flow_04_16" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="1569" y="341" /><di:waypoint x="1657" y="341" /><di:waypoint x="1657" y="473" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04_17_di" bpmnElement="Flow_04_17" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="1719" y="511" /><di:waypoint x="1807" y="511" /><di:waypoint x="1807" y="379" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04_18_di" bpmnElement="Flow_04_18" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="1869" y="341" /><di:waypoint x="1882" y="341" /><di:waypoint x="1882" y="146" /><di:waypoint x="1895" y="146" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04_19_di" bpmnElement="Flow_04_19" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="2019" y="146" /><di:waypoint x="2032" y="146" /><di:waypoint x="2032" y="341" /><di:waypoint x="2045" y="341" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04_20_di" bpmnElement="Flow_04_20" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="2169" y="341" /><di:waypoint x="2182" y="341" /><di:waypoint x="2182" y="811" /><di:waypoint x="2195" y="811" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04_21_di" bpmnElement="Flow_04_21" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="2319" y="811" /><di:waypoint x="2382" y="811" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04_22_di" bpmnElement="Flow_04_22" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="2407" y="786" /><di:waypoint x="2407" y="72" /><di:waypoint x="1993" y="72" /><di:waypoint x="1993" y="108" /><bpmndi:BPMNLabel><dc:Bounds x="2087" y="57" width="90" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04_23_di" bpmnElement="Flow_04_23" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="2432" y="811" /><di:waypoint x="2557" y="811" /><di:waypoint x="2557" y="379" /><bpmndi:BPMNLabel><dc:Bounds x="2438" y="795" width="16" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04_24_di" bpmnElement="Flow_04_24" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="2619" y="341" /><di:waypoint x="2654" y="341" /><di:waypoint x="2654" y="146" /><di:waypoint x="2689" y="146" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Note_04_1_di" bpmnElement="Note_04_1"><dc:Bounds x="322" y="742" width="270" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Assoc_04_1_di" bpmnElement="Assoc_04_1"><di:waypoint x="457" y="760" /><di:waypoint x="457" y="773" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Note_04_2_di" bpmnElement="Note_04_2"><dc:Bounds x="522" y="252" width="170" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Assoc_04_2_di" bpmnElement="Assoc_04_2"><di:waypoint x="607" y="288" /><di:waypoint x="607" y="303" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Note_04_3_di" bpmnElement="Note_04_3"><dc:Bounds x="1415" y="252" width="185" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Assoc_04_3_di" bpmnElement="Assoc_04_3"><di:waypoint x="1507" y="288" /><di:waypoint x="1507" y="303" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Note_04_4_di" bpmnElement="Note_04_4"><dc:Bounds x="1827" y="381" width="150" height="49" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Assoc_04_4_di" bpmnElement="Assoc_04_4"><di:waypoint x="1827" y="381" /><di:waypoint x="1807" y="379" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Note_04_5_di" bpmnElement="Note_04_5"><dc:Bounds x="2472" y="252" width="170" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Assoc_04_5_di" bpmnElement="Assoc_04_5"><di:waypoint x="2557" y="288" /><di:waypoint x="2557" y="303" /></bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>
