@@ -397,6 +397,19 @@ const DECL_ALL = [
 ]; // PEP deklaratsiyasi olib tashlandi — PEP skriningni bank o'zi qiladi (Q-31)
 const declOf = (a) => DECL_ALL.filter(([k]) => k !== 'site' || (a.d.services && a.d.services.ecom));
 const LATER_ACC = 'LATER'; // hisob hali yo'q — ariza, shartnoma, sandbox mumkin; live uchun kerak (Q-32)
+/* Hisob ochish arizasi (Q-33) — bank shabloni: "Bank hisobvarag'i va kompleks bank xizmatlari ko'rsatish
+   shartnomasiga 1-ilova — ommaviy oferta shartlarini qabul qilish (akcept) haqida ariza" (docs/26) */
+const ACC_TYPES = [
+  ['uzs', 'Milliy valyutada talab qilib olinguncha depozit hisobvarag‘i', 'Asosiy hisob-kitob hisobi — ekvayring tushumi shu yerga o‘tadi (majburiy)', false],
+  ['fx', 'Chet el valyutasida talab qilib olinguncha depozit hisobvarag‘i', '', false],
+  ['salary', 'Xodimlar maoshi va unga tenglashtirilgan to‘lovlarni plastik kartalarga o‘tkazish uchun tranzit hisobvaraq', '', false],
+  ['corp', 'Korporativ plastik kartalarga mablag‘ tushirish uchun tranzit hisobvaraq', '', false],
+  ['cardGoods', 'Tovarlar bo‘yicha plastik kartalar orqali tushgan tushumni hisobga olish uchun tranzit hisobvaraq', 'Karta orqali tovar sotuvi (ekvayring) tushumi', true],
+  ['cardServices', 'Xizmatlar bo‘yicha plastik kartalar orqali tushgan tushumni hisobga olish uchun tranzit hisobvaraq', 'Karta orqali xizmat sotuvi (ekvayring) tushumi', true],
+];
+const RB_TARIFFS = ['STANDART', 'BISNES', 'VIP', 'EXCLUSIVE', 'START'];
+const ACC_DOC_EXCLUDE = ['DOMAIN_CONTRACT', 'LICENSE']; // hisob ochish ro'yxatida yo'q (bank ro'yxati 8 band)
+const ACC_ST = { DRAFT: ['Qoralama', 'gray'], SUBMITTED: ['Yuborildi', 'blue'], IN_REVIEW: ['Bank ko‘rib chiqmoqda', 'blue'], NEEDS_INFO: ['Hujjat kerak', 'amber'], OPENED: ['Hisob ochildi', 'green'] };
 
 /* ---------------- holat ---------------- */
 const KEY = 'garant-onboarding-proto-v4';
@@ -656,7 +669,7 @@ function renderTop() {
   const inCabinet = a && a.status === 'COMPLETED';
   $('#topbar').innerHTML =
     '<button class="brand" data-act="brand"><span class="logo">G</span><span>Garant Merchant<small>Onlayn ekvayring</small></span></button>' +
-    '<span class="proto-tag">Prototip · v2.3</span><span class="sp"></span>' +
+    '<span class="proto-tag">Prototip · v2.4</span><span class="sp"></span>' +
     '<span class="langs"><button class="on">UZ</button><button data-act="lang" data-v="RU">RU</button><button data-act="lang" data-v="EN">EN</button></span>' +
     (showLvl ? '<span class="lvl" title="Dostup darajasi — akkaunt × tashkilot (docs/21 §4.2)">Dostup <b>' + lv + '</b> <span class="nm">' + esc(LEVEL_NAME[lv]) + '</span></span>' : '') +
     (inCabinet ? '<a class="tb-btn fill" href="merchant-panel.html">Kabinet →</a>' : '') +
@@ -759,13 +772,15 @@ VIEWS.home = () => {
       <span class="badge ${col}">${lbl}</span>
       <button class="btn ${a.status === 'NEEDS_INFO' || a.status === 'CONTRACT_PENDING' || a.status === 'DRAFT' ? 'primary' : ''}" data-act="${act[1]}" data-id="${a.id}">${act[0]}</button></div>`;
   }).join('');
+  const accList = Object.values(S.accReqs || {}).sort((x, y) => y.updatedAt - x.updatedAt).map((ar) => { const [l, cl] = ACC_ST[ar.status]; return `<div class="card app-card"><div class="sp"><div class="org">${esc(ar.orgName)}</div><div class="dim"><span class="mono">${ar.id}</span> · INN <span class="mono">${ar.inn}</span> · bank hisobvarag‘i va masofaviy xizmatlar${ar.status === 'OPENED' ? ' · hisob <span class="mono">' + fmtAcc(ar.numbers[0][1]) + '</span>' : ''}</div></div><span class="badge ${cl}">${l}</span><button class="btn ${ar.status === 'DRAFT' || ar.status === 'NEEDS_INFO' ? 'primary' : ''}" data-act="open-acc" data-inn="${ar.inn}">${ar.status === 'DRAFT' ? 'Davom ettirish' : ar.status === 'NEEDS_INFO' ? 'Hujjat yuklash' : 'Ko‘rish'}</button></div>`; }).join('');
   const empty = `<div class="card empty"><div class="big">+</div><h2>Birinchi arizangizni yarating</h2>
     <p class="muted" style="max-width:520px;margin:6px auto 18px">Ariza INN bilan boshlanadi. Tizim darhol tekshiradi: tashkilot allaqachon ulanganmi, boshqa ariza bormi, Garant Bankda hisobingiz bormi.</p>
     <button class="btn primary lg" data-act="new">Yangi ariza</button></div>`;
   return `<div class="page-head"><div><div class="crumbs">Merchant portali · onboarding rejimi</div><h1>Arizalarim</h1>
     <p class="muted">Salom, ${esc(u.name.split(' ')[1] || u.name)}. Bir akkaunt bilan bir nechta tashkilot uchun ariza berishingiz mumkin.</p></div>
     ${S.apps.length ? '<button class="btn primary" data-act="new">+ Yangi ariza</button>' : ''}</div>
-    ${banner}${banner ? '<div class="mt16"></div>' : ''}${S.apps.length ? list : empty}`;
+    ${banner}${banner ? '<div class="mt16"></div>' : ''}${S.apps.length ? list : empty}
+    ${accList ? '<div class="sec" style="margin-top:26px">Garant Bankda hisob ochish arizalari</div>' + accList : ''}`;
 };
 
 /* ---------- B2: INN va dastlabki tekshiruv ---------- */
@@ -944,7 +959,7 @@ function docRow(a, x) {
   const need = s.status === 'REPLACEMENT_REQUIRED';
   let right;
   if (s.status === 'UPLOADING') right = '<div><div class="dim">Yuklanmoqda va tekshirilmoqda (format, hajm, antivirus)…</div><div class="bar"><i style="width:' + (s.p || 0) + '%"></i></div></div>';
-  else if (ok) right = '<span class="badge ' + (s.status === 'VERIFIED' ? 'green' : 'blue') + '">' + (s.status === 'VERIFIED' ? 'Tasdiqlangan' : 'Yuklandi') + '</span>' + (a.status === 'DRAFT' ? '<button class="btn ghost sm" data-act="doc-del" data-k="' + x.key + '">Almashtirish</button>' : '');
+  else if (ok) right = '<span class="badge ' + (s.status === 'VERIFIED' ? 'green' : 'blue') + '">' + (s.status === 'VERIFIED' ? 'Tasdiqlangan' : 'Yuklandi') + '</span>' + (a.status === 'DRAFT' && !s.fromApp ? '<button class="btn ghost sm" data-act="doc-del" data-k="' + x.key + '">Almashtirish</button>' : '');
   else right = '<button class="btn sm primary" data-act="doc-pick" data-k="' + x.key + '">Fayl tanlash</button><button class="btn ghost sm" data-act="doc-demo" data-k="' + x.key + '">namuna</button>';
   return '<div class="doc ' + (need ? 'need' : '') + '"><div class="ic ' + (ok ? 'ok' : '') + '">' + (ok ? 'PDF' : '—') + '</div><div class="meta"><div class="nm">' + esc(x.name) + '</div><div class="why">' +
     (ok ? esc(s.file) + ' · ' + esc(s.size) + ' · ' + fmtDT(s.at) : need ? '<span style="color:var(--amber);font-weight:600">Qayta yuklash so‘raldi: ' + esc(s.note) + '</span>' : esc(x.why)) + '</div></div>' + right + '</div>';
@@ -1098,6 +1113,69 @@ VIEWS.done = () => {
         <div class="k">Dostup</div><div>${level(a)} · ${LEVEL_NAME[level(a)]}</div></div></div></div></div>`;
 };
 
+/* ---------- Hisob ochish arizasi (Q-33, docs/26) ---------- */
+VIEWS.account = () => {
+  if (!S.accInn) return VIEWS.home();
+  const ar = getAccReq(S.accInn), d = ar.d, A = d.accounts, app = appOf(ar.inn);
+  const [stl, stc] = ACC_ST[ar.status];
+  const e = ar.show ? accErrors(ar) : {};
+  const errTxt = (k) => e[k] ? '<div class="err mt8" style="color:var(--red);font-size:12.5px">' + esc(e[k]) + '</div>' : '';
+  const back = '<button class="btn ghost" data-act="acc-back">← ' + (app ? 'Ekvayring arizasiga qaytish' : S.accFrom === 'new' ? 'INN tekshiruviga qaytish' : 'Arizalarim') + '</button>';
+  const head = `<div class="page-head"><div><div class="crumbs"><a href="#" data-act="go" data-to="home">Arizalarim</a> / Hisob ochish arizasi</div>
+      <h1>Garant Bankda hisob ochish</h1><div class="row"><span class="badge ${stc}">${stl}</span><span class="dim mono">${ar.id}</span><span class="dim">· ${esc(ar.orgName)} · INN ${ar.inn}</span></div>
+      <p class="muted mt8">Bank hisobvarag‘i va kompleks bank xizmatlari ko‘rsatish shartnomasiga 1-ilova — ommaviy oferta shartlarini qabul qilish (akcept) haqida ariza. Ekvayring arizasi bilan <b>parallel</b> ketadi.</p></div>${back}</div>`;
+  const docList = accDocList(ar), merged = accDocsMerged(ar);
+  const docsHtml = docList.map((x) => docRow({ docs: merged, status: ar.status === 'DRAFT' || ar.status === 'NEEDS_INFO' ? 'DRAFT' : 'X' }, x)).join('');
+  const accName = (k) => (ACC_TYPES.find((t) => t[0] === k) || [k, k])[1];
+  if (ar.status !== 'DRAFT') {
+    const steps = ['Yuborildi', 'Bank ko‘rib chiqmoqda', 'Hisob ochildi'];
+    const cur = ar.status === 'OPENED' ? 4 : ar.status === 'SUBMITTED' ? 1 : 2;
+    const prog = '<div class="prog">' + steps.map((t, i) => { const k = i + 1; const cls = k < cur ? 'done' : k === cur ? (ar.status === 'NEEDS_INFO' ? 'warn' : 'cur') : ''; return '<div class="ps ' + cls + '" data-n="' + k + '">' + t + '</div>'; }).join('') + '</div>';
+    const chosen = ACC_TYPES.filter(([k, , , cnt]) => cnt ? +A[k] > 0 : A[k]).map(([k, l, , cnt]) => '<li>' + esc(l) + (cnt ? ' — ' + A[k] + ' ta' : '') + '</li>').join('');
+    const remote = [d.ib && 'Internet-banking', d.mb && 'Mobile-banking', d.sms && 'SMS-banking', d.terminal && 'Savdo terminali'].filter(Boolean).join(' · ');
+    return head + `<div class="card">${prog}</div>
+      ${ar.status === 'NEEDS_INFO' ? `<div class="card mt16"><div class="alert warn"><span class="ic">!</span><div><b>Bank hujjatni qayta so‘radi:</b> ${esc(ar.info.text)}</div></div>
+        <div class="docs mt12">${docRow({ docs: ar.docs, status: 'DRAFT' }, docList.find((x) => x.key === ar.info.key) || { key: ar.info.key, name: DOCS[ar.info.key] || ar.info.key, why: '' })}</div>
+        <button class="btn primary mt12" data-act="acc-info-send" ${accDocOk(ar, ar.info.key) && ar.docs[ar.info.key].status !== 'REPLACEMENT_REQUIRED' ? '' : 'disabled'}>Javobni yuborish</button>
+        <input type="file" id="filePick" accept=".pdf,.jpg,.jpeg,.png,.heic" style="display:none"></div>` : ''}
+      ${ar.status === 'OPENED' ? `<div class="alert ok mt16"><span class="ic">✓</span><div class="sp"><b>Hisob ochildi.</b> Asosiy hisob: <b class="mono">${fmtAcc(ar.numbers[0][1])}</b>. ${app ? 'Ekvayring arizangizga avtomatik bog‘landi — real to‘lovlar (go-live) uchun shart bajarildi.' : 'Ekvayring arizasini boshlasangiz, hisob avtomatik tanlanadi.'}</div></div>` : ''}
+      <div class="cols mt16"><div class="card"><h3>Ariza tarkibi</h3>
+        <div class="sec">Hisobvaraqlar</div><ul class="chk">${chosen}</ul>
+        ${ar.numbers ? '<div class="sec">Ochilgan hisobvaraqlar (ABS)</div><div class="kv" style="grid-template-columns:1fr auto">' + ar.numbers.map(([k, n]) => '<div class="k">' + esc(accName(k)) + '</div><div class="mono">' + fmtAcc(n) + '</div>').join('') + '</div>' : ''}
+        <div class="sec">Xizmatlar va tarif</div><p>${esc(remote || '—')}<br>Tarif rejasi: <b>${esc(d.tariff === 'OTHER' ? d.tariffOther : d.tariff)}</b></p>
+        <div class="sec">Imzo</div><p class="dim">Tashkilot rahbari — E-IMZO · ${ar.submittedAt ? fmtDT(ar.submittedAt) : ''}</p></div>
+      <div class="card"><h3>Jarayon tarixi</h3><div class="tl mt12">${ar.timeline.map((t) => '<div class="ti"><div class="tt">' + esc(t.text) + '</div><div class="td">' + fmtDT(t.t) + ' · ' + esc(t.who) + '</div></div>').join('')}</div></div></div>`;
+  }
+  const accRows = ACC_TYPES.map(([k, l, sub, cnt]) => {
+    const on = cnt ? +A[k] > 0 : !!A[k];
+    return `<label class="check ${on ? 'on' : ''}"><input type="checkbox" data-accbind="accounts.${k}" ${on ? 'checked' : ''} ${k === 'uzs' ? 'disabled' : ''}><span class="sp">${esc(l)}${sub ? '<span class="sub">' + esc(sub) + '</span>' : ''}</span>
+      ${cnt && on ? '<span class="row" style="gap:6px;flex-wrap:nowrap"><span class="dim">soni</span><input data-accbind="accounts.' + k + '" value="' + esc(A[k]) + '" inputmode="numeric" maxlength="2" style="width:52px;height:32px;padding:0 8px;border:1px solid ' + (e[k] ? 'var(--red)' : 'var(--border-strong)') + ';border-radius:6px"></span>' : ''}</label>`;
+  }).join('');
+  const remoteRow = (k, lbl, ph) => `<div class="grid2" style="align-items:center"><label class="check ${d[k] ? 'on' : ''}"><input type="checkbox" data-accbind="${k}" ${d[k] ? 'checked' : ''}><span>«${lbl}» tizimiga ulash</span></label>
+      ${d[k] ? '<div class="field ' + (e[ph] ? 'bad' : '') + '"><div class="phone"><span>+998</span><input data-accbind="' + ph + '" value="' + esc(String(d[ph] || '').replace(/\D/g, '').slice(-9)) + '" inputmode="numeric" maxlength="9" placeholder="90 123 45 67"></div>' + (e[ph] ? '<div class="err">' + esc(e[ph]) + '</div>' : '') + '</div>' : '<div></div>'}</div>`;
+  return head + `
+    <div class="alert info"><span class="ic">i</span><div>Hujjatlar ekvayring arizasi bilan <b>umumiy</b>: bir marta yuklaysiz. Hisob ochilgach, tizim uni ekvayring arizangizga o‘zi bog‘laydi (Q-32).
+      <span class="dim">Filialda ochmoqchi bo‘lsangiz ham bo‘ladi — tizim hisobni INN bo‘yicha baribir topadi.</span></div></div>
+    <div class="card mt16"><h3>1. Qaysi hisobvaraqlar ochilsin</h3><p class="dim">Ommaviy ofertada belgilangan shart va tartibda</p>
+      <div class="docs mt8">${accRows}</div>${errTxt('accounts')}${e.cardGoods || e.cardServices ? errTxt('cardGoods') || errTxt('cardServices') : ''}</div>
+    <div class="card"><h3>2. Masofaviy xizmatlar va savdo terminali</h3>
+      <div class="docs mt8">${remoteRow('ib', 'Internet-banking', 'phIb')}${remoteRow('mb', 'Mobile-banking', 'phMb')}${remoteRow('sms', 'SMS-banking', 'phSms')}
+      <label class="check ${d.terminal ? 'on' : ''}"><input type="checkbox" data-accbind="terminal" ${d.terminal ? 'checked' : ''}><span>Savdo terminali (POS) berish<span class="sub">Do‘kon uchun. Onlayn to‘lovlar — ekvayring arizasi orqali</span></span></label></div></div>
+    <div class="card"><h3>3. Tarif rejasi</h3><p class="dim">Hisob yuritish (RKO) tarifi — ekvayring komissiyasidan alohida. <a href="#" data-act="toast" data-msg="Tariflar jadvali — bank beradi (prototip, 18 §49)">Tariflar bilan tanishish</a></p>
+      <div class="seg mt8" style="flex-wrap:wrap">${RB_TARIFFS.concat(['OTHER']).map((t) => '<button class="' + (d.tariff === t ? 'on' : '') + '" data-act="acc-tariff" data-v="' + t + '">' + (t === 'OTHER' ? 'Boshqa' : t) + '</button>').join('')}</div>
+      ${d.tariff === 'OTHER' ? '<div class="field mt12" style="max-width:360px"><label>Tarif nomi</label><input data-accbind="tariffOther" value="' + esc(d.tariffOther) + '"></div>' : ''}${errTxt('tariff')}</div>
+    <div class="card"><div class="row"><h3 class="sp">4. Hujjatlar (bank ro‘yxati)</h3><b>${docList.filter((x) => accDocOk(ar, x.key)).length} / ${docList.length}</b><button class="btn sm" data-act="docs-all">Hammasini yuklash (demo)</button></div>
+      <p class="dim">Guvohnoma · protokol · buyruq · pasportlar · ustav · ta’sis shartnomasi · imzo va muhr namunalari kartochkasi · ta’sischi yuridik shaxs bo‘lsa — uning guvohnomasi va direktori pasporti.</p>
+      ${app ? '' : `<label class="check mt8 ${d.hasAcc ? 'on' : ''}"><input type="checkbox" data-accbind="hasAcc" ${d.hasAcc ? 'checked' : ''}><span>Tashkilotda bosh buxgalter lavozimi bor<span class="sub">Bo‘lsa — buyruq va pasport ro‘yxatga qo‘shiladi</span></span></label>`}
+      <div class="docs mt12">${docsHtml}</div>${errTxt('docs')}
+      <input type="file" id="filePick" accept=".pdf,.jpg,.jpeg,.png,.heic" style="display:none"></div>
+    <div class="card"><h3>5. Roziliklar</h3><div class="docs mt8">
+      <label class="check ${d.cTariff ? 'on' : ''}"><input type="checkbox" data-accbind="cTariff" ${d.cTariff ? 'checked' : ''}><span>Tanlangan tarif rejasi bilan tanishdim; xizmat haqini bankda ochilgan joriy hisobvaraqdan bank belgilagan tartibda hisobdan chiqarishga roziman</span></label>${errTxt('cTariff')}
+      ${d.ib || d.mb ? `<label class="check ${d.cIb ? 'on' : ''}"><input type="checkbox" data-accbind="cIb" ${d.cIb ? 'checked' : ''}><span>«Internet-banking» / «Mobile-banking» orqali boshqa bank xizmatlari va mahsulotlariga arizalar yuborishga roziman</span></label>${errTxt('cIb')}` : ''}</div></div>
+    <div class="card"><div class="row"><div class="sp"><h3>6. Imzo</h3><p class="dim" style="margin:0">Arizani <b>tashkilot rahbari</b> E-IMZO bilan imzolaydi (${esc(ar.dirName || 'rahbar')}). To‘ldirilgan sana: ${fmtDate(Date.now())}</p></div>
+      <button class="btn primary lg" data-act="acc-submit">Imzolash va bankka yuborish</button></div></div>`;
+};
+
 /* ---------- rad etildi ---------- */
 VIEWS.rejected = () => {
   const a = curApp(); if (!a || !a.rejection) return VIEWS.home();
@@ -1120,11 +1198,18 @@ function renderDemo() {
   const B = (act, label, primary) => '<button class="btn ' + (primary ? 'primary' : '') + '" data-act="' + act + '">' + label + '</button>';
   let body = '<div class="dim">Backend yo‘q. Bu panel bank xodimlarining Admin paneldagi harakatlarini va vaqt o‘tishini simulyatsiya qiladi.</div>';
   if (!S.user) body += '<div class="lbl">Tez boshlash</div>' + B('demo-login', 'Demo akkaunt bilan kirish (email tasdiqlangan)', true);
+  else if (S.screen === 'account' && S.accInn) {
+    const ar = getAccReq(S.accInn);
+    body += '<div class="lbl">Hisob ochish arizasi <span class="mono">' + ar.id + '</span></div><div class="int">Bank ko‘radi: <b>' + ar.status + '</b><br>Navbat: Operatsiya (RKO) — «Hisob ochish arizalari»<br>Mijoz ko‘radi: ' + esc(ACC_ST[ar.status][0]) + '</div><div class="lbl">Harakatlar</div>';
+    if (ar.status === 'DRAFT') body += '<div class="dim">Formani to‘ldiring → «Imzolash va yuborish» (E-IMZO)</div>';
+    if (['SUBMITTED', 'IN_REVIEW'].includes(ar.status)) body += B('demo-acc-opened', 'Operatsiya: hisob ochildi (ABS)', true) + B('demo-acc-review-info', 'Operatsiya: hujjatni qayta so‘radi');
+    if (ar.status === 'OPENED') body += '<div class="dim">Hisob ekvayring arizasiga avtomatik bog‘landi (Q-32).</div>';
+  }
   else if (!a || ['home', 'new'].includes(S.screen)) {
     body += '<div class="lbl">Maslahat</div><div class="dim">«Yangi ariza» → INN <span class="mono">306481725</span> (Dilnoza Style) — asosiy ssenariy. <span class="mono">301234567</span> — hisobi yo‘q mijoz: ariza va sandbox mumkin, live uchun hisob kerak.</div>';
-    if (S.screen === 'new' && S.pre && S.pre.noAccount && S.pre.phase === 'result') body += '<div class="lbl">Harakatlar</div>' + B('demo-open-acc', 'ABS: mijoz Garant Bankda hisob ochdi (bankning o‘z xizmati)');
+    if (S.screen === 'new' && S.pre && S.pre.noAccount && S.pre.phase === 'result') body += '<div class="lbl">Harakatlar</div>' + B('demo-open-acc', 'ABS: mijoz hisobni filialda ochdi (portal arizasisiz)');
   }
-  if (S.user && a && !['home', 'new'].includes(S.screen)) {
+  if (S.user && a && !['home', 'new', 'account'].includes(S.screen)) {
     const [lbl] = ext(a);
     body += '<div class="lbl">Ariza <span class="mono">' + a.id + '</span></div><div class="int">Bank ko‘radi: <b>' + a.status + '</b><br>' + esc(INTERNAL[a.status] || '') + '<br>Mijoz ko‘radi: ' + esc(lbl) + '<br>Dostup: ' + level(a) + '</div><div class="lbl">Harakatlar</div>';
     const st = a.status;
@@ -1142,7 +1227,7 @@ function renderDemo() {
     if (st === 'COMPLIANCE_REVIEW') body += B('demo-next', 'Compliance: ijobiy → Rais o‘rinbosari', true) + B('demo-info', 'Compliance: bartaraf etsa bo‘ladi (tavsif)') + B('demo-reject-final', 'Compliance: yakuniy rad (sanksiya)');
     if (st === 'PENDING_APPROVAL') body += B('demo-approve', 'Rais o‘rinbosari: tasdiqlash', true) + B('demo-info', 'Rais o‘rinbosari: kamchilik bilan qaytarish') + B('demo-reject', 'Rais o‘rinbosari: rad etish (qayta ariza mumkin)');
     if (st === 'NEEDS_INFO') body += B('demo-info-expire', '14 kun o‘tdi (javobsiz → EXPIRED)');
-    if (noAcc(a) && !['REJECTED', 'CANCELLED', 'EXPIRED'].includes(st) && !a.live) body += B('demo-open-acc', 'ABS: mijoz Garant Bankda hisob ochdi (bankning o‘z xizmati)');
+    if (noAcc(a) && !['REJECTED', 'CANCELLED', 'EXPIRED'].includes(st) && !a.live) body += B('demo-open-acc', 'ABS: mijoz hisobni filialda ochdi (portal arizasisiz)');
     if (st === 'CONTRACT_PENDING') body += a.contract.mSigned ? B('demo-bank-sign', 'Rais o‘rinbosari E-IMZO bilan imzoladi', true) : '<div class="dim">Mijoz imzosi kutilmoqda → «Shartnoma» → «E-IMZO bilan imzolash»</div>' + B('demo-expire', '14 kun o‘tdi (imzolanmadi → EXPIRED)');
     if (st === 'COMPLETED' && !a.live) body += B('demo-golive', 'Test to‘lov, refund, webhook ✓ → Operatsiya: go-live', true);
     if (REVIEW_ST.includes(st) || st === 'SUBMITTED' || st === 'AUTO_VALIDATION') body += '<div class="dim">Tez yo‘l:</div>' + B('demo-fast', 'Tasdiqlashgacha o‘tkazib yuborish ⏩');
@@ -1255,6 +1340,8 @@ ACT['pre-create'] = () => {
   const old = p.reapply ? S.apps.find((x) => x.id === p.reapply) : null;
   const a = newApp(p.inn, { role: p.role, industry: p.industry, prev: old ? old.id : null });
   if (old) { a.d = JSON.parse(JSON.stringify(old.d)); a.docs = JSON.parse(JSON.stringify(old.docs)); a.d.decl = {}; push(a, 'Qayta ariza: ma’lumotlar ' + old.id + ' dan nusxalandi', 'Tizim'); }
+  const ar = accReqOf(p.inn);
+  if (ar) Object.entries(ar.docs).forEach(([k, v]) => { if (['UPLOADED', 'VERIFIED'].includes(v.status) && !a.docs[k]) a.docs[k] = Object.assign({}, v); }); // Q-33: bir marta yuklanadi
   S.apps.push(a); S.pre = null; toast('Qoralama yaratildi: ' + a.id); go('wizard', { cur: a.id, wiz: 1 });
 };
 
@@ -1289,10 +1376,11 @@ ACT.scan = () => {
 };
 /* hujjatlar */
 let pickKey = null;
+const docTarget = () => S.screen === 'account' ? getAccReq(S.accInn) : curApp();
 ACT['doc-pick'] = (el) => { pickKey = el.dataset.k; const f = $('#filePick'); f.value = ''; f.click(); };
-ACT['doc-demo'] = (el) => simulateUpload(curApp(), el.dataset.k, sampleName(el.dataset.k), (0.4 + Math.random() * 2.4).toFixed(1) + ' MB');
-ACT['doc-del'] = (el) => { const a = curApp(); delete a.docs[el.dataset.k]; touch(a); render(); };
-ACT['docs-all'] = () => { const a = curApp(); requiredDocs(a).filter((x) => !docOk(a, x.key)).forEach((x, i) => setTimeout(() => simulateUpload(a, x.key, sampleName(x.key), (0.4 + Math.random() * 2.4).toFixed(1) + ' MB'), i * 150)); };
+ACT['doc-demo'] = (el) => simulateUpload(docTarget(), el.dataset.k, sampleName(el.dataset.k), (0.4 + Math.random() * 2.4).toFixed(1) + ' MB');
+ACT['doc-del'] = (el) => { const a = docTarget(); delete a.docs[el.dataset.k]; touch(a); render(); };
+ACT['docs-all'] = () => { const a = docTarget(); (a.kind === 'ACC' ? accDocList(a).filter((x) => !accDocOk(a, x.key)) : requiredDocs(a).filter((x) => !docOk(a, x.key))).forEach((x, i) => setTimeout(() => simulateUpload(a, x.key, sampleName(x.key), (0.4 + Math.random() * 2.4).toFixed(1) + ' MB'), i * 150)); };
 const sampleName = (k) => k.split(':')[0].toLowerCase().replace(/_/g, '-') + '.pdf';
 function simulateUpload(a, key, file, size) {
   a.docs[key] = { status: 'UPLOADING', p: 0 };
@@ -1300,7 +1388,11 @@ function simulateUpload(a, key, file, size) {
   const t = setInterval(() => {
     const s = a.docs[key]; if (!s || s.status !== 'UPLOADING') { clearInterval(t); return; }
     s.p = Math.min(100, s.p + 25);
-    if (s.p >= 100) { clearInterval(t); a.docs[key] = { status: 'UPLOADED', file, size, at: Date.now() }; touch(a); render(); } else render();
+    if (s.p >= 100) {
+      clearInterval(t); a.docs[key] = { status: 'UPLOADED', file, size, at: Date.now() }; touch(a);
+      if (a.kind === 'ACC') { const app = appOf(a.inn); if (app && app.status === 'DRAFT') app.docs[key] = Object.assign({}, a.docs[key]); } // bir marta yuklanadi
+      render();
+    } else render();
   }, 160);
 }
 /* yuborish (G15 + snapshot) */
@@ -1401,10 +1493,105 @@ ACT['demo-approve'] = () => {
   render();
 };
 /* Hisob (Q-32): hisob ochish — bankning o'z xizmati, ariza bilan parallel. Tizim ABS da INN bo'yicha o'zi topadi */
-ACT['acc-howto'] = () => modal(`<h2>Garant Bankda hisob ochish</h2><p class="muted">Hisob ochish — bankning alohida xizmati. Ekvayring arizangiz bilan <b>parallel</b> ketadi: kutib turish shart emas.</p>
-  <ul class="chk mt12"><li>Onlayn: Garant Bank ilovasi yoki internet-banki</li><li>Yoki istalgan Garant Bank filialida</li><li>Hisob ochilgach bu yerga qaytib kiritish shart emas — tizim hisobni INN bo‘yicha o‘zi topadi (ABS)</li><li>Hisob bog‘lanmaguncha: ariza, shartnoma va sandbox ishlaydi; real to‘lov — yo‘q</li></ul>
-  <p class="dim mt12">Prototip: aniq havola va tartibni bank beradi (18 §39). Simulyatsiya — demo paneldagi «ABS: mijoz hisob ochdi» tugmasi.</p>
-  <div class="foot"><button class="btn" data-act="modal-close">Yopish</button><button class="btn primary" data-act="toast" data-msg="Bankning hisob ochish sahifasi ochiladi — havolani bank beradi (prototip)">Hisob ochish sahifasi ↗</button></div>`);
+// "Hisob ochish" — portal ichidagi onlayn ariza (Q-33); filialda ochish ham mumkin — tizim ABS da baribir topadi
+ACT['acc-howto'] = () => {
+  const inn = S.screen === 'new' ? S.pre && S.pre.inn : curApp() && curApp().inn;
+  if (!inn) return;
+  S.accInn = inn; S.accFrom = S.screen; getAccReq(inn); go('account');
+};
+ACT['open-acc'] = (el) => { S.accInn = el.dataset.inn; S.accFrom = 'home'; go('account'); };
+ACT['acc-tariff'] = (el) => { const ar = getAccReq(S.accInn); ar.d.tariff = el.dataset.v; render(); };
+ACT['acc-back'] = () => {
+  const inn = S.accInn, app = appOf(inn);
+  if (S.accFrom === 'new' && S.pre && S.pre.inn === inn && !app) { go('new'); return; }
+  if (app) { go(app.status === 'DRAFT' ? 'wizard' : app.status === 'COMPLETED' ? 'done' : 'status', { cur: app.id, wiz: app.status === 'DRAFT' ? SX.ACC : S.wiz }); return; }
+  go('home');
+};
+ACT['acc-submit'] = () => {
+  const ar = getAccReq(S.accInn); ar.show = true;
+  const e = accErrors(ar);
+  if (Object.keys(e).length) { render(); toast(Object.keys(e).length + ' ta bandni to‘g‘rilang'); const x = document.querySelector('.field.bad, .err'); if (x) x.scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }
+  modal(`<h2>Arizani imzolash — tashkilot rahbari</h2><p class="muted">Ariza bank shabloni bo‘yicha (1-ilova) — ommaviy oferta shartlarini qabul qilish. Tashkilot rahbari E-IMZO kaliti bilan imzolaydi.</p>
+    <div class="key-opt mt12"><input type="radio" checked style="margin-top:3px"><div><b>${esc(String(ar.dirName || 'RAHBAR').toUpperCase())}</b><br>${esc(ar.orgName)} · rahbar<br><span class="dim">STIR ${ar.inn} · amal qiladi: 12.2027</span></div></div>
+    <div class="field mt12"><label>Kalit paroli</label><input id="accPin" type="password" placeholder="prototip: istalgan"></div>
+    <div class="foot"><button class="btn" data-act="modal-close">Bekor</button><button class="btn primary" data-act="acc-sign">Imzolash va yuborish</button></div>`);
+  setTimeout(() => $('#accPin') && $('#accPin').focus(), 30);
+};
+ACT['acc-sign'] = () => {
+  if (!($('#accPin') || {}).value) { $('#accPin').focus(); return; }
+  const ar = getAccReq(S.accInn), merged = accDocsMerged(ar);
+  accDocList(ar).forEach((x) => { if (!ar.docs[x.key] && merged[x.key]) ar.docs[x.key] = Object.assign({}, merged[x.key], { fromApp: false }); });
+  ar.status = 'SUBMITTED'; ar.submittedAt = Date.now(); ar.updatedAt = Date.now();
+  ar.timeline.unshift({ t: Date.now(), text: 'Ariza rahbar E-IMZO imzosi bilan bankka yuborildi', who: 'Siz' });
+  closeModal(); toast('Hisob ochish arizasi yuborildi'); render();
+  setTimeout(() => { if (ar.status === 'SUBMITTED') { ar.status = 'IN_REVIEW'; ar.timeline.unshift({ t: Date.now(), text: 'Bank (Operatsiya) arizani ko‘rib chiqmoqda', who: 'Bank' }); if (S.screen === 'account') render(); else save(); } }, 1500);
+};
+ACT['acc-info-send'] = () => {
+  const ar = getAccReq(S.accInn);
+  if (!ar.info || !accDocOk(ar, ar.info.key) || ar.docs[ar.info.key].status === 'REPLACEMENT_REQUIRED') return;
+  ar.info = null; ar.status = 'IN_REVIEW'; ar.timeline.unshift({ t: Date.now(), text: 'Hujjat qayta yuklandi — ariza ko‘rib chiqishga qaytdi', who: 'Siz' }); render();
+};
+ACT['demo-acc-review-info'] = () => {
+  const ar = getAccReq(S.accInn), key = accDocList(ar).some((x) => x.key === 'SEAL') ? 'SEAL' : 'PASSPORT_DIR';
+  ar.status = 'NEEDS_INFO'; ar.info = { key, text: key === 'SEAL' ? 'Imzo va muhr namunalari kartochkasi — muhr aniq ko‘rinmaydi, qayta yuklang' : 'Pasport skani o‘qilmaydi — qayta yuklang' };
+  ar.docs[key] = { status: 'REPLACEMENT_REQUIRED', note: ar.info.text };
+  ar.timeline.unshift({ t: Date.now(), text: 'Bank hujjatni qayta so‘radi', who: 'Bank' }); render();
+};
+ACT['demo-acc-opened'] = () => {
+  const ar = getAccReq(S.accInn), inn = ar.inn, A = ar.d.accounts, tail = inn.slice(0, 6);
+  ar.status = 'OPENED'; ar.openedAt = Date.now();
+  ar.numbers = [['uzs', '20208000900' + tail + '011']].concat(A.fx ? [['fx', '20208840900' + tail + '012']] : [], A.salary ? [['salary', '22620000900' + tail + '013']] : [], A.corp ? [['corp', '22620000900' + tail + '014']] : [],
+    +A.cardGoods > 0 ? [['cardGoods', '22618000900' + tail + '015']] : [], +A.cardServices > 0 ? [['cardServices', '22618000900' + tail + '016']] : []);
+  S.opened = S.opened || {}; S.opened[inn] = ar.numbers[0][1];
+  ar.timeline.unshift({ t: Date.now(), text: 'Hisob ochildi (ABS): ' + fmtAcc(S.opened[inn]), who: 'Bank' });
+  S.apps.filter((x) => x.inn === inn && !['REJECTED', 'CANCELLED', 'EXPIRED'].includes(x.status)).forEach(bindAcc);
+  toast('Hisob ochildi — ekvayring arizasiga avtomatik bog‘landi'); render();
+};
+const appOf = (inn) => S.apps.find((x) => x.inn === inn && !['CANCELLED', 'EXPIRED', 'REJECTED'].includes(x.status)) || null;
+function getAccReq(inn) {
+  S.accReqs = S.accReqs || {};
+  if (!S.accReqs[inn]) {
+    const r = REG[inn] || {}, app = appOf(inn), svc = app && app.d.receipt === 'service';
+    S.accReqs[inn] = {
+      kind: 'ACC', inn, id: 'ACC-2026-' + String(S.seq++).padStart(6, '0'), status: 'DRAFT', createdAt: Date.now(), updatedAt: Date.now(),
+      orgName: app ? (app.d.legalName || app.orgName) : r.name || ('INN ' + inn), form: app ? app.form : r.form || 'MChJ',
+      founders: app ? app.founders : (r.founders || []).map((x) => Object.assign({}, x)), dirName: app ? app.d.dirName : r.dir || '',
+      d: { accounts: { uzs: true, fx: false, salary: false, corp: false, cardGoods: svc ? 0 : 1, cardServices: svc ? 1 : 0 },
+        ib: true, mb: true, sms: true, phIb: S.user.phone, phMb: S.user.phone, phSms: S.user.phone, terminal: false,
+        tariff: '', tariffOther: '', cTariff: false, cIb: false, hasAcc: app ? !!app.d.hasAcc : false },
+      docs: {}, timeline: [], info: null, show: false,
+    };
+    S.accReqs[inn].timeline.unshift({ t: Date.now(), text: 'Hisob ochish arizasi (qoralama) yaratildi', who: 'Siz' });
+  }
+  return S.accReqs[inn];
+}
+const accReqOf = (inn) => (S.accReqs && S.accReqs[inn]) || null;
+// Hujjatlar — ekvayring arizasi bilan umumiy: bir marta yuklanadi (Q-33)
+function accDocHost(ar) {
+  const app = appOf(ar.inn);
+  const d = { hasAcc: app ? !!app.d.hasAcc : ar.d.hasAcc, dirName: ar.dirName, services: {}, licensed: 'no' };
+  return { form: ar.form, founders: ar.founders, d, docs: ar.docs, inn: ar.inn };
+}
+const accDocList = (ar) => requiredDocs(accDocHost(ar)).filter((x) => !ACC_DOC_EXCLUDE.includes(x.code));
+function accDocsMerged(ar) {
+  const app = appOf(ar.inn), m = Object.assign({}, ar.docs);
+  if (app) Object.entries(app.docs).forEach(([k, v]) => { if (['UPLOADED', 'VERIFIED'].includes(v.status) && !(m[k] && ['UPLOADED', 'VERIFIED', 'UPLOADING', 'REPLACEMENT_REQUIRED'].includes(m[k].status))) m[k] = Object.assign({}, v, { file: v.file + ' — ekvayring arizasidan', fromApp: true }); });
+  return m;
+}
+const accDocOk = (ar, key) => { const x = accDocsMerged(ar)[key]; return !!x && ['UPLOADED', 'VERIFIED'].includes(x.status); };
+function accErrors(ar) {
+  const d = ar.d, e = {}, A = d.accounts;
+  if (!A.uzs) e.accounts = 'Milliy valyutadagi hisobvaraq majburiy — ekvayring tushumi shu hisobga o‘tadi';
+  [['ib', 'phIb'], ['mb', 'phMb'], ['sms', 'phSms']].forEach(([k, p]) => { if (d[k] && String(d[p] || '').replace(/\D/g, '').slice(-9).length !== 9) e[p] = 'Telefon: 9 raqam'; });
+  ['cardGoods', 'cardServices'].forEach((k) => { if (A[k] !== 0 && A[k] !== '0' && !(Number(A[k]) >= 1 && Number(A[k]) <= 20)) e[k] = '1–20'; });
+  if (!d.tariff) e.tariff = 'Tarif rejasini tanlang';
+  else if (d.tariff === 'OTHER' && !String(d.tariffOther || '').trim()) e.tariff = 'Tarif nomini yozing';
+  if (!d.cTariff) e.cTariff = 'Majburiy';
+  if ((d.ib || d.mb) && !d.cIb) e.cIb = 'Internet / Mobile-banking tanlangani uchun majburiy';
+  const miss = accDocList(ar).filter((x) => !accDocOk(ar, x.key)).length;
+  if (miss) e.docs = miss + ' ta hujjat yuklanmagan';
+  return e;
+}
 function bindAcc(a) {
   if (a.accBound) return;
   a.accBound = true; a.accountFound = true;
@@ -1487,6 +1674,7 @@ document.addEventListener('click', (ev) => {
 document.addEventListener('input', (ev) => {
   const el = ev.target;
   if (el.id === 'rPw') { const v = el.value; const sc = (v.length >= 10) + /\d/.test(v) + /[a-z]/i.test(v) + /[^a-z0-9]/i.test(v) + (v.length >= 14); const m = $('#pwm'); m.style.width = sc * 20 + '%'; m.style.background = sc < 3 ? 'var(--red)' : sc < 4 ? 'var(--amber)' : 'var(--green)'; return; }
+  if (el.dataset && el.dataset.accbind && !['checkbox', 'radio'].includes(el.type) && el.tagName !== 'SELECT') { const ar = getAccReq(S.accInn); setPath(ar.d, el.dataset.accbind, el.value); ar.updatedAt = Date.now(); saveSoon(); return; }
   if (!el.dataset || !el.dataset.bind || el.type === 'checkbox' || el.type === 'radio' || el.tagName === 'SELECT') return;
   const a = curApp(); if (!a) return;
   let v = el.value;
@@ -1502,7 +1690,15 @@ document.addEventListener('change', (ev) => {
     const f = el.files && el.files[0]; if (!f || !pickKey) return;
     const okType = /\.(pdf|jpe?g|png|heic)$/i.test(f.name), okSize = f.size <= 10 * 1024 * 1024;
     if (!okType || !okSize) { toast(!okType ? 'Ruxsat etilmagan format (L2): PDF, JPG, PNG, HEIC' : 'Fayl 10 MB dan katta (L2)'); return; }
-    simulateUpload(curApp(), pickKey, f.name, (f.size / 1048576).toFixed(1) + ' MB'); return;
+    simulateUpload(docTarget(), pickKey, f.name, (f.size / 1048576).toFixed(1) + ' MB'); return;
+  }
+  if (el.dataset && el.dataset.accbind) {
+    const ar = getAccReq(S.accInn), p = el.dataset.accbind;
+    let v = el.type === 'checkbox' ? el.checked : el.value;
+    if (/^accounts\.card/.test(p) && el.type === 'checkbox') v = el.checked ? 1 : 0;
+    setPath(ar.d, p, v); ar.updatedAt = Date.now();
+    if (['checkbox', 'radio'].includes(el.type) || el.tagName === 'SELECT') render(); else saveSoon();
+    return;
   }
   if (!el.dataset || !el.dataset.bind) return;
   const a = curApp(); if (!a) return;
@@ -1514,7 +1710,7 @@ document.addEventListener('change', (ev) => {
 document.addEventListener('keydown', (ev) => {
   if (ev.key !== 'Enter') return;
   const id = ev.target && ev.target.id;
-  const map = { regPhone: 'reg-send', otp: 'reg-verify', preInn: 'pre-check', subOtp: 'submit-confirm', lPw: 'login', eimzo: 'sign-confirm' };
+  const map = { regPhone: 'reg-send', otp: 'reg-verify', preInn: 'pre-check', subOtp: 'submit-confirm', lPw: 'login', eimzo: 'sign-confirm', accPin: 'acc-sign' };
   if (map[id]) { ev.preventDefault(); ACT[map[id]](ev.target); }
 });
 
