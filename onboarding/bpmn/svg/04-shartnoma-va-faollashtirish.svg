@@ -1,115 +1,115 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="2818" height="900" viewBox="0 0 2818 900" font-family="Segoe UI, Arial, Helvetica, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="2818" height="940" viewBox="0 0 2818 940" font-family="Segoe UI, Arial, Helvetica, sans-serif">
 <title>04 · Shartnoma va faollashtirish</title>
 <defs><marker id="arr" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3A4254"/></marker></defs>
-<rect x="0" y="0" width="2818" height="900" fill="#FFFFFF"/>
+<rect x="0" y="0" width="2818" height="940" fill="#FFFFFF"/>
 <text x="10" y="24" font-size="16" font-weight="700" fill="#0F1522">04 · Shartnoma va faollashtirish</text>
-<text x="10" y="40" font-size="11" fill="#4B5468">APPROVED → (yangi hisob so'ralgan bo'lsa — ABS da hisob ochiladi, Q-24) → 1-imzo (direktor) → 2-imzo (Rais o'rinbosari) → provisioning → kabinet (D4, sandbox) → go-live → LIVE (D5).</text>
-<rect x="10" y="46" width="2796" height="840" fill="#FFFFFF" stroke="#0F1522" stroke-width="1.5"/>
-<rect x="10" y="46" width="30" height="840" fill="#EEF0F5" stroke="#0F1522" stroke-width="1.5"/>
-<g transform="translate(25,466) rotate(-90)"><text x="0" y="4" text-anchor="middle" font-size="12" font-weight="700" fill="#0F1522">Garant Bank · Hisob, shartnoma, provisioning, go-live</text></g>
+<text x="10" y="40" font-size="11" fill="#4B5468">APPROVED → 1-imzo (direktor) → 2-imzo (Rais o'rinbosari) → provisioning → kabinet (D4, sandbox) → go-live: Garant hisobi (ABS) sharti (Q-32) → LIVE (D5).</text>
+<rect x="10" y="46" width="2796" height="880" fill="#FFFFFF" stroke="#0F1522" stroke-width="1.5"/>
+<rect x="10" y="46" width="30" height="880" fill="#EEF0F5" stroke="#0F1522" stroke-width="1.5"/>
+<g transform="translate(25,486) rotate(-90)"><text x="0" y="4" text-anchor="middle" font-size="12" font-weight="700" fill="#0F1522">Garant Bank · Shartnoma, provisioning, go-live</text></g>
 <rect x="40" y="46" width="2766" height="200" fill="#F6F8FF" stroke="#C9CFDB"/>
 <rect x="40" y="46" width="34" height="200" fill="#FFFFFF" stroke="#C9CFDB"/>
 <g transform="translate(57,146) rotate(-90)"><text x="0" y="3.5" text-anchor="middle" font-size="10.5" font-weight="600" fill="#4B5468">Mijoz: direktor → merchant</text></g>
 <rect x="40" y="246" width="2766" height="190" fill="#F8F9FB" stroke="#C9CFDB"/>
 <rect x="40" y="246" width="34" height="190" fill="#FFFFFF" stroke="#C9CFDB"/>
 <g transform="translate(57,341) rotate(-90)"><text x="0" y="3.5" text-anchor="middle" font-size="10.5" font-weight="600" fill="#4B5468">Platforma</text></g>
-<rect x="40" y="436" width="2766" height="150" fill="#FFFBF3" stroke="#C9CFDB"/>
-<rect x="40" y="436" width="34" height="150" fill="#FFFFFF" stroke="#C9CFDB"/>
-<g transform="translate(57,511) rotate(-90)"><text x="0" y="-9" text-anchor="middle" font-size="10.5" font-weight="600" fill="#4B5468">Tashqi: E-IMZO,</text><text x="0" y="3.5" text-anchor="middle" font-size="10.5" font-weight="600" fill="#4B5468">Uzcard/Humo PC, ABS,</text><text x="0" y="16" text-anchor="middle" font-size="10.5" font-weight="600" fill="#4B5468">OFD</text></g>
-<rect x="40" y="586" width="2766" height="150" fill="#FBF8FF" stroke="#C9CFDB"/>
-<rect x="40" y="586" width="34" height="150" fill="#FFFFFF" stroke="#C9CFDB"/>
-<g transform="translate(57,661) rotate(-90)"><text x="0" y="-2.7" text-anchor="middle" font-size="10.5" font-weight="600" fill="#4B5468">Rais o'rinbosari</text><text x="0" y="9.8" text-anchor="middle" font-size="10.5" font-weight="600" fill="#4B5468">(tasdiqlovchi)</text></g>
-<rect x="40" y="736" width="2766" height="150" fill="#F5FAF7" stroke="#C9CFDB"/>
-<rect x="40" y="736" width="34" height="150" fill="#FFFFFF" stroke="#C9CFDB"/>
-<g transform="translate(57,811) rotate(-90)"><text x="0" y="3.5" text-anchor="middle" font-size="10.5" font-weight="600" fill="#4B5468">Operatsiya xodimi</text></g>
-<path d="M175,341 L282,341" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
-<path d="M332,341 L545,341" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
-<path d="M307,366 L307,811 L395,811" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
-<path d="M519,811 L607,811 L607,379" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
-<path d="M669,341 L682,341 L682,146 L695,146" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
-<path d="M722.3,90 L722.3,82 L889,82" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
-<path d="M819,146 L907,146 L907,473" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
-<path d="M969,511 L1000.5,511 L1000.5,341 L1032,341" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
-<path d="M1057,316 L1057,216 L793,216 L793,184" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
-<path d="M1057,366 L1057,661 L1145,661" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
-<path d="M1269,661 L1332,661" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
-<path d="M1357,686 L1357,717 L643,717 L643,379" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
-<path d="M1357,636 L1357,341 L1445,341" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
-<path d="M1472.3,397 L1472,773" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
-<path d="M1522,773 L1522,379" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
-<path d="M1569,341 L1657,341 L1657,473" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
-<path d="M1719,511 L1807,511 L1807,379" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
-<path d="M1869,341 L1882,341 L1882,146 L1895,146" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
-<path d="M2019,146 L2032,146 L2032,341 L2045,341" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
-<path d="M2169,341 L2182,341 L2182,811 L2195,811" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
-<path d="M2319,811 L2382,811" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
-<path d="M2407,786 L2407,72 L1993,72 L1993,108" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
-<path d="M2432,811 L2557,811 L2557,379" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<rect x="40" y="436" width="2766" height="190" fill="#FFFBF3" stroke="#C9CFDB"/>
+<rect x="40" y="436" width="34" height="190" fill="#FFFFFF" stroke="#C9CFDB"/>
+<g transform="translate(57,531) rotate(-90)"><text x="0" y="-2.7" text-anchor="middle" font-size="10.5" font-weight="600" fill="#4B5468">Tashqi: E-IMZO, Uzcard/Humo PC,</text><text x="0" y="9.8" text-anchor="middle" font-size="10.5" font-weight="600" fill="#4B5468">ABS, OFD</text></g>
+<rect x="40" y="626" width="2766" height="150" fill="#FBF8FF" stroke="#C9CFDB"/>
+<rect x="40" y="626" width="34" height="150" fill="#FFFFFF" stroke="#C9CFDB"/>
+<g transform="translate(57,701) rotate(-90)"><text x="0" y="-2.7" text-anchor="middle" font-size="10.5" font-weight="600" fill="#4B5468">Rais o'rinbosari</text><text x="0" y="9.8" text-anchor="middle" font-size="10.5" font-weight="600" fill="#4B5468">(tasdiqlovchi)</text></g>
+<rect x="40" y="776" width="2766" height="150" fill="#F5FAF7" stroke="#C9CFDB"/>
+<rect x="40" y="776" width="34" height="150" fill="#FFFFFF" stroke="#C9CFDB"/>
+<g transform="translate(57,851) rotate(-90)"><text x="0" y="3.5" text-anchor="middle" font-size="10.5" font-weight="600" fill="#4B5468">Operatsiya xodimi</text></g>
+<path d="M175,341 L245,341" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M369,341 L382,341 L382,146 L395,146" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M422.3,90 L422.3,82 L589,82" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M519,146 L607,146 L607,493" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M669,531 L700.5,531 L700.5,341 L732,341" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M757,316 L757,216 L493,216 L493,184" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M757,366 L757,701 L845,701" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M969,701 L1032,701" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M1057,726 L1057,757 L343,757 L343,379" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M1057,676 L1057,341 L1145,341" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M1172.3,397 L1172,813" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M1222,813 L1222,379" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M1269,341 L1357,341 L1357,493" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M1419,531 L1507,531 L1507,379" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M1569,341 L1582,341 L1582,146 L1595,146" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M1719,146 L1732,146 L1732,341 L1745,341" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M1869,341 L1932,341" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M1957,366 L1957,851 L2195,851" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M1957,316 L1957,184" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M2019,146 L2107,146 L2107,493" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M2107,569 L2107,691 L2287,691 L2287,813" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M2319,851 L2382,851" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M2407,826 L2407,72 L1693,72 L1693,108" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M2432,851 L2557,851 L2557,379" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
 <path d="M2619,341 L2654,341 L2654,146 L2689,146" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
-<path d="M457,760 L457,773" stroke="#8A93A3" stroke-dasharray="2,3" fill="none"/>
-<rect x="322" y="742" width="270" height="36" fill="#FFFFFF" fill-opacity="0.9" stroke="none"/>
-<path d="M334,742 L322,742 L322,778 L334,778" fill="none" stroke="#8A93A3" stroke-width="1.2"/>
-<text x="329" y="757" font-size="10.5" fill="#4B5468" font-style="italic">ACCOUNT_OPENING: hujjatlar qayta so'ralmaydi</text>
-<text x="329" y="770" font-size="10.5" fill="#4B5468" font-style="italic">(VERIFIED to'plam) · 18 §39</text>
-<path d="M607,288 L607,303" stroke="#8A93A3" stroke-dasharray="2,3" fill="none"/>
-<rect x="522" y="252" width="170" height="36" fill="#FFFFFF" fill-opacity="0.9" stroke="none"/>
-<path d="M534,252 L522,252 L522,288 L534,288" fill="none" stroke="#8A93A3" stroke-width="1.2"/>
-<text x="529" y="267" font-size="10.5" fill="#4B5468" font-style="italic">Tartib: avval mijoz, keyin bank</text>
-<text x="529" y="280" font-size="10.5" fill="#4B5468" font-style="italic">(bank javobi 22.09)</text>
-<path d="M1507,288 L1507,303" stroke="#8A93A3" stroke-dasharray="2,3" fill="none"/>
-<rect x="1414.5" y="252" width="185" height="36" fill="#FFFFFF" fill-opacity="0.9" stroke="none"/>
-<path d="M1426.5,252 L1414.5,252 L1414.5,288 L1426.5,288" fill="none" stroke="#8A93A3" stroke-width="1.2"/>
-<text x="1421.5" y="267" font-size="10.5" fill="#4B5468" font-style="italic">Merchant yozuvi faqat shu yerda</text>
-<text x="1421.5" y="280" font-size="10.5" fill="#4B5468" font-style="italic">yaratiladi (R5). Idempotent</text>
-<path d="M1827,381 L1807,379" stroke="#8A93A3" stroke-dasharray="2,3" fill="none"/>
-<rect x="1827" y="381" width="150" height="49" fill="#FFFFFF" fill-opacity="0.9" stroke="none"/>
-<path d="M1839,381 L1827,381 L1827,430 L1839,430" fill="none" stroke="#8A93A3" stroke-width="1.2"/>
-<text x="1834" y="396" font-size="10.5" fill="#4B5468" font-style="italic">Yangi login berilmaydi —</text>
-<text x="1834" y="409" font-size="10.5" fill="#4B5468" font-style="italic">o'sha akkaunt kabinetga</text>
-<text x="1834" y="422" font-size="10.5" fill="#4B5468" font-style="italic">kiradi</text>
+<path d="M307,288 L307,303" stroke="#8A93A3" stroke-dasharray="2,3" fill="none"/>
+<rect x="222" y="252" width="170" height="36" fill="#FFFFFF" fill-opacity="0.9" stroke="none"/>
+<path d="M234,252 L222,252 L222,288 L234,288" fill="none" stroke="#8A93A3" stroke-width="1.2"/>
+<text x="229" y="267" font-size="10.5" fill="#4B5468" font-style="italic">Tartib: avval mijoz, keyin bank</text>
+<text x="229" y="280" font-size="10.5" fill="#4B5468" font-style="italic">(bank javobi 22.09)</text>
+<path d="M1207,288 L1207,303" stroke="#8A93A3" stroke-dasharray="2,3" fill="none"/>
+<rect x="1114.5" y="252" width="185" height="36" fill="#FFFFFF" fill-opacity="0.9" stroke="none"/>
+<path d="M1126.5,252 L1114.5,252 L1114.5,288 L1126.5,288" fill="none" stroke="#8A93A3" stroke-width="1.2"/>
+<text x="1121.5" y="267" font-size="10.5" fill="#4B5468" font-style="italic">Merchant yozuvi faqat shu yerda</text>
+<text x="1121.5" y="280" font-size="10.5" fill="#4B5468" font-style="italic">yaratiladi (R5). Idempotent</text>
+<path d="M1527,381 L1507,379" stroke="#8A93A3" stroke-dasharray="2,3" fill="none"/>
+<rect x="1527" y="381" width="150" height="49" fill="#FFFFFF" fill-opacity="0.9" stroke="none"/>
+<path d="M1539,381 L1527,381 L1527,430 L1539,430" fill="none" stroke="#8A93A3" stroke-width="1.2"/>
+<text x="1534" y="396" font-size="10.5" fill="#4B5468" font-style="italic">Yangi login berilmaydi —</text>
+<text x="1534" y="409" font-size="10.5" fill="#4B5468" font-style="italic">o'sha akkaunt kabinetga</text>
+<text x="1534" y="422" font-size="10.5" fill="#4B5468" font-style="italic">kiradi</text>
+<path d="M2122,584 L2107,569" stroke="#8A93A3" stroke-dasharray="2,3" fill="none"/>
+<rect x="2122" y="584" width="230" height="36" fill="#FFFFFF" fill-opacity="0.9" stroke="none"/>
+<path d="M2134,584 L2122,584 L2122,620 L2134,620" fill="none" stroke="#8A93A3" stroke-width="1.2"/>
+<text x="2129" y="599" font-size="10.5" fill="#4B5468" font-style="italic">Kunlik ABS tekshiruvi + «Qayta tekshirish».</text>
+<text x="2129" y="612" font-size="10.5" fill="#4B5468" font-style="italic">Hisob bog'lanmaguncha — faqat sandbox</text>
 <path d="M2557,288 L2557,303" stroke="#8A93A3" stroke-dasharray="2,3" fill="none"/>
 <rect x="2472" y="252" width="170" height="36" fill="#FFFFFF" fill-opacity="0.9" stroke="none"/>
 <path d="M2484,252 L2472,252 L2472,288 L2484,288" fill="none" stroke="#8A93A3" stroke-width="1.2"/>
 <text x="2479" y="267" font-size="10.5" fill="#4B5468" font-style="italic">D5: to'liq kabinet; to'lov</text>
 <text x="2479" y="280" font-size="10.5" fill="#4B5468" font-style="italic">webhook'lari ishlaydi</text>
 <circle cx="157" cy="341" r="18" fill="#E7F6EE" stroke="#157A4A" stroke-width="1.6"/><rect x="149" y="335.5" width="16" height="11" fill="#FFFFFF" stroke="#157A4A" stroke-width="1.3"/><path d="M149,335.5 L157,342 L165,335.5" fill="none" stroke="#157A4A" stroke-width="1.3"/><text x="157" y="373.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">Ariza tasdiqlandi</text><text x="157" y="386.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">(APPROVED)</text>
-<path d="M307,316 L332,341 L307,366 L282,341 Z" fill="#FFF6E6" stroke="#A15C00" stroke-width="1.6"/><path d="M299,333 L315,349 M315,333 L299,349" stroke="#A15C00" stroke-width="3.2" stroke-linecap="round"/><text x="252.2" y="298.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">Yangi hisob</text><text x="252.2" y="311.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">so'ralganmi?</text>
-<rect x="395" y="773" width="124" height="76" rx="9" fill="#EAEEFC" stroke="#2C4CE0" stroke-width="1.6"/><circle cx="408" cy="783" r="3.6" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><path d="M402,794 Q408,784 414,794 Z" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><text x="457" y="811" text-anchor="middle" font-size="11" fill="#0F1522">ABS da hisob ochish</text><text x="457" y="824.4" text-anchor="middle" font-size="11" fill="#0F1522">(ariza hujjatlari bilan)</text>
-<rect x="545" y="303" width="124" height="76" rx="9" fill="#EEF1F5" stroke="#4B5468" stroke-width="1.6"/><circle cx="558" cy="316" r="5.5" fill="none" stroke="#4B5468" stroke-width="2.4" stroke-dasharray="2.2,1.7"/><circle cx="558" cy="316" r="2.2" fill="none" stroke="#4B5468" stroke-width="1.1"/><text x="607" y="334.3" text-anchor="middle" font-size="11" fill="#0F1522">Shartnoma: tarif,</text><text x="607" y="347.7" text-anchor="middle" font-size="11" fill="#0F1522">MCC, limit, hisob</text><text x="607" y="361.1" text-anchor="middle" font-size="11" fill="#0F1522">raqami (CTR-…)</text>
-<rect x="695" y="108" width="124" height="76" rx="9" fill="#EAEEFC" stroke="#2C4CE0" stroke-width="1.6"/><circle cx="708" cy="118" r="3.6" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><path d="M702,129 Q708,119 714,129 Z" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><text x="757" y="139.3" text-anchor="middle" font-size="11" fill="#0F1522">1-imzo: direktor</text><text x="757" y="152.7" text-anchor="middle" font-size="11" fill="#0F1522">E-IMZO bilan (tizim</text><text x="757" y="166.1" text-anchor="middle" font-size="11" fill="#0F1522">ichida)</text>
-<circle cx="907" cy="82" r="18" fill="#F1F3F7" stroke="#4B5468" stroke-width="3.2"/><text x="976.7" y="79.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">EXPIRED: 14 kun</text><text x="976.7" y="92.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">imzolanmadi</text>
-<rect x="845" y="473" width="124" height="76" rx="9" fill="#EEF1F5" stroke="#4B5468" stroke-width="1.6"/><circle cx="858" cy="486" r="5.5" fill="none" stroke="#4B5468" stroke-width="2.4" stroke-dasharray="2.2,1.7"/><circle cx="858" cy="486" r="2.2" fill="none" stroke="#4B5468" stroke-width="1.1"/><text x="907" y="504.3" text-anchor="middle" font-size="11" fill="#0F1522">Sertifikat va imzo</text><text x="907" y="517.7" text-anchor="middle" font-size="11" fill="#0F1522">tekshiruvi (INN,</text><text x="907" y="531.1" text-anchor="middle" font-size="11" fill="#0F1522">PINFL)</text>
-<path d="M1057,316 L1082,341 L1057,366 L1032,341 Z" fill="#FFF6E6" stroke="#A15C00" stroke-width="1.6"/><path d="M1049,333 L1065,349 M1065,333 L1049,349" stroke="#A15C00" stroke-width="3.2" stroke-linecap="round"/><text x="1119.4" y="298.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">Imzo haqiqiy va</text><text x="1119.4" y="311.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">vakolatli?</text>
-<rect x="1145" y="623" width="124" height="76" rx="9" fill="#EAEEFC" stroke="#2C4CE0" stroke-width="1.6"/><circle cx="1158" cy="633" r="3.6" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><path d="M1152,644 Q1158,634 1164,644 Z" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><text x="1207" y="661" text-anchor="middle" font-size="11" fill="#0F1522">2-imzo: bank nomidan</text><text x="1207" y="674.4" text-anchor="middle" font-size="11" fill="#0F1522">imzolash</text>
-<path d="M1357,636 L1382,661 L1357,686 L1332,661 Z" fill="#FFF6E6" stroke="#A15C00" stroke-width="1.6"/><path d="M1349,653 L1365,669 M1365,653 L1349,669" stroke="#A15C00" stroke-width="3.2" stroke-linecap="round"/><text x="1424.3" y="665" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">Imzolandimi?</text>
-<rect x="1445" y="303" width="124" height="76" rx="9" fill="#FFFFFF" stroke="#0F1522" stroke-width="1.6"/><rect x="1500" y="362" width="14" height="14" fill="#FFFFFF" stroke="#0F1522" stroke-width="1.2"/><path d="M1507,365 L1507,373 M1503,369 L1511,369" stroke="#0F1522" stroke-width="1.4"/><text x="1507" y="325.3" text-anchor="middle" font-size="11" fill="#0F1522">Provisioning (Saga):</text><text x="1507" y="338.7" text-anchor="middle" font-size="11" fill="#0F1522">Merchant MER-…,</text><text x="1507" y="352.1" text-anchor="middle" font-size="11" fill="#0F1522">profil, tarif, limit</text>
-<rect x="1410" y="773" width="124" height="76" rx="9" fill="#EAEEFC" stroke="#2C4CE0" stroke-width="1.6"/><circle cx="1423" cy="783" r="3.6" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><path d="M1417,794 Q1423,784 1429,794 Z" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><text x="1472" y="811" text-anchor="middle" font-size="11" fill="#0F1522">Qo'lda hal qilish /</text><text x="1472" y="824.4" text-anchor="middle" font-size="11" fill="#0F1522">kompensatsiya</text>
-<rect x="1595" y="473" width="124" height="76" rx="9" fill="#EEF1F5" stroke="#4B5468" stroke-width="1.6"/><circle cx="1608" cy="486" r="5.5" fill="none" stroke="#4B5468" stroke-width="2.4" stroke-dasharray="2.2,1.7"/><circle cx="1608" cy="486" r="2.2" fill="none" stroke="#4B5468" stroke-width="1.1"/><text x="1657" y="504.3" text-anchor="middle" font-size="11" fill="#0F1522">Uzcard/Humo PC:</text><text x="1657" y="517.7" text-anchor="middle" font-size="11" fill="#0F1522">MID, TID · ABS</text><text x="1657" y="531.1" text-anchor="middle" font-size="11" fill="#0F1522">hisob · OFD</text>
-<rect x="1745" y="303" width="124" height="76" rx="9" fill="#EEF1F5" stroke="#4B5468" stroke-width="1.6"/><circle cx="1758" cy="316" r="5.5" fill="none" stroke="#4B5468" stroke-width="2.4" stroke-dasharray="2.2,1.7"/><circle cx="1758" cy="316" r="2.2" fill="none" stroke="#4B5468" stroke-width="1.1"/><text x="1807" y="334.3" text-anchor="middle" font-size="11" fill="#0F1522">Rol → OWNER (xodim</text><text x="1807" y="347.7" text-anchor="middle" font-size="11" fill="#0F1522">— ADMIN); kabinet</text><text x="1807" y="361.1" text-anchor="middle" font-size="11" fill="#0F1522">D4; sandbox</text>
-<rect x="1895" y="108" width="124" height="76" rx="9" fill="#EAEEFC" stroke="#2C4CE0" stroke-width="1.6"/><circle cx="1908" cy="118" r="3.6" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><path d="M1902,129 Q1908,119 1914,129 Z" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><text x="1957" y="139.3" text-anchor="middle" font-size="11" fill="#0F1522">Dasturchi: IP,</text><text x="1957" y="152.7" text-anchor="middle" font-size="11" fill="#0F1522">callback (Q-30); test</text><text x="1957" y="166.1" text-anchor="middle" font-size="11" fill="#0F1522">to'lov, refund</text>
-<rect x="2045" y="303" width="124" height="76" rx="9" fill="#EEF1F5" stroke="#4B5468" stroke-width="1.6"/><circle cx="2058" cy="316" r="5.5" fill="none" stroke="#4B5468" stroke-width="2.4" stroke-dasharray="2.2,1.7"/><circle cx="2058" cy="316" r="2.2" fill="none" stroke="#4B5468" stroke-width="1.1"/><text x="2107" y="341" text-anchor="middle" font-size="11" fill="#0F1522">Go-live cheklist</text><text x="2107" y="354.4" text-anchor="middle" font-size="11" fill="#0F1522">avtotekshiruvi</text>
-<rect x="2195" y="773" width="124" height="76" rx="9" fill="#EAEEFC" stroke="#2C4CE0" stroke-width="1.6"/><circle cx="2208" cy="783" r="3.6" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><path d="M2202,794 Q2208,784 2214,794 Z" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><text x="2257" y="811" text-anchor="middle" font-size="11" fill="#0F1522">Go-live tasdig'i (sayt,</text><text x="2257" y="824.4" text-anchor="middle" font-size="11" fill="#0F1522">test natijalari)</text>
-<path d="M2407,786 L2432,811 L2407,836 L2382,811 Z" fill="#FFF6E6" stroke="#A15C00" stroke-width="1.6"/><path d="M2399,803 L2415,819 M2415,803 L2399,819" stroke="#A15C00" stroke-width="3.2" stroke-linecap="round"/><text x="2407" y="850.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">Tayyormi?</text>
+<rect x="245" y="303" width="124" height="76" rx="9" fill="#EEF1F5" stroke="#4B5468" stroke-width="1.6"/><circle cx="258" cy="316" r="5.5" fill="none" stroke="#4B5468" stroke-width="2.4" stroke-dasharray="2.2,1.7"/><circle cx="258" cy="316" r="2.2" fill="none" stroke="#4B5468" stroke-width="1.1"/><text x="307" y="334.3" text-anchor="middle" font-size="11" fill="#0F1522">Shartnoma: tarif,</text><text x="307" y="347.7" text-anchor="middle" font-size="11" fill="#0F1522">MCC, limit, hisob</text><text x="307" y="361.1" text-anchor="middle" font-size="11" fill="#0F1522">rekvizitlari (CTR-…)</text>
+<rect x="395" y="108" width="124" height="76" rx="9" fill="#EAEEFC" stroke="#2C4CE0" stroke-width="1.6"/><circle cx="408" cy="118" r="3.6" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><path d="M402,129 Q408,119 414,129 Z" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><text x="457" y="139.3" text-anchor="middle" font-size="11" fill="#0F1522">1-imzo: direktor</text><text x="457" y="152.7" text-anchor="middle" font-size="11" fill="#0F1522">E-IMZO bilan (tizim</text><text x="457" y="166.1" text-anchor="middle" font-size="11" fill="#0F1522">ichida)</text>
+<circle cx="607" cy="82" r="18" fill="#F1F3F7" stroke="#4B5468" stroke-width="3.2"/><text x="676.7" y="79.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">EXPIRED: 14 kun</text><text x="676.7" y="92.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">imzolanmadi</text>
+<rect x="545" y="493" width="124" height="76" rx="9" fill="#EEF1F5" stroke="#4B5468" stroke-width="1.6"/><circle cx="558" cy="506" r="5.5" fill="none" stroke="#4B5468" stroke-width="2.4" stroke-dasharray="2.2,1.7"/><circle cx="558" cy="506" r="2.2" fill="none" stroke="#4B5468" stroke-width="1.1"/><text x="607" y="524.3" text-anchor="middle" font-size="11" fill="#0F1522">Sertifikat va imzo</text><text x="607" y="537.7" text-anchor="middle" font-size="11" fill="#0F1522">tekshiruvi (INN,</text><text x="607" y="551.1" text-anchor="middle" font-size="11" fill="#0F1522">PINFL)</text>
+<path d="M757,316 L782,341 L757,366 L732,341 Z" fill="#FFF6E6" stroke="#A15C00" stroke-width="1.6"/><path d="M749,333 L765,349 M765,333 L749,349" stroke="#A15C00" stroke-width="3.2" stroke-linecap="round"/><text x="819.4" y="298.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">Imzo haqiqiy va</text><text x="819.4" y="311.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">vakolatli?</text>
+<rect x="845" y="663" width="124" height="76" rx="9" fill="#EAEEFC" stroke="#2C4CE0" stroke-width="1.6"/><circle cx="858" cy="673" r="3.6" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><path d="M852,684 Q858,674 864,684 Z" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><text x="907" y="701" text-anchor="middle" font-size="11" fill="#0F1522">2-imzo: bank nomidan</text><text x="907" y="714.4" text-anchor="middle" font-size="11" fill="#0F1522">imzolash</text>
+<path d="M1057,676 L1082,701 L1057,726 L1032,701 Z" fill="#FFF6E6" stroke="#A15C00" stroke-width="1.6"/><path d="M1049,693 L1065,709 M1065,693 L1049,709" stroke="#A15C00" stroke-width="3.2" stroke-linecap="round"/><text x="1124.3" y="705" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">Imzolandimi?</text>
+<rect x="1145" y="303" width="124" height="76" rx="9" fill="#FFFFFF" stroke="#0F1522" stroke-width="1.6"/><rect x="1200" y="362" width="14" height="14" fill="#FFFFFF" stroke="#0F1522" stroke-width="1.2"/><path d="M1207,365 L1207,373 M1203,369 L1211,369" stroke="#0F1522" stroke-width="1.4"/><text x="1207" y="325.3" text-anchor="middle" font-size="11" fill="#0F1522">Provisioning (Saga):</text><text x="1207" y="338.7" text-anchor="middle" font-size="11" fill="#0F1522">Merchant MER-…,</text><text x="1207" y="352.1" text-anchor="middle" font-size="11" fill="#0F1522">profil, tarif, limit</text>
+<rect x="1110" y="813" width="124" height="76" rx="9" fill="#EAEEFC" stroke="#2C4CE0" stroke-width="1.6"/><circle cx="1123" cy="823" r="3.6" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><path d="M1117,834 Q1123,824 1129,834 Z" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><text x="1172" y="851" text-anchor="middle" font-size="11" fill="#0F1522">Qo'lda hal qilish /</text><text x="1172" y="864.4" text-anchor="middle" font-size="11" fill="#0F1522">kompensatsiya</text>
+<rect x="1295" y="493" width="124" height="76" rx="9" fill="#EEF1F5" stroke="#4B5468" stroke-width="1.6"/><circle cx="1308" cy="506" r="5.5" fill="none" stroke="#4B5468" stroke-width="2.4" stroke-dasharray="2.2,1.7"/><circle cx="1308" cy="506" r="2.2" fill="none" stroke="#4B5468" stroke-width="1.1"/><text x="1357" y="524.3" text-anchor="middle" font-size="11" fill="#0F1522">Uzcard/Humo PC:</text><text x="1357" y="537.7" text-anchor="middle" font-size="11" fill="#0F1522">MID, TID · ABS</text><text x="1357" y="551.1" text-anchor="middle" font-size="11" fill="#0F1522">hisob (bo'lsa) · OFD</text>
+<rect x="1445" y="303" width="124" height="76" rx="9" fill="#EEF1F5" stroke="#4B5468" stroke-width="1.6"/><circle cx="1458" cy="316" r="5.5" fill="none" stroke="#4B5468" stroke-width="2.4" stroke-dasharray="2.2,1.7"/><circle cx="1458" cy="316" r="2.2" fill="none" stroke="#4B5468" stroke-width="1.1"/><text x="1507" y="334.3" text-anchor="middle" font-size="11" fill="#0F1522">Rol → OWNER (xodim</text><text x="1507" y="347.7" text-anchor="middle" font-size="11" fill="#0F1522">— ADMIN); kabinet</text><text x="1507" y="361.1" text-anchor="middle" font-size="11" fill="#0F1522">D4; sandbox</text>
+<rect x="1595" y="108" width="124" height="76" rx="9" fill="#EAEEFC" stroke="#2C4CE0" stroke-width="1.6"/><circle cx="1608" cy="118" r="3.6" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><path d="M1602,129 Q1608,119 1614,129 Z" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><text x="1657" y="139.3" text-anchor="middle" font-size="11" fill="#0F1522">Dasturchi: IP,</text><text x="1657" y="152.7" text-anchor="middle" font-size="11" fill="#0F1522">callback (Q-30); test</text><text x="1657" y="166.1" text-anchor="middle" font-size="11" fill="#0F1522">to'lov, refund</text>
+<rect x="1745" y="303" width="124" height="76" rx="9" fill="#EEF1F5" stroke="#4B5468" stroke-width="1.6"/><circle cx="1758" cy="316" r="5.5" fill="none" stroke="#4B5468" stroke-width="2.4" stroke-dasharray="2.2,1.7"/><circle cx="1758" cy="316" r="2.2" fill="none" stroke="#4B5468" stroke-width="1.1"/><text x="1807" y="341" text-anchor="middle" font-size="11" fill="#0F1522">Go-live cheklist</text><text x="1807" y="354.4" text-anchor="middle" font-size="11" fill="#0F1522">avtotekshiruvi</text>
+<path d="M1957,316 L1982,341 L1957,366 L1932,341 Z" fill="#FFF6E6" stroke="#A15C00" stroke-width="1.6"/><path d="M1949,333 L1965,349 M1965,333 L1949,349" stroke="#A15C00" stroke-width="3.2" stroke-linecap="round"/><text x="2028.3" y="298.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">Garant hisobi (ABS)</text><text x="2028.3" y="311.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">bormi?</text>
+<rect x="1895" y="108" width="124" height="76" rx="9" fill="#EAEEFC" stroke="#2C4CE0" stroke-width="1.6"/><circle cx="1908" cy="118" r="3.6" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><path d="M1902,129 Q1908,119 1914,129 Z" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><text x="1957" y="139.3" text-anchor="middle" font-size="11" fill="#0F1522">Garant Bankda hisob</text><text x="1957" y="152.7" text-anchor="middle" font-size="11" fill="#0F1522">ochish (bankning o'z</text><text x="1957" y="166.1" text-anchor="middle" font-size="11" fill="#0F1522">xizmati)</text>
+<rect x="2045" y="493" width="124" height="76" rx="9" fill="#EEF1F5" stroke="#4B5468" stroke-width="1.6"/><circle cx="2058" cy="506" r="5.5" fill="none" stroke="#4B5468" stroke-width="2.4" stroke-dasharray="2.2,1.7"/><circle cx="2058" cy="506" r="2.2" fill="none" stroke="#4B5468" stroke-width="1.1"/><text x="2107" y="524.3" text-anchor="middle" font-size="11" fill="#0F1522">ABS: INN bo'yicha</text><text x="2107" y="537.7" text-anchor="middle" font-size="11" fill="#0F1522">hisob topildi →</text><text x="2107" y="551.1" text-anchor="middle" font-size="11" fill="#0F1522">bog'lash (1-ilova)</text>
+<rect x="2195" y="813" width="124" height="76" rx="9" fill="#EAEEFC" stroke="#2C4CE0" stroke-width="1.6"/><circle cx="2208" cy="823" r="3.6" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><path d="M2202,834 Q2208,824 2214,834 Z" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><text x="2257" y="851" text-anchor="middle" font-size="11" fill="#0F1522">Go-live tasdig'i (sayt,</text><text x="2257" y="864.4" text-anchor="middle" font-size="11" fill="#0F1522">test natijalari)</text>
+<path d="M2407,826 L2432,851 L2407,876 L2382,851 Z" fill="#FFF6E6" stroke="#A15C00" stroke-width="1.6"/><path d="M2399,843 L2415,859 M2415,843 L2399,859" stroke="#A15C00" stroke-width="3.2" stroke-linecap="round"/><text x="2407" y="890.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">Tayyormi?</text>
 <rect x="2495" y="303" width="124" height="76" rx="9" fill="#EEF1F5" stroke="#4B5468" stroke-width="1.6"/><circle cx="2508" cy="316" r="5.5" fill="none" stroke="#4B5468" stroke-width="2.4" stroke-dasharray="2.2,1.7"/><circle cx="2508" cy="316" r="2.2" fill="none" stroke="#4B5468" stroke-width="1.1"/><text x="2557" y="334.3" text-anchor="middle" font-size="11" fill="#0F1522">Production kalitlar;</text><text x="2557" y="347.7" text-anchor="middle" font-size="11" fill="#0F1522">Merchant ACTIVE</text><text x="2557" y="361.1" text-anchor="middle" font-size="11" fill="#0F1522">(D5); xabar</text>
 <circle cx="2707" cy="146" r="18" fill="#E7F6EE" stroke="#157A4A" stroke-width="3.2"/><text x="2707" y="178.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">Merchant LIVE —</text><text x="2707" y="191.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">birinchi real to'lov</text>
-<circle cx="722.3" cy="108" r="18" fill="#FFF6E6" stroke="#A15C00" stroke-width="1.6"/><circle cx="722.3" cy="108" r="14.5" fill="none" stroke="#A15C00" stroke-width="1.2"/><circle cx="722.3" cy="108" r="9" fill="#FFFFFF" stroke="#A15C00" stroke-width="1.4"/><path d="M722.3,102 L722.3,108 L727.3,110" fill="none" stroke="#A15C00" stroke-width="1.4"/><text x="679.7" y="112" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">14 kun</text>
-<circle cx="1472.3" cy="379" r="18" fill="#FDECEA" stroke="#B3261E" stroke-width="1.6"/><circle cx="1472.3" cy="379" r="14.5" fill="none" stroke="#B3261E" stroke-width="1.2"/><path d="M1465.3,386 L1469.3,372 L1474.3,380 L1479.3,372 L1475.3,386 L1470.3,378 Z" fill="none" stroke="#B3261E" stroke-width="1.3"/><text x="1472.3" y="411.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">Qadam xatosi</text>
-<rect x="415" y="323" width="99.1" height="15" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
-<text x="417" y="333.5" font-size="10.5" fill="#0F1522">Yo'q (mavjud hisob)</text>
-<rect x="311" y="511" width="53.4" height="15" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
-<text x="313" y="521.5" font-size="10.5" fill="#0F1522">Ha (Q-24)</text>
-<rect x="611" y="661" width="71" height="15" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
-<text x="613" y="671.5" font-size="10.5" fill="#0F1522">Hisob raqami</text>
-<rect x="935" y="198" width="107.1" height="15" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
-<text x="937" y="208.5" font-size="10.5" fill="#0F1522">Yo'q: qayta imzolash</text>
-<rect x="1060" y="370" width="20.4" height="15" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
-<text x="1062" y="380.5" font-size="10.5" fill="#0F1522">Ha</text>
-<rect x="905" y="703" width="106.5" height="15" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
-<text x="907" y="713.5" font-size="10.5" fill="#0F1522">Izoh bilan qaytarildi</text>
-<rect x="1360" y="619" width="57.1" height="15" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
-<text x="1362" y="629.5" font-size="10.5" fill="#0F1522">Imzolandi</text>
+<circle cx="422.3" cy="108" r="18" fill="#FFF6E6" stroke="#A15C00" stroke-width="1.6"/><circle cx="422.3" cy="108" r="14.5" fill="none" stroke="#A15C00" stroke-width="1.2"/><circle cx="422.3" cy="108" r="9" fill="#FFFFFF" stroke="#A15C00" stroke-width="1.4"/><path d="M422.3,102 L422.3,108 L427.3,110" fill="none" stroke="#A15C00" stroke-width="1.4"/><text x="379.7" y="112" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">14 kun</text>
+<circle cx="1172.3" cy="379" r="18" fill="#FDECEA" stroke="#B3261E" stroke-width="1.6"/><circle cx="1172.3" cy="379" r="14.5" fill="none" stroke="#B3261E" stroke-width="1.2"/><path d="M1165.3,386 L1169.3,372 L1174.3,380 L1179.3,372 L1175.3,386 L1170.3,378 Z" fill="none" stroke="#B3261E" stroke-width="1.3"/><text x="1172.3" y="411.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">Qadam xatosi</text>
+<rect x="635" y="198" width="107.1" height="15" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
+<text x="637" y="208.5" font-size="10.5" fill="#0F1522">Yo'q: qayta imzolash</text>
+<rect x="760" y="370" width="20.4" height="15" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
+<text x="762" y="380.5" font-size="10.5" fill="#0F1522">Ha</text>
+<rect x="455" y="743" width="106.5" height="15" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
+<text x="457" y="753.5" font-size="10.5" fill="#0F1522">Izoh bilan qaytarildi</text>
+<rect x="1060" y="659" width="57.1" height="15" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
+<text x="1062" y="669.5" font-size="10.5" fill="#0F1522">Imzolandi</text>
+<rect x="1961" y="691" width="20.4" height="15" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
+<text x="1963" y="701.5" font-size="10.5" fill="#0F1522">Ha</text>
+<rect x="1961" y="271" width="61.8" height="15" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
+<text x="1963" y="281.5" font-size="10.5" fill="#0F1522">Yo'q (Q-32)</text>
 <rect x="2085" y="57" width="93.7" height="15" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
 <text x="2087" y="67.5" font-size="10.5" fill="#0F1522">Yo'q: kamchiliklar</text>
-<rect x="2436" y="795" width="20.4" height="15" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
-<text x="2438" y="805.5" font-size="10.5" fill="#0F1522">Ha</text>
+<rect x="2436" y="835" width="20.4" height="15" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
+<text x="2438" y="845.5" font-size="10.5" fill="#0F1522">Ha</text>
 </svg>

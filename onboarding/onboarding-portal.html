@@ -302,7 +302,7 @@ ul.chk.x li::before{content:"✕";color:var(--red)}
 /* ==================================================================
    Garant Merchant — onboarding prototipi (backend yo'q).
    Qoidalar: docs/21 (akkaunt modeli), docs/22 (ariza shartlari),
-   docs/23 (end-to-end), docs/25 (qarorlar, v2.2 — Q-22…Q-31), bpmn/01–04.
+   docs/23 (end-to-end), docs/25 (qarorlar, v2.2 — Q-22…Q-31, v2.3 — Q-32), bpmn/01–04.
    Holat brauzerda saqlanadi.
    ================================================================== */
 
@@ -340,7 +340,7 @@ const isIndForm = (f) => f === 'YaTT' || f === 'O‘zini o‘zi band';
 const isInd = (a) => isIndForm(a.form);
 const DEMO_INNS = [
   ['306481725', 'hammasi joyida (Dilnoza Style)'],
-  ['301234567', 'Garant Bankda hisob yo‘q — hisob ariza bilan ochiladi'],
+  ['301234567', 'Garant Bankda hisob yo‘q — ariza va sandbox mumkin, live uchun hisob kerak'],
   ['305555555', 'YaTT'],
   ['415555555', 'o‘zini o‘zi band qilgan'],
   ['207777777', 'filial — bosh tashkilot nomidan ariza beriladi'],
@@ -396,14 +396,14 @@ const DECL_ALL = [
   ['truth', 'Taqdim etilgan ma’lumotlarning to‘liq va to‘g‘riligini tasdiqlayman'],
 ]; // PEP deklaratsiyasi olib tashlandi — PEP skriningni bank o'zi qiladi (Q-31)
 const declOf = (a) => DECL_ALL.filter(([k]) => k !== 'site' || (a.d.services && a.d.services.ecom));
-const NEW_ACC = 'NEW'; // "Garant Bankda yangi hisob ochish" (Q-24)
+const LATER_ACC = 'LATER'; // hisob hali yo'q — ariza, shartnoma, sandbox mumkin; live uchun kerak (Q-32)
 
 /* ---------------- holat ---------------- */
-const KEY = 'garant-onboarding-proto-v3';
+const KEY = 'garant-onboarding-proto-v4';
 const REVIEW_ST = ['DOC_REVIEW', 'SITE_REVIEW', 'KYB_CHECK', 'RISK_ASSESSMENT', 'UNDER_REVIEW', 'COMPLIANCE_REVIEW', 'ESCALATED', 'PENDING_APPROVAL'];
 const TERMINAL = ['COMPLETED', 'REJECTED', 'CANCELLED', 'EXPIRED'];
-function fresh() { return { v: 3, screen: 'landing', user: null, users: {}, reg: { step: 1, phone: '', attempts: 0, sentAt: 0 }, apps: [], cur: null, wiz: 1, seq: 145, demoMin: window.innerWidth < 1200, pre: null }; }
-let S = (function () { try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.v === 3) return s; } catch (e) { /* xotira yopiq */ } return fresh(); })();
+function fresh() { return { v: 4, screen: 'landing', user: null, users: {}, reg: { step: 1, phone: '', attempts: 0, sentAt: 0 }, apps: [], cur: null, wiz: 1, seq: 145, demoMin: window.innerWidth < 1200, pre: null }; }
+let S = (function () { try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.v === 4) return s; } catch (e) { /* xotira yopiq */ } return fresh(); })();
 let saveTimer = null;
 function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* prototip xotirasiz ham ishlaydi */ } }
 function saveSoon() { clearTimeout(saveTimer); saveTimer = setTimeout(save, 300); }
@@ -415,7 +415,7 @@ function level(a) {
   if (!a) return 'D1';
   const st = a.status;
   if (st === 'COMPLETED') return a.live ? 'D5' : 'D4';
-  if (['APPROVED', 'ACCOUNT_OPENING', 'CONTRACT_PENDING', 'CONTRACT_SIGNED', 'PROVISIONING'].includes(st)) return 'D3';
+  if (['APPROVED', 'CONTRACT_PENDING', 'CONTRACT_SIGNED', 'PROVISIONING'].includes(st)) return 'D3';
   if (st === 'SUBMITTED' || st === 'AUTO_VALIDATION' || st === 'NEEDS_INFO' || REVIEW_ST.includes(st)) return 'D2';
   return 'D1';
 }
@@ -430,10 +430,9 @@ function ext(a) {
   if (REVIEW_ST.includes(st)) return ['Ko‘rib chiqilmoqda', 'blue'];
   if (st === 'NEEDS_INFO') return ['Sizdan ma’lumot kerak', 'amber'];
   if (st === 'APPROVED') return ['Tasdiqlandi', 'green'];
-  if (st === 'ACCOUNT_OPENING') return ['Hisob ochilmoqda', 'blue'];
   if (st === 'CONTRACT_PENDING') return a.contract && a.contract.mSigned ? ['Bank imzosi kutilmoqda', 'blue'] : ['Shartnomani imzolang', 'amber'];
   if (st === 'CONTRACT_SIGNED' || st === 'PROVISIONING') return ['Kabinet tayyorlanmoqda', 'blue'];
-  if (st === 'COMPLETED') return a.live ? ['Faol (live)', 'green'] : ['Faollashtirildi', 'green'];
+  if (st === 'COMPLETED') return a.live ? ['Faol (live)', 'green'] : noAcc(a) ? ['Sandbox · hisob kutilmoqda', 'amber'] : ['Faollashtirildi', 'green'];
   if (st === 'REJECTED') return ['Rad etildi', 'red'];
   if (st === 'CANCELLED') return ['Bekor qilindi', 'gray'];
   if (st === 'EXPIRED') return ['Muddati o‘tdi', 'gray'];
@@ -444,7 +443,7 @@ function extStep(a) { // 1..6 progress (docs/22 §9)
   if (st === 'SUBMITTED') return 2;
   if (st === 'AUTO_VALIDATION') return 2;
   if (REVIEW_ST.includes(st) || st === 'NEEDS_INFO') return 3;
-  if (st === 'APPROVED' || st === 'ACCOUNT_OPENING' || st === 'CONTRACT_PENDING') return 4;
+  if (st === 'APPROVED' || st === 'CONTRACT_PENDING') return 4;
   if (st === 'CONTRACT_SIGNED' || st === 'PROVISIONING') return 5;
   if (st === 'COMPLETED') return 7;
   return 1;
@@ -462,7 +461,6 @@ const INTERNAL = {
   PENDING_APPROVAL: 'Rais o‘rinbosari qarori kutilmoqda (shartnomani ham u imzolaydi)',
   NEEDS_INFO: 'Qo‘shimcha ma’lumot kutilmoqda — SLA pauza',
   APPROVED: 'Tasdiqlandi — shartnoma generatsiyasi',
-  ACCOUNT_OPENING: 'Operatsiya: ABS da hisob-kitob hisobi ochilmoqda — ariza hujjatlari asosida (Q-24)',
   CONTRACT_PENDING: 'Shartnoma: imzolar kutilmoqda',
   CONTRACT_SIGNED: 'Ikkala imzo — provisioning boshlanadi',
   PROVISIONING: 'Provisioning (Saga)',
@@ -492,20 +490,22 @@ function newApp(inn, pre) {
     docs: {}, timeline: [], info: null, cycles: 0, contract: null, prev: pre.prev || null, rejection: null, keys: null, live: false,
   };
   if (!r) a.accountNo = '2020800090' + inn.slice(0, 7) + '001';
-  if (!a.accountFound) a.d.accountId = NEW_ACC;
+  if (!a.accountFound) a.d.accountId = LATER_ACC;
   push(a, 'Qoralama yaratildi', 'Siz');
   return a;
 }
 function push(a, text, who) { a.timeline.unshift({ t: Date.now(), text, who: who || 'Tizim' }); a.updatedAt = Date.now(); }
 function accountsOf(a) {
-  if (!a.accountFound) return [];
-  const r = REG[a.inn];
+  const r = REG[a.inn], op = S.opened && S.opened[a.inn];
   if (r && r.account) return [r.account];
-  return [{ no: a.accountNo || ('2020800090' + a.inn.slice(0, 7) + '001'), type: 'Asosiy', owner: a.d.legalName || a.orgName }];
+  if (op) return [{ no: op, type: 'Asosiy', owner: a.d.legalName || a.orgName }]; // mijoz keyin ochgan (demo)
+  if (!r) return [{ no: a.accountNo || ('2020800090' + a.inn.slice(0, 7) + '001'), type: 'Asosiy', owner: a.d.legalName || a.orgName }];
+  return [];
 }
-const hasAccount = (inn) => { const r = REG[inn]; return !r || !!r.account; };
-const wantsNewAcc = (a) => a.d.accountId === NEW_ACC;
-const settleAcc = (a) => wantsNewAcc(a) ? a.newAcc || '' : a.d.accountId; // tushum o'tadigan hisob
+const hasAccount = (inn) => { const r = REG[inn]; return !r || !!r.account || !!(S.opened && S.opened[inn]); };
+// Tushum o'tadigan hisob: tanlangan yoki keyin ochilib, ABS orqali avtomatik topilgan (Q-32)
+const settleAcc = (a) => a.d.accountId && a.d.accountId !== LATER_ACC ? a.d.accountId : (S.opened && S.opened[a.inn]) || '';
+const noAcc = (a) => !settleAcc(a);
 
 /* ---------------- hujjatlar matritsasi (docs/04, data/document-matrix.csv) ---------------- */
 function requiredDocs(a) {
@@ -532,7 +532,7 @@ function requiredDocs(a) {
         add('PASSPORT_FOUNDER', 'PASSPORT_FOUNDER:' + i, DOCS.PASSPORT_FOUNDER + ' — ' + o.name, 'Davlat registri bo‘yicha ta’sischi — jismoniy shaxs');
       }
     });
-    add('SEAL', null, null, 'Bank ro‘yxati (22.09)' + (wantsNewAcc(a) ? ' · hisob ochish uchun ham' : ''));
+    add('SEAL', null, null, 'Bank ro‘yxati (22.09)');
   }
   if (d.services && d.services.ecom) add('DOMAIN_CONTRACT', null, null, 'Sayt orqali to‘lov (BT §4.1)');
   if (d.licensed === 'yes') add('LICENSE', null, null, 'Litsenziyalanadigan faoliyat (BT §4.4)');
@@ -570,7 +570,7 @@ function validate(a, step) {
     if (!isInd(a) && d.hasAcc) req('accName'); // buxgalter ixtiyoriy — belgilansa ismi kerak (Q-27)
   }
   if (step === SX.ACC) {
-    if (!d.accountId) e.accountId = 'Hisobni tanlang yoki yangi hisob ochishni belgilang';
+    if (!d.accountId) e.accountId = 'Tushum hisobini tanlang';
   }
   if (step === SX.SVC) {
     if (!Object.values(d.services || {}).some(Boolean)) e.services = 'Kamida bitta xizmat (G11)';
@@ -601,7 +601,7 @@ function gate(a) {
   g('G02', true, 'INN to‘g‘ri' + (a.registry === 'MANUAL' ? ' (registrda topilmadi — qo‘lda tekshiriladi)' : ' va registrda mavjud'));
   g('G03', true, 'INN bo‘yicha faol merchant yo‘q');
   g('G04', true, 'INN bo‘yicha boshqa ochiq ariza yo‘q');
-  g('G05', !!d.accountId, !d.accountId ? 'Tushum hisobi tanlanmagan' : wantsNewAcc(a) ? 'Garant Bankda yangi hisob ochish so‘ralgan — ariza tasdiqlangach ochiladi' : 'Garant Bankdagi hisob tanlangan (ABS)', 'step:' + SX.ACC);
+  g('G05', !!d.accountId, !d.accountId ? 'Tushum hisobi tanlanmagan' : noAcc(a) ? 'Hisob hali yo‘q — ariza, shartnoma va sandbox mumkin (live uchun kerak)' : 'Garant Bankdagi hisob tanlangan (ABS)', 'step:' + SX.ACC);
   g('G06', !isProhibited(a.industry), 'Taqiqlangan faoliyat tanlanmagan');
   const bad = [SX.BIZ, SX.LEGAL, SX.MGMT].filter((n) => !stepOk(a, n));
   // G08 (ulushlar 100%) — olib tashlandi: ta'sischilar registrdan olinadi (Q-28)
@@ -624,6 +624,7 @@ function warnings(a) {
   if (d.dirPassExp && d.dirPassExp > todayISO() && new Date(d.dirPassExp) - Date.now() < 90 * DAY) W.push(['W02', 'Direktor pasporti ' + fmtDate(d.dirPassExp) + ' da tugaydi']);
   const r = REG[a.inn];
   if (r && d.legalName && d.legalName !== r.name) W.push(['W05', 'Yuridik nom registrdagidan farq qiladi: «' + r.name + '»']);
+  if (noAcc(a)) W.push(['W07', 'Garant Bankda hisob yo‘q — real to‘lovlarga (live) o‘tish uchun kerak bo‘ladi']);
   if (d.services.ecom && d.scan && d.scan.url === d.website && !d.scan.logos) W.push(['W06', 'Saytda UZCARD / HUMO logolari topilmadi — bank tekshiruvigacha qo‘shing']);
   return W;
 }
@@ -655,7 +656,7 @@ function renderTop() {
   const inCabinet = a && a.status === 'COMPLETED';
   $('#topbar').innerHTML =
     '<button class="brand" data-act="brand"><span class="logo">G</span><span>Garant Merchant<small>Onlayn ekvayring</small></span></button>' +
-    '<span class="proto-tag">Prototip · v2.2</span><span class="sp"></span>' +
+    '<span class="proto-tag">Prototip · v2.3</span><span class="sp"></span>' +
     '<span class="langs"><button class="on">UZ</button><button data-act="lang" data-v="RU">RU</button><button data-act="lang" data-v="EN">EN</button></span>' +
     (showLvl ? '<span class="lvl" title="Dostup darajasi — akkaunt × tashkilot (docs/21 §4.2)">Dostup <b>' + lv + '</b> <span class="nm">' + esc(LEVEL_NAME[lv]) + '</span></span>' : '') +
     (inCabinet ? '<a class="tb-btn fill" href="merchant-panel.html">Kabinet →</a>' : '') +
@@ -683,15 +684,15 @@ VIEWS.landing = () => `
       <div class="li"><b>1</b><span>Akkaunt yaratasiz — telefon raqam va SMS kod (3 daqiqa)</span></div>
       <div class="li"><b>2</b><span>Shu akkauntda ariza to‘ldirasiz — 7 qadam, qoralama 30 kun saqlanadi</span></div>
       <div class="li"><b>3</b><span>Bank tekshiradi — holat va savollar shu yerda ko‘rinadi</span></div>
-      <div class="li"><b>4</b><span>Tasdiqlangach: Garant Bankda hisobingiz bo‘lmasa — bank o‘sha hujjatlar bilan ochadi; shartnomani E-IMZO bilan imzolaysiz</span></div>
-      <div class="li"><b>5</b><span>O‘sha akkauntda kabinet ochiladi — yangi login kerak emas</span></div>
+      <div class="li"><b>4</b><span>Shartnomani E-IMZO bilan imzolaysiz — kabinet va sandbox (test) ochiladi</span></div>
+      <div class="li"><b>5</b><span>Real to‘lovlar — Garant Bankdagi hisobingizga. Hisob bo‘lmasa, uni parallel ochasiz; login o‘sha</span></div>
     </div>
   </section>
   <section class="steps3 mt24" id="talablar">
     <div class="card step3"><div class="n">✓</div><h3>Kim ariza bera oladi</h3>
-      <ul class="chk mt8"><li>MChJ, AJ, YaTT va o‘zini o‘zi band qilganlar</li><li>Direktor yoki tashkilot xodimi — ishonchnoma shart emas</li><li>Garant Bankda hisob bo‘lmasa — ariza bilan birga ochiladi</li><li>Taqiqlanmagan faoliyat turi</li></ul><p class="dim mt8">Filial alohida ariza bermaydi — bosh tashkilot nomidan beriladi. Xorijiy kompaniyalar qabul qilinmaydi.</p></div>
+      <ul class="chk mt8"><li>MChJ, AJ, YaTT va o‘zini o‘zi band qilganlar</li><li>Direktor yoki tashkilot xodimi — ishonchnoma shart emas</li><li>Garant Bankda hisob — real to‘lovlar uchun (ariza va sandbox — hisobsiz ham)</li><li>Taqiqlanmagan faoliyat turi</li></ul><p class="dim mt8">Filial alohida ariza bermaydi — bosh tashkilot nomidan beriladi. Xorijiy kompaniyalar qabul qilinmaydi.</p></div>
     <div class="card step3"><div class="n">📄</div><h3>Hujjatlarni tayyorlang</h3>
-      <ul class="chk mt8"><li>Guvohnoma, Ustav, Ta’sis shartnomasi</li><li>Protokol va buyruq (direktor tayinlash)</li><li>Direktor pasporti (bosh buxgalter bo‘lsa — uniki ham)</li><li>Imzo va muhr namunalari kartochkasi · domen shartnomasi</li></ul><p class="dim mt8">Hisob ochish uchun ham shu hujjatlar ishlatiladi — ikki marta topshirmaysiz.</p></div>
+      <ul class="chk mt8"><li>Guvohnoma, Ustav, Ta’sis shartnomasi</li><li>Protokol va buyruq (direktor tayinlash)</li><li>Direktor pasporti (bosh buxgalter bo‘lsa — uniki ham)</li><li>Imzo va muhr namunalari kartochkasi · domen shartnomasi</li></ul></div>
     <div class="card step3"><div class="n">🌐</div><h3>Sayt talablari</h3>
       <ul class="chk mt8"><li>HTTPS + amal qiluvchi SSL sertifikat</li><li>Bosh sahifada UZCARD va HUMO logolari</li><li>Oferta, maxfiylik siyosati, qaytarish shartlari</li><li>Kompaniya rekvizitlari va aloqa ma’lumotlari</li></ul><p class="dim mt8">Texnik ulanish (server IP, integratsiya usuli) — tasdiqlangandan keyin kabinetda, dasturchingiz bilan.</p></div>
   </section>
@@ -800,8 +801,9 @@ VIEWS.new = () => {
         <div class="dim">${org ? esc(org.form) + ' · direktor: ' + esc(org.dir) + ' · OKED ' + esc(org.oked) : 'Registrda topilmadi — ma’lumotlarni qo‘lda kiritasiz, operator tekshiradi'}</div></div>
         <span class="badge ${org ? 'green' : 'amber'}">${org ? 'Registrdan' : 'Qo‘lda'}</span></div></div>
         ${p.reapply ? `<div class="alert info mt12"><span class="ic">i</span><div>Oldingi ariza <b class="mono">${esc(p.reapply)}</b> rad etilgan, qayta ariza mumkin. Ma’lumotlar nusxalanadi.</div></div>` : ''}
-        ${p.noAccount ? `<div class="alert info mt12"><span class="ic">i</span><div><b>Garant Bankda hisobingiz yo‘q — muammo emas.</b> Arizani to‘ldiravering: hisob ochish uchun ham aynan shu hujjatlar kerak, ikki marta topshirmaysiz.
-          Bank arizani tekshirib tasdiqlagach, <b>hisob-kitob hisobini ochadi</b>, raqami shartnomaga yoziladi.<div class="dim mt8">Qaror Q-24 (oldingi Q-07 o‘rniga) · hisobni masofadan ochish tartibi — bankka savol (18 §39)</div></div></div>` : ''}
+        ${p.noAccount ? `<div class="alert warn mt12"><span class="ic">!</span><div><b>Garant Bankda hisobingiz yo‘q.</b> Arizani baribir boshlashingiz mumkin: to‘ldirish, bank tekshiruvi, shartnoma va sandbox (test) hisobsiz ham ishlaydi.
+          <b>Real to‘lov qabul qilish uchun Garant Bankda hisob kerak</b> — ochishni hozirdan boshlang, ariza bilan parallel ketadi. Hisob ochilgach tizim uni o‘zi topadi.
+          <div class="row mt8"><button class="btn sm primary" data-act="acc-howto">Hisob ochish</button></div><div class="dim mt8">Qaror Q-32 (Q-24 o‘rniga) · hisob ochish havolasi va tartibi — bank beradi (18 §39)</div></div></div>` : ''}
         <div class="grid2 mt16">
           <div class="field"><label>Sizning rolingiz</label>
             <div class="seg"><button class="${p.role === 'DIR' ? 'on' : ''}" data-act="pre-role" data-v="DIR">Direktor</button><button class="${p.role === 'EMP' ? 'on' : ''}" data-act="pre-role" data-v="EMP">Tashkilot xodimi</button></div>
@@ -891,13 +893,10 @@ function stepBody(a) {
     const opt = (val, title, sub) => `<label class="check ${d.accountId === val ? 'on' : ''}"><input type="radio" name="acc" data-bind="accountId" value="${val}" ${d.accountId === val ? 'checked' : ''}><span>${title}<span class="sub">${sub}</span></span></label>`;
     return `
     <div class="sec">Tushumlar qaysi hisobga o‘tadi? (BT §4.7)</div>
-    ${accs.length ? '<p class="muted">Garant Bankda sizning INN’ingiz bo‘yicha topilgan hisoblar (ABS):</p>' : `<div class="alert info" style="margin-bottom:12px"><span class="ic">i</span><div><b>Garant Bankda hisobingiz yo‘q — bank yangi hisob ochadi.</b>
-      Ochish uchun alohida ariza yoki bankka borish kerak emas [TAXMIN — 18 §39]: aynan shu arizadagi hujjatlar ishlatiladi.
-      Hisob <b>ariza tasdiqlangandan keyin</b> ochiladi (odatda 1 ish kuni), raqami shartnomaga yoziladi.</div></div>`}
-    <div class="docs">
-      ${accs.map((x) => opt(x.no, '<b class="mono">' + fmtAcc(x.no) + '</b> · ' + esc(x.type) + ' hisob · Garant Bank', 'Egasi: ' + esc(x.owner) + ' ✓ ABS tasdiqladi')).join('')}
-      ${opt(NEW_ACC, '<b>Garant Bankda yangi hisob-kitob hisobi ochish</b> (so‘m)', 'Ariza tasdiqlangach bank ochadi — shu ariza hujjatlari asosida')}
-    </div>
+    ${accs.length ? '<p class="muted">Garant Bankda sizning INN’ingiz bo‘yicha topilgan hisoblar (ABS):</p><div class="docs">' + accs.map((x) => opt(x.no, '<b class="mono">' + fmtAcc(x.no) + '</b> · ' + esc(x.type) + ' hisob · Garant Bank', 'Egasi: ' + esc(x.owner) + ' ✓ ABS tasdiqladi')).join('') + '</div>'
+      : `<div class="alert warn"><span class="ic">!</span><div><b>Garant Bankda hisobingiz hali yo‘q.</b> Arizani to‘ldirishda davom eting — bank tekshiruvi, shartnoma va sandbox (test) hisobsiz ham ishlaydi.
+      <b>Real to‘lov qabul qilish (live) uchun hisob kerak.</b> Ochishni hozirdan boshlang — kabinet tayyor bo‘lguncha ochilib qoladi, tizim uni INN bo‘yicha o‘zi topadi.
+      <div class="row mt8"><button class="btn sm primary" data-act="acc-howto">Hisob ochish</button><button class="btn sm" data-act="abs-recheck">ABS da qayta tekshirish</button></div></div></div>`}
     ${errs.accountId ? '<div class="err mt8" style="color:var(--red);font-size:12.5px">' + esc(errs.accountId) + '</div>' : ''}
     <p class="dim mt12">Hisob raqamini keyinchalik o‘zgartirish — faqat kabinetdagi «O‘zgartirish so‘rovi» + Compliance tasdig‘i orqali (xavfsizlik).</p>`;
   }
@@ -930,7 +929,6 @@ function stepBody(a) {
     const done = list.filter((x) => docOk(a, x.key)).length;
     return `<div class="row"><p class="muted sp" style="margin:0">Ro‘yxat tashkilot turi, davlat registridagi ta’sischilar va tanlangan xizmatlarga qarab avtomatik tuziladi. PDF, JPG, PNG · 10 MB gacha.</p>
       <b>${done} / ${list.length}</b><button class="btn sm" data-act="docs-all">Hammasini yuklash (demo)</button></div>
-      ${wantsNewAcc(a) ? '<div class="alert info mt12"><span class="ic">i</span><span>Garant Bankda hisob ochish uchun ham <b>shu hujjatlar</b> ishlatiladi — alohida topshirish shart emas (Q-24).</span></div>' : ''}
       <div class="docs mt12">${list.map((x) => docRow(a, x)).join('')}</div>
       ${errs.docs ? '<div class="err mt8" style="color:var(--red);font-size:12.5px">' + esc(errs.docs) + ' (G09)</div>' : ''}
       <input type="file" id="filePick" accept=".pdf,.jpg,.jpeg,.png,.heic" style="display:none">`;
@@ -984,7 +982,7 @@ VIEWS.review = () => {
       ${sec(SX.BIZ, 'Biznes', [['Yuridik nom', esc(d.legalName)], ['Brend', esc(d.brand)], ['INN · shakl', '<span class="mono">' + a.inn + '</span> · ' + esc(a.form)], ['Soha · MCC', esc(ind ? ind[1] + ' · ' + ind[2] : '')], ['Manzil', esc(d.legalAddr)], ['Aloqa', esc(d.phone) + ' · ' + esc(d.email)]])}
       ${sec(SX.LEGAL, 'Yuridik va soliq', [['Soliq maqomi', esc({ vat: 'QQS to‘lovchi', novat: 'QQS to‘lovchi emas', simple: 'Aylanmadan olinadigan soliq' }[d.taxStatus] || '')], ['Litsenziya', d.licensed === 'yes' ? esc(d.licNo) : d.licensed === 'no' ? 'Talab qilinmaydi' : ''], ['IKPU', '<span class="mono">' + esc(d.ikpu) + '</span>']])}
       ${sec(SX.MGMT, 'Rahbariyat', [[isInd(a) ? 'Egasi' : 'Direktor', esc(d.dirName)], ['Pasport', esc(d.dirPass) + (d.dirPassExp ? ' · ' + fmtDate(d.dirPassExp) + ' gacha' : '')], ...(isInd(a) ? [] : [['Bosh buxgalter', d.hasAcc ? esc(d.accName) : 'Yo‘q'], ['Ta’sischilar', a.founders.length ? a.founders.map((o) => esc(o.name) + ' — ' + o.share + '%').join('<br>') + ' <span class="dim">(registrdan)</span>' : '<span class="dim">registrdan olinadi</span>']])])}
-      ${sec(SX.ACC, 'Bank hisobi', [['Tushum hisobi', wantsNewAcc(a) ? 'Yangi hisob — ariza tasdiqlangach bank ochadi' : d.accountId ? '<span class="mono">' + fmtAcc(d.accountId) + '</span>' : '']])}
+      ${sec(SX.ACC, 'Bank hisobi', [['Tushum hisobi', noAcc(a) ? 'Hali yo‘q — live’ga o‘tishdan oldin kerak · <a href="#" data-act="acc-howto">Hisob ochish</a>' : '<span class="mono">' + fmtAcc(settleAcc(a)) + '</span>']])}
       ${sec(SX.SVC, 'Xizmatlar', [['Tanlangan', esc(svc)], ['Sayt', esc(d.website)]])}
       ${sec(SX.DOCS, 'Hujjatlar', [['Yuklangan', requiredDocs(a).filter((x) => docOk(a, x.key)).length + ' / ' + requiredDocs(a).length]])}
       ${sec(SX.DECL, 'Tasdiqlar', [['Belgilangan', declOf(a).filter(([k]) => d.decl[k]).length + ' / ' + declOf(a).length]])}
@@ -1001,9 +999,9 @@ VIEWS.review = () => {
 VIEWS.status = () => {
   const a = curApp(); if (!a) return VIEWS.home();
   const step = extStep(a), [lbl, col] = ext(a);
-  const names = ['Ariza yuborildi', 'Dastlabki tekshiruv', 'Ko‘rib chiqilmoqda', wantsNewAcc(a) ? 'Tasdiq, hisob ochish, shartnoma' : 'Tasdiqlash va shartnoma', 'Kabinet tayyorlanmoqda', 'Faollashtirildi'];
+  const names = ['Ariza yuborildi', 'Dastlabki tekshiruv', 'Ko‘rib chiqilmoqda', 'Tasdiqlash va shartnoma', 'Kabinet tayyorlanmoqda', 'Faollashtirildi'];
   const prog = '<div class="prog">' + names.map((t, i) => { const k = i + 1; const cls = k < step ? 'done' : k === step ? (a.status === 'NEEDS_INFO' || (a.status === 'CONTRACT_PENDING' && !a.contract.mSigned) ? 'warn' : 'cur') : ''; return '<div class="ps ' + cls + '" data-n="' + k + '">' + t + '</div>'; }).join('') + '</div>';
-  const accOpen = a.status === 'ACCOUNT_OPENING' ? '<div class="alert ok mt16"><span class="ic">✓</span><div class="sp"><b>Arizangiz tasdiqlandi!</b> Endi bank Garant Bankda hisob-kitob hisobingizni ochmoqda — arizadagi hujjatlar asosida, sizdan qo‘shimcha hech narsa kerak emas. Odatda 1 ish kuni. Hisob raqami shartnomaga yoziladi va shartnoma shu yerda paydo bo‘ladi.</div></div>' : '';
+  const accOpen = noAcc(a) && !TERMINAL.includes(a.status) ? '<div class="alert warn mt16"><span class="ic">!</span><div class="sp"><b>Garant Bankda hisobingiz hali yo‘q.</b> Ariza, shartnoma va sandbox hisobsiz davom etadi, lekin real to‘lovlar (live) uchun hisob kerak. Hozirdan ochsangiz, kabinet tayyor bo‘lguncha ochilib qoladi — tizim uni o‘zi topadi.</div><button class="btn" data-act="acc-howto">Hisob ochish</button></div>' : '';
   const eta = REVIEW_ST.includes(a.status) || a.status === 'AUTO_VALIDATION' || a.status === 'SUBMITTED' ? '<div class="alert info mt16"><span class="ic">i</span><span>Arizangiz ko‘rib chiqilmoqda. Taxminiy muddat: <b>2–3 ish kuni</b>. Savol tug‘ilsa, bank shu yerda va SMS orqali xabar beradi.</span></div>' : '';
   const info = a.status === 'NEEDS_INFO' ? `<div class="alert warn mt16"><span class="ic">!</span><div class="sp"><b>Bank qo‘shimcha ma’lumot so‘radi</b> — ${a.info.items.length} ta band. Javob muddati: <b>${fmtDate(a.info.deadline)}</b> (14 kun). ${a.info.cycle}-so‘rov / 3.</div><button class="btn primary" data-act="open-info" data-id="${a.id}">Javob berish</button></div>` : '';
   const contract = a.status === 'CONTRACT_PENDING' ? `<div class="alert ${a.contract.mSigned ? 'info' : 'ok'} mt16"><span class="ic">${a.contract.mSigned ? 'i' : '✓'}</span><div class="sp">${a.contract.mSigned ? 'Siz imzoladingiz. <b>Bank imzosi kutilmoqda</b> (Rais o‘rinbosari, odatda 1 ish kuni).' : '<b>Arizangiz tasdiqlandi!</b> Shartnomani 14 kun ichida imzolang.'}</div><button class="btn ${a.contract.mSigned ? '' : 'primary'}" data-act="open-contract" data-id="${a.id}">Shartnoma</button></div>` : '';
@@ -1021,7 +1019,7 @@ VIEWS.status = () => {
       <div>${keys}<div class="card"><h3>Hujjatlar</h3><div class="docs mt8">${requiredDocs(a).map((x) => { const s = a.docs[x.key] || {}; const st = s.status === 'VERIFIED' ? ['Tasdiqlangan', 'green'] : s.status === 'REPLACEMENT_REQUIRED' ? ['Qayta yuklash', 'amber'] : ['Tekshirilmoqda', 'blue']; return '<div class="row" style="font-size:13px"><span class="sp">' + esc(x.name) + '</span><span class="badge ' + st[1] + '">' + st[0] + '</span></div>'; }).join('')}</div></div></div></div>`;
 };
 function provHTML(a) {
-  const steps = ['Shartnoma ikkala tomondan imzolandi', 'Merchant yozuvi yaratildi (MER-000892) — ariza ma’lumotlari nusxalandi', 'Tarif, limitlar va settlement (T+1) o‘rnatildi', 'Uzcard / Humo protsessingda ro‘yxatga olindi (MID, TID)', 'ABS: hisob raqami bog‘landi', 'Sandbox kalitlari yaratildi (shartnomadan keyin — Q-16)', a.role === 'EMP' ? 'Rolingiz: ariza beruvchi → administrator; direktorga Owner taklifi' : 'Rolingiz: ariza beruvchi → kabinet egasi (Owner)'];
+  const steps = ['Shartnoma ikkala tomondan imzolandi', 'Merchant yozuvi yaratildi (MER-000892) — ariza ma’lumotlari nusxalandi', 'Tarif, limitlar va settlement (T+1) o‘rnatildi', 'Uzcard / Humo protsessingda ro‘yxatga olindi (MID, TID)', noAcc(a) ? 'ABS: hisob hali yo‘q — live’dan oldin bog‘lanadi (go-live sharti, Q-32)' : 'ABS: hisob raqami bog‘landi', 'Sandbox kalitlari yaratildi (shartnomadan keyin — Q-16)', a.role === 'EMP' ? 'Rolingiz: ariza beruvchi → administrator; direktorga Owner taklifi' : 'Rolingiz: ariza beruvchi → kabinet egasi (Owner)'];
   const k = a.provStep || 0;
   return steps.map((t, i) => '<div class="pi ' + (i < k ? 'done' : i === k ? 'run' : '') + '"><span class="dot"></span>' + esc(t) + '</div>').join('');
 }
@@ -1064,12 +1062,13 @@ VIEWS.contract = () => {
       <p><b>“Garant Bank” AJ</b> (keyingi o‘rinlarda — Bank), Rais o‘rinbosari nomidan, bir tomondan, va <b>${esc(d.legalName)}</b> (STIR ${a.inn}, keyingi o‘rinlarda — Merchant), direktor ${esc(d.dirName)} nomidan, ikkinchi tomondan, quyidagilar haqida shartnoma tuzdilar:</p>
       <p><b>1. Shartnoma predmeti.</b> Bank Merchantga to‘lov kartalari orqali tovar va xizmatlar uchun to‘lovlarni qabul qilish xizmatini ko‘rsatadi: ${esc(SERVICES.filter(([k]) => d.services[k]).map(([, l]) => l).join(', '))}.</p>
       <p><b>2. Komissiya.</b> UZCARD kartalari bo‘yicha — 1,20%, HUMO kartalari bo‘yicha — 1,30% (risk darajasi: past). Komissiya hisob-kitob vaqtida ushlab qolinadi.</p>
-      <p><b>3. Hisob-kitob.</b> Tushumlar keyingi ish kuni (T+1) Merchantning Garant Bankdagi ${fmtAcc(settleAcc(a))} hisob raqamiga o‘tkaziladi${wantsNewAcc(a) ? ' (hisob shu ariza asosida ' + fmtDate(a.newAccAt || Date.now()) + ' da ochilgan)' : ''}.</p>
+      <p><b>3. Hisob-kitob.</b> Tushumlar keyingi ish kuni (T+1) Merchantning Garant Bankdagi ${noAcc(a) ? 'hisob-kitob hisobiga o‘tkaziladi. Hisob rekvizitlari hisob ochilgach tizimda qayd etiladi (1-ilova) [TAXMIN — 18 §46]; hisob bog‘lanmaguncha real to‘lov qabul qilish yoqilmaydi, faqat test (sandbox) rejimi ishlaydi' : fmtAcc(settleAcc(a)) + ' hisob raqamiga o‘tkaziladi'}.</p>
       <p><b>4. Limitlar.</b> Boshlang‘ich limitlar risk darajasi bo‘yicha bank tomonidan belgilanadi: bitta to‘lov — 20 000 000 so‘mgacha, kunlik aylanma — 200 000 000 so‘mgacha [TAXMIN, 18 §43]. Oshirish — kabinet orqali so‘rov bilan.</p>
       <p><b>5. Merchant majburiyatlari.</b> Saytda bankning talablariga (BT §4) rioya qilish, karta rekvizitlarini saqlamaslik, qaytarish so‘rovlarini o‘z vaqtida ko‘rib chiqish.</p>
       <p><b>6. Muddat.</b> Shartnoma ikkala tomon imzolagan kundan kuchga kiradi va bir yil amal qiladi, avtomatik uzaytiriladi.</p>
     </div>
     <div><div class="card"><h3>Imzolar</h3><p class="dim">Tartib: avval Merchant, keyin Bank (bank javobi, 22.09)</p>
+      ${noAcc(a) ? '<div class="alert warn mt12"><span class="ic">!</span><span>Hisobingiz hali yo‘q — shartnomani imzolash va sandbox mumkin. Real to‘lovlar uchun hisob kerak. <a href="#" data-act="acc-howto">Hisob ochish →</a></span></div>' : ''}
       <div class="sig mt12" style="grid-template-columns:1fr">
         <div class="s ${c.mSigned ? 'ok' : ''}"><div class="t">1. Merchant — ${esc(d.dirName)}</div>${c.mSigned ? 'E-IMZO bilan imzolandi · ' + fmtDT(c.mSigned) + '<br><span class="dim">Sertifikat: STIR ' + a.inn + ', PINFL ' + esc(String(d.dirPinfl).slice(0, 3)) + '•••••••' + esc(String(d.dirPinfl).slice(-2)) + '</span>' : '<span class="dim">Imzo kutilmoqda</span>'}</div>
         <div class="s ${c.bSigned ? 'ok' : ''}"><div class="t">2. Bank — Rais o‘rinbosari (arizani tasdiqlagan rahbar)</div>${c.bSigned ? 'Imzolandi · ' + fmtDT(c.bSigned) : '<span class="dim">' + (c.mSigned ? 'Navbatda — odatda 1 ish kuni' : 'Sizdan keyin') + '</span>'}</div>
@@ -1083,19 +1082,19 @@ VIEWS.contract = () => {
 VIEWS.done = () => {
   const a = curApp(); if (!a) return VIEWS.home();
   const g = a.golive || {};
-  const items = [['tech', 'Dasturchi kabinetda server IP manzili, integratsiya usuli va callback URL ni kiritdi (arizadan ko‘chirildi — Q-30)'], ['test', 'Sandbox’da muvaffaqiyatli test to‘lov'], ['refund', 'Test to‘lovni qaytarish (refund)'], ['webhook', 'Webhook (notify_url) 200 qaytaradi'], ['mfa', 'Kabinetda ikki bosqichli himoya (MFA) yoqilgan']];
-  return `<div class="card" style="text-align:center;padding:36px 22px">
+  const items = [['acc', 'Garant Bankda hisob-kitob hisobi bog‘langan (ABS) — hisob yo‘q bo‘lsa, bankning o‘z xizmati orqali ochiladi (Q-32)'], ['tech', 'Dasturchi kabinetda server IP manzili, integratsiya usuli va callback URL ni kiritdi (arizadan ko‘chirildi — Q-30)'], ['test', 'Sandbox’da muvaffaqiyatli test to‘lov'], ['refund', 'Test to‘lovni qaytarish (refund)'], ['webhook', 'Webhook (notify_url) 200 qaytaradi'], ['mfa', 'Kabinetda ikki bosqichli himoya (MFA) yoqilgan']];
+  return `${noAcc(a) ? '<div class="alert warn" style="margin-bottom:16px"><span class="ic">!</span><div class="sp"><b>Real to‘lovlarni qabul qilish uchun Garant Bankda hisob kerak.</b> Sandbox’da integratsiya va test to‘lovlarni hozirdan qilaverishingiz mumkin. Hisob ochilgach tizim uni o‘zi topadi va go-live ochiladi.</div><button class="btn primary" data-act="acc-howto">Hisob ochish</button><button class="btn" data-act="abs-recheck">Qayta tekshirish</button></div>' : ''}<div class="card" style="text-align:center;padding:36px 22px">
       <div class="empty" style="padding:0"><div class="big" style="background:var(--green-bg);color:var(--green)">✓</div></div>
       <h1>Kabinetingiz tayyor!</h1>
       <p class="muted" style="max-width:600px;margin:6px auto 0"><b>${esc(a.d.legalName)}</b> Garant merchanti sifatida ro‘yxatga olindi. Yangi login yoki parol kerak emas — kabinetga <b>shu akkaunt</b> bilan kirasiz. Sizning rolingiz: <b>${a.role === 'EMP' ? 'Administrator' : 'Owner'}</b>.${a.role === 'EMP' ? ' Direktorga kabinet egasi (Owner) sifatida taklif SMS yuborildi.' : ''}</p>
       <div class="row mt20" style="justify-content:center"><a class="btn primary lg" href="merchant-panel.html">Kabinetga o‘tish →</a><button class="btn lg" data-act="go" data-to="home">Arizalarim</button></div></div>
     <div class="cols mt16"><div class="card"><div class="row"><h3 class="sp">Go-live cheklist (D4 → D5)</h3><span class="badge ${a.live ? 'green' : 'purple'}">${a.live ? 'Live' : 'Sandbox'}</span></div>
         <p class="dim">Real to‘lovlarni qabul qilish uchun. Tekshiruvlar avtomatik, oxirida Operatsiya xodimi tasdiqlaydi (docs/09 §3.2).</p>
-        <div class="prov mt8">${items.map(([k, t]) => '<div class="pi ' + (g[k] || a.live ? 'done' : '') + '"><span class="dot"></span>' + t + '</div>').join('')}
+        <div class="prov mt8">${items.map(([k, t]) => '<div class="pi ' + ((k === 'acc' ? !noAcc(a) : g[k] || a.live) ? 'done' : '') + '"><span class="dot"></span>' + t + '</div>').join('')}
         <div class="pi ${a.live ? 'done' : ''}"><span class="dot"></span>Operatsiya xodimi tasdig‘i → production kalitlar</div></div></div>
       <div>${a.keys ? '<div class="card"><div class="row"><h3 class="sp">Sandbox kalitlari</h3><span class="badge purple">Test muhit</span></div><p class="dim">Shartnomadan keyin, kabinet bilan birga berildi (Q-16). Real pul yo‘q.</p><div class="keys mt8"><span>merchant_id:</span> ' + a.keys.mid + '<br><span>secret_key:</span> ' + a.keys.sk.slice(0, 10) + '••••••••••••' + a.keys.sk.slice(-4) + '<br><span>api_url:</span> https://sandbox.pay.garantbank.uz/v1</div></div>' : ''}<div class="card"><h3>Merchant ma’lumotlari</h3><div class="kv mt8" style="grid-template-columns:130px 1fr;font-size:13px">
         <div class="k">Merchant ID</div><div class="mono">MER-000892</div><div class="k">MID / TID</div><div class="mono">90510047 / 10047001</div>
-        <div class="k">Shartnoma</div><div class="mono">${a.contract ? a.contract.no : ''}</div><div class="k">Tushum hisobi</div><div class="mono">${fmtAcc(settleAcc(a))}</div><div class="k">Manba ariza</div><div class="mono">${a.id}</div>
+        <div class="k">Shartnoma</div><div class="mono">${a.contract ? a.contract.no : ''}</div><div class="k">Tushum hisobi</div><div class="mono">${noAcc(a) ? '— hali yo‘q' : fmtAcc(settleAcc(a))}</div><div class="k">Manba ariza</div><div class="mono">${a.id}</div>
         <div class="k">Dostup</div><div>${level(a)} · ${LEVEL_NAME[level(a)]}</div></div></div></div></div>`;
 };
 
@@ -1122,7 +1121,8 @@ function renderDemo() {
   let body = '<div class="dim">Backend yo‘q. Bu panel bank xodimlarining Admin paneldagi harakatlarini va vaqt o‘tishini simulyatsiya qiladi.</div>';
   if (!S.user) body += '<div class="lbl">Tez boshlash</div>' + B('demo-login', 'Demo akkaunt bilan kirish (email tasdiqlangan)', true);
   else if (!a || ['home', 'new'].includes(S.screen)) {
-    body += '<div class="lbl">Maslahat</div><div class="dim">«Yangi ariza» → INN <span class="mono">306481725</span> (Dilnoza Style) — asosiy ssenariy. <span class="mono">301234567</span> — hisobi yo‘q mijoz: hisob ariza bilan ochiladi.</div>';
+    body += '<div class="lbl">Maslahat</div><div class="dim">«Yangi ariza» → INN <span class="mono">306481725</span> (Dilnoza Style) — asosiy ssenariy. <span class="mono">301234567</span> — hisobi yo‘q mijoz: ariza va sandbox mumkin, live uchun hisob kerak.</div>';
+    if (S.screen === 'new' && S.pre && S.pre.noAccount && S.pre.phase === 'result') body += '<div class="lbl">Harakatlar</div>' + B('demo-open-acc', 'ABS: mijoz Garant Bankda hisob ochdi (bankning o‘z xizmati)');
   }
   if (S.user && a && !['home', 'new'].includes(S.screen)) {
     const [lbl] = ext(a);
@@ -1130,7 +1130,7 @@ function renderDemo() {
     const st = a.status;
     if (st === 'DRAFT') {
       const rd = requiredDocs(a);
-      body += '<div class="int">Lid kartochkasi: ' + STEPS.filter((t, i) => stepOk(a, i + 1)).length + '/' + NSTEP + ' qadam · hujjatlar ' + rd.filter((x) => docOk(a, x.key)).length + '/' + rd.length + ' · hisob: ' + (wantsNewAcc(a) ? 'yangi ochiladi' : a.d.accountId ? 'mavjud' : '—') + '</div>';
+      body += '<div class="int">Lid kartochkasi: ' + STEPS.filter((t, i) => stepOk(a, i + 1)).length + '/' + NSTEP + ' qadam · hujjatlar ' + rd.filter((x) => docOk(a, x.key)).length + '/' + rd.length + ' · hisob: ' + (!a.d.accountId ? '—' : noAcc(a) ? 'yo‘q (live uchun kerak)' : 'mavjud') + '</div>';
       body += B('demo-fill', 'Formani namunaviy ma’lumot bilan to‘ldirish');
       if (S.user && !S.user.emailVerified) body += B('verify-email', 'Email havolasini bosish');
       body += B('demo-expire', '30 kun o‘tdi (faolsizlik → EXPIRED)');
@@ -1142,7 +1142,7 @@ function renderDemo() {
     if (st === 'COMPLIANCE_REVIEW') body += B('demo-next', 'Compliance: ijobiy → Rais o‘rinbosari', true) + B('demo-info', 'Compliance: bartaraf etsa bo‘ladi (tavsif)') + B('demo-reject-final', 'Compliance: yakuniy rad (sanksiya)');
     if (st === 'PENDING_APPROVAL') body += B('demo-approve', 'Rais o‘rinbosari: tasdiqlash', true) + B('demo-info', 'Rais o‘rinbosari: kamchilik bilan qaytarish') + B('demo-reject', 'Rais o‘rinbosari: rad etish (qayta ariza mumkin)');
     if (st === 'NEEDS_INFO') body += B('demo-info-expire', '14 kun o‘tdi (javobsiz → EXPIRED)');
-    if (st === 'ACCOUNT_OPENING') body += B('demo-acc-opened', 'Operatsiya: ABS da hisob ochildi → shartnoma', true);
+    if (noAcc(a) && !['REJECTED', 'CANCELLED', 'EXPIRED'].includes(st) && !a.live) body += B('demo-open-acc', 'ABS: mijoz Garant Bankda hisob ochdi (bankning o‘z xizmati)');
     if (st === 'CONTRACT_PENDING') body += a.contract.mSigned ? B('demo-bank-sign', 'Rais o‘rinbosari E-IMZO bilan imzoladi', true) : '<div class="dim">Mijoz imzosi kutilmoqda → «Shartnoma» → «E-IMZO bilan imzolash»</div>' + B('demo-expire', '14 kun o‘tdi (imzolanmadi → EXPIRED)');
     if (st === 'COMPLETED' && !a.live) body += B('demo-golive', 'Test to‘lov, refund, webhook ✓ → Operatsiya: go-live', true);
     if (REVIEW_ST.includes(st) || st === 'SUBMITTED' || st === 'AUTO_VALIDATION') body += '<div class="dim">Tez yo‘l:</div>' + B('demo-fast', 'Tasdiqlashgacha o‘tkazib yuborish ⏩');
@@ -1236,9 +1236,9 @@ ACT['pre-check'] = () => {
     else if (r && !ALLOWED_FORMS.includes(r.form)) { plan.push(['Tashkiliy shakl', 'no', r.form + ' — qabul qilinmaydi (Q-06)']); outcome = 'FORM'; }
     else {
       plan.push(['Tashkiliy shakl', 'ok', r ? r.form : 'qo‘lda tekshiriladi']);
-      // Q-24: hisob yo'q bo'lsa ham ariza boshlanadi — hisob ariza tasdiqlangach ochiladi
+      // Q-32: hisob yo'q bo'lsa ham ariza boshlanadi; hisob faqat live uchun shart
       if (hasAccount(inn)) plan.push(['Garant Bank hisobi (ABS)', 'ok', 'faol hisob topildi']);
-      else plan.push(['Garant Bank hisobi (ABS)', 'w', 'topilmadi — hisob ariza bilan birga ochiladi']);
+      else plan.push(['Garant Bank hisobi (ABS)', 'w', 'topilmadi — ariza davom etadi; real to‘lov uchun kerak']);
     }
   }
   S.pre = { inn, phase: 'checking', checks: [], outcome, appId: own ? own.id : null, reapply: rej ? rej.id : null, role: 'DIR', noAccount: outcome === 'OK' && !hasAccount(inn), industry: r ? r.industry : '' };
@@ -1359,7 +1359,7 @@ ACT['sign-confirm'] = () => {
   closeModal(); toast('Imzolandi ✓'); go('contract');
 };
 ACT.decline = () => { if (!confirm('Shartnomadan voz kechasizmi? Ariza bekor qilinadi.')) return; const a = curApp(); a.status = 'CANCELLED'; push(a, 'Mijoz shartnomadan voz kechdi', 'Siz'); go('home'); };
-ACT.reapply = () => { const a = curApp(); S.pre = { inn: a.inn, phase: 'result', checks: [{ t: 'Oldingi ariza rad etilgan — qayta ariza mumkin', s: 'ok' }], outcome: 'OK', noAccount: !a.accountFound, reapply: a.id, role: a.role, industry: a.industry }; go('new'); };
+ACT.reapply = () => { const a = curApp(); S.pre = { inn: a.inn, phase: 'result', checks: [{ t: 'Oldingi ariza rad etilgan — qayta ariza mumkin', s: 'ok' }], outcome: 'OK', noAccount: !hasAccount(a.inn), reapply: a.id, role: a.role, industry: a.industry }; go('new'); };
 
 /* ---------------- demo: bank tomoni ---------------- */
 const FLOW = ['SUBMITTED', 'AUTO_VALIDATION', 'DOC_REVIEW', 'SITE_REVIEW', 'KYB_CHECK', 'COMPLIANCE_REVIEW', 'PENDING_APPROVAL'];
@@ -1397,16 +1397,34 @@ function toContract(a) {
 ACT['demo-approve'] = () => {
   const a = curApp();
   a.status = 'APPROVED'; push(a, 'Ariza tasdiqlandi', 'Bank');
-  if (wantsNewAcc(a)) { a.status = 'ACCOUNT_OPENING'; push(a, 'Garant Bankda hisob-kitob hisobi ochilmoqda — ariza hujjatlari asosida', 'Bank'); }
-  else toContract(a);
+  toContract(a);
   render();
 };
-// Q-24: hisob tasdiqdan keyin, shartnomadan oldin ochiladi (Operatsiya, ABS)
-ACT['demo-acc-opened'] = () => {
-  const a = curApp();
-  a.newAcc = '20208000900' + a.inn.slice(0, 6) + '011'; a.newAccAt = Date.now(); a.accountFound = true;
-  push(a, 'Hisob ochildi: ' + fmtAcc(a.newAcc) + ' — tushumlar shu hisobga o‘tadi', 'Bank');
-  toContract(a); render();
+/* Hisob (Q-32): hisob ochish — bankning o'z xizmati, ariza bilan parallel. Tizim ABS da INN bo'yicha o'zi topadi */
+ACT['acc-howto'] = () => modal(`<h2>Garant Bankda hisob ochish</h2><p class="muted">Hisob ochish — bankning alohida xizmati. Ekvayring arizangiz bilan <b>parallel</b> ketadi: kutib turish shart emas.</p>
+  <ul class="chk mt12"><li>Onlayn: Garant Bank ilovasi yoki internet-banki</li><li>Yoki istalgan Garant Bank filialida</li><li>Hisob ochilgach bu yerga qaytib kiritish shart emas — tizim hisobni INN bo‘yicha o‘zi topadi (ABS)</li><li>Hisob bog‘lanmaguncha: ariza, shartnoma va sandbox ishlaydi; real to‘lov — yo‘q</li></ul>
+  <p class="dim mt12">Prototip: aniq havola va tartibni bank beradi (18 §39). Simulyatsiya — demo paneldagi «ABS: mijoz hisob ochdi» tugmasi.</p>
+  <div class="foot"><button class="btn" data-act="modal-close">Yopish</button><button class="btn primary" data-act="toast" data-msg="Bankning hisob ochish sahifasi ochiladi — havolani bank beradi (prototip)">Hisob ochish sahifasi ↗</button></div>`);
+function bindAcc(a) {
+  if (a.accBound) return;
+  a.accBound = true; a.accountFound = true;
+  if (a.status === 'DRAFT') a.d.accountId = S.opened[a.inn];
+  push(a, 'ABS: Garant Bankda hisob topildi va bog‘landi — ' + fmtAcc(S.opened[a.inn]), 'Tizim');
+}
+ACT['abs-recheck'] = () => {
+  const a = S.screen === 'new' ? null : curApp();
+  const inn = a ? a.inn : S.pre && S.pre.inn;
+  if (!inn || !(S.opened && S.opened[inn])) { toast('ABS: hisob hali topilmadi'); return; }
+  if (a) bindAcc(a);
+  toast('ABS: hisob topildi — ' + fmtAcc(S.opened[inn])); render();
+};
+ACT['demo-open-acc'] = () => {
+  const a = S.screen === 'new' ? null : curApp();
+  const inn = a ? a.inn : S.pre.inn;
+  S.opened = S.opened || {}; S.opened[inn] = '20208000900' + inn.slice(0, 6) + '011';
+  S.apps.filter((x) => x.inn === inn && !['REJECTED', 'CANCELLED', 'EXPIRED'].includes(x.status)).forEach(bindAcc);
+  if (!a && S.pre) { S.pre.noAccount = false; const ch = S.pre.checks.find((x) => /ABS/.test(x.t)); if (ch) Object.assign(ch, { s: 'ok', note: 'faol hisob topildi' }); }
+  toast('ABS: mijoz hisob ochdi — tizim uni avtomatik topdi'); render();
 };
 ACT['demo-bank-sign'] = () => {
   const a = curApp();
@@ -1422,7 +1440,7 @@ ACT['demo-bank-sign'] = () => {
     } else if (curApp() === a && $('#prov')) { $('#prov').innerHTML = provHTML(a); save(); }
   }, 650);
 };
-ACT['demo-golive'] = () => { const a = curApp(); a.golive = { test: 1, refund: 1, webhook: 1, mfa: 1 }; a.live = true; push(a, 'Go-live tasdiqlandi — production kalitlar berildi', 'Bank'); toast('Merchant ACTIVE · dostup D5'); render(); };
+ACT['demo-golive'] = () => { const a = curApp(); if (noAcc(a)) { toast('Go-live bloklangan: Garant Bankda hisob yo‘q (Q-32)'); return; } a.golive = { test: 1, refund: 1, webhook: 1, mfa: 1 }; a.live = true; push(a, 'Go-live tasdiqlandi — production kalitlar berildi', 'Bank'); toast('Merchant ACTIVE · dostup D5'); render(); };
 ACT['demo-expire'] = () => { const a = curApp(); a.status = 'EXPIRED'; push(a, a.contract ? 'Shartnoma 14 kun ichida imzolanmadi — muddat o‘tdi' : 'Qoralama 30 kun faolsiz qoldi — muddat o‘tdi', 'Tizim'); go('home'); };
 ACT['demo-fill'] = () => {
   const a = curApp(), r = REG[a.inn] || {}, d = a.d;
@@ -1435,7 +1453,7 @@ ACT['demo-fill'] = () => {
     services: { ecom: true, links: true, fiscal: true }, website: 'https://' + String(r.brand || 'kompaniya').toLowerCase().replace(/[^a-z]/g, '') + '.uz',
   });
   if (!isInd(a)) Object.assign(d, { hasAcc: true, accName: 'Rahimova Malika Anvarovna' });
-  if (!d.accountId) d.accountId = a.accountFound ? accountsOf(a)[0].no : NEW_ACC;
+  if (!d.accountId) d.accountId = accountsOf(a).length ? accountsOf(a)[0].no : LATER_ACC;
   d.scan = { url: d.website, https: true, ssl: fmtDate(addDays(142)), logos: false, at: Date.now() };
   [SX.BIZ, SX.LEGAL, SX.MGMT, SX.ACC, SX.SVC].forEach((k) => { a.show[k] = true; });
   touch(a); toast('1–5-qadamlar to‘ldirildi. Hujjatlar va tasdiqlar — o‘zingiz'); go('wizard', { wiz: SX.DOCS });
