@@ -1,19 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="2668" height="640" viewBox="0 0 2668 640" font-family="Segoe UI, Arial, Helvetica, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="2518" height="640" viewBox="0 0 2518 640" font-family="Segoe UI, Arial, Helvetica, sans-serif">
 <title>02 · Ariza yaratish va yuborish</title>
 <defs><marker id="arr" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3A4254"/></marker></defs>
-<rect x="0" y="0" width="2668" height="640" fill="#FFFFFF"/>
+<rect x="0" y="0" width="2518" height="640" fill="#FFFFFF"/>
 <text x="10" y="24" font-size="16" font-weight="700" fill="#0F1522">02 · Ariza yaratish va yuborish</text>
-<text x="10" y="40" font-size="11" fill="#4B5468">INN → dublikat → registr + ABS → shakl (filial — bosh tashkilotga, xorijiy — yo'q) → qoralama (hisob yo'q — «Hisob ochish» havolasi, Q-32) → 7 qadam → hujjatlar → G01–G15 → SUBMITTED.</text>
-<rect x="10" y="46" width="2646" height="580" fill="#FFFFFF" stroke="#0F1522" stroke-width="1.5"/>
+<text x="10" y="40" font-size="11" fill="#4B5468">INN → dublikat → registr + ABS → shakl (filial — bosh tashkilotga, xorijiy — yo'q) → qoralama (hisob yo'q — «Hisob ochish» havolasi, Q-32) → 6 qadam → G01–G15 → SUBMITTED. Hujjatlar mijozdan so'ralmaydi — davlat tizimlaridan (Q-34).</text>
+<rect x="10" y="46" width="2496" height="580" fill="#FFFFFF" stroke="#0F1522" stroke-width="1.5"/>
 <rect x="10" y="46" width="30" height="580" fill="#EEF0F5" stroke="#0F1522" stroke-width="1.5"/>
 <g transform="translate(25,336) rotate(-90)"><text x="0" y="4" text-anchor="middle" font-size="12" font-weight="700" fill="#0F1522">Garant Merchant portali · Application servis</text></g>
-<rect x="40" y="46" width="2616" height="210" fill="#F6F8FF" stroke="#C9CFDB"/>
+<rect x="40" y="46" width="2466" height="210" fill="#F6F8FF" stroke="#C9CFDB"/>
 <rect x="40" y="46" width="34" height="210" fill="#FFFFFF" stroke="#C9CFDB"/>
 <g transform="translate(57,151) rotate(-90)"><text x="0" y="3.5" text-anchor="middle" font-size="10.5" font-weight="600" fill="#4B5468">Ariza beruvchi</text></g>
-<rect x="40" y="256" width="2616" height="200" fill="#F8F9FB" stroke="#C9CFDB"/>
+<rect x="40" y="256" width="2466" height="200" fill="#F8F9FB" stroke="#C9CFDB"/>
 <rect x="40" y="256" width="34" height="200" fill="#FFFFFF" stroke="#C9CFDB"/>
 <g transform="translate(57,356) rotate(-90)"><text x="0" y="3.5" text-anchor="middle" font-size="10.5" font-weight="600" fill="#4B5468">Platforma: Application servis</text></g>
-<rect x="40" y="456" width="2616" height="170" fill="#FFFBF3" stroke="#C9CFDB"/>
+<rect x="40" y="456" width="2466" height="170" fill="#FFFBF3" stroke="#C9CFDB"/>
 <rect x="40" y="456" width="34" height="170" fill="#FFFFFF" stroke="#C9CFDB"/>
 <g transform="translate(57,541) rotate(-90)"><text x="0" y="-2.7" text-anchor="middle" font-size="10.5" font-weight="600" fill="#4B5468">Tashqi: davlat registri, ABS /</text><text x="0" y="9.8" text-anchor="middle" font-size="10.5" font-weight="600" fill="#4B5468">iABS</text></g>
 <path d="M175,151 L245,151" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
@@ -32,13 +32,12 @@
 <path d="M1507,331 L1507,169" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
 <path d="M1532,356 L1563.5,356 L1563.5,151 L1595,151" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
 <path d="M1622.3,207 L1622,338" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
-<path d="M1719,151 L1745,151" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
-<path d="M1869,151 L1882,151 L1882,356 L1895,356" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
-<path d="M2019,356 L2082,356" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
-<path d="M2107,331 L2107,219 L1693,219 L1693,189" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
-<path d="M2132,356 L2163.5,356 L2163.5,151 L2195,151" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
-<path d="M2319,151 L2332,151 L2332,356 L2345,356" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
-<path d="M2469,356 L2539,356" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M1719,151 L1732,151 L1732,356 L1745,356" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M1869,356 L1932,356" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M1957,331 L1957,219 L1693,219 L1693,189" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M1982,356 L2013.5,356 L2013.5,151 L2045,151" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M2169,151 L2182,151 L2182,356 L2195,356" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M2319,356 L2389,356" fill="none" stroke="#3A4254" stroke-width="1.3" marker-end="url(#arr)"/>
 <path d="M307,75 L307,113" stroke="#8A93A3" stroke-dasharray="2,3" fill="none"/>
 <rect x="232" y="52" width="150" height="23" fill="#FFFFFF" fill-opacity="0.9" stroke="none"/>
 <path d="M244,52 L232,52 L232,75 L244,75" fill="none" stroke="#8A93A3" stroke-width="1.2"/>
@@ -53,21 +52,21 @@
 <path d="M1131.5,52 L1119.5,52 L1119.5,75 L1131.5,75" fill="none" stroke="#8A93A3" stroke-width="1.2"/>
 <text x="1126.5" y="67" font-size="10.5" fill="#4B5468" font-style="italic">Ishonchnoma kerak emas (Q-25)</text>
 <path d="M1657,88 L1657,113" stroke="#8A93A3" stroke-dasharray="2,3" fill="none"/>
-<rect x="1574.5" y="52" width="165" height="36" fill="#FFFFFF" fill-opacity="0.9" stroke="none"/>
-<path d="M1586.5,52 L1574.5,52 L1574.5,88 L1586.5,88" fill="none" stroke="#8A93A3" stroke-width="1.2"/>
-<text x="1581.5" y="67" font-size="10.5" fill="#4B5468" font-style="italic">7 qadam: 03-hujjat. required =</text>
-<text x="1581.5" y="80" font-size="10.5" fill="#4B5468" font-style="italic">visible</text>
-<path d="M2257,88 L2257,113" stroke="#8A93A3" stroke-dasharray="2,3" fill="none"/>
-<rect x="2169.5" y="52" width="175" height="36" fill="#FFFFFF" fill-opacity="0.9" stroke="none"/>
-<path d="M2181.5,52 L2169.5,52 L2169.5,88 L2181.5,88" fill="none" stroke="#8A93A3" stroke-width="1.2"/>
-<text x="2176.5" y="67" font-size="10.5" fill="#4B5468" font-style="italic">Yuborishdan oldin: yig'ma</text>
-<text x="2176.5" y="80" font-size="10.5" fill="#4B5468" font-style="italic">ko'rinish + tahrirlash havolalari</text>
-<path d="M2407,401 L2407,394" stroke="#8A93A3" stroke-dasharray="2,3" fill="none"/>
-<rect x="2314.5" y="401" width="185" height="49" fill="#FFFFFF" fill-opacity="0.9" stroke="none"/>
-<path d="M2326.5,401 L2314.5,401 L2314.5,450 L2326.5,450" fill="none" stroke="#8A93A3" stroke-width="1.2"/>
-<text x="2321.5" y="416" font-size="10.5" fill="#4B5468" font-style="italic">Keyin tahrir yopiq; faqat</text>
-<text x="2321.5" y="429" font-size="10.5" fill="#4B5468" font-style="italic">NEEDS_INFO da so'ralgan</text>
-<text x="2321.5" y="442" font-size="10.5" fill="#4B5468" font-style="italic">maydonlar ochiladi</text>
+<rect x="1569.5" y="52" width="175" height="36" fill="#FFFFFF" fill-opacity="0.9" stroke="none"/>
+<path d="M1581.5,52 L1569.5,52 L1569.5,88 L1581.5,88" fill="none" stroke="#8A93A3" stroke-width="1.2"/>
+<text x="1576.5" y="67" font-size="10.5" fill="#4B5468" font-style="italic">6 qadam: 03-hujjat. required =</text>
+<text x="1576.5" y="80" font-size="10.5" fill="#4B5468" font-style="italic">visible. Hujjat yuklash yo'q (Q-34)</text>
+<path d="M2107,88 L2107,113" stroke="#8A93A3" stroke-dasharray="2,3" fill="none"/>
+<rect x="2019.5" y="52" width="175" height="36" fill="#FFFFFF" fill-opacity="0.9" stroke="none"/>
+<path d="M2031.5,52 L2019.5,52 L2019.5,88 L2031.5,88" fill="none" stroke="#8A93A3" stroke-width="1.2"/>
+<text x="2026.5" y="67" font-size="10.5" fill="#4B5468" font-style="italic">Yuborishdan oldin: yig'ma</text>
+<text x="2026.5" y="80" font-size="10.5" fill="#4B5468" font-style="italic">ko'rinish + tahrirlash havolalari</text>
+<path d="M2257,401 L2257,394" stroke="#8A93A3" stroke-dasharray="2,3" fill="none"/>
+<rect x="2164.5" y="401" width="185" height="49" fill="#FFFFFF" fill-opacity="0.9" stroke="none"/>
+<path d="M2176.5,401 L2164.5,401 L2164.5,450 L2176.5,450" fill="none" stroke="#8A93A3" stroke-width="1.2"/>
+<text x="2171.5" y="416" font-size="10.5" fill="#4B5468" font-style="italic">Keyin tahrir yopiq; faqat</text>
+<text x="2171.5" y="429" font-size="10.5" fill="#4B5468" font-style="italic">NEEDS_INFO da so'ralgan</text>
+<text x="2171.5" y="442" font-size="10.5" fill="#4B5468" font-style="italic">maydonlar ochiladi</text>
 <circle cx="157" cy="151" r="18" fill="#E7F6EE" stroke="#157A4A" stroke-width="1.6"/><text x="157" y="183.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">«Yangi ariza» (akkaunt</text><text x="157" y="196.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">D1)</text>
 <rect x="245" y="113" width="124" height="76" rx="9" fill="#EAEEFC" stroke="#2C4CE0" stroke-width="1.6"/><circle cx="258" cy="123" r="3.6" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><path d="M252,134 Q258,124 264,134 Z" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><text x="307" y="157.7" text-anchor="middle" font-size="11" fill="#0F1522">INN (STIR) kiritish</text>
 <rect x="395" y="318" width="124" height="76" rx="9" fill="#EEF1F5" stroke="#4B5468" stroke-width="1.6"/><circle cx="408" cy="331" r="5.5" fill="none" stroke="#4B5468" stroke-width="2.4" stroke-dasharray="2.2,1.7"/><circle cx="408" cy="331" r="2.2" fill="none" stroke="#4B5468" stroke-width="1.1"/><text x="457" y="349.3" text-anchor="middle" font-size="11" fill="#0F1522">INN: format,</text><text x="457" y="362.7" text-anchor="middle" font-size="11" fill="#0F1522">nazorat raqami;</text><text x="457" y="376.1" text-anchor="middle" font-size="11" fill="#0F1522">dublikat qidiruvi</text>
@@ -83,14 +82,13 @@
 <rect x="1295" y="318" width="124" height="76" rx="9" fill="#EEF1F5" stroke="#4B5468" stroke-width="1.6"/><rect x="1301" y="324" width="15" height="11" fill="#FFFFFF" stroke="#4B5468" stroke-width="1.1"/><path d="M1301,327.5 H1316 M1306,327.5 V335" stroke="#4B5468" stroke-width="1.1"/><text x="1357" y="349.3" text-anchor="middle" font-size="11" fill="#0F1522">Taqiqlangan faoliyat</text><text x="1357" y="362.7" text-anchor="middle" font-size="11" fill="#0F1522">filtri (BT §4.5);</text><text x="1357" y="376.1" text-anchor="middle" font-size="11" fill="#0F1522">forma sxemasi</text>
 <path d="M1507,331 L1532,356 L1507,381 L1482,356 Z" fill="#FFF6E6" stroke="#A15C00" stroke-width="1.6"/><path d="M1499,348 L1515,364 M1515,348 L1499,364" stroke="#A15C00" stroke-width="3.2" stroke-linecap="round"/><text x="1568" y="326.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">Taqiqlanganmi?</text>
 <circle cx="1507" cy="151" r="18" fill="#FDECEA" stroke="#B3261E" stroke-width="3.2"/><text x="1507" y="100.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">Ariza davom</text><text x="1507" y="113.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">ettirilmaydi (sabab</text><text x="1507" y="126.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">ko'rsatiladi)</text>
-<rect x="1595" y="113" width="124" height="76" rx="9" fill="#FFFFFF" stroke="#0F1522" stroke-width="1.6"/><rect x="1650" y="172" width="14" height="14" fill="#FFFFFF" stroke="#0F1522" stroke-width="1.2"/><path d="M1657,175 L1657,183 M1653,179 L1661,179" stroke="#0F1522" stroke-width="1.4"/><text x="1657" y="142" text-anchor="middle" font-size="11" fill="#0F1522">Formani to'ldirish: 7</text><text x="1657" y="155.4" text-anchor="middle" font-size="11" fill="#0F1522">qadam, autosave</text>
+<rect x="1595" y="113" width="124" height="76" rx="9" fill="#FFFFFF" stroke="#0F1522" stroke-width="1.6"/><rect x="1650" y="172" width="14" height="14" fill="#FFFFFF" stroke="#0F1522" stroke-width="1.2"/><path d="M1657,175 L1657,183 M1653,179 L1661,179" stroke="#0F1522" stroke-width="1.4"/><text x="1657" y="142" text-anchor="middle" font-size="11" fill="#0F1522">Formani to'ldirish: 6</text><text x="1657" y="155.4" text-anchor="middle" font-size="11" fill="#0F1522">qadam, autosave</text>
 <circle cx="1622" cy="356" r="18" fill="#F1F3F7" stroke="#4B5468" stroke-width="3.2"/><text x="1622" y="388.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">EXPIRED (eslatmalar:</text><text x="1622" y="401.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">7, 21, 28-kun)</text>
-<rect x="1745" y="113" width="124" height="76" rx="9" fill="#EAEEFC" stroke="#2C4CE0" stroke-width="1.6"/><circle cx="1758" cy="123" r="3.6" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><path d="M1752,134 Q1758,124 1764,134 Z" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><text x="1807" y="151" text-anchor="middle" font-size="11" fill="#0F1522">Hujjatlarni yuklash</text><text x="1807" y="164.4" text-anchor="middle" font-size="11" fill="#0F1522">(dinamik ro'yxat)</text>
-<rect x="1895" y="318" width="124" height="76" rx="9" fill="#EEF1F5" stroke="#4B5468" stroke-width="1.6"/><circle cx="1908" cy="331" r="5.5" fill="none" stroke="#4B5468" stroke-width="2.4" stroke-dasharray="2.2,1.7"/><circle cx="1908" cy="331" r="2.2" fill="none" stroke="#4B5468" stroke-width="1.1"/><text x="1957" y="349.3" text-anchor="middle" font-size="11" fill="#0F1522">L1+L2 validatsiya;</text><text x="1957" y="362.7" text-anchor="middle" font-size="11" fill="#0F1522">G01–G15; ABS qayta</text><text x="1957" y="376.1" text-anchor="middle" font-size="11" fill="#0F1522">so'rovi (mavjud hisob)</text>
-<path d="M2107,331 L2132,356 L2107,381 L2082,356 Z" fill="#FFF6E6" stroke="#A15C00" stroke-width="1.6"/><path d="M2099,348 L2115,364 M2115,348 L2099,364" stroke="#A15C00" stroke-width="3.2" stroke-linecap="round"/><text x="2107" y="395.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">Hammasi bajarildimi?</text>
-<rect x="2195" y="113" width="124" height="76" rx="9" fill="#EAEEFC" stroke="#2C4CE0" stroke-width="1.6"/><circle cx="2208" cy="123" r="3.6" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><path d="M2202,134 Q2208,124 2214,134 Z" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><text x="2257" y="151" text-anchor="middle" font-size="11" fill="#0F1522">Tasdiqlar; «Yuborish»</text><text x="2257" y="164.4" text-anchor="middle" font-size="11" fill="#0F1522">— SMS kod</text>
-<rect x="2345" y="318" width="124" height="76" rx="9" fill="#EEF1F5" stroke="#4B5468" stroke-width="1.6"/><circle cx="2358" cy="331" r="5.5" fill="none" stroke="#4B5468" stroke-width="2.4" stroke-dasharray="2.2,1.7"/><circle cx="2358" cy="331" r="2.2" fill="none" stroke="#4B5468" stroke-width="1.1"/><text x="2407" y="342.6" text-anchor="middle" font-size="11" fill="#0F1522">SUBMITTED:</text><text x="2407" y="356" text-anchor="middle" font-size="11" fill="#0F1522">snapshot + SHA-256,</text><text x="2407" y="369.4" text-anchor="middle" font-size="11" fill="#0F1522">qulf, PDF; xabar</text><text x="2407" y="382.8" text-anchor="middle" font-size="11" fill="#0F1522">mijozga va bankka</text>
-<circle cx="2557" cy="356" r="18" fill="#E7F6EE" stroke="#157A4A" stroke-width="3.2"/><rect x="2549" y="350.5" width="16" height="11" fill="#157A4A" stroke="#157A4A" stroke-width="1.3"/><path d="M2549,350.5 L2557,357 L2565,350.5" fill="none" stroke="#FFFFFF" stroke-width="1.3"/><text x="2557" y="388.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">→ 03 Onboarding</text><text x="2557" y="401.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">tekshiruvi</text>
+<rect x="1745" y="318" width="124" height="76" rx="9" fill="#EEF1F5" stroke="#4B5468" stroke-width="1.6"/><circle cx="1758" cy="331" r="5.5" fill="none" stroke="#4B5468" stroke-width="2.4" stroke-dasharray="2.2,1.7"/><circle cx="1758" cy="331" r="2.2" fill="none" stroke="#4B5468" stroke-width="1.1"/><text x="1807" y="349.3" text-anchor="middle" font-size="11" fill="#0F1522">L1 validatsiya;</text><text x="1807" y="362.7" text-anchor="middle" font-size="11" fill="#0F1522">G01–G15; ABS qayta</text><text x="1807" y="376.1" text-anchor="middle" font-size="11" fill="#0F1522">so'rovi (mavjud hisob)</text>
+<path d="M1957,331 L1982,356 L1957,381 L1932,356 Z" fill="#FFF6E6" stroke="#A15C00" stroke-width="1.6"/><path d="M1949,348 L1965,364 M1965,348 L1949,364" stroke="#A15C00" stroke-width="3.2" stroke-linecap="round"/><text x="1957" y="395.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">Hammasi bajarildimi?</text>
+<rect x="2045" y="113" width="124" height="76" rx="9" fill="#EAEEFC" stroke="#2C4CE0" stroke-width="1.6"/><circle cx="2058" cy="123" r="3.6" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><path d="M2052,134 Q2058,124 2064,134 Z" fill="none" stroke="#2C4CE0" stroke-width="1.2"/><text x="2107" y="151" text-anchor="middle" font-size="11" fill="#0F1522">Tasdiqlar; «Yuborish»</text><text x="2107" y="164.4" text-anchor="middle" font-size="11" fill="#0F1522">— SMS kod</text>
+<rect x="2195" y="318" width="124" height="76" rx="9" fill="#EEF1F5" stroke="#4B5468" stroke-width="1.6"/><circle cx="2208" cy="331" r="5.5" fill="none" stroke="#4B5468" stroke-width="2.4" stroke-dasharray="2.2,1.7"/><circle cx="2208" cy="331" r="2.2" fill="none" stroke="#4B5468" stroke-width="1.1"/><text x="2257" y="342.6" text-anchor="middle" font-size="11" fill="#0F1522">SUBMITTED:</text><text x="2257" y="356" text-anchor="middle" font-size="11" fill="#0F1522">snapshot + SHA-256,</text><text x="2257" y="369.4" text-anchor="middle" font-size="11" fill="#0F1522">qulf, PDF; xabar</text><text x="2257" y="382.8" text-anchor="middle" font-size="11" fill="#0F1522">mijozga va bankka</text>
+<circle cx="2407" cy="356" r="18" fill="#E7F6EE" stroke="#157A4A" stroke-width="3.2"/><rect x="2399" y="350.5" width="16" height="11" fill="#157A4A" stroke="#157A4A" stroke-width="1.3"/><path d="M2399,350.5 L2407,357 L2415,350.5" fill="none" stroke="#FFFFFF" stroke-width="1.3"/><text x="2407" y="388.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">→ 03 Onboarding</text><text x="2407" y="401.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">tekshiruvi</text>
 <circle cx="1622.3" cy="189" r="18" fill="#FFF6E6" stroke="#A15C00" stroke-width="1.6"/><circle cx="1622.3" cy="189" r="14.5" fill="none" stroke="#A15C00" stroke-width="1.2"/><circle cx="1622.3" cy="189" r="9" fill="#FFFFFF" stroke="#A15C00" stroke-width="1.4"/><path d="M1622.3,183 L1622.3,189 L1627.3,191" fill="none" stroke="#A15C00" stroke-width="1.4"/><text x="1578.7" y="186.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">30 kun</text><text x="1578.7" y="199.5" text-anchor="middle" font-size="10.5" fill="#0F1522" font-weight="600">faolsiz</text>
 <rect x="509" y="298" width="98.3" height="15" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
 <text x="511" y="308.5" font-size="10.5" fill="#0F1522">Faol merchant bor</text>
@@ -112,6 +110,6 @@
 <rect x="1765" y="222" width="93.7" height="28" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
 <text x="1767" y="232.5" font-size="10.5" fill="#0F1522">Yo'q: kamchiliklar</text>
 <text x="1767" y="245.5" font-size="10.5" fill="#0F1522">ro'yxati</text>
-<rect x="2136" y="340" width="20.4" height="15" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
-<text x="2138" y="350.5" font-size="10.5" fill="#0F1522">Ha</text>
+<rect x="1986" y="340" width="20.4" height="15" fill="#FFFFFF" fill-opacity="0.85" rx="2"/>
+<text x="1988" y="350.5" font-size="10.5" fill="#0F1522">Ha</text>
 </svg>
