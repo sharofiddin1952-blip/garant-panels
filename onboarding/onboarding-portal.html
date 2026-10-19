@@ -1202,7 +1202,7 @@ function renderDemo() {
     if (st === 'COMPLETED' && !a.live) body += B('demo-golive', 'Test to‘lov, refund, webhook ✓ → Operatsiya: go-live', true);
     if (REVIEW_ST.includes(st) || st === 'SUBMITTED' || st === 'AUTO_VALIDATION') body += '<div class="dim">Tez yo‘l:</div>' + B('demo-fast', 'Tasdiqlashgacha o‘tkazib yuborish ⏩');
   }
-  body += '<div class="lbl">Prototip</div>' + B('demo-reset', 'Demo’ni qayta boshlash') + '<div class="dim">Hujjatlar: docs/21–25 · BPMN: bpmn/viewer.html</div>';
+  body += '<div class="lbl">Prototip</div>' + B('demo-reset', 'Demo’ni qayta boshlash') + '<div class="dim">Hujjatlar (private repo): dasturchilar uchun — docs/27; qarorlar Q-xx — docs/25 · BPMN: bpmn/viewer.html</div>';
   el.innerHTML = '<button class="dh" data-act="demo-toggle">⚙ Demo boshqaruvi — bank tomoni<span class="sp"></span>' + (S.demoMin ? '▲' : '▼') + '</button><div class="db">' + body + '</div>';
 }
 
