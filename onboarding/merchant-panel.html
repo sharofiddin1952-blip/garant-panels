@@ -1836,14 +1836,6 @@ function extStep(a){
   return 1;
 }
 const extBadge = a=>{ const [l,c]=ext(a); return '<span class="badge '+c+'"><span class="dotb"></span>'+esc(l)+'</span>'; };
-const DOC_NAMES = {
-  CERT_REG:'Davlat ro‘yxatidan o‘tganlik guvohnomasi', CHARTER:'Ustav', FOUNDERS_AGREEMENT:'Ta’sis shartnomasi', PROTOCOL_DIR:'Protokol (direktorni tayinlash)',
-  ORDER_DIR_ACC:'Buyruq (direktorni tayinlash)', PASSPORT_DIR:'Direktor pasporti', PASSPORT_ACC:'Bosh buxgalter pasporti', PASSPORT_FOUNDER:'Ta’sischi pasporti',
-  SEAL:'Imzo va muhr namunalari kartochkasi', FOUNDER_LE_CERT:'Ta’sischi (yuridik shaxs) guvohnomasi', FOUNDER_LE_DIR_PASSPORT:'Ta’sischi (yuridik shaxs) direktorining pasporti',
-  DOMAIN_CONTRACT:'Domen ro‘yxatdan o‘tkazish shartnomasi', LICENSE:'Litsenziya',
-};
-function docName(a,key){ const p=key.split(':'); let n=DOC_NAMES[p[0]]||p[0]; if(p[1]!=null && a.founders && a.founders[+p[1]]) n+=' — '+a.founders[+p[1]].name; return n; }
-const DOC_CLIENT = { VERIFIED:['Tasdiqlangan','green'], REPLACEMENT_REQUIRED:['Sizdan so‘raldi','amber'], UPLOADED:['Siz yukladingiz','blue'], FETCHED:['Olindi','blue'], FETCHING:['Olinmoqda','gray'] };
 const ACC_CLIENT = { DRAFT:['Qoralama','gray'], SUBMITTED:['Yuborildi','blue'], IN_REVIEW:['Bank ko‘rib chiqmoqda','blue'], OPENED:['Hisob ochildi','green'] };
 const IND = { retail:['Kiyim-kechak, aksessuar','5651'], ecom:['Internet-do‘kon','5999'], food:['Restoran, kafe','5812'], edu:['Ta’lim','8299'], health:['Tibbiy xizmatlar','8099'], tourism:['Turizm','4722'], it:['IT','5734'], services:['Xizmatlar','7399'], transport:['Transport','4215'] };
 const GOLIVE_ITEMS = [['tech','Texnik sozlamalar: server IP, integratsiya usuli, callback URL (Q-30)'],['test','Sandbox’da muvaffaqiyatli test to‘lov'],['refund','Test to‘lovni qaytarish (refund)'],['webhook','Webhook (callback) 200 qaytaradi'],['mfa','Kabinetda ikki bosqichli himoya (MFA)']];
@@ -1928,7 +1920,6 @@ const ckRow = (label, st, note)=> '<div class="ck-row '+st+'"><span class="ic">'
 /* ---------------- PAGE: ONBOARDING HOLATI (portal bilan bir xil ma'lumot) ---------------- */
 function renderOnboardingStatus(){
   const a=LIVE.app, m=STATE.merchant, acc=settleAcc(a), r=a.rejection;
-  const keys=Object.keys(a.docs||{});
   let alerts='';
   if(a.status==='NEEDS_INFO' && a.info) alerts+='<div class="m-alert warn"><b>Bank qo‘shimcha ma’lumot so‘radi</b> ('+a.info.cycle+'-so‘rov / 3, muddat '+fmtDate(a.info.deadline)+'):<ol style="margin:6px 0 8px 18px;padding:0">'+a.info.items.map(it=>'<li>'+esc(it.text)+'</li>').join('')+'</ol>'+pBtn('info','Portalda javob berish')+'</div>';
   if(a.status==='CONTRACT_PENDING') alerts+='<div class="m-alert '+(a.contract.mSigned?'info':'ok')+'">'+(a.contract.mSigned?'Siz imzoladingiz — <b>bank imzosi kutilmoqda</b> (Rais o‘rinbosari, odatda 1 ish kuni).':'<b>Arizangiz tasdiqlandi!</b> Shartnoma '+esc(a.contract.no)+' ni 14 kun ichida E-IMZO bilan imzolang. ')+(a.contract.mSigned?'':pBtn('contract','Shartnomani imzolash'))+'</div>';
@@ -1953,11 +1944,7 @@ function renderOnboardingStatus(){
       <div class="kv" style="border-bottom:none"><div class="k">Go-live</div><div class="v">${a.live?'Live ✓':a.golive&&a.golive.requestedAt?'So‘rov yuborildi':a.status==='COMPLETED'?'Sandbox — cheklistni bajaring':'—'}</div></div>
     </div>
   </div>
-  <div class="grid-2" style="margin-top:16px">
-    <div class="panel"><div class="panel-title"><h3>Hujjatlar</h3><span class="sub">bank davlat tizimlaridan oladi — yuklash shart emas (Q-34)</span></div>
-      ${keys.length ? keys.map(k=>{ const s=DOC_CLIENT[a.docs[k].status]||[a.docs[k].status,'gray']; return '<div class="line-item"><span>'+esc(docName(a,k))+'</span><span class="badge '+s[1]+'"><span class="dotb"></span>'+s[0]+'</span></div>'; }).join('')
-        : '<div style="color:var(--text-3);font-size:12.5px">Ariza yuborilgach bank hujjatlarni davlat tizimlaridan avtomatik oladi.</div>'}
-    </div>
+  <div style="margin-top:16px">
     <div class="panel"><div class="panel-title"><h3>Jarayon tarixi</h3><span class="sub">ichki bosqichlar umumiy «Ko‘rib chiqilmoqda»</span></div>
       <div class="tl">${a.timeline.map((t,i)=>'<div class="tl-item '+(i?'done':'')+'"><div class="tt">'+esc(t.text)+'</div><div class="td">'+fmtDateTime(t.t)+' &middot; '+esc(t.who)+'</div></div>').join('')}</div>
     </div>

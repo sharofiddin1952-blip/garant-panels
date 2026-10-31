@@ -665,7 +665,7 @@ nav{display:flex;gap:6px;padding:8px 16px;background:var(--surface);border-botto
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>
 </script>
-<script type="text/plain" id="x3" data-name="03-onboarding-tekshiruvi" data-sub="Avto tekshiruv → hujjat va sayt (bitta xodim) → KYC/KYB + risk → Compliance (yuqori riskda EDD) → Rais o'rinbosari. Link-hodisalar (↩ / →) 03a ga ulaydi."><?xml version="1.0" encoding="UTF-8"?>
+<script type="text/plain" id="x3" data-name="03-onboarding-tekshiruvi" data-sub="Avto tekshiruv (hujjatlar ham — Q-35) → ariza va sayt (bitta xodim) → KYC/KYB + risk → Compliance (yuqori riskda EDD) → Rais o'rinbosari. Link-hodisalar (↩ / →) 03a ga ulaydi."><?xml version="1.0" encoding="UTF-8"?>
 <!-- 03 · Onboarding tekshiruvi — tools/bpmn/models/models.mjs dan generatsiya qilingan. Qo'lda tahrirlamang: modelni o'zgartiring va "node tools/bpmn/build.mjs" ni ishga tushiring. -->
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:color="http://www.omg.org/spec/BPMN/non-normative/color/1.0" id="Defs_03" targetNamespace="https://garantbank.uz/bpmn/merchant-onboarding" exporter="garant-onboarding/tools/bpmn" exporterVersion="2.0.0">
   <bpmn:collaboration id="Collab_03">
@@ -681,7 +681,7 @@ nav{display:flex;gap:6px;padding:8px 16px;background:var(--surface);border-botto
         <bpmn:flowNodeRef>N03_t7</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>N03_g8</bpmn:flowNodeRef>
       </bpmn:lane>
-      <bpmn:lane id="Lane_03_O" name="Onboarding xodimi (hujjat + sayt)">
+      <bpmn:lane id="Lane_03_O" name="Onboarding xodimi (ariza + sayt)">
         <bpmn:flowNodeRef>N03_lcDoc</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>N03_t3</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>N03_g4</bpmn:flowNodeRef>
@@ -722,7 +722,7 @@ nav{display:flex;gap:6px;padding:8px 16px;background:var(--surface);border-botto
       <bpmn:outgoing>Flow_03_01</bpmn:outgoing>
       <bpmn:messageEventDefinition id="EvDef_N03_s0" />
     </bpmn:startEvent>
-    <bpmn:serviceTask id="N03_t1" name="Hujjatlar davlat tizimlaridan (Q-34); cross-check; ABS, registr">
+    <bpmn:serviceTask id="N03_t1" name="Hujjatlar davlat tizimlaridan + avto-tekshiruv (Q-34/35); ABS, registr">
       <bpmn:incoming>Flow_03_01</bpmn:incoming>
       <bpmn:outgoing>Flow_03_02</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -730,16 +730,16 @@ nav{display:flex;gap:6px;padding:8px 16px;background:var(--surface);border-botto
       <bpmn:incoming>Flow_03_02</bpmn:incoming>
       <bpmn:outgoing>Flow_03_03</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:intermediateCatchEvent id="N03_lcDoc" name="↩ Hujjat ko'rigi">
+    <bpmn:intermediateCatchEvent id="N03_lcDoc" name="↩ Ariza ko'rigi">
       <bpmn:outgoing>Flow_03_04</bpmn:outgoing>
       <bpmn:linkEventDefinition id="LinkDef_N03_lcDoc" name="DOC" />
     </bpmn:intermediateCatchEvent>
-    <bpmn:userTask id="N03_t3" name="Hujjatlar ko'rigi (DOC_REVIEW)">
+    <bpmn:userTask id="N03_t3" name="Ariza ko'rigi (DOC_REVIEW)">
       <bpmn:incoming>Flow_03_03</bpmn:incoming>
       <bpmn:incoming>Flow_03_04</bpmn:incoming>
       <bpmn:outgoing>Flow_03_05</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:exclusiveGateway id="N03_g4" name="Hujjatlar to'g'rimi?">
+    <bpmn:exclusiveGateway id="N03_g4" name="Ariza to'g'rimi?">
       <bpmn:incoming>Flow_03_05</bpmn:incoming>
       <bpmn:outgoing>Flow_03_06</bpmn:outgoing>
       <bpmn:outgoing>Flow_03_07</bpmn:outgoing>
@@ -849,7 +849,7 @@ nav{display:flex;gap:6px;padding:8px 16px;background:var(--surface);border-botto
       <bpmn:outgoing>Flow_03_31</bpmn:outgoing>
       <bpmn:outgoing>Flow_03_32</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:intermediateThrowEvent id="N03_ltD" name="→ Hujjat ko'rigi">
+    <bpmn:intermediateThrowEvent id="N03_ltD" name="→ Ariza ko'rigi">
       <bpmn:incoming>Flow_03_30</bpmn:incoming>
       <bpmn:linkEventDefinition id="LinkDef_N03_ltD" name="DOC" />
     </bpmn:intermediateThrowEvent>
@@ -898,7 +898,7 @@ nav{display:flex;gap:6px;padding:8px 16px;background:var(--surface);border-botto
     </bpmn:textAnnotation>
     <bpmn:association id="Assoc_03_1" associationDirection="None" sourceRef="N03_t2" targetRef="Note_03_1" />
     <bpmn:textAnnotation id="Note_03_2">
-      <bpmn:text>Hujjat va saytni bitta onboarding xodimi tekshiradi (Q-11, Q-12)</bpmn:text>
+      <bpmn:text>Ariza va saytni bitta onboarding xodimi ko'radi (Q-11, Q-12); hujjatlar — avtomatik (Q-35)</bpmn:text>
     </bpmn:textAnnotation>
     <bpmn:association id="Assoc_03_2" associationDirection="None" sourceRef="N03_t5" targetRef="Note_03_2" />
     <bpmn:textAnnotation id="Note_03_3">
@@ -925,9 +925,9 @@ nav{display:flex;gap:6px;padding:8px 16px;background:var(--surface);border-botto
       <bpmndi:BPMNShape id="N03_s0_di" bpmnElement="N03_s0" bioc:stroke="#157A4A" bioc:fill="#E7F6EE" color:background-color="#E7F6EE" color:border-color="#157A4A"><dc:Bounds x="139" y="118" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="119" y="158" width="77" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="N03_t1_di" bpmnElement="N03_t1" bioc:stroke="#4B5468" bioc:fill="#EEF1F5" color:background-color="#EEF1F5" color:border-color="#4B5468"><dc:Bounds x="245" y="98" width="124" height="76" /></bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="N03_t2_di" bpmnElement="N03_t2" bioc:stroke="#4B5468" bioc:fill="#EEF1F5" color:background-color="#EEF1F5" color:border-color="#4B5468"><dc:Bounds x="395" y="98" width="124" height="76" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N03_lcDoc_di" bpmnElement="N03_lcDoc" bioc:stroke="#4B5468" bioc:fill="#F1F3F7" color:background-color="#F1F3F7" color:border-color="#4B5468"><dc:Bounds x="439" y="303" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="418" y="343" width="77" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N03_lcDoc_di" bpmnElement="N03_lcDoc" bioc:stroke="#4B5468" bioc:fill="#F1F3F7" color:background-color="#F1F3F7" color:border-color="#4B5468"><dc:Bounds x="439" y="303" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="420" y="343" width="74" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="N03_t3_di" bpmnElement="N03_t3" bioc:stroke="#2C4CE0" bioc:fill="#EAEEFC" color:background-color="#EAEEFC" color:border-color="#2C4CE0"><dc:Bounds x="545" y="283" width="124" height="76" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N03_g4_di" bpmnElement="N03_g4" isMarkerVisible="true" bioc:stroke="#A15C00" bioc:fill="#FFF6E6" color:background-color="#FFF6E6" color:border-color="#A15C00"><dc:Bounds x="732" y="296" width="50" height="50" /><bpmndi:BPMNLabel><dc:Bounds x="778" y="281" width="100" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N03_g4_di" bpmnElement="N03_g4" isMarkerVisible="true" bioc:stroke="#A15C00" bioc:fill="#FFF6E6" color:background-color="#FFF6E6" color:border-color="#A15C00"><dc:Bounds x="732" y="296" width="50" height="50" /><bpmndi:BPMNLabel><dc:Bounds x="778" y="281" width="83" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="N03_ltO_di" bpmnElement="N03_ltO" bioc:stroke="#4B5468" bioc:fill="#F1F3F7" color:background-color="#F1F3F7" color:border-color="#4B5468"><dc:Bounds x="739" y="359" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="781" y="371" width="118" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="N03_lcSite_di" bpmnElement="N03_lcSite" bioc:stroke="#4B5468" bioc:fill="#F1F3F7" color:background-color="#F1F3F7" color:border-color="#4B5468"><dc:Bounds x="889" y="245" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="793" y="257" width="90" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="N03_t5_di" bpmnElement="N03_t5" bioc:stroke="#2C4CE0" bioc:fill="#EAEEFC" color:background-color="#EAEEFC" color:border-color="#2C4CE0"><dc:Bounds x="995" y="283" width="124" height="76" /></bpmndi:BPMNShape>
@@ -952,7 +952,7 @@ nav{display:flex;gap:6px;padding:8px 16px;background:var(--surface);border-botto
       <bpmndi:BPMNShape id="N03_eExp_di" bpmnElement="N03_eExp" bioc:stroke="#4B5468" bioc:fill="#F1F3F7" color:background-color="#F1F3F7" color:border-color="#4B5468"><dc:Bounds x="889" y="930" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="931" y="935" width="91" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="N03_eLim_di" bpmnElement="N03_eLim" bioc:stroke="#B3261E" bioc:fill="#FDECEA" color:background-color="#FDECEA" color:border-color="#B3261E"><dc:Bounds x="889" y="804" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="931" y="809" width="93" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="N03_g6a_di" bpmnElement="N03_g6a" isMarkerVisible="true" bioc:stroke="#A15C00" bioc:fill="#FFF6E6" color:background-color="#FFF6E6" color:border-color="#A15C00"><dc:Bounds x="1182" y="861" width="50" height="50" /><bpmndi:BPMNLabel><dc:Bounds x="1071" y="833" width="115" height="26" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="N03_ltD_di" bpmnElement="N03_ltD" bioc:stroke="#4B5468" bioc:fill="#F1F3F7" color:background-color="#F1F3F7" color:border-color="#4B5468"><dc:Bounds x="1339" y="868" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="1381" y="880" width="77" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="N03_ltD_di" bpmnElement="N03_ltD" bioc:stroke="#4B5468" bioc:fill="#F1F3F7" color:background-color="#F1F3F7" color:border-color="#4B5468"><dc:Bounds x="1339" y="868" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="1381" y="880" width="74" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="N03_ltS_di" bpmnElement="N03_ltS" bioc:stroke="#4B5468" bioc:fill="#F1F3F7" color:background-color="#F1F3F7" color:border-color="#4B5468"><dc:Bounds x="1339" y="808" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="1381" y="820" width="90" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="N03_ltCo_di" bpmnElement="N03_ltCo" bioc:stroke="#4B5468" bioc:fill="#F1F3F7" color:background-color="#F1F3F7" color:border-color="#4B5468"><dc:Bounds x="1339" y="928" width="36" height="36" /><bpmndi:BPMNLabel><dc:Bounds x="1381" y="940" width="69" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_03_01_di" bpmnElement="Flow_03_01" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="175" y="136" /><di:waypoint x="245" y="136" /></bpmndi:BPMNEdge>
@@ -989,8 +989,8 @@ nav{display:flex;gap:6px;padding:8px 16px;background:var(--surface);border-botto
       <bpmndi:BPMNEdge id="Flow_03_32_di" bpmnElement="Flow_03_32" bioc:stroke="#3A4254" color:border-color="#3A4254"><di:waypoint x="1207" y="911" /><di:waypoint x="1207" y="946" /><di:waypoint x="1339" y="946" /><bpmndi:BPMNLabel><dc:Bounds x="1212" y="915" width="91" height="13" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Note_03_1_di" bpmnElement="Note_03_1"><dc:Bounds x="402" y="52" width="330" height="36" /></bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Assoc_03_1_di" bpmnElement="Assoc_03_1"><di:waypoint x="457" y="88" /><di:waypoint x="457" y="98" /></bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="Note_03_2_di" bpmnElement="Note_03_2"><dc:Bounds x="972" y="374" width="230" height="36" /></bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Assoc_03_2_di" bpmnElement="Assoc_03_2"><di:waypoint x="1057" y="374" /><di:waypoint x="1057" y="359" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Note_03_2_di" bpmnElement="Note_03_2"><dc:Bounds x="972" y="361" width="230" height="49" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Assoc_03_2_di" bpmnElement="Assoc_03_2"><di:waypoint x="1057" y="361" /><di:waypoint x="1057" y="359" /></bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Note_03_3_di" bpmnElement="Note_03_3"><dc:Bounds x="1242" y="422" width="210" height="23" /></bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Assoc_03_3_di" bpmnElement="Assoc_03_3"><di:waypoint x="1452" y="445" /><di:waypoint x="1507" y="478" /></bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Note_03_4_di" bpmnElement="Note_03_4"><dc:Bounds x="1602" y="671" width="210" height="49" /></bpmndi:BPMNShape>

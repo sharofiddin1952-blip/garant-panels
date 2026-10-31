@@ -462,7 +462,7 @@ const INTERNAL = {
   DRAFT: 'Qoralama — bankda «Qoralamalar (lidlar)» ro‘yxatida holati bilan (Q-19)',
   SUBMITTED: 'Yuborildi — navbatga tushdi',
   AUTO_VALIDATION: 'Avtomatik tekshiruv: L3 cross-check, ABS, registr',
-  DOC_REVIEW: 'Hujjatlar ko‘rigi — onboarding xodimi',
+  DOC_REVIEW: 'Ariza ko‘rigi — onboarding xodimi (hujjatlar tizimda avtomatik tekshirilgan, Q-35)',
   SITE_REVIEW: 'Sayt tekshiruvi — o‘sha onboarding xodimi (BT §4, 19 band)',
   KYB_CHECK: 'KYC/KYB skrining — tizim',
   RISK_ASSESSMENT: 'Risk-skoring — tizim',
@@ -1012,9 +1012,9 @@ VIEWS.status = () => {
       ${['SUBMITTED', 'AUTO_VALIDATION', 'NEEDS_INFO'].concat(REVIEW_ST).includes(a.status) ? '<button class="btn sm danger" data-act="withdraw">Arizani qaytarib olish</button>' : ''}</div></div>
     <div class="card">${prog}</div>
     ${term}${info}${accOpen}${contract}${eta}${prov}
-    <div class="cols mt16"><div class="card"><h3>Jarayon tarixi</h3><p class="dim">Siz ko‘radigan hodisalar. Ichki bosqichlar (hujjat ko‘rigi, KYB, Compliance…) umumiy «Ko‘rib chiqilmoqda» sifatida ko‘rsatiladi.</p>
+    <div class="card mt16"><h3>Jarayon tarixi</h3><p class="dim">Siz ko‘radigan hodisalar. Ichki bosqichlar (ariza ko‘rigi, sayt, KYB, Compliance…) umumiy «Ko‘rib chiqilmoqda» sifatida ko‘rsatiladi.</p>
         <div class="tl mt12">${a.timeline.map((t) => '<div class="ti"><div class="tt">' + esc(t.text) + '</div><div class="td">' + fmtDT(t.t) + ' · ' + esc(t.who) + '</div></div>').join('')}</div></div>
-      <div>${keys}<div class="card"><h3>Hujjatlar</h3><p class="dim">Bank ${DOC_SRC} oladi — sizdan yuklash talab qilinmaydi (Q-34)</p><div class="docs mt8">${requiredDocs(a).map((x) => { const s = a.docs[x.key] || {}; const st = s.status === 'VERIFIED' ? ['Tasdiqlangan', 'green'] : s.status === 'REPLACEMENT_REQUIRED' ? ['Sizdan so‘raldi', 'amber'] : s.status === 'UPLOADED' ? ['Siz yukladingiz', 'blue'] : s.status === 'FETCHED' ? ['Olindi', 'blue'] : ['Olinmoqda', 'gray']; return '<div class="row" style="font-size:13px"><span class="sp">' + esc(x.name) + '</span><span class="badge ' + st[1] + '">' + st[0] + '</span></div>'; }).join('')}</div></div></div></div>`;
+      ${keys}</div>`;
 };
 function provHTML(a) {
   const steps = ['Shartnoma ikkala tomondan imzolandi', 'Merchant yozuvi yaratildi (' + (a.merchantId || 'MER-000892') + ') — ariza ma’lumotlari nusxalandi', 'Tarif, limitlar va settlement (T+1) o‘rnatildi', 'Uzcard / Humo protsessingda ro‘yxatga olindi (MID, TID)', noAcc(a) ? 'ABS: hisob hali yo‘q — live’dan oldin bog‘lanadi (go-live sharti, Q-32)' : 'ABS: hisob raqami bog‘landi', 'Sandbox kalitlari yaratildi (shartnomadan keyin — Q-16)', a.role === 'EMP' ? 'Rolingiz: ariza beruvchi → administrator; direktorga Owner taklifi' : 'Rolingiz: ariza beruvchi → kabinet egasi (Owner)'];
@@ -1191,8 +1191,8 @@ function renderDemo() {
       if (S.user && !S.user.emailVerified) body += B('verify-email', 'Email havolasini bosish');
       body += B('demo-expire', '30 kun o‘tdi (faolsizlik → EXPIRED)');
     }
-    if (st === 'SUBMITTED' || st === 'AUTO_VALIDATION') body += B('demo-next', 'Avto-tekshiruv yakunlandi → hujjat ko‘rigi', true);
-    if (st === 'DOC_REVIEW') body += B('demo-next', 'Onboarding xodimi: hujjatlar to‘g‘ri → sayt', true) + B('demo-info', 'Onboarding xodimi: qo‘shimcha ma’lumot (pasport)');
+    if (st === 'SUBMITTED' || st === 'AUTO_VALIDATION') body += B('demo-next', 'Avto-tekshiruv yakunlandi → ariza ko‘rigi', true);
+    if (st === 'DOC_REVIEW') body += B('demo-next', 'Onboarding xodimi: ariza to‘g‘ri → sayt', true) + B('demo-info', 'Onboarding xodimi: qo‘shimcha ma’lumot (pasport)');
     if (st === 'SITE_REVIEW') body += B('demo-next', 'Onboarding xodimi: sayt mos → KYB', true) + B('demo-info', 'Onboarding xodimi: sayt mos emas (logolar yo‘q)');
     if (st === 'KYB_CHECK' || st === 'RISK_ASSESSMENT') body += B('demo-next', 'KYC/KYB toza, risk LOW (24) → Compliance', true);
     if (st === 'COMPLIANCE_REVIEW') body += B('demo-next', 'Compliance: ijobiy → Rais o‘rinbosari', true) + B('demo-info', 'Compliance: bartaraf etsa bo‘ladi (tavsif)') + B('demo-reject-final', 'Compliance: yakuniy rad (sanksiya)');
@@ -1399,8 +1399,8 @@ ACT['submit-confirm'] = async () => {
 };
 function fetchDocs(a) {
   const list = requiredDocs(a);
-  list.forEach((x) => { if (!a.docs[x.key] || a.docs[x.key].status === 'FETCHING') a.docs[x.key] = { status: 'FETCHED', file: 'davlat tizimi', at: Date.now() }; });
-  if (!a.timeline.some((t) => /davlat tizimlaridan olindi/.test(t.text))) push(a, 'Hujjatlar davlat tizimlaridan olindi (' + list.length + ' ta)', 'Tizim');
+  list.forEach((x) => { if (!a.docs[x.key] || a.docs[x.key].status === 'FETCHING') a.docs[x.key] = { status: 'VERIFIED', file: 'davlat tizimi', at: Date.now(), auto: true }; }); // Q-35: tizim avtomatik tekshiradi
+  if (!a.timeline.some((t) => /davlat tizimlaridan olindi/.test(t.text))) push(a, 'Hujjatlar davlat tizimlaridan olindi va avtomatik tekshirildi (' + list.length + ' ta)', 'Tizim');
 };
 async function sha256(s) {
   try { const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)); return Array.from(new Uint8Array(b)).map((x) => x.toString(16).padStart(2, '0')).join(''); }

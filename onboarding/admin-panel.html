@@ -875,7 +875,7 @@ const LATER_ACC='LATER';
 const ROLE = { ONB:'Onboarding xodimi', CMP:'Compliance xodimi', APR:'Rais o‘rinbosari', OPS:'Operatsiya xodimi', SYS:'Tizim' };
 const APP_STATUS_LABEL = {
   DRAFT:'Qoralama (lid)', SUBMITTED:'Yuborildi', AUTO_VALIDATION:'Avtomatik tekshiruv',
-  NEEDS_INFO:'Mijoz javobi kutilmoqda', DOC_REVIEW:'Hujjatlar ko‘rigi', SITE_REVIEW:'Sayt tekshiruvi (onlayn)',
+  NEEDS_INFO:'Mijoz javobi kutilmoqda', DOC_REVIEW:'Ariza ko‘rigi', SITE_REVIEW:'Sayt tekshiruvi (onlayn)',
   KYB_CHECK:'KYC/KYB skrining', RISK_ASSESSMENT:'Risk-skoring', UNDER_REVIEW:'Ko‘rib chiqilmoqda',
   COMPLIANCE_REVIEW:'Compliance ko‘rigi', ESCALATED:'EDD — kuchaytirilgan tekshiruv',
   PENDING_APPROVAL:'Rais o‘rinbosari qarori', APPROVED:'Tasdiqlandi',
@@ -1008,7 +1008,8 @@ function slaChip(a){
 const slaLate = a=> SLA_H[a.status] && Date.now()-stageSince(a) >= SLA_H[a.status]*HOUR;
 function docName(a, key){ const p=key.split(':'), idx=p[1]; let n=DOC_NAMES[p[0]]||p[0]; if(idx!=null && a.founders && a.founders[+idx]) n+=' — '+a.founders[+idx].name; return n; }
 const docKeys = a=> Object.keys(a.docs||{});
-const docsVerified = a=> docKeys(a).length>0 && docKeys(a).every(k=>a.docs[k].status==='VERIFIED');
+// Q-35: hujjatlarni tizim avtomatik oladi va tekshiradi — xodim faqat mijozdan so'ralgan / mijoz yuklagan hujjatni ko'radi
+const docsPending = a=> docKeys(a).filter(k=>['REPLACEMENT_REQUIRED','UPLOADED'].includes(a.docs[k].status));
 const hasSite = a=> !!(a.d && a.d.services && a.d.services.ecom);
 function draftSteps(a){
   const d=a.d||{}, s=d.services||{}, ch=d.channels||{};
@@ -1143,15 +1144,14 @@ function seedFlow(a, st, o){
   const keys=seedDocKeys(a);
   step(); a.submittedAt=t; C('Ariza yuborildi · nusxa saqlandi (SHA-256 '+rndStr(12)+'…)','Siz');
   B('Avtomatik tekshiruv (L3, ABS, registr) — o‘tdi', ROLE.SYS);
-  keys.forEach(k=>{ a.docs[k]={status:'FETCHED', file:'davlat tizimi', at:t}; });
-  C('Hujjatlar davlat tizimlaridan olindi ('+keys.length+' ta)','Tizim'); C('Dastlabki tekshiruv yakunlandi — ariza ko‘rib chiqilmoqda','Tizim');
+  keys.forEach(k=>{ a.docs[k]={status:'VERIFIED', file:'davlat tizimi', at:t, auto:true}; });
+  C('Hujjatlar davlat tizimlaridan olindi va avtomatik tekshirildi ('+keys.length+' ta)','Tizim'); C('Dastlabki tekshiruv yakunlandi — ariza ko‘rib chiqilmoqda','Tizim');
   const passed = s=> SEED_ORDER.indexOf(s) < target;
   if(st==='CANCELLED'){ step(); C('Ariza qaytarib olindi','Siz'); a.status='CANCELLED'; a.updatedAt=t; a.bank.since=t; a.bank.sinceSt=st; return; }
-  if(passed('DOC_REVIEW')){ step(); keys.forEach(k=>{ a.docs[k].status='VERIFIED'; }); B('Hujjatlar tasdiqlandi ('+keys.length+' ta) — davlat tizimlaridan olingan nusxalar', ROLE.ONB); }
+  if(passed('DOC_REVIEW')){ step(); B('Ariza ma’lumotlari tekshirildi — to‘g‘ri', ROLE.ONB); }
   else if(o.uploaded){ const k=keys.find(x=>/FOUNDERS|SEAL|DOMAIN/.test(x))||keys[0]; a.docs[k]={status:'UPLOADED', file:'mijoz yukladi', at:t}; a.cycles=1;
     C('Bank qo‘shimcha ma’lumot so‘radi (1 ta band) — muddat '+fmtDate(t+14*DAY),'Bank'); C('Javobingiz qabul qilindi — ariza tegishli bosqichda davom etmoqda','Siz');
     B(docName(a,k)+' — davlat tizimida topilmadi, mijozdan so‘raldi (03a)', ROLE.ONB); }
-  else keys.slice(0, Math.floor(keys.length/2)).forEach(k=>{ a.docs[k].status='VERIFIED'; });
   if(hasSite(a)){
     const s=a.bank.site={};
     if(passed('SITE_REVIEW')){ SITE_ITEMS.forEach(([k])=>{ s[k]= k==='ip'?'na': k==='license'&&a.d.licensed!=='yes'?'na':'ok'; }); step(); B('Sayt BT §4 talablariga mos (19 band)', ROLE.ONB); }
@@ -1302,7 +1302,7 @@ function renderOnboarding(){
   const T=(key,label,n)=>'<button class="tab-btn '+(tab===key?'active':'')+'" data-group="onb" data-tab="'+key+'">'+label+' ('+n+')</button>';
   const P=(key,html)=>'<div data-tabpanel="'+key+'" data-group="onb" style="'+(tab===key?'':'display:none')+'">'+html+'</div>';
   return `
-  <div class="page-header"><div><h1>Merchant onboarding</h1><div class="desc">Ariza → hujjatlar (davlat tizimlaridan) → sayt (onlayn) → KYB/risk → Compliance → Rais o‘rinbosari → shartnoma → kabinet → go-live.</div></div></div>
+  <div class="page-header"><div><h1>Merchant onboarding</h1><div class="desc">Ariza → avto-tekshiruv (hujjatlar davlat tizimlaridan, Q-35) → ariza ko‘rigi → sayt (onlayn) → KYB/risk → Compliance → Rais o‘rinbosari → shartnoma → kabinet → go-live.</div></div></div>
   ${onbLiveStrip()}
   <div class="kpi-grid" style="grid-template-columns:repeat(6,1fr)">
     <div class="kpi-card"><div class="label">Ish navbatida</div><div class="value" style="color:var(--blue)">${k.work}</div></div>
@@ -1408,10 +1408,9 @@ const ckRow = (label, st, note)=> '<div class="ck-row '+st+'"><span class="ic">'
 function progressHTML(a){
   const i=pipeIdx(a), at=s=>PIPE.indexOf(s), b=a.bank||{};
   const st=s=> i<0 ? 'todo' : i>at(s) ? 'done' : i===at(s) ? (a.status==='NEEDS_INFO'?'warn':'cur') : 'todo';
-  const keys=docKeys(a), ver=keys.filter(k=>a.docs[k].status==='VERIFIED').length;
   return '<div class="ck-list">'+
     ckRow('Ariza ma’lumotlari', a.status==='DRAFT'?'cur':'done', a.status==='DRAFT' ? draftSteps(a)+'/6 qadam' : 'yuborilgan · o‘zgarmas nusxa')+
-    ckRow('Hujjatlar — davlat tizimlaridan (Q-34)', keys.length&&ver===keys.length?'done':st('DOC_REVIEW'), keys.length ? ver+'/'+keys.length+' tasdiqlangan' : 'yuborilgach olinadi')+
+    ckRow('Ariza ko‘rigi (onboarding xodimi)', st('DOC_REVIEW'), docsPending(a).length?'mijozdan so‘ralgan hujjat bor':'')+
     ckRow('Sayt tekshiruvi (BT §4, onlayn)', !hasSite(a) ? (i>at('SITE_REVIEW')?'done':'todo') : st('SITE_REVIEW'), hasSite(a) ? siteSummary(a) : 'sayt orqali to‘lov so‘ralmagan')+
     ckRow('KYC/KYB skrining va risk', b.risk?'done':st('KYB_CHECK'), b.risk ? 'Risk '+RISK_UZ[b.risk.level]+' ('+b.risk.score+')' : '')+
     ckRow('Compliance xulosasi', a.status==='ESCALATED'?'warn':st('COMPLIANCE_REVIEW'), a.status==='ESCALATED'?'EDD davom etmoqda':'')+
@@ -1446,8 +1445,7 @@ function appAccHTML(a){
   return h;
 }
 function docsHTML(a){
-  const keys=docKeys(a), ed=a.status==='DOC_REVIEW';
-  if(!keys.length) return '<div class="onb-note">Hujjatlar ariza yuborilgach davlat tizimlaridan avtomatik olinadi — mijoz yuklamaydi (Q-34).</div>';
+  const keys=docsPending(a), ed=a.status==='DOC_REVIEW';
   return '<div class="table-scroll" style="border:none"><table class="data-table"><thead><tr><th>Hujjat</th><th>Manba</th><th>Holat</th><th></th></tr></thead><tbody>'+
     keys.map(k=>{ const x=a.docs[k], s=DOC_ST[x.status]||[x.status,'gray'], up=x.status==='UPLOADED'||x.file==='mijoz yukladi';
       return '<tr><td>'+esc(docName(a,k))+(x.note&&x.status==='REPLACEMENT_REQUIRED'?'<div style="font-size:11px;color:var(--amber)">'+esc(x.note)+'</div>':'')+'</td>'+
@@ -1486,7 +1484,7 @@ function appDrawerHTML(a){
   h+=secH('Ariza ma’lumotlari')+appInfoKV(a);
   h+=secH('Bank hisobi')+appAccHTML(a);
   if(a.status==='DRAFT') return h+secH('Jarayon tarixi')+historyHTML(a);
-  h+=secH('Hujjatlar — davlat tizimlaridan', a.status==='DOC_REVIEW'&&!docsVerified(a)?'<button class="btn btn-sm" data-onb="docs-ok" data-id="'+a.id+'">Barchasini tasdiqlash</button>':'')+docsHTML(a);
+  if(docsPending(a).length) h+=secH('Mijozdan so‘ralgan hujjat (03a)')+docsHTML(a);
   if(hasSite(a) && (pipeIdx(a)>=PIPE.indexOf('SITE_REVIEW') || b.site)) h+=secH('Sayt tekshiruvi — BT §4, 19 band', a.status==='SITE_REVIEW'?'<button class="btn btn-sm" data-onb="site-auto" data-id="'+a.id+'">Avto-skan natijasi</button>':'')+siteHTML(a);
   if(b.kyb) h+=secH('KYC/KYB skrining va risk')+kybHTML(a);
   if(['COMPLIANCE_REVIEW','ESCALATED'].includes(a.status)) h+=secH('Compliance xulosasi (ichki)')+'<div class="form-row"><textarea id="cmpNote" rows="3" placeholder="Xulosa: skrining, egalik, sayt, risk omillari…">'+esc(b.cmpNote||'')+'</textarea></div>';
@@ -1514,7 +1512,7 @@ function appDrawerFoot(a){
     case 'DRAFT': f=note('Mijoz to‘ldirmoqda')+(a.bank&&a.bank.called?'':B('call','Qo‘ng‘iroq qilindi')); break;
     case 'SUBMITTED': case 'AUTO_VALIDATION': f=B('auto-done','Avto-tekshiruvni yakunlash (tizim)','btn-primary'); break;
     case 'NEEDS_INFO': f=(live?note('Mijoz portalda javob beradi'):B('info-answer','Mijoz javob berdi (simulyatsiya)','btn-primary'))+B('expire','14 kun o‘tdi → EXPIRED'); break;
-    case 'DOC_REVIEW': f=B('info','Qo‘shimcha ma’lumot so‘rash')+B('reject','Rad etish','btn-danger')+(docsVerified(a)?B('to-site', hasSite(a)?'Hujjatlar to‘g‘ri → Sayt tekshiruvi':'Hujjatlar to‘g‘ri → KYB','btn-primary'):''); break;
+    case 'DOC_REVIEW': f=B('info','Qo‘shimcha ma’lumot so‘rash')+B('reject','Rad etish','btn-danger')+(docsPending(a).length?note('Mijoz yuklagan hujjatni tasdiqlang'):B('to-site', hasSite(a)?'Ariza to‘g‘ri → Sayt tekshiruvi':'Ariza to‘g‘ri → KYB','btn-primary')); break;
     case 'SITE_REVIEW': { const s=(a.bank&&a.bank.site)||{}, all=SITE_ITEMS.every(([k])=>s[k]), bad=SITE_ITEMS.some(([k])=>s[k]==='bad');
       f=B('info','Mijozdan so‘rash (sayt)')+B('reject','Rad etish','btn-danger')+(all&&!bad?B('to-kyb','Sayt mos → KYB','btn-primary'):note(bad?'Mos kelmagan band bor — mijozdan so‘rang yoki rad eting':'19 bandni belgilang')); break; }
     case 'KYB_CHECK': case 'RISK_ASSESSMENT': f=B('kyb','Skrining va risk-skoringni ishga tushirish','btn-primary'); break;
@@ -1568,8 +1566,8 @@ function openAccDrawer(id){ const r=findAcc(id); if(!r) return; openDrawer(accDr
 const PROV_TIMERS = {};
 function fetchDocsB(a){
   const keys=docKeys(a);
-  keys.forEach(k=>{ if(a.docs[k].status==='FETCHING') a.docs[k]={status:'FETCHED', file:'davlat tizimi', at:Date.now()}; });
-  if(keys.length && !a.timeline.some(t=>/davlat tizimlaridan olindi/.test(t.text))) pushC(a, 'Hujjatlar davlat tizimlaridan olindi ('+keys.length+' ta)', 'Tizim');
+  keys.forEach(k=>{ if(a.docs[k].status==='FETCHING') a.docs[k]={status:'VERIFIED', file:'davlat tizimi', at:Date.now(), auto:true}; });
+  if(keys.length && !a.timeline.some(t=>/davlat tizimlaridan olindi/.test(t.text))) pushC(a, 'Hujjatlar davlat tizimlaridan olindi va avtomatik tekshirildi ('+keys.length+' ta)', 'Tizim');
 }
 function toContractB(a){
   const no=nextContractNo();
@@ -1635,11 +1633,10 @@ function onbAct(act, el){
     case 'open': openAppDrawer(id); return;
     case 'open-acc': openAccDrawer(id); return;
     case 'call': A(a=>{ bk(a).called=Date.now(); logB(a,'Mijozga qo‘ng‘iroq qilindi (lid, Q-19)',ROLE.ONB); pushAudit(ROLE.ONB,'Lid: qo‘ng‘iroq qilindi','Onboarding',a.id,'',''); }); toast('Belgilandi: qo‘ng‘iroq qilindi','ok'); return;
-    case 'auto-done': A(a=>{ fetchDocsB(a); pushC(a,'Dastlabki tekshiruv yakunlandi — ariza ko‘rib chiqilmoqda','Tizim'); setSt(a,'DOC_REVIEW',ROLE.SYS,'L3 / ABS / registr — o‘tdi'); }); toast('Hujjatlar ko‘rigiga o‘tdi','ok'); return;
+    case 'auto-done': A(a=>{ fetchDocsB(a); pushC(a,'Dastlabki tekshiruv yakunlandi — ariza ko‘rib chiqilmoqda','Tizim'); setSt(a,'DOC_REVIEW',ROLE.SYS,'L3 / ABS / registr — o‘tdi'); }); toast('Ariza ko‘rigiga o‘tdi','ok'); return;
     case 'doc-ok': A(a=>{ const k=el.dataset.k, x=a.docs[k]; if(x){ x.status='VERIFIED'; logB(a, docName(a,k)+' — tasdiqlandi', ROLE.ONB); } }); return;
-    case 'docs-ok': A(a=>{ docKeys(a).forEach(k=>{ if(['FETCHED','UPLOADED','FETCHING'].includes(a.docs[k].status)) a.docs[k].status='VERIFIED'; }); logB(a,'Hujjatlar tasdiqlandi ('+docKeys(a).length+' ta)',ROLE.ONB); }); toast('Hujjatlar tasdiqlandi','ok'); return;
     case 'doc-ask': openInfoModal(id, el.dataset.k); return;
-    case 'to-site': A(a=>{ if(!docsVerified(a)) return; if(hasSite(a)) setSt(a,'SITE_REVIEW',ROLE.ONB,'hujjatlar to‘g‘ri'); else setSt(a,'KYB_CHECK',ROLE.ONB,'sayt so‘ralmagan — sayt bosqichi o‘tkazildi'); }); return;
+    case 'to-site': A(a=>{ if(docsPending(a).length) return; if(hasSite(a)) setSt(a,'SITE_REVIEW',ROLE.ONB,'hujjatlar to‘g‘ri'); else setSt(a,'KYB_CHECK',ROLE.ONB,'sayt so‘ralmagan — sayt bosqichi o‘tkazildi'); }); return;
     case 'site': A(a=>{ const s=bk(a).site=bk(a).site||{}; s[el.dataset.k]=el.dataset.v; }); return;
     case 'site-auto': A(a=>{ siteAuto(a); logB(a,'Sayt avto-skani qo‘llandi: ishlashi, HTTPS, UZCARD/HUMO logolari',ROLE.SYS); }); return;
     case 'to-kyb': A(a=>setSt(a,'KYB_CHECK',ROLE.ONB,'sayt BT §4 ga mos')); toast('KYC/KYB skriningga o‘tdi','ok'); return;
