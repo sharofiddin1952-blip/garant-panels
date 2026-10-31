@@ -4982,6 +4982,44 @@ function mainClickDelegate(e){
   if((el=e.target.closest('[data-action="open-tx"]'))){ const t=STATE.transactions.find(x=>x.id===el.dataset.id); if(t) openTxDrawer(t); return; }
   if((el=e.target.closest('[data-action="open-merchant"]'))){ e.preventDefault(); const m=STATE.merchants.find(x=>x.id===el.dataset.id); if(m){ STATE.currentMerchantId=m.id; STATE.currentMerchantTab='overview'; const panel=document.getElementById('notifPanel'); if(panel) panel.remove(); showPage('merchant360'); } return; }
   if((el=e.target.closest('[data-onb]'))){ e.preventDefault(); onbAct(el.dataset.onb, el); return; }
+  if((el=e.target.closest('[data-action="m360-menu-toggle"]'))){ e.stopPropagation(); toggleM360Menu(el,el.dataset.id); return; }
+  if((el=e.target.closest('[data-action="m360-suspend"]'))){ openSuspendMerchantModal(el.dataset.id); return; }
+  if((el=e.target.closest('[data-action="m360-activate"]'))){ openActivateMerchantModal(el.dataset.id); return; }
+  if((el=e.target.closest('[data-action="m360-edit"]'))){ openEditMerchantModal(el.dataset.id); return; }
+  if((el=e.target.closest('[data-action="m360-request-info"]'))){ openRequestInfoModal(el.dataset.id); return; }
+  if((el=e.target.closest('[data-action="m360-create-mid"]'))){ openCreateMidModal(el.dataset.id); return; }
+  if((el=e.target.closest('[data-action="m360-change-pricing"]'))){ openChangePricingModal(el.dataset.id); return; }
+  if((el=e.target.closest('[data-action="m360-adjust-limits"]'))){ openAdjustLimitsModal(el.dataset.id); return; }
+  if((el=e.target.closest('[data-action="m360-export"]'))){ m360Export(el.dataset.id); return; }
+  if((el=e.target.closest('[data-action="m360-goto-tab"]'))){ m360GotoTab(el.dataset.tab); return; }
+  if((el=e.target.closest('[data-action="m360-toggle-cap"]'))){ doToggleCapability(el.dataset.id,el.dataset.cap); return; }
+  if((el=e.target.closest('[data-action="m360-health-info"]'))){ openHealthInfoModal(el.dataset.id); return; }
+  if((el=e.target.closest('[data-action="m360-period"]'))){ setM360Period(el.dataset.period); return; }
+  if((el=e.target.closest('[data-action="m360act"]'))){ handleM360Action(el.dataset.type,el.dataset.id,el); return; }
+  if((el=e.target.closest('[data-action="open-chargeback"]'))){ const c=STATE.chargebacks.find(x=>x.id===el.dataset.id); if(c) openChargebackDrawer(c); return; }
+  if((el=e.target.closest('[data-action="open-settlement"]'))){ const s=STATE.settlements.find(x=>x.id===el.dataset.id); if(s) openSettlementDrawer(s); return; }
+  if((el=e.target.closest('[data-action="open-acquirer"]'))){ const a=STATE.acquirers.find(x=>x.id===el.dataset.id); if(a) openAcquirerDrawer(a); return; }
+
+  if(e.target.closest('[data-action="close-drawer"]')){ closeDrawer(); return; }
+  if(e.target.id==='drawerOverlay'){ closeDrawer(); return; }
+  if(e.target.closest('[data-action="close-modal"]')){ closeModal(); return; }
+  if(e.target.id==='modalCenter'){ closeModal(); return; }
+
+  if((el=e.target.closest('[data-action="refund-tx"]'))){ doRefundTx(el.dataset.id); return; }
+  if((el=e.target.closest('[data-action="suspend-merchant"]'))){ doSuspendMerchant(el.dataset.id); return; }
+  if((el=e.target.closest('[data-action="activate-merchant"]'))){ doActivateMerchant(el.dataset.id); return; }
+  if((el=e.target.closest('[data-action="accept-chargeback"]'))){ doChargebackDecision(el.dataset.id,'accept'); return; }
+  if((el=e.target.closest('[data-action="contest-chargeback"]'))){ doChargebackDecision(el.dataset.id,'contest'); return; }
+  if((el=e.target.closest('[data-action="upload-evidence"]'))){ doUploadEvidence(el.dataset.id); return; }
+  if((el=e.target.closest('[data-action="match-exception"]'))){ doMatchException(el.dataset.id); return; }
+  if((el=e.target.closest('[data-action="toggle-risk-rule"]'))){ doToggleRiskRule(el.dataset.id); return; }
+  if((el=e.target.closest('[data-action="open-modal"]'))){ if(el.dataset.modal==='new-risk-rule') openNewRiskRuleModal(); return; }
+  if(e.target.closest('[data-action="create-api-key"]')){ doCreateApiKey(); return; }
+  if((el=e.target.closest('[data-action="revoke-api-key"]'))){ doRevokeApiKey(el.dataset.id); return; }
+  if(e.target.closest('[data-action="copy-key"]')){ toast('Kalit clipboardga nusxalandi (demo)','ok'); return; }
+  if((el=e.target.closest('[data-action="retry-webhook"]'))){ doRetryWebhook(el.dataset.id); return; }
+  if(e.target.closest('[data-action="run-fee-sim"]')){ runFeeSim(); return; }
+
   if((el=e.target.closest('[data-action="page"]'))){
     const key=el.dataset.key; const f=getFilter(key); f.page+=parseInt(el.dataset.dir,10); refreshPage(); return;
   }
