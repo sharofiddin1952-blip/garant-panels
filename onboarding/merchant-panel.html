@@ -297,6 +297,35 @@ a{color:var(--blue);text-decoration:none;}
 .item-row input,.item-row select{padding:6px 8px;font-size:12px;}
 .mini-progress{height:5px;background:#EDEFF3;border-radius:3px;overflow:hidden;margin-top:4px;}
 .mini-progress > span{display:block;height:100%;background:var(--blue);border-radius:3px;}
+/* Jonli bog'lanish (v2.6) */
+.live-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--blue-bg);border:1px solid #CBD6FA;border-radius:10px;padding:10px 14px;font-size:12.5px;margin-bottom:14px;line-height:1.45;}
+.live-bar.warn{background:#FFF7EC;border-color:#F0D6A8;}
+.live-bar.ok{background:#EFFBF3;border-color:#BFE6D2;}
+.live-bar.err{background:#FDECEA;border-color:#F2C4C0;}
+.live-bar.sample{display:block;background:var(--surface-alt);border-color:var(--border);color:var(--text-2);}
+.live-bar .lvl{font-family:var(--mono);font-weight:700;font-size:11px;background:#fff;border:1px solid var(--border);border-radius:5px;padding:2px 6px;}
+.org-sw{border:1px solid var(--border-strong);border-radius:6px;padding:4px 6px;font-size:12px;background:#fff;max-width:240px;}
+.m-alert{border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:12.5px;margin-bottom:14px;line-height:1.5;}
+.m-alert.warn{background:#FFF7EC;border-color:#F0D6A8;}
+.m-alert.ok{background:#EFFBF3;border-color:#BFE6D2;}
+.m-alert.info{background:var(--blue-bg);border-color:#CBD6FA;}
+.m-alert.err{background:#FDECEA;border-color:#F2C4C0;}
+.onb-steps{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin:14px 0 4px;}
+.onb-steps .s{font-size:11.5px;font-weight:600;color:var(--text-3);border-top:3px solid #E4E7EC;padding-top:6px;}
+.onb-steps .s.done{color:var(--green);border-color:var(--green);}
+.onb-steps .s.cur{color:var(--blue);border-color:var(--blue);}
+.onb-steps .s.warn{color:#B26A00;border-color:#E0A33A;}
+.ck-list{border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.ck-row{display:flex;align-items:center;gap:10px;padding:8px 12px;font-size:12.5px;border-bottom:1px solid var(--border);}
+.ck-row:last-child{border-bottom:none;}
+.ck-row .ic{width:18px;height:18px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700;flex-shrink:0;}
+.ck-row.done .ic{background:var(--green-bg);color:var(--green);}
+.ck-row.cur .ic{background:var(--blue-bg);color:var(--blue);}
+.ck-row.warn .ic{background:#FCEFDD;color:#B26A00;}
+.ck-row.todo .ic{background:#EDEFF3;color:var(--text-3);}
+.ck-row .nt{margin-left:auto;color:var(--text-3);font-size:11.5px;text-align:right;}
+.nav-item.locked{opacity:.45;}
+@media (max-width:700px){ .onb-steps{grid-template-columns:repeat(3,1fr);} }
 </style>
 </head>
 <body>
@@ -351,16 +380,17 @@ a{color:var(--blue);text-decoration:none;}
       <div class="gl">UMUMIY</div>
       <button class="nav-item" data-page="dashboard"><svg><use href="#i-grid"/></svg><span>Bosh sahifa</span></button>
       <button class="nav-item" data-page="onbstatus"><svg><use href="#i-idcard"/></svg><span>Onboarding holati</span></button>
+      <button class="nav-item" data-page="golive"><svg><use href="#i-shield"/></svg><span>Go-live</span></button>
     </div>
     <div class="nav-group">
-      <div class="gl">TO\u2018LOVLAR</div>
+      <div class="gl">TO‘LOVLAR</div>
       <button class="nav-item" data-page="transactions"><svg><use href="#i-card"/></svg><span>Tranzaksiyalar</span></button>
       <button class="nav-item" data-page="invoices"><svg><use href="#i-doc"/></svg><span>Hisob-fakturalar</span></button>
-      <button class="nav-item" data-page="links"><svg><use href="#i-link"/></svg><span>To\u2018lov havolalari</span></button>
+      <button class="nav-item" data-page="links"><svg><use href="#i-link"/></svg><span>To‘lov havolalari</span></button>
       <button class="nav-item" data-page="customers"><svg><use href="#i-store"/></svg><span>Mijozlar</span></button>
     </div>
     <div class="nav-group">
-      <div class="gl">PUL MABLAG\u2018I</div>
+      <div class="gl">PUL MABLAG‘I</div>
       <button class="nav-item" data-page="balance"><svg><use href="#i-wallet"/></svg><span>Balans</span></button>
       <button class="nav-item" data-page="settlements"><svg><use href="#i-bank"/></svg><span>Hisob-kitob</span></button>
       <button class="nav-item" data-page="fees"><svg><use href="#i-tag"/></svg><span>Komissiya va tarif</span></button>
@@ -389,7 +419,7 @@ a{color:var(--blue);text-decoration:none;}
       <button class="nav-item" data-page="support"><svg><use href="#i-life"/></svg><span>Yordam markazi</span><span class="badge-count" id="navBadgeSupport"></span></button>
     </div>
     <div class="sidebar-foot">
-      <button class="collapse-btn" id="collapseBtn"><svg><use href="#i-chevron-l"/></svg><span id="collapseLbl">Yig\u2018ish</span></button>
+      <button class="collapse-btn" id="collapseBtn"><svg><use href="#i-chevron-l"/></svg><span id="collapseLbl">Yig‘ish</span></button>
     </div>
   </div>
 
@@ -399,7 +429,7 @@ a{color:var(--blue);text-decoration:none;}
       <div class="search-wrap"><svg><use href="#i-search"/></svg><input type="text" id="globalSearch" placeholder="Tranzaksiya ID, mijoz, buyurtma raqami..."></div>
       <div class="top-right">
         <button class="icon-btn" id="notifBtn"><svg><use href="#i-bell"/></svg><span class="dot" id="notifDot"></span></button>
-        <div class="user-chip"><div class="av">DK</div><div><div class="nm">Dilnoza Karimova</div><div class="rl">Owner</div></div></div>
+        <div class="user-chip"><div class="av">DK</div><div><div class="nm">Dilnoza Yusupova</div><div class="rl">Owner</div></div></div>
       </div>
     </div>
     <div class="content">
@@ -455,7 +485,7 @@ const DECLINE_REASONS=['Yetarli mablag\u2018 yo\u2018q','Karta muddati tugagan',
 const STATE={
   merchant:{
     businessName:'Dilnoza Style', legalName:'"Dilnoza Style" MChJ', inn:'306481725',
-    businessType:'Yakka tartibdagi tadbirkor (YaTT)', regNumber:'YATT-2024-08841',
+    businessType:'MChJ', regNumber:'1184520',
     mcc:'5651', category:'Kiyim-kechak', website:'https://dilnozastyle.uz', address:'Toshkent sh., Chilonzor tumani, 14-mavze',
     contactEmail:'info@dilnozastyle.uz', contactPhone:'+998 90 123 45 67',
     contractNumber:'IE-1042/2025', contractDate:new Date('2025-11-12'),
@@ -619,7 +649,7 @@ function genInvoices(customers){
 }
 function genTeam(){
   return [
-    {id:uid('TM',1), name:'Dilnoza Karimova', email:'dilnoza@dilnozastyle.uz', role:'Owner', status:'Faol', lastActive:daysAgo(0)},
+    {id:uid('TM',1), name:'Dilnoza Yusupova', email:'dilnoza@dilnozastyle.uz', role:'Owner', status:'Faol', lastActive:daysAgo(0)},
     {id:uid('TM',2), name:'Sevara Tosheva', email:'sevara@dilnozastyle.uz', role:'Moliya menejeri', status:'Faol', lastActive:daysAgo(1)},
     {id:uid('TM',3), name:'Jasur Ergashev', email:'jasur@dilnozastyle.uz', role:'Buxgalter', status:'Faol', lastActive:daysAgo(3)},
     {id:uid('TM',4), name:'Nilufar Saidova', email:'nilufar@dilnozastyle.uz', role:'Qo\u2018llab-quvvatlash', status:'Taklif yuborilgan', lastActive:null},
@@ -674,7 +704,6 @@ function initData(){
   STATE.tickets=genTickets();
   STATE.notifications=genNotifications();
   STATE.merchant.twoFA=false;
-  STATE.onboarding=genOnboardingHistory();
 }
 /* ================================================================
    TABLE HELPERS
@@ -730,7 +759,7 @@ function computeKPIs(){
   const approvalRate= tx.length? (approved/tx.length*100) : 0;
   return {todayVol, todayCount:todayTx.length, monthVol, approvalRate};
 }
-function renderDashboard(){
+function renderDashboardPay(){
   const k=computeKPIs();
   const lastSettled=STATE.settlements.find(s=>s.status==='Tushdi');
   const pending=STATE.settlements.filter(s=>s.status!=='Tushdi').sort((a,b)=>a.date-b.date);
@@ -754,7 +783,7 @@ function renderDashboard(){
   const recentTx=STATE.transactions.slice(0,7);
   return `
   <div class="page-header">
-    <div><h1>Xush kelibsiz, Dilnoza!</h1><div class="desc">${esc(STATE.merchant.businessName)} do\u2018koningizning bugungi holati.</div></div>
+    <div><h1>Xush kelibsiz, ${esc(firstName())}!</h1><div class="desc">${esc(STATE.merchant.businessName)} do\u2018koningizning bugungi holati.</div></div>
     <div class="header-actions"><button class="btn btn-primary" data-action="nav" data-page="links"><svg><use href="#i-link"/></svg>To\u2018lov havolasi yaratish</button></div>
   </div>
 
@@ -1467,7 +1496,7 @@ function renderBusiness(){
     <div class="avatar-circle" style="width:52px;height:52px;font-size:18px">${esc(m.businessName.slice(0,2).toUpperCase())}</div>
     <div>
       <div style="font-weight:700;font-size:15px">${esc(m.businessName)}</div>
-      <div style="color:var(--text-3);font-size:12px">Merchant ID: MRC-000124 &middot; Shartnoma: <span class="mono">${esc(m.contractNumber)}</span> &middot; ${badge(m.kycStatus)}</div>
+      <div style="color:var(--text-3);font-size:12px">Merchant ID: ${esc(m.merchantId||'—')} &middot; Shartnoma: <span class="mono">${esc(m.contractNumber)}</span> &middot; ${badge(m.kycStatus)}</div>
     </div>
   </div>
   <div class="grid-2">
@@ -1481,7 +1510,7 @@ function renderBusiness(){
         <div class="kv"><div class="k">INN</div><div class="v mono">${m.inn}</div></div>
         <div class="kv"><div class="k">MCC</div><div class="v">${m.mcc} &mdash; ${esc(m.category)}</div></div>
         <div class="kv"><div class="k">Ekvayring shartnomasi raqami</div><div class="v mono">${esc(m.contractNumber)}</div></div>
-        <div class="kv" style="border-bottom:none"><div class="k">Shartnoma sanasi</div><div class="v">${fmtDate(m.contractDate)}</div></div>
+        <div class="kv" style="border-bottom:none"><div class="k">Shartnoma sanasi</div><div class="v">${m.contractDate?fmtDate(m.contractDate):'—'}</div></div>
       </div>
     </div>
     <div class="panel">
@@ -1517,23 +1546,6 @@ function doEditBusiness(){
 /* ================================================================
    PAGE: BANK ACCOUNT
    ================================================================ */
-function renderBankAccount(){
-  const m=STATE.merchant;
-  return `
-  <div class="page-header"><div><h1>Bank hisobi</h1><div class="desc">To\u2018lovlaringiz qaysi hisobga o\u2018tkazilishini ko\u2018ring.</div></div></div>
-  <div class="panel" style="max-width:560px">
-    <div class="kv-grid">
-      <div class="kv"><div class="k">Bank</div><div class="v">${esc(m.bankName)}</div></div>
-      <div class="kv"><div class="k">Hisob raqami</div><div class="v mono">${m.bankAccount}</div></div>
-      <div class="kv"><div class="k">Hisob egasi</div><div class="v">${esc(m.bankAccountOwner)}</div></div>
-      <div class="kv"><div class="k">Valyuta</div><div class="v">UZS</div></div>
-      <div class="kv"><div class="k">Hisob-kitob jadvali</div><div class="v">${esc(m.settlementCycle)} (kunlik)</div></div>
-      <div class="kv" style="border-bottom:none"><div class="k">Holat</div><div class="v">${m.bankVerified? badge('Tasdiqlangan') : badge('Kutilmoqda')}</div></div>
-    </div>
-    <div class="form-hint" style="margin-top:10px">Xavfsizlik maqsadida hisob raqami qisman yashirilgan.</div>
-    <button class="btn" style="margin-top:12px" data-action="request-bank-change"><svg><use href="#i-bank"/></svg>O\u2018zgartirish so\u2018rovi yuborish</button>
-  </div>`;
-}
 function doRequestBankChange(){
   openConfirm('Bank hisobini o\u2018zgartirish', 'Bank hisobini o\u2018zgartirish bo\u2018yicha so\u2018rov Garant Bank qo\u2018llab-quvvatlash xizmatiga yuborilsinmi? Xavfsizlik tekshiruvidan so\u2018ng siz bilan bog\u2018lanamiz.', 'So\u2018rov yuborish', false, ()=>{
     STATE.tickets.unshift({id:uid('TCK',STATE.seq.tk++), subject:'Bank hisobini o\u2018zgartirish so\u2018rovi', category:'Hisob muammosi', status:'Ochiq', created:new Date()});
@@ -1754,88 +1766,334 @@ function doRevokeSession(id){
 }
 
 /* ================================================================
-   PAGE: ONBOARDING HOLATI (merchant-side view of the onboarding process)
+   JONLI BOG'LANISH — portal va Admin panel bilan (v2.6)
+   Kabinet portal bilan bitta akkaunt (docs/21): ma'lumot localStorage['garant-onboarding-proto-v5'] dan.
+   Shu brauzerda portalda ariza bo'lmasa — «namuna» rejim: Dilnoza Style (live) kabineti.
+   Kabinet faqat mijoz ko'radigan ma'lumotni ko'rsatadi — bankning ichki bosqichlari (a.bank) yo'q (docs/07 §1).
    ================================================================ */
-const ONB_STATUS_LABEL = {
-  DRAFT:'Qoralama', SUBMITTED:'Yuborildi', AUTO_VALIDATION:'Avtomatik tekshiruv',
-  NEEDS_INFO:"Qo‘shimcha ma’lumot kerak", DOC_REVIEW:'Hujjatlar tekshiruvi',
-  SITE_REVIEW:'Sayt/joy tekshiruvi', KYB_CHECK:'KYB tekshiruvi', RISK_ASSESSMENT:'Risk baholash',
-  COMPLIANCE_REVIEW:'Compliance ko‘rib chiqmoqda', PENDING_APPROVAL:"Rahbariyat tasdig‘i kutilmoqda",
-  APPROVED:'Tasdiqlandi', CONTRACT_PENDING:'Shartnoma imzolanmoqda', CONTRACT_SIGNED:'Shartnoma imzolandi',
-  PROVISIONING:"Ta’minlash (provisioning)", COMPLETED:"Yakunlandi — Merchant faol",
-};
-const ONB_STATUS_COLOR = {
-  DRAFT:'gray', SUBMITTED:'blue', AUTO_VALIDATION:'blue', NEEDS_INFO:'amber',
-  DOC_REVIEW:'blue', SITE_REVIEW:'blue', KYB_CHECK:'blue', RISK_ASSESSMENT:'purple',
-  COMPLIANCE_REVIEW:'purple', PENDING_APPROVAL:'amber', APPROVED:'green',
-  CONTRACT_PENDING:'amber', CONTRACT_SIGNED:'green', PROVISIONING:'blue', COMPLETED:'green',
-};
-function onbBadge(status){ return '<span class="badge '+(ONB_STATUS_COLOR[status]||'gray')+'"><span class="dotb"></span>'+esc(ONB_STATUS_LABEL[status]||status)+'</span>'; }
-
-function genOnboardingHistory(){
-  const m=STATE.merchant;
-  const created=new Date(m.contractDate.getTime()-32*86400000);
-  const officer='N. Yusupova';
-  const compOfficer='M. Rahimova';
-  let t=created;
-  const step=(days)=>{ t=new Date(t.getTime()+days*86400000+rndInt(3600,60000)*1000); return t; };
-  const timeline=[
-    {status:'DRAFT', date:created, actor:'Siz (onlayn ariza)', note:"Ariza qoralamasi yaratildi"},
-    {status:'SUBMITTED', date:step(0), actor:'Siz (onlayn ariza)', note:'Ariza rasman topshirildi'},
-    {status:'AUTO_VALIDATION', date:step(0), actor:'Tizim (avtomatik)', note:"Majburiy maydonlar va formatlar avtomatik tekshirildi"},
-    {status:'DOC_REVIEW', date:step(1), actor:officer, note:"Hujjatlar ko‘rib chiqish navbatiga qabul qilindi va tasdiqlandi"},
-    {status:'SITE_REVIEW', date:step(2), actor:officer, note:"Joy/sayt tekshiruvi yakunlandi"},
-    {status:'KYB_CHECK', date:step(1), actor:officer, note:'KYB tekshiruvi muvaffaqiyatli yakunlandi'},
-    {status:'RISK_ASSESSMENT', date:step(1), actor:'Tizim (risk-skoring)', note:"Risk balli hisoblandi: past daraja"},
-    {status:'COMPLIANCE_REVIEW', date:step(1), actor:compOfficer, note:'Compliance tekshiruvidan muvaffaqiyatli o‘tdi'},
-    {status:'PENDING_APPROVAL', date:step(1), actor:compOfficer, note:"Rahbariyat tasdig‘iga yuborildi"},
-    {status:'APPROVED', date:step(2), actor:"R. Qodirov (Boshqaruv a’zosi)", note:'Rahbariyat tomonidan tasdiqlandi'},
-    {status:'CONTRACT_PENDING', date:step(1), actor:'Tizim (shartnoma generatsiyasi)', note:'Shartnoma loyihasi tayyorlandi: '+m.contractNumber},
-    {status:'CONTRACT_SIGNED', date:step(3), actor:"T. Islomov (Rais o‘rinbosari)", note:'Shartnoma ikkala tomon tomonidan imzolandi'},
-    {status:'PROVISIONING', date:step(1), actor:'Tizim (provisioning)', note:'MID, ekvayer marshruti va limitlar sozlandi'},
-    {status:'COMPLETED', date:m.contractDate, actor:'Tizim (avtomatik)', note:'Merchant profili yaratildi va faollashtirildi'},
-  ];
-  const docs=[
-    "Davlat ro‘yxatidan o‘tganlik guvohnomasi","Ustav (ta’sis hujjati)","Ta’sis shartnomasi",
-    "Muassislar yig‘ilishi protokoli","Rahbarni tayinlash to‘g‘risida buyruq","Rahbar pasporti (nusxa)",
-    "Muhr namunasi","Bank rekvizitlari ma’lumotnomasi",
-  ].map(t=>({type:t, status:'Tasdiqlangan', uploadedDate:created}));
-  return {status:'COMPLETED', createdDate:created, assignedTo:officer, complianceOfficer:compOfficer, docs, timeline};
+const LIVE_KEY='garant-onboarding-proto-v5', ORG_KEY='garant-merchant-org';
+const LIVE={S:null, app:null, sample:false};
+const DAY=86400000, LATER_ACC='LATER';
+function liveLoad(){ try{ const s=JSON.parse(localStorage.getItem(LIVE_KEY)); LIVE.S=(s&&s.v===5&&s.apps&&s.apps.length)?s:null; }catch(e){ LIVE.S=null; } }
+function liveSave(){ if(!LIVE.S) return; try{ localStorage.setItem(LIVE_KEY, JSON.stringify(LIVE.S)); }catch(e){ /* xotira yopiq */ } }
+const appRank = a=> a.live?6 : a.status==='COMPLETED'?5 : ['REJECTED','CANCELLED','EXPIRED'].includes(a.status)?1 : a.status==='DRAFT'?2 : 4;
+// Bitta akkauntda bir nechta tashkilot (INN) — har biri uchun eng dolzarb ariza
+function orgList(){
+  if(!LIVE.S) return [];
+  const best={};
+  LIVE.S.apps.forEach(a=>{ const b=best[a.inn]; if(!b || appRank(a)>appRank(b) || (appRank(a)===appRank(b) && a.updatedAt>b.updatedAt)) best[a.inn]=a; });
+  return Object.values(best).sort((x,y)=>appRank(y)-appRank(x) || y.updatedAt-x.updatedAt);
 }
+function pickOrg(){
+  liveLoad();
+  const list=orgList();
+  if(!list.length){ LIVE.sample=true; if(!LIVE.app || !LIVE.app._sample) LIVE.app=sampleApp(); applyMerchant(); return; }
+  LIVE.sample=false;
+  const h=/#org=(\d{9})/.exec(location.hash); let inn=h?h[1]:null;
+  if(inn){ try{ localStorage.setItem(ORG_KEY, inn); }catch(e){} }
+  else { try{ inn=localStorage.getItem(ORG_KEY); }catch(e){} }
+  LIVE.app=list.find(a=>a.inn===inn) || list[0];
+  applyMerchant();
+}
+function setOrg(inn){ try{ localStorage.setItem(ORG_KEY, inn); }catch(e){} if(/#org=/.test(location.hash)) history.replaceState(null,'',location.pathname); pickOrg(); refreshPage(); }
+
+/* ---------------- yordamchilar (portal bilan bir xil qoidalar) ---------------- */
+const fmtAcc = n=> String(n).replace(/(\d{4})(?=\d)/g,'$1 ');
+const maskAcc = n=> '**** '+String(n).slice(-4);
+const fmtPhone = p=>{ const d=String(p||'').replace(/\D/g,'').slice(-9); return d.length===9 ? '+998 '+d.slice(0,2)+' '+d.slice(2,5)+' '+d.slice(5,7)+' '+d.slice(7) : String(p||'—'); };
+function settleAcc(a){ if(a.d.accountId && a.d.accountId!==LATER_ACC) return a.d.accountId; return ((LIVE.S&&LIVE.S.opened)||{})[a.inn] || ''; }
+const noAcc = a=> !settleAcc(a);
+const accReqOf = a=> (LIVE.S && LIVE.S.accReqs && LIVE.S.accReqs[a.inn]) || null;
+function lvl(a){
+  const st=a.status;
+  if(st==='COMPLETED') return a.live?'D5':'D4';
+  if(['APPROVED','CONTRACT_PENDING','CONTRACT_SIGNED','PROVISIONING'].includes(st)) return 'D3';
+  if(['DRAFT','REJECTED','CANCELLED','EXPIRED'].includes(st)) return 'D1';
+  return 'D2';
+}
+const LVL_NAME = { D1:'Ro‘yxatdan o‘tgan', D2:'Ariza beruvchi', D3:'Tasdiqlangan', D4:'Merchant (sandbox)', D5:'Merchant (live)' };
+// Mijoz ko'radigan holat — portaldagi ext() bilan bir xil (ichki bosqichlar «Ko'rib chiqilmoqda»)
+function ext(a){
+  const st=a.status;
+  if(st==='DRAFT') return ['Qoralama','gray'];
+  if(st==='SUBMITTED') return ['Yuborildi','blue'];
+  if(st==='AUTO_VALIDATION') return ['Dastlabki tekshiruv','blue'];
+  if(['DOC_REVIEW','SITE_REVIEW','KYB_CHECK','RISK_ASSESSMENT','UNDER_REVIEW','COMPLIANCE_REVIEW','ESCALATED','PENDING_APPROVAL'].includes(st)) return ['Ko‘rib chiqilmoqda','blue'];
+  if(st==='NEEDS_INFO') return ['Sizdan ma’lumot kerak','amber'];
+  if(st==='APPROVED') return ['Tasdiqlandi','green'];
+  if(st==='CONTRACT_PENDING') return a.contract && a.contract.mSigned ? ['Bank imzosi kutilmoqda','blue'] : ['Shartnomani imzolang','amber'];
+  if(st==='CONTRACT_SIGNED' || st==='PROVISIONING') return ['Kabinet tayyorlanmoqda','blue'];
+  if(st==='COMPLETED') return a.live ? ['Faol (live)','green'] : noAcc(a) ? ['Sandbox · hisob kutilmoqda','amber'] : ['Sandbox','purple'];
+  return {REJECTED:['Rad etildi','red'], CANCELLED:['Bekor qilindi','gray'], EXPIRED:['Muddati o‘tdi','gray']}[st] || [st,'gray'];
+}
+function extStep(a){
+  const st=a.status;
+  if(st==='SUBMITTED' || st==='AUTO_VALIDATION') return 2;
+  if(st==='NEEDS_INFO' || ['DOC_REVIEW','SITE_REVIEW','KYB_CHECK','RISK_ASSESSMENT','UNDER_REVIEW','COMPLIANCE_REVIEW','ESCALATED','PENDING_APPROVAL'].includes(st)) return 3;
+  if(st==='APPROVED' || st==='CONTRACT_PENDING') return 4;
+  if(st==='CONTRACT_SIGNED' || st==='PROVISIONING') return 5;
+  if(st==='COMPLETED') return a.live ? 7 : 6;
+  return 1;
+}
+const extBadge = a=>{ const [l,c]=ext(a); return '<span class="badge '+c+'"><span class="dotb"></span>'+esc(l)+'</span>'; };
+const DOC_NAMES = {
+  CERT_REG:'Davlat ro‘yxatidan o‘tganlik guvohnomasi', CHARTER:'Ustav', FOUNDERS_AGREEMENT:'Ta’sis shartnomasi', PROTOCOL_DIR:'Protokol (direktorni tayinlash)',
+  ORDER_DIR_ACC:'Buyruq (direktorni tayinlash)', PASSPORT_DIR:'Direktor pasporti', PASSPORT_ACC:'Bosh buxgalter pasporti', PASSPORT_FOUNDER:'Ta’sischi pasporti',
+  SEAL:'Imzo va muhr namunalari kartochkasi', FOUNDER_LE_CERT:'Ta’sischi (yuridik shaxs) guvohnomasi', FOUNDER_LE_DIR_PASSPORT:'Ta’sischi (yuridik shaxs) direktorining pasporti',
+  DOMAIN_CONTRACT:'Domen ro‘yxatdan o‘tkazish shartnomasi', LICENSE:'Litsenziya',
+};
+function docName(a,key){ const p=key.split(':'); let n=DOC_NAMES[p[0]]||p[0]; if(p[1]!=null && a.founders && a.founders[+p[1]]) n+=' — '+a.founders[+p[1]].name; return n; }
+const DOC_CLIENT = { VERIFIED:['Tasdiqlangan','green'], REPLACEMENT_REQUIRED:['Sizdan so‘raldi','amber'], UPLOADED:['Siz yukladingiz','blue'], FETCHED:['Olindi','blue'], FETCHING:['Olinmoqda','gray'] };
+const ACC_CLIENT = { DRAFT:['Qoralama','gray'], SUBMITTED:['Yuborildi','blue'], IN_REVIEW:['Bank ko‘rib chiqmoqda','blue'], OPENED:['Hisob ochildi','green'] };
+const IND = { retail:['Kiyim-kechak, aksessuar','5651'], ecom:['Internet-do‘kon','5999'], food:['Restoran, kafe','5812'], edu:['Ta’lim','8299'], health:['Tibbiy xizmatlar','8099'], tourism:['Turizm','4722'], it:['IT','5734'], services:['Xizmatlar','7399'], transport:['Transport','4215'] };
+const GOLIVE_ITEMS = [['tech','Texnik sozlamalar: server IP, integratsiya usuli, callback URL (Q-30)'],['test','Sandbox’da muvaffaqiyatli test to‘lov'],['refund','Test to‘lovni qaytarish (refund)'],['webhook','Webhook (callback) 200 qaytaradi'],['mfa','Kabinetda ikki bosqichli himoya (MFA)']];
+const goliveDone = a=> GOLIVE_ITEMS.every(([k])=>a.golive && a.golive[k]);
+function userName(){ const u=LIVE.S && (LIVE.S.user || Object.values(LIVE.S.users||{})[0]); return (u && u.name) || (LIVE.app && LIVE.app.d.dirName) || 'Dilnoza Yusupova'; }
+function firstName(){ const p=userName().split(' '); return p.length>=2 && LIVE.S ? p[1] : p[0]; }
+
+/* Namuna: portalda ariza bo'lmasa ko'rsatiladigan live merchant (Dilnoza Style) — portal shaklida */
+function sampleApp(){
+  const t0=Date.now()-420*DAY, T=n=>t0+n*DAY;
+  const keys=['CERT_REG','CHARTER','FOUNDERS_AGREEMENT','PROTOCOL_DIR','ORDER_DIR_ACC','PASSPORT_DIR','FOUNDER_LE_CERT:1','FOUNDER_LE_DIR_PASSPORT:1','SEAL','DOMAIN_CONTRACT'];
+  const docs={}; keys.forEach(k=>{ docs[k]={status:'VERIFIED', file:'davlat tizimi', at:T(1)}; });
+  const tl=[[0,'Qoralama yaratildi','Siz'],[1,'Ariza yuborildi · nusxa saqlandi (SHA-256 4be1c09a7f3e…)','Siz'],[1,'Hujjatlar davlat tizimlaridan olindi (10 ta)','Tizim'],
+    [1,'Dastlabki tekshiruv yakunlandi — ariza ko‘rib chiqilmoqda','Tizim'],[3,'Ariza tasdiqlandi','Bank'],[3,'Shartnoma imzolash uchun tayyor (IE-1042/2025) — 14 kun ichida imzolang','Tizim'],
+    [4,'Siz shartnomani imzoladingiz (E-IMZO) — bank imzosi kutilmoqda','Siz'],[5,'Bank shartnomani imzoladi (Rais o‘rinbosari)','Bank'],[5,'Kabinetingiz tayyor — o‘sha akkaunt bilan kiring (Merchant MER-000124)','Tizim'],
+    [8,'Go-live so‘rovi yuborildi — Operatsiya tasdig‘i kutilmoqda','Siz'],[9,'Go-live tasdiqlandi — production kalitlar berildi','Bank']].map(([n,text,who])=>({t:T(n),text,who})).reverse();
+  return { _sample:true, id:'APP-2025-000124', inn:'306481725', status:'COMPLETED', live:true, form:'MChJ', role:'DIR', industry:'retail', orgName:'“Dilnoza Style” MChJ',
+    createdAt:T(0), updatedAt:T(9), submittedAt:T(1), founders:[{type:'JSH',name:'Yusupova Dilnoza Baxtiyorovna',share:70},{type:'YUSH',name:'“Style Invest” MChJ',share:30}],
+    d:{ legalName:'“Dilnoza Style” MChJ', brand:'Dilnoza Style', regNo:'1184520', legalAddr:'Toshkent sh., Chilonzor tumani, 14-mavze, 22-uy', phone:'901234567', email:'info@dilnozastyle.uz',
+      website:'https://dilnozastyle.uz', dirName:'Yusupova Dilnoza Baxtiyorovna', accountId:'20208000900124821001', services:{ecom:true, links:true, invoice:true}, receipt:'goods' },
+    docs, timeline:tl, contract:{no:'IE-1042/2025', at:T(3), mSigned:T(4), bSigned:T(5)}, merchantId:'MER-000124', keys:{mid:'sbx_306481725', sk:'sk_test_k3m9x2p7q4w8r5t1y6u0z2a8b4'},
+    golive:{tech:1, test:1, refund:1, webhook:1, mfa:1, ip:'185.74.5.20', callback:'https://dilnozastyle.uz/api/webhooks/garant', method:'API', requestedAt:T(8), approvedAt:T(9)} };
+}
+// Kabinet sarlavhalari va profil — ariza ma'lumotidan
+function applyMerchant(){
+  const a=LIVE.app, m=STATE.merchant, d=a.d, acc=settleAcc(a), ind=IND[a.industry];
+  Object.assign(m, { businessName:d.brand||a.orgName, legalName:d.legalName||a.orgName, inn:a.inn, businessType:a.form, regNumber:d.regNo||'—',
+    mcc:ind?ind[1]:'—', category:ind?ind[0]:'—', website:d.website||'—', address:d.legalAddr||'—', contactEmail:d.email||'—', contactPhone:fmtPhone(d.phone),
+    contractNumber:a.contract?a.contract.no:'—', contractDate:a.contract?new Date(a.contract.bSigned||a.contract.at):null,
+    bankAccount:acc?maskAcc(acc):'hisob yo‘q', bankAccountOwner:d.legalName||a.orgName, bankVerified:!!acc, merchantId:a.merchantId||'—' });
+  const set=(sel,v)=>{ const el=document.querySelector(sel); if(el) el.textContent=v; };
+  set('.sidebar-brand .name', m.businessName);
+  set('.sidebar-brand .logo', m.businessName.replace(/[^A-Za-zА-Яа-я ]/g,'').split(' ').filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase()||'GB');
+  const chip=document.querySelector('.acc-chip'); if(chip) chip.innerHTML='<svg><use href="#i-bank"/></svg>Garant Bank <b>'+esc(acc?maskAcc(acc):'hisob yo‘q')+'</b>';
+  const un=userName(), ini=un.split(' ').filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase();
+  set('.user-chip .nm', un.split(' ').slice(0,2).join(' ')); set('.user-chip .av', ini); set('.user-chip .rl', a.role==='EMP'?'Administrator':'Owner');
+  document.title=m.businessName+' — Merchant Kabinet';
+  if(!LIVE.sample){
+    // Sandbox kalitlari — shartnomadan keyin (Q-16); production — go-live dan keyin
+    STATE.apiKeys = a.keys ? [{id:'pk', label:'Merchant ID (sandbox)', value:a.keys.mid, masked:false}, {id:'sk', label:'Secret key (sandbox)', value:a.keys.sk, masked:true}]
+      .concat(a.live ? [{id:'pk-live', label:'Publishable key (production)', value:'pk_live_'+a.inn+a.keys.sk.slice(-6), masked:false}] : []) : [];
+  }
+}
+const pBtn = (screen,label,primary)=> '<button class="btn btn-sm '+(primary===false?'':'btn-primary')+'" data-live="portal" data-screen="'+screen+'">'+label+'</button>';
+function orgSwitchHTML(){
+  const list=orgList(); if(list.length<2) return '';
+  return '<select class="org-sw" data-live-org title="Tashkilotni almashtirish — bitta akkaunt, bir nechta INN">'+list.map(a=>'<option value="'+a.inn+'"'+(a===LIVE.app?' selected':'')+'>'+esc(a.d.brand||a.orgName)+' · '+a.inn+'</option>').join('')+'</select>';
+}
+// Har sahifa tepasida: dostup darajasi va keyingi qadam
+function liveBanner(page){
+  const a=LIVE.app; if(!a) return '';
+  if(LIVE.sample) return '<div class="live-bar sample"><b>Namuna kabinet.</b> Shu brauzerda portalda ariza yo‘q — «Dilnoza Style» (live) namunasi ko‘rsatilmoqda. <a href="onboarding-portal.html">Portalda ariza bering</a> — kabinet uning holatini jonli ko‘rsatadi (Admin paneldagi harakatlar ham darhol ko‘rinadi).</div>';
+  const L=lvl(a), lbl=ext(a)[0], sw=orgSwitchHTML();
+  let msg='', act='', cls='';
+  if(a.status==='DRAFT'){ msg='Ariza hali yuborilmagan (qoralama). Kabinet ariza tasdiqlanib, shartnoma imzolangach ochiladi.'; act=pBtn('wizard','Portalda davom etish'); }
+  else if(a.status==='NEEDS_INFO'){ cls='warn'; msg='<b>Bank qo‘shimcha ma’lumot so‘radi</b> — javob muddati '+fmtDate(a.info.deadline)+'.'; act=pBtn('info','Javob berish'); }
+  else if(a.status==='REJECTED'){ cls='err'; msg='<b>Ariza rad etildi.</b> '+esc(a.rejection?a.rejection.reason:''); act=pBtn('rejected','Batafsil', false); }
+  else if(['CANCELLED','EXPIRED'].includes(a.status)){ msg='Ariza '+lbl.toLowerCase()+'. Portalda yangi ariza yaratishingiz mumkin.'; act=pBtn('home','Portal', false); }
+  else if(L==='D2'){ msg='Arizangiz ko‘rib chiqilmoqda. Kabinet tasdiq va shartnomadan keyin ochiladi.'; act=pBtn('status','Ariza holati', false); }
+  else if(a.status==='CONTRACT_PENDING' && !a.contract.mSigned){ cls='warn'; msg='<b>Ariza tasdiqlandi!</b> Shartnomani E-IMZO bilan imzolang (14 kun).'; act=pBtn('contract','Shartnomani imzolash'); }
+  else if(L==='D3'){ msg=lbl+' — kabinet tez orada ochiladi.'; }
+  else if(L==='D4'){ cls='warn'; msg='<b>Sandbox (test) rejimi</b> — quyidagi to‘lov ma’lumotlari namunaviy. '+(noAcc(a)?'Real to‘lovlar uchun Garant Bankda hisob kerak (Q-32).':a.golive&&a.golive.requestedAt?'Go-live so‘rovi yuborildi — Operatsiya tasdig‘i kutilmoqda.':'Real to‘lovlarga o‘tish uchun go-live cheklistini bajaring.');
+    act=noAcc(a)?'<button class="btn btn-sm btn-primary" data-live="acc">Hisob ochish</button>':(page!=='golive'?'<button class="btn btn-sm btn-primary" data-action="nav" data-page="golive">Go-live</button>':''); }
+  else if(L==='D5'){ if(!sw) return ''; cls='ok'; msg='Live — real to‘lovlar faol.'; }
+  return '<div class="live-bar '+cls+'">'+sw+'<span class="lvl" title="'+esc(LVL_NAME[L])+'">'+L+'</span><span style="flex:1;min-width:200px">'+msg+'</span>'+act+'</div>';
+}
+const OPEN_PAGES = ['dashboard','onbstatus','bankaccount','golive','business','notifications','security','support'];
+function pageLocked(key){ if(LIVE.sample || !LIVE.app) return false; return ['D1','D2','D3'].includes(lvl(LIVE.app)) && !OPEN_PAGES.includes(key); }
+function lockedHTML(){
+  const L=lvl(LIVE.app);
+  return '<div class="panel" style="max-width:660px"><div class="empty-state"><svg><use href="#i-shield"/></svg><div class="t">Bu bo‘lim kabinet ochilgandan keyin ishlaydi</div>'+
+    '<div class="d" style="max-width:520px">Hozirgi dostup: <b>'+L+' · '+esc(LVL_NAME[L])+'</b>. To‘lovlar, hisob-kitob, jamoa va API — shartnoma imzolanib kabinet yaratilgach (D4, sandbox); real to‘lovlar — go-live dan keyin (D5). Yangi login kerak emas — shu akkaunt (docs/21).</div>'+
+    '<button class="btn btn-primary" style="margin-top:14px" data-action="nav" data-page="onbstatus">Onboarding holati</button></div></div>';
+}
+function progressSteps(a){
+  const names=['Ariza yuborildi','Dastlabki tekshiruv','Ko‘rib chiqilmoqda','Tasdiq va shartnoma','Kabinet (sandbox)','Live'], k=extStep(a), bad=['REJECTED','CANCELLED','EXPIRED'].includes(a.status);
+  return '<div class="onb-steps">'+names.map((t,i)=>{ const n=i+1; const c= bad ? '' : n<k ? 'done' : n===k ? ((a.status==='NEEDS_INFO'||(a.status==='CONTRACT_PENDING'&&!a.contract.mSigned)||(n===6&&noAcc(a)))?'warn':'cur') : '';
+    return '<div class="s '+c+'">'+t+'</div>'; }).join('')+'</div>';
+}
+const ckRow = (label, st, note)=> '<div class="ck-row '+st+'"><span class="ic">'+({done:'✓',cur:'●',warn:'!',todo:'○'}[st])+'</span><span>'+label+'</span><span class="nt">'+(note||'')+'</span></div>';
+
+/* ---------------- PAGE: ONBOARDING HOLATI (portal bilan bir xil ma'lumot) ---------------- */
 function renderOnboardingStatus(){
-  const o=STATE.onboarding;
-  const m=STATE.merchant;
-  const timelineHTML='<div class="tl">'+o.timeline.slice().reverse().map((t,i)=>
-    '<div class="tl-item '+(i===0?'':'done')+'"><div class="tt">'+esc(ONB_STATUS_LABEL[t.status]||t.status)+'</div>'+
-    '<div class="td">'+fmtDateTime(t.date)+' &middot; '+esc(t.actor)+(t.note?(' &middot; '+esc(t.note)):'')+'</div></div>'
-  ).join('')+'</div>';
-  const docsHTML='<div class="table-scroll" style="border:none"><table class="data-table"><thead><tr><th>Hujjat</th><th>Holat</th><th>Yuklangan</th></tr></thead><tbody>'+
-    o.docs.map(d=>'<tr><td>'+esc(d.type)+'</td><td>'+badge(d.status)+'</td><td style="color:var(--text-3)">'+fmtDate(d.uploadedDate)+'</td></tr>').join('')+
-    '</tbody></table></div>';
+  const a=LIVE.app, m=STATE.merchant, acc=settleAcc(a), r=a.rejection;
+  const keys=Object.keys(a.docs||{});
+  let alerts='';
+  if(a.status==='NEEDS_INFO' && a.info) alerts+='<div class="m-alert warn"><b>Bank qo‘shimcha ma’lumot so‘radi</b> ('+a.info.cycle+'-so‘rov / 3, muddat '+fmtDate(a.info.deadline)+'):<ol style="margin:6px 0 8px 18px;padding:0">'+a.info.items.map(it=>'<li>'+esc(it.text)+'</li>').join('')+'</ol>'+pBtn('info','Portalda javob berish')+'</div>';
+  if(a.status==='CONTRACT_PENDING') alerts+='<div class="m-alert '+(a.contract.mSigned?'info':'ok')+'">'+(a.contract.mSigned?'Siz imzoladingiz — <b>bank imzosi kutilmoqda</b> (Rais o‘rinbosari, odatda 1 ish kuni).':'<b>Arizangiz tasdiqlandi!</b> Shartnoma '+esc(a.contract.no)+' ni 14 kun ichida E-IMZO bilan imzolang. ')+(a.contract.mSigned?'':pBtn('contract','Shartnomani imzolash'))+'</div>';
+  if(r) alerts+='<div class="m-alert err"><b>'+esc(r.reason)+'</b>'+(r.remarks&&r.remarks.length?'<ul style="margin:6px 0 0 18px;padding:0">'+r.remarks.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>':'')+(r.canReapply?'<div style="margin-top:8px">'+pBtn('rejected','Qayta ariza (portal)')+'</div>':'')+'</div>';
+  if(noAcc(a) && !['REJECTED','CANCELLED','EXPIRED'].includes(a.status)) alerts+='<div class="m-alert warn"><b>Garant Bankda hisobingiz yo‘q.</b> Ariza, shartnoma va sandbox hisobsiz davom etadi; real to‘lovlar (live) uchun hisob kerak (Q-32). <button class="btn btn-sm btn-primary" data-live="acc">Hisob ochish</button></div>';
   return `
-  <div class="page-header"><div><h1>Onboarding holati</h1><div class="desc">Arizangizning qabul qilingan kundan merchant profili faollashtirilishigacha bo'lgan to'liq jarayoni.</div></div></div>
+  <div class="page-header"><div><h1>Onboarding holati</h1><div class="desc">Portaldagi arizangiz bilan bir xil — bank tomonidagi o‘zgarishlar shu yerda darhol ko‘rinadi.</div></div>
+    <div class="header-actions">${pBtn('status','Portalda ochish', false)}</div></div>
+  ${alerts}
   <div class="panel">
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
-      <div><h3 style="margin:0 0 4px">${esc(m.businessName)}</h3><div style="font-size:12px;color:var(--text-3)">Ariza sanasi: ${fmtDate(o.createdDate)} &middot; Shartnoma: ${esc(m.contractNumber)}</div></div>
-      <div>${onbBadge(o.status)}</div>
+      <div><h3 style="margin:0 0 4px">${esc(m.businessName)}</h3><div style="font-size:12px;color:var(--text-3)"><span class="mono">${esc(a.id)}</span> · INN ${esc(a.inn)} · yuborilgan: ${a.submittedAt?fmtDate(a.submittedAt):'—'}</div></div>
+      <div>${extBadge(a)}</div>
     </div>
-    <div style="height:14px"></div>
+    ${progressSteps(a)}
+    <div class="kv-grid" style="margin-top:12px">
+      <div class="kv"><div class="k">Yuridik nomi</div><div class="v">${esc(m.legalName)}</div></div>
+      <div class="kv"><div class="k">Dostup darajasi</div><div class="v">${lvl(a)} · ${esc(LVL_NAME[lvl(a)])}</div></div>
+      <div class="kv"><div class="k">Shartnoma</div><div class="v mono">${esc(m.contractNumber)}${a.contract?' · '+(a.contract.bSigned?'imzolangan':a.contract.mSigned?'bank imzosi kutilmoqda':'imzo kutilmoqda'):''}</div></div>
+      <div class="kv"><div class="k">Merchant ID</div><div class="v mono">${esc(a.merchantId||'— (kabinet ochilganda)')}</div></div>
+      <div class="kv"><div class="k">Tushum hisobi</div><div class="v mono">${acc?fmtAcc(acc):'— hali yo‘q (go-live uchun kerak)'}</div></div>
+      <div class="kv" style="border-bottom:none"><div class="k">Go-live</div><div class="v">${a.live?'Live ✓':a.golive&&a.golive.requestedAt?'So‘rov yuborildi':a.status==='COMPLETED'?'Sandbox — cheklistni bajaring':'—'}</div></div>
+    </div>
+  </div>
+  <div class="grid-2" style="margin-top:16px">
+    <div class="panel"><div class="panel-title"><h3>Hujjatlar</h3><span class="sub">bank davlat tizimlaridan oladi — yuklash shart emas (Q-34)</span></div>
+      ${keys.length ? keys.map(k=>{ const s=DOC_CLIENT[a.docs[k].status]||[a.docs[k].status,'gray']; return '<div class="line-item"><span>'+esc(docName(a,k))+'</span><span class="badge '+s[1]+'"><span class="dotb"></span>'+s[0]+'</span></div>'; }).join('')
+        : '<div style="color:var(--text-3);font-size:12.5px">Ariza yuborilgach bank hujjatlarni davlat tizimlaridan avtomatik oladi.</div>'}
+    </div>
+    <div class="panel"><div class="panel-title"><h3>Jarayon tarixi</h3><span class="sub">ichki bosqichlar umumiy «Ko‘rib chiqilmoqda»</span></div>
+      <div class="tl">${a.timeline.map((t,i)=>'<div class="tl-item '+(i?'done':'')+'"><div class="tt">'+esc(t.text)+'</div><div class="td">'+fmtDateTime(t.t)+' &middot; '+esc(t.who)+'</div></div>').join('')}</div>
+    </div>
+  </div>`;
+}
+
+/* ---------------- PAGE: BANK HISOBI ---------------- */
+function renderBankAccount(){
+  const a=LIVE.app, m=STATE.merchant, acc=settleAcc(a), r=accReqOf(a);
+  const accName={uzs:'Asosiy hisob-kitob (UZS)', cardGoods:'Karta tushumi — tovarlar (tranzit)', cardServices:'Karta tushumi — xizmatlar (tranzit)'};
+  if(!acc){
+    const st=r?ACC_CLIENT[r.status]||[r.status,'gray']:null;
+    return `
+  <div class="page-header"><div><h1>Bank hisobi</h1><div class="desc">To‘lovlaringiz qaysi hisobga o‘tkazilishi.</div></div></div>
+  <div class="m-alert warn" style="max-width:720px"><b>Garant Bankda hisobingiz hali yo‘q.</b> Ariza, shartnoma, kabinet va sandbox hisobsiz ishlaydi. Real to‘lovlarni qabul qilish (go-live) uchun hisob kerak — ochilgach tizim uni ABS da INN bo‘yicha o‘zi topadi va bog‘laydi (Q-32).</div>
+  <div class="panel" style="max-width:720px">
+    <div class="panel-title"><h3>Hisob ochish arizasi</h3>${st?'<span class="badge '+st[1]+'"><span class="dotb"></span>'+st[0]+'</span>':''}</div>
+    ${r ? `<div class="kv-grid"><div class="kv"><div class="k">Ariza</div><div class="v mono">${esc(r.id)}</div></div><div class="kv"><div class="k">Tarif</div><div class="v">${esc(r.d.tariff||'—')}</div></div></div>
+      <div class="tl" style="margin-top:12px">${r.timeline.map((t,i)=>'<div class="tl-item '+(i?'done':'')+'"><div class="tt">'+esc(t.text)+'</div><div class="td">'+fmtDateTime(t.t)+' &middot; '+esc(t.who)+'</div></div>').join('')}</div>`
+      : '<div style="font-size:12.5px;color:var(--text-2)">Portal ichida onlayn ariza — bank shabloni (5 bo‘lim: hisobvaraqlar, masofaviy xizmat, tarif, roziliklar, rahbar imzosi). Hujjat yuklash shart emas (Q-34).</div>'}
+    <button class="btn btn-primary" style="margin-top:12px" data-live="acc">${r&&r.status!=='DRAFT'?'Arizani ko‘rish':'Hisob ochish arizasi'}</button>
+  </div>`;
+  }
+  const nums=(r&&r.numbers)||[['uzs',acc]];
+  return `
+  <div class="page-header"><div><h1>Bank hisobi</h1><div class="desc">To‘lovlaringiz qaysi hisobga o‘tkazilishi.</div></div></div>
+  <div class="panel" style="max-width:640px">
     <div class="kv-grid">
-      <div class="kv"><div class="k">Mas'ul onboarding xodimi</div><div class="v">${esc(o.assignedTo)}</div></div>
-      <div class="kv"><div class="k">Compliance xodimi</div><div class="v">${esc(o.complianceOfficer)}</div></div>
-      <div class="kv"><div class="k">MCC / kategoriya</div><div class="v">${esc(m.mcc)} &middot; ${esc(m.category)}</div></div>
-      <div class="kv" style="border-bottom:none"><div class="k">Shartnoma sanasi</div><div class="v">${fmtDate(m.contractDate)}</div></div>
+      <div class="kv"><div class="k">Bank</div><div class="v">Garant Bank</div></div>
+      <div class="kv"><div class="k">Hisob egasi</div><div class="v">${esc(m.bankAccountOwner)}</div></div>
+      ${nums.map(([k,n])=>'<div class="kv"><div class="k">'+esc(accName[k]||k)+'</div><div class="v mono">'+maskAcc(n)+'</div></div>').join('')}
+      <div class="kv"><div class="k">Valyuta · hisob-kitob</div><div class="v">UZS · ${esc(m.settlementCycle)} (kunlik)</div></div>
+      <div class="kv"><div class="k">Manba</div><div class="v">${a.d.accountId&&a.d.accountId!==LATER_ACC?'Arizada tanlangan (ABS)':'Keyin ochildi — ABS orqali avtomatik bog‘landi'}</div></div>
+      <div class="kv" style="border-bottom:none"><div class="k">Holat</div><div class="v">${badge('Tasdiqlangan')}</div></div>
     </div>
-  </div>
-  <div class="panel" style="margin-top:16px">
-    <div class="panel-title"><h3>Taqdim etilgan hujjatlar</h3></div>
-    ${docsHTML}
-  </div>
-  <div class="panel" style="margin-top:16px">
-    <div class="panel-title"><h3>Jarayon tarixi</h3></div>
-    ${timelineHTML}
-  </div>
-  `;
+    <div class="form-hint" style="margin-top:10px">Xavfsizlik maqsadida hisob raqami qisman yashirilgan.</div>
+    <button class="btn" style="margin-top:12px" data-action="request-bank-change"><svg><use href="#i-bank"/></svg>O‘zgartirish so‘rovi yuborish</button>
+  </div>`;
+}
+
+/* ---------------- PAGE: GO-LIVE (D4 → D5) ---------------- */
+function renderGolive(){
+  const a=LIVE.app, g=a.golive||{}, L=lvl(a), ready=L==='D4'||L==='D5', acc=settleAcc(a);
+  const head='<div class="page-header"><div><h1>Go-live — real to‘lovlarga o‘tish</h1><div class="desc">Sandbox’da integratsiyani tekshiring, so‘ng bank (Operatsiya) real to‘lovlarni yoqadi. Tekshiruvlar sizning kabinetingizda (docs/09 §3.2).</div></div></div>';
+  if(!ready) return head+'<div class="panel" style="max-width:660px"><div class="empty-state"><svg><use href="#i-clock"/></svg><div class="t">Go-live kabinet ochilgandan keyin</div><div class="d">Avval ariza tasdiqlanadi va shartnoma imzolanadi — keyin kabinet va sandbox kalitlari beriladi (D4). Hozir: '+esc(ext(a)[0])+'.</div></div></div>';
+  const dis=a.live||(g.requestedAt&&!a.live);
+  const B=(act,label,done)=>done?'<span style="color:var(--green);font-weight:700;font-size:12px">✓ bajarildi</span>':'<button class="btn btn-sm" data-live="'+act+'"'+(dis?' disabled':'')+'>'+label+'</button>';
+  const status = a.live ? '<div class="status-hero ok"><div class="ic"><svg><use href="#i-check"/></svg></div><div><div class="tt">Live — real to‘lovlar faol</div><div class="dd">Go-live '+(g.approvedAt?fmtDate(g.approvedAt):'')+' da tasdiqlandi. Production kalitlar «API va integratsiya» bo‘limida.</div></div></div>'
+    : g.requestedAt ? '<div class="status-hero pending"><div class="ic"><svg><use href="#i-clock"/></svg></div><div><div class="tt">So‘rov yuborildi</div><div class="dd">'+fmtDateTime(g.requestedAt)+' — Operatsiya xodimi tekshirib tasdiqlaydi (odatda 1 ish kuni).</div></div></div>' : '';
+  return head+status+`
+  <div class="grid-2">
+    <div class="panel"><div class="panel-title"><h3>Cheklist</h3><span class="sub">${GOLIVE_ITEMS.filter(([k])=>g[k]).length+(acc?1:0)}/${GOLIVE_ITEMS.length+1}</span></div>
+      <div class="ck-list">
+        ${ckRow('Shartnoma imzolangan', 'done', esc(a.contract?a.contract.no:''))}
+        ${ckRow('Garant Bankdagi hisob bog‘langan (Q-32)', acc?'done':'warn', acc?maskAcc(acc):'<button class="btn btn-sm btn-primary" data-live="acc">Hisob ochish</button>')}
+        ${ckRow(esc(GOLIVE_ITEMS[0][1]), g.tech?'done':'todo', g.tech?esc(g.ip||''):'pastdagi forma')}
+        ${ckRow(esc(GOLIVE_ITEMS[1][1]), g.test?'done':'todo', B('gl-test','Test to‘lov',g.test))}
+        ${ckRow(esc(GOLIVE_ITEMS[2][1]), g.refund?'done':'todo', B('gl-refund','Test refund',g.refund))}
+        ${ckRow(esc(GOLIVE_ITEMS[3][1]), g.webhook?'done':'todo', B('gl-webhook','Tekshirish',g.webhook))}
+        ${ckRow(esc(GOLIVE_ITEMS[4][1]), g.mfa?'done':'todo', B('gl-mfa','MFA yoqish',g.mfa))}
+        ${ckRow('Operatsiya xodimi tasdig‘i → production kalitlar', a.live?'done':g.requestedAt?'cur':'todo', a.live?'tasdiqlandi':g.requestedAt?'kutilmoqda':'')}
+      </div>
+      ${a.live||g.requestedAt?'':'<button class="btn btn-primary" style="margin-top:12px" data-live="gl-request"'+(goliveDone(a)&&acc?'':' disabled')+'>Go-live so‘rovini yuborish</button><div class="form-hint" style="margin-top:6px">'+(acc?'Barcha bandlar bajarilgach yuboriladi.':'Go-live bloklangan: Garant Bankda hisob yo‘q (Q-32).')+'</div>'}
+    </div>
+    <div class="panel"><div class="panel-title"><h3>Texnik sozlamalar</h3><span class="sub">arizada so‘ralmaydi — shu yerda (Q-30)</span></div>
+      <div class="form-row"><label>Server IP manzili (statik, BT §4.1)</label><input type="text" id="glIp" value="${esc(g.ip||'')}" placeholder="203.0.113.10"${dis?' disabled':''}></div>
+      <div class="form-row"><label>Integratsiya usuli</label><select id="glMethod"${dis?' disabled':''}>${['API','CMS plagin','To‘lov havolalari'].map(o=>'<option'+(g.method===o?' selected':'')+'>'+o+'</option>').join('')}</select></div>
+      <div class="form-row"><label>Callback (webhook) URL</label><input type="text" id="glCb" value="${esc(g.callback||'')}" placeholder="https://example.uz/api/garant/callback"${dis?' disabled':''}></div>
+      ${dis?'':'<button class="btn" data-live="gl-tech">Saqlash</button>'}
+      <div class="form-hint" style="margin-top:10px">Sandbox kaliti: <span class="mono">${esc(a.keys?a.keys.mid:'—')}</span> · api: https://sandbox.pay.garantbank.uz/v1</div>
+    </div>
+  </div>`;
+}
+
+/* ---------------- Bosh sahifa: kabinet ochilmagan bo'lsa (D1–D3) ---------------- */
+const onbDashActive = ()=> LIVE.app && !LIVE.sample && ['D1','D2','D3'].includes(lvl(LIVE.app));
+function renderDashboard(){
+  if(!onbDashActive()) return renderDashboardPay();
+  const a=LIVE.app, [lbl]=ext(a), acc=settleAcc(a), r=accReqOf(a);
+  return `
+  <div class="page-header"><div><h1>Xush kelibsiz, ${esc(firstName())}!</h1><div class="desc">${esc(STATE.merchant.businessName)} — kabinet ariza tasdiqlanib, shartnoma imzolangach to‘liq ochiladi.</div></div></div>
+  <div class="status-hero pending"><div class="ic"><svg><use href="#i-clock"/></svg></div><div><div class="tt">Arizangiz: ${esc(lbl)}</div><div class="dd"><span class="mono">${esc(a.id)}</span> · dostup ${lvl(a)} (${esc(LVL_NAME[lvl(a)])})</div></div></div>
+  <div class="panel">${progressSteps(a)}</div>
+  <div class="grid-2" style="margin-top:16px">
+    <div class="panel"><div class="panel-title"><h3>Keyingi qadam</h3></div>
+      <div style="font-size:12.5px;color:var(--text-2);line-height:1.6">${a.status==='DRAFT'?'Arizani portalda to‘ldirib, yuboring.':a.status==='NEEDS_INFO'?'Bank so‘ragan ma’lumotni portalda yuboring.':a.status==='CONTRACT_PENDING'&&!a.contract.mSigned?'Shartnomani E-IMZO bilan imzolang.':'Bank arizani ko‘rib chiqmoqda — sizdan hech narsa talab qilinmaydi. Natija SMS va shu yerda ko‘rinadi.'}</div>
+      <div style="margin-top:10px">${pBtn(a.status==='DRAFT'?'wizard':a.status==='NEEDS_INFO'?'info':a.status==='CONTRACT_PENDING'?'contract':'status','Portalga o‘tish')}</div></div>
+    <div class="panel"><div class="panel-title"><h3>Garant Bank hisobi</h3></div>
+      <div style="font-size:12.5px;color:var(--text-2);line-height:1.6">${acc?'Hisob bog‘langan: <span class="mono">'+maskAcc(acc)+'</span>':'Hisob yo‘q — sandbox uchun shart emas, real to‘lovlar uchun kerak (Q-32).'+(r?' Hisob ochish arizasi: <b>'+esc((ACC_CLIENT[r.status]||[r.status])[0])+'</b>.':'')}</div>
+      ${acc?'':'<button class="btn btn-sm btn-primary" style="margin-top:10px" data-live="acc">'+(r&&r.status!=='DRAFT'?'Arizani ko‘rish':'Hisob ochish')+'</button>'}</div>
+  </div>`;
+}
+
+/* ---------------- kabinetdan yozish (go-live) va portalga o'tish ---------------- */
+function mutateApp(id, fn){ liveLoad(); const x=LIVE.S && LIVE.S.apps.find(z=>z.id===id); if(!x) return; fn(x); x.updatedAt=Date.now(); liveSave(); pickOrg(); liveRefresh(); }
+function gotoPortal(screen){
+  const a=LIVE.app;
+  if(!LIVE.sample && a){ liveLoad(); const S=LIVE.S; if(S){ S.screen=screen; S.cur=a.id; if(screen==='wizard') S.wiz=1; if(screen==='account'){ S.accInn=a.inn; S.accFrom='home'; } liveSave(); } }
+  location.href='onboarding-portal.html';
+}
+function liveAct(act, el){
+  const a=LIVE.app; if(!a) return;
+  if(act==='portal'){ gotoPortal(el.dataset.screen); return; }
+  if(act==='acc'){ gotoPortal('account'); return; }
+  if(LIVE.sample){ toast('Namuna kabinet — o‘zgarish saqlanmaydi. Portalda ariza bering.','err'); return; }
+  const val=id=>((document.getElementById(id)||{}).value||'').trim();
+  const G=(fn,msg)=>{ mutateApp(a.id, x=>{ x.golive=x.golive||{}; fn(x.golive); }); toast(msg,'ok'); };
+  const g=a.golive||{};
+  switch(act){
+    case 'gl-tech': { const ip=val('glIp'), cb=val('glCb'), mt=val('glMethod');
+      if(!/^\d{1,3}(\.\d{1,3}){3}$/.test(ip)){ toast('IP manzil formati: 203.0.113.10','err'); return; }
+      if(!/^https:\/\/\S+\.\S+/.test(cb)){ toast('Callback URL https:// bilan boshlansin','err'); return; }
+      G(x=>Object.assign(x,{tech:1, ip, callback:cb, method:mt}),'Texnik sozlamalar saqlandi'); return; }
+    case 'gl-test': G(x=>{ x.test=1; x.testTx='TEST-'+String(Date.now()).slice(-6); },'Test to‘lov: 10 000 so‘m — muvaffaqiyatli (sandbox)'); return;
+    case 'gl-refund': if(!g.test){ toast('Avval test to‘lov qiling','err'); return; } G(x=>{ x.refund=1; },'Test refund bajarildi'); return;
+    case 'gl-webhook': if(!g.callback){ toast('Avval callback URL ni saqlang','err'); return; } G(x=>{ x.webhook=1; },'Webhook javobi: 200 OK'); return;
+    case 'gl-mfa': G(x=>{ x.mfa=1; },'Ikki bosqichli himoya yoqildi'); return;
+    case 'gl-request':
+      if(noAcc(a)){ toast('Go-live uchun Garant Bankda hisob kerak (Q-32)','err'); return; }
+      if(!goliveDone(a)){ toast('Cheklistni to‘liq bajaring','err'); return; }
+      mutateApp(a.id, x=>{ x.golive.requestedAt=Date.now(); x.timeline.unshift({t:Date.now(), text:'Go-live so‘rovi yuborildi — Operatsiya tasdig‘i kutilmoqda', who:'Siz'}); });
+      toast('So‘rov yuborildi — bank (Operatsiya) tasdiqlaydi','ok'); return;
+  }
+}
+function liveRefresh(){ const sc=document.getElementById('pageScroll'), top=sc?sc.scrollTop:0; showPage(STATE.currentPage); if(sc) sc.scrollTop=top; }
+function liveInit(){
+  window.addEventListener('storage', e=>{
+    if(e.key!==LIVE_KEY) return;
+    const prev=LIVE.app && !LIVE.sample ? LIVE.app.status+(LIVE.app.live?'*':'') : null;
+    pickOrg();
+    const now=LIVE.app && !LIVE.sample ? LIVE.app.status+(LIVE.app.live?'*':'') : null;
+    if(prev && now && prev!==now) toast('Ariza holati: '+ext(LIVE.app)[0],'ok');
+    const ae=document.activeElement;
+    if(ae && /INPUT|TEXTAREA|SELECT/.test(ae.tagName) && document.getElementById('pagesRoot').contains(ae)) return;
+    liveRefresh();
+  });
 }
 
 /* ================================================================
@@ -1844,7 +2102,8 @@ function renderOnboardingStatus(){
 let charts={};
 function destroyCharts(){ Object.values(charts).forEach(c=>{try{c.destroy();}catch(e){}}); charts={}; }
 const PAGE_RENDERERS={
-  dashboard:{render:renderDashboard, after:()=>{ destroyCharts(); paintDashboardCharts(); }},
+  dashboard:{render:renderDashboard, after:()=>{ destroyCharts(); if(!onbDashActive()) paintDashboardCharts(); }},
+  golive:{render:renderGolive},
   onbstatus:{render:renderOnboardingStatus},
   transactions:{render:renderPayments},
   invoices:{render:renderInvoices},
@@ -1867,9 +2126,10 @@ function showPage(key){
   STATE.currentPage=key;
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active', n.dataset.page===key));
   const root=document.getElementById('pagesRoot');
-  root.innerHTML=PAGE_RENDERERS[key].render();
+  root.innerHTML=liveBanner(key)+(pageLocked(key)?lockedHTML():PAGE_RENDERERS[key].render());
+  document.querySelectorAll('.nav-item[data-page]').forEach(n=>n.classList.toggle('locked', pageLocked(n.dataset.page)));
   const scroller=document.getElementById('pageScroll'); if(scroller) scroller.scrollTop=0;
-  if(PAGE_RENDERERS[key].after) PAGE_RENDERERS[key].after();
+  if(PAGE_RENDERERS[key].after && !pageLocked(key)) PAGE_RENDERERS[key].after();
   updateSidebarBadges();
 }
 function updateSidebarBadges(){
@@ -2032,6 +2292,8 @@ function outsideNotifClose(e){
    EVENT DELEGATION
    ================================================================ */
 function mainClickDelegate(e){
+  const lv=e.target.closest('[data-live]');
+  if(lv){ e.preventDefault(); if(!lv.disabled) liveAct(lv.dataset.live, lv); return; }
   const navBtn=e.target.closest('[data-action="nav"]');
   if(navBtn){ e.preventDefault(); const panel=document.getElementById('notifPanel'); if(panel) panel.remove(); showPage(navBtn.dataset.page); closeDrawer(); return; }
 
@@ -2109,6 +2371,7 @@ function mainInputDelegate(e){
   }
 }
 function mainChangeDelegate(e){
+  if(e.target.matches('[data-live-org]')){ setOrg(e.target.value); return; }
   if(e.target.matches('[data-action="filter-status"]')){
     const key=e.target.dataset.key; const f=getFilter(key); f.status=e.target.value; f.page=1; refreshPage();
   }
@@ -2165,7 +2428,8 @@ document.addEventListener('DOMContentLoaded', function(){
   initData();
   window.STATE=STATE;
   initChrome();
-  showPage('dashboard');
+  pickOrg(); liveInit();
+  showPage((/#page=(w+)/.exec(location.hash)||[])[1]||'dashboard');
 });
 </script>
 </body>

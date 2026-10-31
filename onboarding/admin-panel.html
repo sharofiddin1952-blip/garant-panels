@@ -525,6 +525,36 @@ a{color:var(--blue);text-decoration:none;}
   .kpi-grid{grid-template-columns:repeat(3,1fr);}
   .grid-main-side{grid-template-columns:1fr;}
 }
+/* Onboarding — jonli bog'lanish (v2.6) */
+.tag-live{display:inline-block;font-size:10px;font-weight:700;color:#0E7A4F;background:#E3F6EE;border:1px solid #BFE8D6;border-radius:4px;padding:1px 6px;margin-left:6px;vertical-align:1px;white-space:nowrap;}
+.onb-strip{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--blue-bg);border:1px solid #CBD6FA;border-radius:8px;padding:10px 14px;font-size:12.5px;margin-bottom:14px;line-height:1.5;}
+.onb-note{background:var(--surface-alt);border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:12px;color:var(--text-2);margin:10px 0;line-height:1.5;}
+.onb-note.warn{background:var(--amber-bg);border-color:#F1D9A6;color:#6B4300;}
+.onb-hint{font-size:12px;color:var(--text-2);margin:0 0 12px;line-height:1.5;}
+.onb-stage{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:12px;margin:12px 0;padding:9px 12px;border:1px solid var(--border);border-radius:8px;align-items:center;}
+.onb-stage .k{color:var(--text-3);font-weight:600;margin-right:6px;}
+.onb-h{font-size:12.5px;font-weight:700;margin:18px 0 8px;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.ck-list{border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.ck-row{display:flex;align-items:center;gap:10px;padding:7px 12px;font-size:12.5px;border-bottom:1px solid var(--border);}
+.ck-row:last-child{border-bottom:none;}
+.ck-row .ic{width:18px;height:18px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700;flex-shrink:0;}
+.ck-row.done .ic{background:var(--green-bg);color:var(--green);}
+.ck-row.cur .ic{background:var(--blue-bg);color:var(--blue);}
+.ck-row.warn .ic{background:var(--amber-bg);color:var(--amber);}
+.ck-row.todo .ic{background:#EDEFF3;color:var(--text-3);}
+.ck-row .nt{margin-left:auto;color:var(--text-3);font-size:11.5px;text-align:right;}
+.seg{display:inline-flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;}
+.seg button{border:none;background:var(--surface);padding:3px 8px;font-size:11px;font-weight:600;color:var(--text-2);cursor:pointer;border-right:1px solid var(--border);}
+.seg button:last-child{border-right:none;}
+.seg button.on.ok{background:var(--green-bg);color:var(--green);}
+.seg button.on.bad{background:var(--red-bg);color:var(--red);}
+.seg button.on.na{background:#E4E7EC;color:var(--text-1);}
+.ck-box{display:grid;gap:5px;max-height:190px;overflow:auto;border:1px solid var(--border);border-radius:6px;padding:8px 10px;}
+.form-row label.ck-opt,.ck-opt{display:flex;gap:7px;align-items:flex-start;font-size:12.5px;font-weight:500;color:var(--text-1);margin:0;}
+.form-row .ck-opt input{width:auto;padding:0;margin:2px 0 0;flex-shrink:0;}
+.drawer-foot{flex-wrap:wrap;}
+.mini-bar{height:6px;border-radius:3px;background:#EDEFF3;overflow:hidden;width:70px;display:inline-block;vertical-align:middle;margin-right:6px;}
+.mini-bar span{display:block;height:100%;background:var(--blue);}
 </style>
 </head>
 <body>
@@ -602,6 +632,7 @@ a{color:var(--blue);text-decoration:none;}
       <button class="nav-item" data-page="merchants"><svg><use href="#i-store"/></svg><span class="label">Merchants</span></button>
       <button class="nav-item" data-page="onboarding"><svg><use href="#i-idcard"/></svg><span class="label">Onboarding</span><span class="badge" id="onbBadge">0</span></button>
       <button class="nav-item danger" data-page="kyc"><svg><use href="#i-shield"/></svg><span class="label">Compliance navbati</span><span class="badge" id="compBadge">0</span></button>
+      <button class="nav-item" data-page="accreqs"><svg><use href="#i-bank"/></svg><span class="label">Hisob ochish arizalari</span><span class="badge" id="accBadge">0</span></button>
 
       <div class="nav-section-label">Risk &amp; network</div>
       <button class="nav-item" data-page="risk"><svg><use href="#i-gauge"/></svg><span class="label">Fraud &amp; risk</span></button>
@@ -796,66 +827,974 @@ const FIRST_NAMES=['Aziz','Dilnoza','Bekzod','Malika','Sardor','Nilufar','Jasur'
 const LAST_NAMES=['Rashidov','Yusupova','Tursunov','Karimova','Ahmedov','Nazarova','Sultonov','Aliyeva','Mirzoyev','Yoldasheva'];
 
 /* ================================================================
-   ONBOARDING / APPLICATIONS — reference data
+   ONBOARDING — portal bilan jonli bog'lanish (v2.6)
+   Portal, Admin panel va Merchant kabinet bitta brauzer xotirasini o'qiydi:
+   localStorage['garant-onboarding-proto-v5'] (bir xil origin — GitHub Pages / localhost).
+   Admin harakati shu xotiraga yoziladi; portal va kabinet 'storage' hodisasi bilan darhol yangilanadi.
+   Ariza obyekti portal bilan bir xil shaklda; bankning ichki ma'lumotlari a.bank da —
+   mijozga hech qayerda ko'rsatilmaydi (docs/07 §1, 22 §3.1 B5).
+   Namuna arizalar (seed) faqat shu sahifa xotirasida — sahifa yangilanganda qayta yaratiladi.
    ================================================================ */
-const APP_PATH = ['DRAFT','SUBMITTED','AUTO_VALIDATION','DOC_REVIEW','SITE_REVIEW','KYB_CHECK','RISK_ASSESSMENT','COMPLIANCE_REVIEW','PENDING_APPROVAL','APPROVED','CONTRACT_PENDING','CONTRACT_SIGNED','PROVISIONING','COMPLETED'];
+const LIVE_KEY = 'garant-onboarding-proto-v5';
+const LIVE = { S:null };
+function liveLoad(){ try{ const s=JSON.parse(localStorage.getItem(LIVE_KEY)); LIVE.S=(s&&s.v===5)?s:null; }catch(e){ LIVE.S=null; } return LIVE.S; }
+function liveSave(){ if(!LIVE.S) return; try{ localStorage.setItem(LIVE_KEY, JSON.stringify(LIVE.S)); }catch(e){ /* xotira yopiq — prototip baribir ishlaydi */ } }
+const liveApps = ()=> LIVE.S ? LIVE.S.apps : [];
+const liveAccs = ()=> LIVE.S && LIVE.S.accReqs ? Object.values(LIVE.S.accReqs) : [];
+const isLive = a=> liveApps().indexOf(a)>=0;
+const isLiveAcc = r=> liveAccs().indexOf(r)>=0;
+const allApps = ()=> liveApps().concat(STATE.applications);
+const allAccs = ()=> liveAccs().concat(STATE.accSeeds);
+const allBlocked = ()=> ((LIVE.S && LIVE.S.blockedLog) || []).concat(STATE.blockedSeeds);
+function findApp(id){ return allApps().find(a=>a.id===id); }
+function findAcc(id){ return allAccs().find(r=>r.id===id); }
+// Jonli ariza: avval xotira qayta o'qiladi (portaldagi oxirgi holat), keyin o'zgartirilib darhol saqlanadi
+function withApp(id, fn){
+  if(liveApps().some(a=>a.id===id)) liveLoad();
+  const a=findApp(id); if(!a) return null;
+  fn(a);
+  if(isLive(a)) liveSave();
+  syncAppMerchants();
+  return a;
+}
+function withAcc(id, fn){
+  if(liveAccs().some(r=>r.id===id)) liveLoad();
+  const r=findAcc(id); if(!r) return null;
+  fn(r);
+  if(isLiveAcc(r)) liveSave();
+  syncAppMerchants();
+  return r;
+}
+const openedMap = live=> live ? (LIVE.S.opened = LIVE.S.opened || {}) : STATE.seedOpened;
+const appsOfInn = (inn, live)=> (live ? liveApps() : STATE.applications).filter(a=>a.inn===inn);
+const accOfApp = a=> isLive(a) ? ((LIVE.S.accReqs||{})[a.inn] || null) : (STATE.accSeeds.find(r=>r.inn===a.inn) || null);
+
+/* ---------------- ma'lumotnomalar ---------------- */
+const HOUR=3600000, DAY=86400000;
+const LATER_ACC='LATER';
+const ROLE = { ONB:'Onboarding xodimi', CMP:'Compliance xodimi', APR:'Rais o‘rinbosari', OPS:'Operatsiya xodimi', SYS:'Tizim' };
 const APP_STATUS_LABEL = {
-  DRAFT:'Qoralama', SUBMITTED:'Yuborildi', AUTO_VALIDATION:'Avtomatik tekshiruv',
-  NEEDS_INFO:"Qo‘shimcha ma’lumot kerak", DOC_REVIEW:'Hujjatlar tekshiruvi',
-  SITE_REVIEW:'Sayt/joy tekshiruvi', KYB_CHECK:'KYB tekshiruvi', RISK_ASSESSMENT:'Risk baholash',
-  COMPLIANCE_REVIEW:'Compliance ko‘rib chiqmoqda', ESCALATED:'Eskalatsiya qilingan',
-  PENDING_APPROVAL:"Rahbariyat tasdig‘i kutilmoqda", APPROVED:'Tasdiqlandi',
+  DRAFT:'Qoralama (lid)', SUBMITTED:'Yuborildi', AUTO_VALIDATION:'Avtomatik tekshiruv',
+  NEEDS_INFO:'Mijoz javobi kutilmoqda', DOC_REVIEW:'Hujjatlar ko‘rigi', SITE_REVIEW:'Sayt tekshiruvi (onlayn)',
+  KYB_CHECK:'KYC/KYB skrining', RISK_ASSESSMENT:'Risk-skoring', UNDER_REVIEW:'Ko‘rib chiqilmoqda',
+  COMPLIANCE_REVIEW:'Compliance ko‘rigi', ESCALATED:'EDD — kuchaytirilgan tekshiruv',
+  PENDING_APPROVAL:'Rais o‘rinbosari qarori', APPROVED:'Tasdiqlandi',
   CONTRACT_PENDING:'Shartnoma imzolanmoqda', CONTRACT_SIGNED:'Shartnoma imzolandi',
-  PROVISIONING:"Ta’minlash (provisioning)", COMPLETED:'Yakunlandi — Merchant faol',
-  REJECTED:'Rad etildi', CANCELLED:'Bekor qilindi', EXPIRED:"Muddati o‘tdi",
+  PROVISIONING:'Provisioning', COMPLETED:'Merchant yaratildi',
+  REJECTED:'Rad etildi', CANCELLED:'Bekor qilindi', EXPIRED:'Muddati o‘tdi',
 };
 const APP_STATUS_COLOR = {
-  DRAFT:'gray', SUBMITTED:'blue', AUTO_VALIDATION:'blue', NEEDS_INFO:'amber',
-  DOC_REVIEW:'blue', SITE_REVIEW:'blue', KYB_CHECK:'blue', RISK_ASSESSMENT:'purple',
-  COMPLIANCE_REVIEW:'purple', ESCALATED:'red', PENDING_APPROVAL:'amber', APPROVED:'green',
-  CONTRACT_PENDING:'amber', CONTRACT_SIGNED:'green', PROVISIONING:'blue', COMPLETED:'green',
-  REJECTED:'red', CANCELLED:'gray', EXPIRED:'gray',
+  DRAFT:'gray', SUBMITTED:'blue', AUTO_VALIDATION:'blue', NEEDS_INFO:'amber', DOC_REVIEW:'blue', SITE_REVIEW:'blue',
+  KYB_CHECK:'blue', RISK_ASSESSMENT:'purple', UNDER_REVIEW:'blue', COMPLIANCE_REVIEW:'purple', ESCALATED:'red',
+  PENDING_APPROVAL:'amber', APPROVED:'green', CONTRACT_PENDING:'amber', CONTRACT_SIGNED:'green', PROVISIONING:'blue',
+  COMPLETED:'green', REJECTED:'red', CANCELLED:'gray', EXPIRED:'gray',
 };
 function appBadge(status){ return '<span class="badge '+(APP_STATUS_COLOR[status]||'gray')+'"><span class="dotb"></span>'+esc(APP_STATUS_LABEL[status]||status)+'</span>'; }
+function appStBadge(a){
+  if(a.status==='COMPLETED') return a.live ? badgeC('Live — faol','green') : badgeC(noAcc(a)?'Sandbox · hisob yo‘q':'Sandbox','purple');
+  return appBadge(a.status);
+}
 const APP_TERMINAL_STATUSES = ['COMPLETED','REJECTED','CANCELLED','EXPIRED'];
+const REVIEW_STATUSES = ['SUBMITTED','AUTO_VALIDATION','DOC_REVIEW','SITE_REVIEW','KYB_CHECK','RISK_ASSESSMENT','UNDER_REVIEW','COMPLIANCE_REVIEW','ESCALATED','PENDING_APPROVAL','NEEDS_INFO'];
+const STAGE_OWNER = {
+  DRAFT:'Mijoz (to‘ldirmoqda)', SUBMITTED:ROLE.SYS, AUTO_VALIDATION:ROLE.SYS, NEEDS_INFO:'Mijoz (javob kutilmoqda)',
+  DOC_REVIEW:ROLE.ONB, SITE_REVIEW:ROLE.ONB, KYB_CHECK:ROLE.SYS, RISK_ASSESSMENT:ROLE.SYS, COMPLIANCE_REVIEW:ROLE.CMP,
+  ESCALATED:ROLE.CMP+' (EDD)', PENDING_APPROVAL:ROLE.APR, APPROVED:ROLE.SYS, CONTRACT_PENDING:'Mijoz → '+ROLE.APR,
+  CONTRACT_SIGNED:ROLE.SYS, PROVISIONING:ROLE.SYS, COMPLETED:ROLE.OPS+' (go-live)',
+};
+// SLA (ish soati) — docs/07 §5; EDD uchun [TAKLIF]. Prototipda kalendar soat bilan hisoblanadi
+const SLA_H = { AUTO_VALIDATION:1, DOC_REVIEW:8, SITE_REVIEW:8, KYB_CHECK:16, RISK_ASSESSMENT:16, COMPLIANCE_REVIEW:16, ESCALATED:40, PENDING_APPROVAL:8, PROVISIONING:4 };
+const DOC_NAMES = {
+  CERT_REG:'Davlat ro‘yxatidan o‘tganlik guvohnomasi', CHARTER:'Ustav', FOUNDERS_AGREEMENT:'Ta’sis shartnomasi',
+  PROTOCOL_DIR:'Protokol (direktorni tayinlash)', ORDER_DIR_ACC:'Buyruq (direktorni tayinlash)', PASSPORT_DIR:'Direktor pasporti',
+  PASSPORT_ACC:'Bosh buxgalter pasporti', PASSPORT_FOUNDER:'Ta’sischi pasporti', SEAL:'Imzo va muhr namunalari kartochkasi',
+  FOUNDER_LE_CERT:'Ta’sischi (yuridik shaxs) guvohnomasi', FOUNDER_LE_DIR_PASSPORT:'Ta’sischi (yuridik shaxs) direktorining pasporti',
+  DOMAIN_CONTRACT:'Domen ro‘yxatdan o‘tkazish shartnomasi', LICENSE:'Litsenziya',
+};
+const DOC_ST = {
+  FETCHING:['Olinmoqda','gray'], FETCHED:['Olindi — tekshirilsin','blue'], VERIFIED:['Tasdiqlangan','green'],
+  REPLACEMENT_REQUIRED:['Mijozdan so‘ralgan','amber'], UPLOADED:['Mijoz yukladi — tekshirilsin','purple'],
+};
+const ONB_INDUSTRIES = {
+  retail:['Chakana savdo (kiyim, poyabzal, aksessuar)','5651'], ecom:['Internet-do‘kon (umumiy tovarlar)','5999'],
+  food:['Restoran, kafe, ovqat yetkazish','5812'], edu:['Ta’lim va kurslar','8299'], health:['Tibbiy xizmatlar (litsenziya bilan)','8099'],
+  tourism:['Turizm va sayohat','4722'], it:['IT, dasturiy ta’minot','5734'], services:['Maishiy va professional xizmatlar','7399'],
+  transport:['Transport va logistika','4215'],
+};
+const SERVICE_NAMES = { ecom:'Onlayn karta to‘lovlari', links:'To‘lov havolalari', invoice:'Invoyslar', qr:'QR to‘lovlar', api:'API integratsiya', recurring:'Takroriy to‘lovlar', fiscal:'Fiskal chek' };
+// Sayt tekshiruvi cheklisti — BT §4, 19 band (docs/05). Onboarding xodimi saytni ONLAYN ko'radi (jismoniy tashrif yo'q)
+const SITE_ITEMS = [
+  ['live','Sayt ishlayapti','BT §4.1'], ['https','HTTPS + amal qiluvchi SSL','BT §4.1'], ['ip','Statik IP — go-live oldidan, kabinetda (Q-30)','BT §4.1'],
+  ['domain','Domen egaligi hujjati mos','BT §4.1'], ['logos','UZCARD va HUMO logolari bosh sahifada','BT §4.2'],
+  ['legal','Yuridik shaxs ma’lumotlari (nom, manzil, rekvizit, telefon, email)','BT §4.2'], ['signup','Mijoz ro‘yxatdan o‘tish formasi','BT §4.2'],
+  ['desc','Tovar/xizmat to‘liq tavsifi va narxi','BT §4.2'], ['offer','Oferta / ommaviy shartnoma mavjud','BT §4.2'],
+  ['pay','«TO‘LASH» tugmasi oferta akseptiga bog‘langan','BT §4.2'], ['refund','Qaytarish va bekor qilish tartibi','BT §4.2'],
+  ['delivery','Yetkazib berish shartlari','BT §4.2'], ['security','Xavfsizlik choralari haqida ma’lumot','BT §4.2'],
+  ['privacy','Maxfiylik siyosati + qabul qilish imkoniyati','BT §4.2'], ['lang','Ko‘p tilli bo‘lsa — barcha tillarda to‘liq ma’lumot','BT §4.1'],
+  ['prohibited','Taqiqlangan tovar/xizmat yo‘q','BT §4.5'], ['links','Ishlamaydigan sahifa/havola, tashqi redirect yo‘q','BT §4.6'],
+  ['license','Litsenziya ma’lumoti joylashtirilgan (kerak bo‘lsa)','BT §4.4'], ['card','Sayt karta rekvizitlarini o‘zi so‘ramaydi/saqlamaydi','BT §4.6'],
+];
+// Rad etish sabablari — data/rejection-reasons.csv. can_reapply=false → INN bloklanadi (22 §3.1 B1), mijozga sabab aytilmaydi (B5)
+const REJ_CODES = [
+  ['CMP_DOC_INSUFFICIENT','Hujjatlar yetarli emas',true], ['CMP_DATA_MISMATCH','Ma’lumotlar nomuvofiqligi bartaraf etilmagan',true],
+  ['CMP_UBO_UNCLEAR','Foydali ega aniqlanmagan',true], ['CMP_LICENSE_MISSING','Litsenziya yo‘q',true],
+  ['CMP_SITE_NONCOMPLIANT','Sayt BT-4 talablariga mos emas',true], ['APR_BUSINESS_DECISION','Biznes qarori',true],
+  ['APR_RISK_APPETITE','Risk-ishtahadan yuqori',true], ['APR_REMARKS','Kamchiliklar bartaraf etilishi kerak',true],
+  ['CMP_PEP_UNACCEPTABLE','PEP riski qabul qilinmaydi',false], ['CMP_SANCTIONS_HIT','Sanksiya ro‘yxatida',false],
+  ['CMP_PROHIBITED_ACTIVITY','Taqiqlangan faoliyat',false], ['CMP_AML_RISK','AML riski juda yuqori',false],
+];
+const REJ_FINAL_TEXT = 'Ariza qabul qilinmadi. Batafsil ma’lumot uchun bank bilan bog‘laning.';
+const RISK_UZ = { LOW:'Past', MEDIUM:'O‘rta', HIGH:'Yuqori' };
+const RB_TARIFFS = ['STANDART','BISNES','VIP','EXCLUSIVE','START'];
+const ACC_ST_LABEL = { DRAFT:['Qoralama (mijozda)','gray'], SUBMITTED:['Yangi','blue'], IN_REVIEW:['Ko‘rib chiqilmoqda','amber'], OPENED:['Hisob ochildi','green'] };
+const BLOCK_WHERE = { precheck:'INN tekshiruvi', create:'Qoralama yaratish', submit:'Yuborish' };
 
-const APP_BUSINESS_TYPES = ['MChJ','YaTT','AJ'];
-const APP_COMPANY_NAMES = [
-  "Yorqin Tekstil", "Osiyo Gastronomiya", "NewTech Solutions", "Barakali Savdo",
-  "Ideal Interior", "Vega Digital", "Poytaxt Farm", "Tez Kuryer Xizmati",
-  "Shifo Farm Aptekasi", "Akademiya EduTech", "Chinni Idishlar Savdosi", "Zamona Mebel Fabrikasi",
-  "Bek Avto Servis", "Gulzor Landshaft", "Pixel Studio", "Doston Qurilish Materiallari",
-  "Malika Go‘zallik Saloni", "Ravon Avto Ehtiyot Qismlar", "Kelajak Kitob Uyi", "Farovon Bozor",
+/* ---------------- yordamchilar ---------------- */
+const isIndForm = f=> f==='YaTT' || f==='O‘zini o‘zi band';
+const fmtAcc = n=> String(n).replace(/(\d{4})(?=\d)/g,'$1 ');
+const maskPhone = p=>{ const d=String(p||'').replace(/\D/g,'').slice(-9); return d ? '+998 '+d.slice(0,1)+'* *** ** '+d.slice(7) : '—'; };
+const fmtPhone = p=>{ const d=String(p||'').replace(/\D/g,'').slice(-9); return d.length===9 ? '+998 '+d.slice(0,2)+' '+d.slice(2,5)+' '+d.slice(5,7)+' '+d.slice(7) : String(p||''); };
+const rndStr = n=> Array.from({length:n},()=>'abcdefghijkmnpqrstuvwxyz23456789'[Math.floor(Math.random()*32)]).join('');
+function innHash(s){ let h=7; for(const c of String(s)) h=(h*31+c.charCodeAt(0))>>>0; return h; }
+function bk(a){ if(!a.bank) a.bank={log:[]}; if(!a.bank.log) a.bank.log=[]; return a.bank; }
+function logB(a, text, who){ bk(a).log.unshift({t:Date.now(), text, who:who||ROLE.SYS}); }
+// Mijoz ko'radigan tarix (portal va kabinetda chiqadi) — faqat mijozga tegishli matn
+function pushC(a, text, who){ a.timeline.unshift({t:Date.now(), text, who:who||'Bank'}); a.updatedAt=Date.now(); }
+function setSt(a, st, who, note){
+  const from=a.status; a.status=st; a.updatedAt=Date.now();
+  const b=bk(a); b.since=Date.now(); b.sinceSt=st;
+  logB(a, (APP_STATUS_LABEL[from]||from)+' → '+(APP_STATUS_LABEL[st]||st)+(note?' · '+note:''), who);
+  pushAudit(who, 'Ariza holati: '+(APP_STATUS_LABEL[st]||st), 'Onboarding', a.id, from, st);
+}
+function settleAcc(a){
+  const op=openedMap(isLive(a))[a.inn];
+  return a.d && a.d.accountId && a.d.accountId!==LATER_ACC ? a.d.accountId : (op || '');
+}
+const noAcc = a=> !settleAcc(a);
+const orgName = a=> (a.d && a.d.legalName) || a.orgName;
+const brandOf = a=> (a.d && a.d.brand) || a.orgName;
+function industryLabel(a){ const i=ONB_INDUSTRIES[a.industry]; return i ? i[0]+' · MCC '+i[1] : (a.industry||'—'); }
+// Mijoz ko'radigan holat (portaldagi ext() bilan bir xil) — ichki bosqichlar yashirin
+function extLabel(a){
+  const st=a.status;
+  if(st==='DRAFT') return 'Qoralama';
+  if(st==='SUBMITTED') return 'Yuborildi';
+  if(st==='AUTO_VALIDATION') return 'Dastlabki tekshiruv';
+  if(['DOC_REVIEW','SITE_REVIEW','KYB_CHECK','RISK_ASSESSMENT','UNDER_REVIEW','COMPLIANCE_REVIEW','ESCALATED','PENDING_APPROVAL'].includes(st)) return 'Ko‘rib chiqilmoqda';
+  if(st==='NEEDS_INFO') return 'Sizdan ma’lumot kerak';
+  if(st==='APPROVED') return 'Tasdiqlandi';
+  if(st==='CONTRACT_PENDING') return a.contract && a.contract.mSigned ? 'Bank imzosi kutilmoqda' : 'Shartnomani imzolang';
+  if(st==='CONTRACT_SIGNED' || st==='PROVISIONING') return 'Kabinet tayyorlanmoqda';
+  if(st==='COMPLETED') return a.live ? 'Faol (live)' : noAcc(a) ? 'Sandbox · hisob kutilmoqda' : 'Faollashtirildi';
+  return {REJECTED:'Rad etildi', CANCELLED:'Bekor qilindi', EXPIRED:'Muddati o‘tdi'}[st] || st;
+}
+function stageSince(a){
+  const b=a.bank;
+  if(b && b.sinceSt===a.status && b.since) return b.since;
+  return (a.timeline[0] && a.timeline[0].t) || a.updatedAt || a.createdAt;
+}
+function durTxt(ms){ const h=ms/HOUR; return h<1 ? Math.max(1,Math.round(h*60))+' daq' : h<48 ? Math.round(h)+' soat' : Math.round(h/24)+' kun'; }
+function slaChip(a){
+  const st=a.status;
+  if(st==='NEEDS_INFO' && a.info){ const left=Math.ceil((a.info.deadline-Date.now())/DAY); return '<span class="deadline-chip '+(left<=3?'late':left<=7?'soon':'ok')+'" title="Mijoz javobi: 14 kun (docs/07 §5)">javob: '+Math.max(0,left)+' kun qoldi</span>'; }
+  if(st==='CONTRACT_PENDING' && a.contract && !a.contract.mSigned){ const left=14-Math.floor((Date.now()-a.contract.at)/DAY); return '<span class="deadline-chip '+(left<=3?'late':'ok')+'" title="Imzolash muddati 14 kun">imzo: '+Math.max(0,left)+' kun qoldi</span>'; }
+  if(st==='DRAFT'){ const left=30-Math.floor((Date.now()-(a.updatedAt||a.createdAt))/DAY); return '<span class="deadline-chip '+(left<=5?'late':left<=10?'soon':'ok')+'" title="30 kun faolsizlik → EXPIRED">'+Math.max(0,left)+' kun qoldi</span>'; }
+  const ms=Date.now()-stageSince(a), lim=SLA_H[st];
+  if(st==='CONTRACT_PENDING') return '<span class="deadline-chip '+(ms>=8*HOUR?'late':'ok')+'" title="Bank imzosi — 1 ish kuni">'+durTxt(ms)+'</span>';
+  if(!lim) return '<span style="color:var(--text-3);font-size:12px">'+durTxt(ms)+'</span>';
+  const cls = ms>=lim*HOUR ? 'late' : ms>=lim*HOUR*0.75 ? 'soon' : 'ok';
+  return '<span class="deadline-chip '+cls+'" title="SLA '+lim+' ish soati (docs/07 §5)">'+durTxt(ms)+' / '+lim+' s</span>';
+}
+const slaLate = a=> SLA_H[a.status] && Date.now()-stageSince(a) >= SLA_H[a.status]*HOUR;
+function docName(a, key){ const p=key.split(':'), idx=p[1]; let n=DOC_NAMES[p[0]]||p[0]; if(idx!=null && a.founders && a.founders[+idx]) n+=' — '+a.founders[+idx].name; return n; }
+const docKeys = a=> Object.keys(a.docs||{});
+const docsVerified = a=> docKeys(a).length>0 && docKeys(a).every(k=>a.docs[k].status==='VERIFIED');
+const hasSite = a=> !!(a.d && a.d.services && a.d.services.ecom);
+function draftSteps(a){
+  const d=a.d||{}, s=d.services||{}, ch=d.channels||{};
+  return [ d.legalName&&d.brand&&d.phone&&d.email, d.taxStatus&&d.licensed&&d.ikpu&&d.receipt&&d.unit, d.dirName&&d.dirPinfl&&d.dirPass,
+    d.accountId, Object.values(s).some(Boolean)&&Object.values(ch).some(Boolean), Object.keys(d.decl||{}).length>=5 ].filter(Boolean).length;
+}
+function accChip(a){
+  if(!noAcc(a)) return '<span style="color:var(--green);font-weight:600;font-size:12px">✓ bor</span>';
+  const r=accOfApp(a);
+  return '<span style="color:var(--amber);font-weight:600;font-size:12px">yo‘q</span>'+(r?' <span style="font-size:11px;color:var(--text-3)">· ariza: '+esc(ACC_ST_LABEL[r.status][0])+'</span>':'');
+}
+const liveTag = x=> (isLive(x)||isLiveAcc(x)) ? ' <span class="tag-live" title="Portalda shu brauzerda yaratilgan — o‘zgarish portal va kabinetda darhol ko‘rinadi">Portal · jonli</span>' : '';
+
+/* KYC/KYB skrining va risk-skoring (simulyatsiya; omillar — data/risk-factors.csv) */
+function runKyb(a, extra){
+  const h=innHash(a.inn), f=[];
+  if(a.industry==='tourism') f.push(['IND_HIGH_RISK','Yuqori riskli soha',15]);
+  if(a.d.licensed==='yes' && !a.d.licNo) f.push(['IND_LICENSE_MISSING','Litsenziya talab qilinadi, ammo yo‘q',25]);
+  if((a.founders||[]).some(x=>x.type==='YUSH')) f.push(['OWN_DEEP_CHAIN','Ta’sischi — yuridik shaxs (egalik zanjiri)',10]);
+  if(hasSite(a) && a.d.scan && !a.d.scan.logos) f.push(['SITE_NONCOMPLIANT','Sayt BT-4 talablariga to‘liq mos emas',12]);
+  if(a.prev) f.push(['HIST_PREV_REJECTED','Avval rad etilgan ariza mavjud',15]);
+  if(h%7===3) f.push(['CMP_PEP','PEP — potentsial mos kelish',20]);
+  (extra||[]).forEach(x=>f.push(x));
+  if(settleAcc(a)) f.push(['COMP_EXISTING_RELATION','Mavjud bank mijozi (hisob bor)',-8]);
+  const score=Math.max(5, Math.min(95, 18+f.reduce((s,x)=>s+x[2],0)));
+  const level=score>=71?'HIGH':score>=31?'MEDIUM':'LOW';
+  const pep=f.some(x=>x[0]==='CMP_PEP');
+  bk(a).kyb = { at:Date.now(), sanctions:'Mos kelish yo‘q', pep: pep?'Potentsial mos kelish — Compliance tekshirsin':'Topilmadi',
+    ubo: isIndForm(a.form) ? 'Egasi o‘zi (jismoniy shaxs)' : (a.founders||[]).length ? 'Davlat registri bo‘yicha: '+a.founders.map(x=>x.name+' '+x.share+'%').join(', ') : 'Registrda yo‘q — qo‘lda aniqlansin',
+    registry: a.registry==='MANUAL' ? 'Registrda topilmadi — qo‘lda tekshirildi' : 'Faol (davlat registri)', tax:'Soliq qarzi yo‘q' };
+  bk(a).risk = { score, level, factors:f };
+  return level;
+}
+function bindAcc(a, no){
+  if(a.accBound) return;
+  a.accBound=true; a.accountFound=true;
+  if(a.status==='DRAFT') a.d.accountId=no;
+  pushC(a, 'ABS: Garant Bankda hisob topildi va bog‘landi — '+fmtAcc(no), 'Tizim');
+  logB(a, 'Hisob ochildi va ekvayring arizasiga bog‘landi (ABS) — '+fmtAcc(no), ROLE.OPS);
+}
+function nextMerchantId(){ const used=new Set(allApps().map(a=>a.merchantId).filter(Boolean)); let n=893; while(used.has('MER-'+String(n).padStart(6,'0'))) n++; return 'MER-'+String(n).padStart(6,'0'); }
+function nextContractNo(){ const used=new Set(allApps().map(a=>a.contract&&a.contract.no).filter(Boolean)); let n=319; while(used.has('CTR-2026-'+String(n).padStart(6,'0'))) n++; return 'CTR-2026-'+String(n).padStart(6,'0'); }
+function provSteps(a){
+  return ['Shartnoma ikkala tomondan imzolandi','Merchant yozuvi yaratildi — ariza ma’lumotlari nusxalandi','Tarif, limitlar va settlement (T+1) o‘rnatildi',
+    'Uzcard / Humo protsessingda ro‘yxatga olindi (MID, TID)', noAcc(a)?'ABS: hisob hali yo‘q — go-live sharti (Q-32)':'ABS: hisob raqami bog‘landi',
+    'Sandbox kalitlari yaratildi (Q-16)', a.role==='EMP'?'Ariza beruvchi → Administrator; direktorga Owner taklifi':'Ariza beruvchi → kabinet egasi (Owner)'];
+}
+const GOLIVE_ITEMS = [['tech','Server IP, integratsiya usuli, callback URL kiritildi (Q-30)'],['test','Sandbox’da muvaffaqiyatli test to‘lov'],['refund','Test to‘lovni qaytarish (refund)'],['webhook','Webhook (notify_url) 200 qaytaradi'],['mfa','Kabinetda ikki bosqichli himoya (MFA)']];
+const goliveDone = a=> GOLIVE_ITEMS.every(([k])=>a.golive && a.golive[k]);
+
+/* ---------------- namuna arizalar (portal shaklida) ---------------- */
+const SEED_NAMES = ['Yorqin Tekstil','Osiyo Gastronomiya','NewTech Solutions','Barakali Savdo','Ideal Interior','Vega Digital','Poytaxt Farm','Tez Kuryer Xizmati',
+  'Akademiya EduTech','Chinni Idishlar','Zamona Mebel','Bek Avto Servis','Gulzor Landshaft','Pixel Studio','Doston Qurilish','Malika Go‘zallik',
+  'Ravon Ehtiyot Qismlar','Kelajak Kitob Uyi','Farovon Bozor','Ipak Yo‘li Sayohat','Navro‘z Catering','Orzu Kids','Sharq Oyna','Choyxona Lab','Mehr Med Klinika','Smart Ta’lim'];
+const SEED_PLAN = [
+  ['DRAFT',{steps:5, acc:false, days:2}], ['DRAFT',{steps:2, days:9}], ['DRAFT',{steps:6, acc:false, days:0.3, accReq:'SUBMITTED'}],
+  ['DOC_REVIEW',{h:2}], ['DOC_REVIEW',{h:7, uploaded:true}], ['DOC_REVIEW',{h:11, acc:false}], ['NEEDS_INFO',{h:30, from:'DOC_REVIEW'}],
+  ['SITE_REVIEW',{h:3, ecom:true}], ['SITE_REVIEW',{h:9, ecom:true, badLogos:true}], ['KYB_CHECK',{h:1}],
+  ['COMPLIANCE_REVIEW',{h:5}], ['COMPLIANCE_REVIEW',{h:14, extra:[['CMP_PEP','PEP — potentsial mos kelish',20]]}],
+  ['ESCALATED',{h:20, industry:'tourism', extra:[['OWN_UBO_UNKNOWN','UBO aniqlanmagan',25],['GEO_INTERNATIONAL','Xalqaro tranzaksiyalar',10],['CMP_PEP','PEP — potentsial mos kelish',20]]}],
+  ['PENDING_APPROVAL',{h:2}], ['PENDING_APPROVAL',{h:9, acc:false}], ['CONTRACT_PENDING',{h:20}], ['CONTRACT_PENDING',{h:3, mSigned:true}],
+  ['COMPLETED',{days:3, acc:false, accReq:'IN_REVIEW'}], ['COMPLETED',{days:5, golive:'requested'}], ['COMPLETED',{days:6, golive:'partial'}],
+  ['COMPLETED',{days:40, live:true}], ['COMPLETED',{days:75, live:true, acc:false, accReq:'OPENED'}],
+  ['REJECTED',{days:4, at:'SITE_REVIEW', code:'CMP_SITE_NONCOMPLIANT', ecom:true}], ['REJECTED',{days:12, code:'CMP_SANCTIONS_HIT'}],
+  ['CANCELLED',{days:8}], ['EXPIRED',{days:20}],
 ];
-const APP_DOC_TYPES = [
-  "Davlat ro‘yxatidan o‘tganlik guvohnomasi",
-  "Ustav (ta’sis hujjati)",
-  "Ta’sis shartnomasi",
-  "Muassislar yig‘ilishi protokoli",
-  "Rahbarni tayinlash to‘g‘risida buyruq",
-  "Rahbar pasporti (nusxa)",
-  "Muhr namunasi",
-  "Bank rekvizitlari ma’lumotnomasi",
-];
-const ONB_OFFICERS = ["N. Yusupova","O. Ergashev","D. Nazarova","J. Tashkentov"];
-const COMPLIANCE_OFFICERS = ["M. Rahimova","S. Komilov"];
-const SENIOR_COMPLIANCE_NAME = "A. Yo‘ldoshev (Bosh Compliance)";
-const APPROVER_NAME = "R. Qodirov (Boshqaruv a’zosi)";
-const BANK_SIGNATORY_NAME = "T. Islomov (Rais o‘rinbosari)";
-const SITE_CHECK_ITEMS = [
-  "Yuridik manzil mavjudligi tasdiqlandi",
-  "Faoliyat yuritilayotganligi vizual tasdiqlandi",
-  "Aloqa ma’lumotlari to‘g‘riligi tekshirildi",
-  "Onlayn do‘kon/sayt kontenti tekshirildi (agar mavjud)",
-];
-const APP_REJECTION_REASONS = [
-  "Taqdim etilgan hujjatlar to‘liq emas yoki soxta",
-  "Faoliyat turi bank siyosatiga muvofiq emas (taqiqlangan MCC)",
-  "Tasischilar/rahbariyat bo‘yicha Compliance skrining natijasi salbiy",
-  "Sayt/joy tekshiruvida nomuvofiqlik aniqlandi",
-  "Moliyaviy barqarorlik mezonlariga javob bermaydi",
-  "Rahbariyat qaroriga ko‘ra rad etildi",
-];
+const SEED_ORDER = ['DRAFT','SUBMITTED','DOC_REVIEW','SITE_REVIEW','KYB_CHECK','COMPLIANCE_REVIEW','PENDING_APPROVAL','CONTRACT_PENDING','COMPLETED'];
+function seedDocKeys(a){
+  const k=[];
+  if(isIndForm(a.form)) k.push('CERT_REG','PASSPORT_DIR');
+  else {
+    k.push('CERT_REG','CHARTER'); if(a.founders.length>1) k.push('FOUNDERS_AGREEMENT');
+    k.push('PROTOCOL_DIR','ORDER_DIR_ACC','PASSPORT_DIR');
+    a.founders.forEach((f,i)=>{ if(f.type==='YUSH') k.push('FOUNDER_LE_CERT:'+i,'FOUNDER_LE_DIR_PASSPORT:'+i); else if(f.name!==a.d.dirName) k.push('PASSPORT_FOUNDER:'+i); });
+    k.push('SEAL');
+  }
+  if(a.d.services.ecom) k.push('DOMAIN_CONTRACT');
+  if(a.d.licensed==='yes') k.push('LICENSE');
+  return k;
+}
+function seedApp(i, st, o){
+  const name=SEED_NAMES[i%SEED_NAMES.length], slug=name.toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,14);
+  const form=o.form || pickW([['MChJ',62],['YaTT',24],['AJ',4],['O‘zini o‘zi band',10]]);
+  const ind=o.industry || pick(['retail','ecom','food','edu','it','services','transport','health']);
+  const inn=String(rndInt(4,6))+String(rndInt(10000000,99999999));
+  const dir=pick(FIRST_NAMES)+' '+pick(LAST_NAMES), ind1=isIndForm(form);
+  const legal = ind1 ? dir+(form==='YaTT'?' (YaTT)':' (o‘zini o‘zi band)') : '“'+name+'” '+form;
+  let founders=[];
+  if(!ind1){ if(Math.random()<0.55) founders=[{type:'JSH',name:dir,share:100}]; else { const y=Math.random()<0.45; founders=[{type:'JSH',name:dir,share:60},{type:y?'YUSH':'JSH',name:y?'“'+pick(['Invest Group','Capital Holding','Trade Partners'])+'” MChJ':pick(FIRST_NAMES)+' '+pick(LAST_NAMES),share:40}]; } }
+  const ecom = o.ecom || ind==='ecom' || Math.random()<0.55;
+  const site = ecom ? 'https://'+slug+'.uz' : '';
+  const hasAcc = o.acc===undefined ? Math.random()<0.8 : o.acc;
+  const a = { id:'APP-2026-'+String(100001+i).padStart(6,'0'), inn, status:'DRAFT', createdAt:Date.now(), updatedAt:Date.now(),
+    orgName:legal, form, registry:'VERIFIED', accountFound:hasAcc, role:Math.random()<0.8?'DIR':'EMP', industry:ind, founders, show:{},
+    d:{ legalName:legal, brand:name, regNo:String(rndInt(1000000,1999999)), regDate:'20'+rndInt(15,24)+'-0'+rndInt(1,9)+'-1'+rndInt(0,9),
+      legalAddr:pick(CITIES)+' sh., '+pick(['Amir Temur','Mustaqillik','Bunyodkor','Yunusobod','Chilonzor'])+' ko‘chasi, '+rndInt(1,180)+'-uy',
+      factSame:true, factAddr:'', phone:'9'+rndInt(0,9)+rndInt(1000000,9999999), email:'info@'+slug+'.uz',
+      taxStatus:pick(['vat','novat','simple']), vatNo:'', licensed:ind==='health'?'yes':'no', licNo:ind==='health'?'L-'+rndInt(10000,99999):'', licDate:'', licOrg:'',
+      ikpu:'0'+String(rndInt(1000000,9999999))+String(rndInt(100000000,999999999)), receipt:ind==='services'||ind==='edu'||ind==='it'?'service':'goods', unit:'dona',
+      dirName:dir, dirPinfl:'3'+String(rndInt(1000000,9999999))+String(rndInt(100000,999999)), dirPass:'AD'+rndInt(1000000,9999999), dirPassExp:'2031-0'+rndInt(1,9)+'-15', dirPhone:'9'+rndInt(0,9)+rndInt(1000000,9999999),
+      hasAcc:false, accName:'', channels:{web:ecom, shop:!ecom||Math.random()<0.4, social:Math.random()<0.3},
+      accountId: hasAcc ? '20208000900'+inn.slice(0,6)+'001' : LATER_ACC,
+      services:{ecom, links:Math.random()<0.5, qr:!ecom||Math.random()<0.3, fiscal:Math.random()<0.5},
+      website:site, scan: ecom?{url:site, https:true, logos:!o.badLogos}:null, decl:{}, desc:'' },
+    docs:{}, timeline:[], info:null, cycles:0, contract:null, prev:null, rejection:null, keys:null, live:false, bank:{log:[]} };
+  seedFlow(a, st, o);
+  return a;
+}
+function seedFlow(a, st, o){
+  const now=Date.now();
+  const stageStart = now - (o.h!=null ? o.h*HOUR : (o.days||1)*DAY);
+  const reach = {NEEDS_INFO:o.from||'DOC_REVIEW', ESCALATED:'COMPLIANCE_REVIEW', REJECTED:o.at||'COMPLIANCE_REVIEW', CANCELLED:'DOC_REVIEW', EXPIRED:'DRAFT'}[st] || st;
+  const target = SEED_ORDER.indexOf(reach), n=Math.max(target,1);
+  const span = n*rndInt(5,16)*HOUR;
+  let t = stageStart - span - (target>0 ? rndInt(1,2)*DAY : 0);
+  if(st==='EXPIRED') t = now - 52*DAY;
+  a.createdAt = t;
+  const C=(text,who)=>a.timeline.unshift({t, text, who}), B=(text,who)=>a.bank.log.unshift({t, text, who});
+  const step=()=>{ t = Math.min(stageStart, t + span/n); };
+  C('Qoralama yaratildi','Siz');
+  if(st==='DRAFT'){
+    const k=o.steps||3, d=a.d;
+    d.decl = k>=6 ? {offer:1,privacy:1,pd:1,prohibited:1,site:1,truth:1} : {};
+    if(k<5){ d.services={}; d.channels={}; d.website=''; d.scan=null; }
+    if(k<4) d.accountId='';
+    if(k<3){ d.dirPinfl=''; d.dirPass=''; }
+    if(k<2){ d.ikpu=''; d.taxStatus=''; }
+    a.updatedAt = now - (o.days||1)*DAY;
+    return;
+  }
+  if(st==='EXPIRED'){ t=now-o.days*DAY; C('Qoralama 30 kun faolsiz qoldi — muddat o‘tdi','Tizim'); a.status='EXPIRED'; a.updatedAt=t; a.bank.since=t; a.bank.sinceSt=st; return; }
+  const keys=seedDocKeys(a);
+  step(); a.submittedAt=t; C('Ariza yuborildi · nusxa saqlandi (SHA-256 '+rndStr(12)+'…)','Siz');
+  B('Avtomatik tekshiruv (L3, ABS, registr) — o‘tdi', ROLE.SYS);
+  keys.forEach(k=>{ a.docs[k]={status:'FETCHED', file:'davlat tizimi', at:t}; });
+  C('Hujjatlar davlat tizimlaridan olindi ('+keys.length+' ta)','Tizim'); C('Dastlabki tekshiruv yakunlandi — ariza ko‘rib chiqilmoqda','Tizim');
+  const passed = s=> SEED_ORDER.indexOf(s) < target;
+  if(st==='CANCELLED'){ step(); C('Ariza qaytarib olindi','Siz'); a.status='CANCELLED'; a.updatedAt=t; a.bank.since=t; a.bank.sinceSt=st; return; }
+  if(passed('DOC_REVIEW')){ step(); keys.forEach(k=>{ a.docs[k].status='VERIFIED'; }); B('Hujjatlar tasdiqlandi ('+keys.length+' ta) — davlat tizimlaridan olingan nusxalar', ROLE.ONB); }
+  else if(o.uploaded){ const k=keys.find(x=>/FOUNDERS|SEAL|DOMAIN/.test(x))||keys[0]; a.docs[k]={status:'UPLOADED', file:'mijoz yukladi', at:t}; a.cycles=1;
+    C('Bank qo‘shimcha ma’lumot so‘radi (1 ta band) — muddat '+fmtDate(t+14*DAY),'Bank'); C('Javobingiz qabul qilindi — ariza tegishli bosqichda davom etmoqda','Siz');
+    B(docName(a,k)+' — davlat tizimida topilmadi, mijozdan so‘raldi (03a)', ROLE.ONB); }
+  else keys.slice(0, Math.floor(keys.length/2)).forEach(k=>{ a.docs[k].status='VERIFIED'; });
+  if(hasSite(a)){
+    const s=a.bank.site={};
+    if(passed('SITE_REVIEW')){ SITE_ITEMS.forEach(([k])=>{ s[k]= k==='ip'?'na': k==='license'&&a.d.licensed!=='yes'?'na':'ok'; }); step(); B('Sayt BT §4 talablariga mos (19 band)', ROLE.ONB); }
+    else if(reach==='SITE_REVIEW'){ SITE_ITEMS.slice(0,8).forEach(([k])=>{ s[k]= k==='ip'?'na':'ok'; }); if(o.badLogos) s.logos='bad'; }
+  } else if(passed('SITE_REVIEW')) B('Sayt bosqichi o‘tkazib yuborildi — sayt orqali to‘lov so‘ralmagan', ROLE.SYS);
+  if(passed('KYB_CHECK') || st==='ESCALATED' || (st==='REJECTED' && reach==='COMPLIANCE_REVIEW')){ step(); const lv=runKyb(a, o.extra); a.bank.kyb.at=t; B('Skrining: sanksiya — toza; PEP — '+a.bank.kyb.pep.toLowerCase()+'; risk '+RISK_UZ[lv]+' ('+a.bank.risk.score+')', ROLE.SYS); }
+  if(st==='ESCALATED'){ step(); B('Yuqori risk — EDD boshlandi', ROLE.CMP); }
+  if(passed('COMPLIANCE_REVIEW')){ step(); a.bank.cmpNote='Skrining toza, egalik tuzilmasi registr bilan mos. Ijobiy xulosa.'; B('Compliance: ijobiy xulosa — Rais o‘rinbosariga', ROLE.CMP); }
+  if(passed('PENDING_APPROVAL')){ step(); a.bank.approvedBy=ROLE.APR; C('Ariza tasdiqlandi','Bank');
+    a.contract={no:'CTR-2026-'+String(200+(innHash(a.inn)%99)).padStart(6,'0'), at:t, mSigned:null, bSigned:null};
+    C('Shartnoma imzolash uchun tayyor ('+a.contract.no+') — 14 kun ichida imzolang','Tizim'); }
+  if(st==='CONTRACT_PENDING' && o.mSigned){ step(); a.contract.mSigned=t; C('Siz shartnomani imzoladingiz (E-IMZO) — bank imzosi kutilmoqda','Siz'); }
+  if(st==='COMPLETED'){
+    a.contract.mSigned=t+HOUR; t+=3*HOUR; a.contract.bSigned=t; C('Bank shartnomani imzoladi (Rais o‘rinbosari)','Bank'); C('Kabinet tayyorlanmoqda','Tizim');
+    t+=HOUR; a.merchantId='MER-'+String(700+(innHash(a.inn)%180)).padStart(6,'0'); a.keys={mid:'sbx_'+a.inn, sk:'sk_test_'+rndStr(28)}; a.provStep=7;
+    C('Kabinetingiz tayyor — o‘sha akkaunt bilan kiring (Merchant '+a.merchantId+')','Tizim'); B('Provisioning yakunlandi — merchant '+a.merchantId+' (sandbox)', ROLE.SYS);
+    if(o.golive==='partial') a.golive={tech:1, test:1};
+    if(o.golive==='requested' || o.live){ a.golive={tech:1,test:1,refund:1,webhook:1,mfa:1}; t=Math.min(now-HOUR, t+2*DAY); a.golive.requestedAt=t; C('Go-live so‘rovi yuborildi — Operatsiya tasdig‘i kutilmoqda','Siz'); }
+  }
+  a.status=st;
+  if(st==='NEEDS_INFO'){ const k=keys.find(x=>/FOUNDERS|SEAL|CHARTER/.test(x))||keys[0];
+    a.docs[k]={status:'REPLACEMENT_REQUIRED', note:docName(a,k)+' — davlat tizimlarida topilmadi, nusxasini yuklang'};
+    a.info={items:[{kind:'doc', key:k, code:'DOC_NOT_FOUND', text:docName(a,k)+' — davlat tizimlarida topilmadi, nusxasini yuklang'}], deadline:stageStart+14*DAY, cycle:1, returnTo:o.from||'DOC_REVIEW'};
+    t=stageStart; C('Bank qo‘shimcha ma’lumot so‘radi (1 ta band) — muddat '+fmtDate(a.info.deadline),'Bank'); B(docName(a,k)+' — topilmadi, mijozdan so‘raldi', ROLE.ONB); }
+  if(st==='REJECTED'){ const c=REJ_CODES.find(x=>x[0]===o.code)||REJ_CODES[0]; t=stageStart;
+    a.rejection={at:t, reason:c[2]?'Ariza rad etildi: kamchiliklar mavjud':REJ_FINAL_TEXT, remarks:c[2]?['Saytda UZCARD va HUMO logolari va qaytarish shartlari yo‘q']:[], canReapply:c[2]};
+    a.bank.rejectCode=c[0]; C('Ariza rad etildi','Bank'); B('Rad etildi: '+c[0]+' — '+c[1]+(c[2]?'':' · INN bloklandi (22 §3.1 B1)'), reach==='SITE_REVIEW'?ROLE.ONB:ROLE.CMP); }
+  if(st==='COMPLETED' && o.live){ t=Math.min(now-HOUR, t+DAY); a.live=true; a.golive.approvedAt=t; C('Go-live tasdiqlandi — production kalitlar berildi','Bank'); B('Go-live tasdiqlandi', ROLE.OPS); }
+  a.updatedAt = a.timeline[0].t; a.bank.since = st==='COMPLETED' ? a.timeline[0].t : stageStart; a.bank.sinceSt = st;
+}
+function seedAccReq(a, status, i){
+  const t0=a.createdAt+DAY, r={ kind:'ACC', inn:a.inn, id:'ACC-2026-'+String(100001+i).padStart(6,'0'), status, createdAt:t0, updatedAt:t0,
+    orgName:orgName(a), form:a.form, founders:a.founders, dirName:a.d.dirName,
+    d:{ accounts:{uzs:true, cardGoods:a.d.receipt==='service'?0:1, cardServices:a.d.receipt==='service'?1:0}, ib:true, mb:true, sms:Math.random()<0.6,
+      phIb:a.d.phone, phMb:a.d.phone, phSms:a.d.phone, tariff:pick(RB_TARIFFS), tariffOther:'', cTariff:true, cIb:true }, timeline:[], show:false };
+  r.timeline.unshift({t:t0, text:'Hisob ochish arizasi (qoralama) yaratildi', who:'Siz'});
+  if(status!=='DRAFT'){ r.submittedAt=t0+HOUR; r.timeline.unshift({t:r.submittedAt, text:'Ariza rahbar E-IMZO imzosi bilan bankka yuborildi', who:'Siz'}); r.updatedAt=r.submittedAt; }
+  if(status==='IN_REVIEW' || status==='OPENED'){ r.timeline.unshift({t:r.submittedAt+2*HOUR, text:'Bank (Operatsiya) arizani ko‘rib chiqmoqda', who:'Bank'}); r.updatedAt=r.submittedAt+2*HOUR; }
+  if(status==='OPENED'){ const tail=a.inn.slice(0,6); r.openedAt=r.updatedAt+DAY;
+    r.numbers=[['uzs','20208000900'+tail+'011']].concat(r.d.accounts.cardGoods>0?[['cardGoods','22618000900'+tail+'015']]:[], r.d.accounts.cardServices>0?[['cardServices','22618000900'+tail+'016']]:[]);
+    r.timeline.unshift({t:r.openedAt, text:'Hisob ochildi (ABS): '+fmtAcc(r.numbers[0][1]), who:'Bank'}); r.updatedAt=r.openedAt;
+    STATE.seedOpened[a.inn]=r.numbers[0][1]; a.accBound=true; a.accountFound=true;
+    a.timeline.push({t:r.openedAt, text:'ABS: Garant Bankda hisob topildi va bog‘landi — '+fmtAcc(r.numbers[0][1]), who:'Tizim'});
+    a.timeline.sort((x,y)=>y.t-x.t); }
+  return r;
+}
+function genOnbSeeds(){
+  STATE.applications=[]; STATE.accSeeds=[]; STATE.seedOpened={};
+  SEED_PLAN.forEach(([st,o],i)=>{
+    const a=seedApp(i, st, o);
+    STATE.applications.push(a);
+    if(o.accReq) STATE.accSeeds.push(seedAccReq(a, o.accReq, i));
+  });
+  const fin=STATE.applications.find(a=>a.status==='REJECTED' && a.rejection && !a.rejection.canReapply);
+  STATE.blockedSeeds=[
+    {id:'BLK-000101', inn:fin?fin.inn:'512345678', at:Date.now()-2*HOUR, phone:'93'+rndInt(1000000,9999999), where:'precheck', code:'CMP_SANCTIONS_HIT', src:'Oldingi ariza yakuniy rad etilgan'+(fin?' ('+fin.id+')':'')},
+    {id:'BLK-000102', inn:'304444444', at:Date.now()-26*HOUR, phone:'90'+rndInt(1000000,9999999), where:'precheck', code:'STOP_LIST', src:'Bank stop-ro‘yxati'},
+    {id:'BLK-000103', inn:'304444444', at:Date.now()-25*HOUR, phone:'90'+rndInt(1000000,9999999), where:'create', code:'STOP_LIST', src:'Bank stop-ro‘yxati'},
+    {id:'BLK-000104', inn:'5'+rndInt(10000000,99999999), at:Date.now()-3*DAY, phone:'97'+rndInt(1000000,9999999), where:'precheck', code:'CMP_PROHIBITED_ACTIVITY', src:'Taqiqlangan faoliyat (BT §4.5) bilan rad etilgan'},
+  ];
+  liveLoad();
+}
+// Yakunlangan arizalar uchun Merchant 360 yozuvi (Merchants ro'yxati, profil) — ariza bilan bog'lanadi
+function syncAppMerchants(){
+  allApps().forEach(a=>{
+    if(a.status!=='COMPLETED' || !a.merchantId) return;
+    let m=STATE.merchants.find(x=>x.id===a.merchantId);
+    const ind=ONB_INDUSTRIES[a.industry]||['Boshqa','7399'];
+    if(!m){
+      m={ id:a.merchantId, businessName:brandOf(a), legalName:orgName(a), mcc:ind[1], category:ind[0], status:'Sandbox', riskLevel:'Past',
+        kycStatus:'Tasdiqlangan', kybStatus:'Tasdiqlangan', city:String(a.d.legalAddr||'Toshkent').split(' sh.')[0], inn:a.inn,
+        contractNumber:a.contract?a.contract.no:'—', contractDate:new Date((a.contract&&a.contract.bSigned)||a.updatedAt),
+        contactEmail:a.d.email||'', contactPhone:fmtPhone(a.d.phone), monthlyVolume:a.live?rndInt(20,300)*1000000:0,
+        approvalRate:a.live?rnd(88,97):0, chargebackRate:a.live?rnd(0.05,0.4):0, settlementCycle:'T+1', mdr:'1.20',
+        mid:'905'+String(innHash(a.inn)%100000).padStart(5,'0'), createdDate:new Date((a.contract&&a.contract.bSigned)||a.updatedAt), website:a.d.website||'' };
+      STATE.merchants.unshift(m);
+    }
+    m.appId=a.id; m.status=a.live?'Faol':'Sandbox';
+    if(a.bank && a.bank.risk) m.riskLevel=RISK_UZ[a.bank.risk.level];
+  });
+}
+
+/* ================================================================
+   PAGE: ONBOARDING — ish navbati (docs/10)
+   ================================================================ */
+function onbLiveStrip(){
+  const n=liveApps().length, na=liveAccs().filter(r=>r.status!=='DRAFT').length;
+  return '<div class="onb-strip"><div><b>Jonli bog‘lanish:</b> portal ↔ admin ↔ merchant kabinet (bitta brauzer xotirasi). '+
+    (n ? 'Portaldagi <b>'+n+'</b> ta ariza'+(na?' va <b>'+na+'</b> ta hisob ochish arizasi':'')+' <span class="tag-live">Portal · jonli</span> belgisi bilan. Shu yerdagi har bir harakat portal va kabinetda darhol ko‘rinadi.'
+       : 'Portalda ariza yuboring — u shu yerda darhol paydo bo‘ladi. Hozircha ro‘yxatda namuna arizalar.')+
+    '</div><div style="display:flex;gap:6px;flex-shrink:0"><a class="btn btn-sm" href="onboarding-portal.html" target="_blank">Portal ↗</a><a class="btn btn-sm" href="merchant-panel.html" target="_blank">Merchant kabinet ↗</a></div></div>';
+}
+function onbTable(head, rows, rowFn, empty){
+  const cols=(head.match(/<th/g)||[]).length;
+  return '<div class="table-scroll"><table class="data-table"><thead>'+head+'</thead><tbody>'+
+    (rows.length ? rows.map(rowFn).join('') : '<tr><td colspan="'+cols+'"><div class="empty-state"><div class="d">'+empty+'</div></div></td></tr>')+'</tbody></table></div>';
+}
+const byLiveThenAge = (x,y)=> (isLive(y)-isLive(x)) || (stageSince(x)-stageSince(y));
+const byRecent = (x,y)=> (isLive(y)-isLive(x)) || ((y.updatedAt||0)-(x.updatedAt||0));
+const appCell = a=> '<td style="font-weight:600">'+esc(brandOf(a))+liveTag(a)+'<div style="font-size:11px;color:var(--text-3);font-weight:400">'+esc(a.id)+' · '+esc(orgName(a))+'</div></td>';
+const openBtn = (a,label)=> '<td><button class="btn btn-sm" data-onb="open" data-id="'+a.id+'">'+(label||'Ko‘rish')+'</button></td>';
+const APP_HEAD = '<tr><th>Ariza</th><th>INN</th><th>Bosqich (ichki)</th><th>Mijoz ko‘radi</th><th>Mas’ul</th><th>Hisob</th><th>Vaqt / SLA</th><th></th></tr>';
+function appRow(a){
+  return '<tr>'+appCell(a)+'<td class="mono">'+esc(a.inn)+'</td><td>'+appStBadge(a)+'</td>'+
+    '<td style="font-size:12px;color:var(--text-2)">'+esc(extLabel(a))+'</td><td style="font-size:12px">'+esc(STAGE_OWNER[a.status]||'—')+'</td>'+
+    '<td>'+accChip(a)+'</td><td>'+slaChip(a)+'</td>'+openBtn(a)+'</tr>';
+}
+const DRAFT_HEAD = '<tr><th>INN · tashkilot</th><th>To‘ldirilgan</th><th>Hisob</th><th>Oxirgi faollik</th><th>Muddat (30 kun)</th><th>Aloqa</th><th></th></tr>';
+function draftRow(a){
+  const k=draftSteps(a), b=a.bank||{};
+  return '<tr>'+appCell(a)+'<td><span class="mini-bar"><span style="width:'+Math.round(k/6*100)+'%"></span></span>'+k+'/6 qadam</td>'+
+    '<td>'+accChip(a)+'</td><td style="color:var(--text-3)">'+relTime(a.updatedAt||a.createdAt)+'</td><td>'+slaChip(a)+'</td>'+
+    '<td class="mono" style="font-size:12px">'+maskPhone(a.d.phone || (isLive(a)&&LIVE.S.user&&LIVE.S.user.phone))+'</td>'+
+    '<td style="white-space:nowrap">'+(b.called?'<span style="font-size:11px;color:var(--green);font-weight:600;margin-right:6px">✓ '+relTime(b.called)+'</span>':'<button class="btn btn-sm" data-onb="call" data-id="'+a.id+'">Qo‘ng‘iroq qilindi</button> ')+
+    '<button class="btn btn-sm" data-onb="open" data-id="'+a.id+'">Holat</button></td></tr>';
+}
+const GL_HEAD = '<tr><th>Ariza</th><th>Merchant</th><th>Hisob (ABS)</th><th>Cheklist</th><th>Go-live so‘rovi</th><th></th></tr>';
+function goliveRow(a){
+  const n=GOLIVE_ITEMS.filter(([k])=>a.golive&&a.golive[k]).length;
+  return '<tr>'+appCell(a)+'<td class="mono">'+esc(a.merchantId||'—')+'</td><td>'+accChip(a)+'</td><td>'+n+'/'+GOLIVE_ITEMS.length+'</td>'+
+    '<td>'+(a.live ? badgeC('Live','green') : a.golive&&a.golive.requestedAt ? badgeC('So‘rov keldi · '+relTime(a.golive.requestedAt),'amber') : '<span style="color:var(--text-3);font-size:12px">merchant sandbox’da test qilmoqda</span>')+'</td>'+openBtn(a)+'</tr>';
+}
+const CLOSED_HEAD = '<tr><th>Ariza</th><th>INN</th><th>Holat</th><th>Ichki sabab</th><th>Sana</th><th></th></tr>';
+function closedRow(a){
+  const b=a.bank||{}, r=a.rejection;
+  const why = a.status==='REJECTED' ? '<span class="mono" style="font-size:11.5px">'+esc(b.rejectCode||'—')+'</span> · '+(r&&r.canReapply?'qayta ariza mumkin':'<b style="color:var(--red)">INN bloklangan</b>')
+    : a.status==='EXPIRED' ? 'Muddat o‘tdi (SYS_EXPIRED)' : 'Mijoz bekor qildi';
+  return '<tr>'+appCell(a)+'<td class="mono">'+esc(a.inn)+'</td><td>'+appStBadge(a)+'</td><td style="font-size:12px">'+why+'</td><td style="color:var(--text-3)">'+fmtDate(a.updatedAt)+'</td>'+openBtn(a)+'</tr>';
+}
+function onbTabOf(a){
+  const st=a.status;
+  if(st==='DRAFT') return 'drafts';
+  if(st==='PENDING_APPROVAL') return 'approvals';
+  if(['APPROVED','CONTRACT_PENDING','CONTRACT_SIGNED','PROVISIONING'].includes(st)) return 'contracts';
+  if(st==='COMPLETED') return a.live ? 'done' : 'golive';
+  if(['REJECTED','CANCELLED','EXPIRED'].includes(st)) return 'closed';
+  return 'queue';
+}
+function renderOnboarding(){
+  const apps=allApps(), tab=STATE.onbTab||'queue';
+  const G={queue:[],drafts:[],approvals:[],contracts:[],golive:[],done:[],closed:[]};
+  apps.forEach(a=>G[onbTabOf(a)].push(a));
+  G.queue=G.queue.concat(G.approvals).sort(byLiveThenAge); G.approvals.sort(byLiveThenAge);
+  G.drafts.sort(byRecent); G.contracts.sort(byRecent); G.golive.sort(byRecent); G.done.sort(byRecent); G.closed.sort(byRecent);
+  const work=G.queue.filter(a=>a.status!=='NEEDS_INFO');
+  const k={ work:work.length, info:apps.filter(a=>a.status==='NEEDS_INFO').length, cmp:apps.filter(a=>a.status==='COMPLIANCE_REVIEW'||a.status==='ESCALATED').length,
+    apr:G.approvals.length, late:work.filter(slaLate).length, gl:G.golive.filter(a=>a.golive&&a.golive.requestedAt).length };
+  const T=(key,label,n)=>'<button class="tab-btn '+(tab===key?'active':'')+'" data-group="onb" data-tab="'+key+'">'+label+' ('+n+')</button>';
+  const P=(key,html)=>'<div data-tabpanel="'+key+'" data-group="onb" style="'+(tab===key?'':'display:none')+'">'+html+'</div>';
+  return `
+  <div class="page-header"><div><h1>Merchant onboarding</h1><div class="desc">Ariza → hujjatlar (davlat tizimlaridan) → sayt (onlayn) → KYB/risk → Compliance → Rais o‘rinbosari → shartnoma → kabinet → go-live.</div></div></div>
+  ${onbLiveStrip()}
+  <div class="kpi-grid" style="grid-template-columns:repeat(6,1fr)">
+    <div class="kpi-card"><div class="label">Ish navbatida</div><div class="value" style="color:var(--blue)">${k.work}</div></div>
+    <div class="kpi-card"><div class="label">Mijoz javobi kutilmoqda</div><div class="value" style="color:var(--amber)">${k.info}</div></div>
+    <div class="kpi-card"><div class="label">Compliance / EDD</div><div class="value" style="color:var(--purple)">${k.cmp}</div></div>
+    <div class="kpi-card"><div class="label">Rais o‘rinbosari qarori</div><div class="value" style="color:var(--amber)">${k.apr}</div></div>
+    <div class="kpi-card"><div class="label">SLA buzilgan</div><div class="value" style="color:var(--red)">${k.late}</div></div>
+    <div class="kpi-card"><div class="label">Go-live so‘rovi</div><div class="value" style="color:var(--green)">${k.gl}</div></div>
+  </div>
+  <div class="tabs">${T('queue','Ish navbati',G.queue.length)}${T('drafts','Qoralamalar (lidlar)',G.drafts.length)}${T('approvals','Tasdiqlash',G.approvals.length)}${T('contracts','Shartnomalar',G.contracts.length)}${T('golive','Go-live',G.golive.length)}${T('done','Live merchantlar',G.done.length)}${T('closed','Yopilgan',G.closed.length)}</div>
+  ${P('queue', onbTable(APP_HEAD, G.queue, appRow, 'Navbatda ariza yo‘q'))}
+  ${P('drafts', '<div class="onb-note">Q-19: mijoz hali yubormagan arizalar — faqat holat ko‘rinadi (pasport, PINFL, hujjatlar yo‘q). Xodim qo‘ng‘iroq qilib yordam beradi. Yuborilgach ariza «Ish navbati»ga o‘tadi.</div>'+onbTable(DRAFT_HEAD, G.drafts, draftRow, 'Qoralama yo‘q'))}
+  ${P('approvals', onbTable(APP_HEAD, G.approvals, appRow, 'Qaror kutayotgan ariza yo‘q'))}
+  ${P('contracts', onbTable(APP_HEAD, G.contracts, appRow, 'Shartnoma bosqichida ariza yo‘q'))}
+  ${P('golive', '<div class="onb-note">Kabinet va sandbox tayyor (D4). Real to‘lovlar (D5) uchun: merchant cheklisti + <b>Garant Bankdagi hisob</b> (Q-32) + Operatsiya xodimi tasdig‘i.</div>'+onbTable(GL_HEAD, G.golive, goliveRow, 'Go-live kutayotgan merchant yo‘q'))}
+  ${P('done', onbTable(GL_HEAD, G.done, goliveRow, 'Hali live merchant yo‘q'))}
+  ${P('closed', onbTable(CLOSED_HEAD, G.closed, closedRow, 'Yopilgan ariza yo‘q'))}`;
+}
+
+/* ================================================================
+   PAGE: COMPLIANCE NAVBATI + BLOKLANGAN URINISHLAR (22 §3.1 B6–B7)
+   ================================================================ */
+function renderCompliance(){
+  const apps=allApps(), tab=STATE.compTab||'queue';
+  const q=apps.filter(a=>a.status==='COMPLIANCE_REVIEW'||a.status==='ESCALATED').sort(byLiveThenAge);
+  const rej=apps.filter(a=>a.status==='REJECTED' && a.bank && /^CMP_/.test(a.bank.rejectCode||'')).sort(byRecent);
+  const bl=allBlocked().slice().sort((x,y)=>y.at-x.at);
+  const perInn={}, perPhone={};
+  bl.forEach(x=>{ perInn[x.inn]=(perInn[x.inn]||0)+1; (perPhone[x.phone]=perPhone[x.phone]||new Set()).add(x.inn); });
+  const day=bl.filter(x=>Date.now()-x.at<DAY).length;
+  const T=(key,label,n)=>'<button class="tab-btn '+(tab===key?'active':'')+'" data-group="comp" data-tab="'+key+'">'+label+' ('+n+')</button>';
+  const P=(key,html)=>'<div data-tabpanel="'+key+'" data-group="comp" style="'+(tab===key?'':'display:none')+'">'+html+'</div>';
+  const qRow=a=>{ const r=a.bank&&a.bank.risk, k=a.bank&&a.bank.kyb;
+    return '<tr>'+appCell(a)+'<td class="mono">'+esc(a.inn)+'</td><td>'+appStBadge(a)+'</td><td>'+(r?badge(RISK_UZ[r.level])+' <span class="mono" style="font-size:11.5px">'+r.score+'</span>':'—')+'</td>'+
+      '<td style="font-size:12px">'+(k&&/Potentsial/.test(k.pep)?'<b style="color:var(--amber)">PEP?</b>':'—')+'</td><td>'+slaChip(a)+'</td>'+openBtn(a)+'</tr>'; };
+  const bRow=x=>'<tr><td style="color:var(--text-3)">'+fmtDateTime(x.at)+'</td><td class="mono">'+esc(x.inn)+'</td><td class="mono" style="font-size:12px">'+maskPhone(x.phone)+'</td>'+
+    '<td style="font-size:12px">'+esc(BLOCK_WHERE[x.where]||x.where)+'</td><td style="font-size:12px"><span class="mono">'+esc(x.code)+'</span><div style="color:var(--text-3);font-size:11px">'+esc(x.src||'')+'</div></td>'+
+    '<td>'+perInn[x.inn]+'</td><td>'+((perPhone[x.phone]||new Set()).size>1?badgeC('bir nechta INN','red'):'—')+(x.live?' <span class="tag-live">Portal · jonli</span>':'')+'</td>'+
+    '<td><button class="btn btn-sm" data-onb="unblock" data-id="'+esc(x.inn)+'">Blokni olib tashlash</button></td></tr>';
+  return `
+  <div class="page-header"><div><h1>Compliance navbati</h1><div class="desc">KYC/KYB skrining natijasi, risk va EDD; bloklangan INN urinishlari. Sabab mijozga hech qachon aytilmaydi (22 §3.1 B5).</div></div></div>
+  <div class="kpi-grid" style="grid-template-columns:repeat(5,1fr)">
+    <div class="kpi-card"><div class="label">Ko‘rib chiqilmoqda</div><div class="value" style="color:var(--purple)">${q.filter(a=>a.status==='COMPLIANCE_REVIEW').length}</div></div>
+    <div class="kpi-card"><div class="label">EDD</div><div class="value" style="color:var(--red)">${q.filter(a=>a.status==='ESCALATED').length}</div></div>
+    <div class="kpi-card"><div class="label">Yuqori risk</div><div class="value" style="color:var(--red)">${q.filter(a=>a.bank&&a.bank.risk&&a.bank.risk.level==='HIGH').length}</div></div>
+    <div class="kpi-card"><div class="label">Bloklangan urinish (24 soat)</div><div class="value" style="color:var(--amber)">${day}</div></div>
+    <div class="kpi-card"><div class="label">Compliance rad etgan</div><div class="value">${rej.length}</div></div>
+  </div>
+  <div class="tabs">${T('queue','Navbat',q.length)}${T('blocked','Bloklangan urinishlar',bl.length)}${T('rejected','Rad etilganlar',rej.length)}</div>
+  ${P('queue', onbTable('<tr><th>Ariza</th><th>INN</th><th>Bosqich</th><th>Risk</th><th>PEP</th><th>Vaqt / SLA</th><th></th></tr>', q, qRow, 'Compliance navbatida ariza yo‘q'))}
+  ${P('blocked', '<div class="onb-note">Har urinishda audit yozuvi (B6). Mijoz ekranida faqat umumiy xabar — «Bank bilan bog‘laning», qayta ariza tugmasi yo‘q (B5, B8). Blokni faqat Compliance (katta xodim) sabab yozib, ikkinchi xodim tasdig‘i bilan olib tashlaydi (B9) — Faza 2.</div>'+
+     onbTable('<tr><th>Vaqt</th><th>INN</th><th>Telefon</th><th>Qayerda</th><th>Ichki sabab</th><th>Urinish</th><th>Belgi</th><th></th></tr>', bl, bRow, 'Bloklangan urinish yo‘q'))}
+  ${P('rejected', onbTable(CLOSED_HEAD, rej, closedRow, 'Compliance rad etgan ariza yo‘q'))}`;
+}
+
+/* ================================================================
+   PAGE: HISOB OCHISH ARIZALARI — Operatsiya / RKO (docs/26, Q-33)
+   ================================================================ */
+function accLinkedApp(r){ return (isLiveAcc(r)?liveApps():STATE.applications).find(a=>a.inn===r.inn && !['CANCELLED','EXPIRED','REJECTED'].includes(a.status)) || null; }
+function accBadge(r){ const s=ACC_ST_LABEL[r.status]||[r.status,'gray']; return badgeC(s[0], s[1]); }
+function accSummary(r){ const A=r.d.accounts; return 'UZS'+(+A.cardGoods>0?' + '+A.cardGoods+' tovar tranziti':'')+(+A.cardServices>0?' + '+A.cardServices+' xizmat tranziti':''); }
+function renderAccReqs(){
+  const all=allAccs(), tab=STATE.accTab||'queue';
+  const q=all.filter(r=>r.status==='SUBMITTED'||r.status==='IN_REVIEW').sort((x,y)=>(isLiveAcc(y)-isLiveAcc(x))||(x.updatedAt-y.updatedAt));
+  const op=all.filter(r=>r.status==='OPENED').sort((x,y)=>y.updatedAt-x.updatedAt), dr=all.filter(r=>r.status==='DRAFT');
+  const T=(key,label,n)=>'<button class="tab-btn '+(tab===key?'active':'')+'" data-group="acc" data-tab="'+key+'">'+label+' ('+n+')</button>';
+  const P=(key,html)=>'<div data-tabpanel="'+key+'" data-group="acc" style="'+(tab===key?'':'display:none')+'">'+html+'</div>';
+  const row=r=>{ const app=accLinkedApp(r), d=r.d;
+    return '<tr><td style="font-weight:600">'+esc(r.orgName)+liveTag(r)+'<div style="font-size:11px;color:var(--text-3);font-weight:400">'+esc(r.id)+'</div></td><td class="mono">'+esc(r.inn)+'</td>'+
+      '<td style="font-size:12px">'+esc(accSummary(r))+'</td><td style="font-size:12px">'+[d.ib&&'IB',d.mb&&'MB',d.sms&&'SMS'].filter(Boolean).join(' · ')+'</td>'+
+      '<td style="font-size:12px">'+esc(d.tariff==='OTHER'?(d.tariffOther||'Boshqa'):(d.tariff||'—'))+'</td>'+
+      '<td>'+(app?'<a href="#" data-onb="open" data-id="'+app.id+'" style="font-size:12px">'+esc(app.id)+'</a><div>'+appStBadge(app)+'</div>':'<span style="color:var(--text-3);font-size:12px">ekvayring arizasi yo‘q</span>')+'</td>'+
+      '<td>'+accBadge(r)+'</td><td style="color:var(--text-3)">'+relTime(r.updatedAt)+'</td><td><button class="btn btn-sm" data-onb="open-acc" data-id="'+r.id+'">Ko‘rish</button></td></tr>'; };
+  const head='<tr><th>Tashkilot</th><th>INN</th><th>Hisobvaraqlar</th><th>Masofaviy</th><th>Tarif</th><th>Ekvayring arizasi</th><th>Holat</th><th>Yangilangan</th><th></th></tr>';
+  return `
+  <div class="page-header"><div><h1>Hisob ochish arizalari</h1><div class="desc">Portal ichidagi ariza (bank shabloni, 1-ilova — 5 bo‘lim). Operatsiya xodimi ABS da hisob ochadi → tizim ekvayring arizasiga avtomatik bog‘laydi (Q-32, Q-33). Hujjatlar so‘ralmaydi (Q-34).</div></div></div>
+  ${onbLiveStrip()}
+  <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr)">
+    <div class="kpi-card"><div class="label">Yangi</div><div class="value" style="color:var(--blue)">${q.filter(r=>r.status==='SUBMITTED').length}</div></div>
+    <div class="kpi-card"><div class="label">Ko‘rib chiqilmoqda</div><div class="value" style="color:var(--amber)">${q.filter(r=>r.status==='IN_REVIEW').length}</div></div>
+    <div class="kpi-card"><div class="label">Ochilgan</div><div class="value" style="color:var(--green)">${op.length}</div></div>
+    <div class="kpi-card"><div class="label">Qoralama (mijozda)</div><div class="value">${dr.length}</div></div>
+  </div>
+  <div class="tabs">${T('queue','Navbat',q.length)}${T('opened','Ochilgan',op.length)}${T('drafts','Qoralamalar',dr.length)}</div>
+  ${P('queue', onbTable(head, q, row, 'Navbatda ariza yo‘q'))}
+  ${P('opened', onbTable(head, op, row, 'Hali ochilgan hisob yo‘q'))}
+  ${P('drafts', onbTable(head, dr, row, 'Qoralama yo‘q'))}`;
+}
+
+/* ================================================================
+   ARIZA KARTOCHKASI (drawer)
+   ================================================================ */
+const PIPE = ['DRAFT','SUBMITTED','AUTO_VALIDATION','DOC_REVIEW','SITE_REVIEW','KYB_CHECK','RISK_ASSESSMENT','COMPLIANCE_REVIEW','PENDING_APPROVAL','APPROVED','CONTRACT_PENDING','CONTRACT_SIGNED','PROVISIONING','COMPLETED'];
+function pipeIdx(a){
+  let st=a.status;
+  if(st==='NEEDS_INFO') st=(a.info&&a.info.returnTo)||'DOC_REVIEW';
+  if(st==='ESCALATED') st='COMPLIANCE_REVIEW';
+  return PIPE.indexOf(st);
+}
+function siteSummary(a){ const s=(a.bank&&a.bank.site)||{}, v=Object.values(s); const bad=v.filter(x=>x==='bad').length;
+  return v.length ? v.filter(x=>x!=='bad').length+'/'+SITE_ITEMS.length+' javob'+(bad?' · <b style="color:var(--red)">'+bad+' ta mos emas</b>':'') : 'boshlanmagan'; }
+const ckRow = (label, st, note)=> '<div class="ck-row '+st+'"><span class="ic">'+({done:'✓',cur:'●',warn:'!',todo:'○'}[st])+'</span><span>'+label+'</span><span class="nt">'+(note||'')+'</span></div>';
+function progressHTML(a){
+  const i=pipeIdx(a), at=s=>PIPE.indexOf(s), b=a.bank||{};
+  const st=s=> i<0 ? 'todo' : i>at(s) ? 'done' : i===at(s) ? (a.status==='NEEDS_INFO'?'warn':'cur') : 'todo';
+  const keys=docKeys(a), ver=keys.filter(k=>a.docs[k].status==='VERIFIED').length;
+  return '<div class="ck-list">'+
+    ckRow('Ariza ma’lumotlari', a.status==='DRAFT'?'cur':'done', a.status==='DRAFT' ? draftSteps(a)+'/6 qadam' : 'yuborilgan · o‘zgarmas nusxa')+
+    ckRow('Hujjatlar — davlat tizimlaridan (Q-34)', keys.length&&ver===keys.length?'done':st('DOC_REVIEW'), keys.length ? ver+'/'+keys.length+' tasdiqlangan' : 'yuborilgach olinadi')+
+    ckRow('Sayt tekshiruvi (BT §4, onlayn)', !hasSite(a) ? (i>at('SITE_REVIEW')?'done':'todo') : st('SITE_REVIEW'), hasSite(a) ? siteSummary(a) : 'sayt orqali to‘lov so‘ralmagan')+
+    ckRow('KYC/KYB skrining va risk', b.risk?'done':st('KYB_CHECK'), b.risk ? 'Risk '+RISK_UZ[b.risk.level]+' ('+b.risk.score+')' : '')+
+    ckRow('Compliance xulosasi', a.status==='ESCALATED'?'warn':st('COMPLIANCE_REVIEW'), a.status==='ESCALATED'?'EDD davom etmoqda':'')+
+    ckRow('Rais o‘rinbosari qarori', b.approvedBy?'done':st('PENDING_APPROVAL'), b.approvedBy?'tasdiqlangan':'')+
+    ckRow('Shartnoma (E-IMZO)', a.contract&&a.contract.bSigned?'done':a.contract?'cur':'todo', a.contract ? esc(a.contract.no)+' · mijoz '+(a.contract.mSigned?'✓':'…')+' · bank '+(a.contract.bSigned?'✓':'…') : '')+
+    ckRow('Kabinet va sandbox (provisioning)', a.status==='COMPLETED'?'done':st('PROVISIONING'), a.merchantId||'')+
+    ckRow('Bank hisobi (ABS)', noAcc(a)?'warn':'done', noAcc(a) ? 'yo‘q — faqat go-live uchun shart (Q-32)' : fmtAcc(settleAcc(a)))+
+    ckRow('Go-live (Operatsiya)', a.live?'done':a.status==='COMPLETED'?'cur':'todo', a.live?'live':(a.golive&&a.golive.requestedAt?'so‘rov keldi':''))+
+    '</div>';
+}
+const kv = (k,v,full)=> '<div class="kv"'+(full?' style="grid-column:1/3"':'')+'><div class="k">'+k+'</div><div class="v">'+v+'</div></div>';
+function appInfoKV(a){
+  const d=a.d, draft=a.status==='DRAFT', sv=Object.keys(d.services||{}).filter(k=>d.services[k]).map(k=>SERVICE_NAMES[k]||k).join(', ')||'—';
+  const fs=(a.founders||[]).length ? a.founders.map(f=>esc(f.name)+' — '+f.share+'%'+(f.type==='YUSH'?' (yur. shaxs)':'')).join('<br>') : (isIndForm(a.form)?'Egasi o‘zi':'—');
+  return '<div class="kv-grid">'+
+    kv('Yuridik nomi', esc(orgName(a)))+kv('Tashkiliy shakl · registr', esc(a.form)+' · '+(a.registry==='MANUAL'?'<span style="color:var(--amber)">qo‘lda kiritilgan</span>':'davlat registri ✓'))+
+    kv('Soha / MCC', esc(industryLabel(a)))+kv('Xizmatlar', esc(sv))+
+    kv('Sayt', d.website?'<span class="mono" style="font-size:12px">'+esc(d.website)+'</span>':'—')+kv('Chek turi', d.receipt==='service'?'Xizmat':d.receipt==='goods'?'Tovar':'—')+
+    kv('Yuridik manzil', esc(d.legalAddr||'—'), true)+
+    kv('Rahbar', esc(d.dirName||'—')+(draft||!d.dirPinfl?'':'<div style="font-size:11px;color:var(--text-3);font-weight:500">PINFL '+esc(String(d.dirPinfl).slice(0,3))+'••••••••• · pasport '+esc(String(d.dirPass||'').slice(0,2))+'•••••</div>'))+
+    kv('Ariza beruvchi', a.role==='EMP'?'Xodim → kabinetda Administrator':'Direktor → kabinet egasi (Owner)')+
+    kv('Aloqa', draft ? maskPhone(d.phone)+' <span style="font-size:11px;color:var(--text-3)">(niqoblangan — Q-19)</span>' : esc(fmtPhone(d.phone))+' · '+esc(d.email||''))+
+    kv('Ta’sischilar (davlat registri, Q-28)', fs)+
+    '</div>';
+}
+function appAccHTML(a){
+  const r=accOfApp(a), acc=settleAcc(a);
+  let h='<div class="kv-grid">'+kv('Tushum hisobi', acc?'<span class="mono">'+fmtAcc(acc)+'</span>':'<span style="color:var(--amber)">Garant Bankda hisob yo‘q</span>')+
+    kv('Manba', acc ? (a.d.accountId&&a.d.accountId!==LATER_ACC?'Arizada tanlangan (ABS)':'Keyin ochildi — ABS INN bo‘yicha topdi') : 'Ariza, shartnoma va sandbox hisobsiz davom etadi; go-live uchun shart (Q-32)')+'</div>';
+  if(r) h+='<div class="onb-note">Hisob ochish arizasi: <a href="#" data-onb="open-acc" data-id="'+r.id+'"><b>'+esc(r.id)+'</b></a> — '+accBadge(r)+' · '+esc(accSummary(r))+'</div>';
+  else if(!acc) h+='<div class="onb-note warn">Mijoz hali hisob ochish arizasini bermagan. Xodim portaldagi «Hisob ochish» havolasini eslatishi mumkin.</div>';
+  return h;
+}
+function docsHTML(a){
+  const keys=docKeys(a), ed=a.status==='DOC_REVIEW';
+  if(!keys.length) return '<div class="onb-note">Hujjatlar ariza yuborilgach davlat tizimlaridan avtomatik olinadi — mijoz yuklamaydi (Q-34).</div>';
+  return '<div class="table-scroll" style="border:none"><table class="data-table"><thead><tr><th>Hujjat</th><th>Manba</th><th>Holat</th><th></th></tr></thead><tbody>'+
+    keys.map(k=>{ const x=a.docs[k], s=DOC_ST[x.status]||[x.status,'gray'], up=x.status==='UPLOADED'||x.file==='mijoz yukladi';
+      return '<tr><td>'+esc(docName(a,k))+(x.note&&x.status==='REPLACEMENT_REQUIRED'?'<div style="font-size:11px;color:var(--amber)">'+esc(x.note)+'</div>':'')+'</td>'+
+        '<td style="font-size:11.5px;color:var(--text-2)">'+(up?'Mijoz (03a so‘rovi)':/^DOMAIN/.test(k)?'Tashqi reestr (18 §52)':'Davlat tizimi (onlayn)')+'</td><td>'+badgeC(s[0],s[1])+'</td>'+
+        '<td style="white-space:nowrap">'+(ed&&['FETCHED','UPLOADED'].includes(x.status)?'<button class="btn btn-sm" data-onb="doc-ok" data-id="'+a.id+'" data-k="'+esc(k)+'">Tasdiqlash</button> <button class="btn btn-sm" data-onb="doc-ask" data-id="'+a.id+'" data-k="'+esc(k)+'">So‘rash</button>':'')+'</td></tr>'; }).join('')+
+    '</tbody></table></div>';
+}
+function siteHTML(a){
+  const s=(a.bank&&a.bank.site)||{}, ed=a.status==='SITE_REVIEW', sc=a.d.scan||{};
+  const seg=(k,v)=>['ok','bad','na'].map(o=>'<button class="'+(v===o?'on '+o:'')+'" data-onb="site" data-id="'+a.id+'" data-k="'+k+'" data-v="'+o+'">'+{ok:'✓',bad:'✗',na:'N/A'}[o]+'</button>').join('');
+  return '<div class="onb-note">Sayt: <span class="mono">'+esc(a.d.website||'—')+'</span> · avto-skan: HTTPS '+(sc.https?'✓':'✗')+' · UZCARD/HUMO logolari '+(sc.logos?'✓':'✗')+(sc.logosFixed?' (mijoz tuzatdi)':'')+'. Tekshiruv onlayn — jismoniy tashrif yo‘q.</div>'+
+    '<div class="ck-list">'+SITE_ITEMS.map(([k,l,src],i)=>{ const v=s[k];
+      return '<div class="ck-row '+(v==='ok'?'done':v==='bad'?'warn':'todo')+'"><span class="ic">'+(v==='ok'?'✓':v==='bad'?'✗':v==='na'?'–':(i+1))+'</span><span>'+esc(l)+' <span style="color:var(--text-3);font-size:11px">'+src+'</span></span><span class="nt">'+(ed?'<span class="seg">'+seg(k,v)+'</span>':(v==='na'?'N/A':''))+'</span></div>'; }).join('')+'</div>';
+}
+function kybHTML(a){
+  const k=a.bank.kyb, r=a.bank.risk;
+  return '<div class="kv-grid">'+kv('Sanksiya ro‘yxatlari', esc(k.sanctions))+kv('PEP', esc(k.pep))+kv('Foydali egalar (UBO)', esc(k.ubo), true)+kv('Registr holati', esc(k.registry))+kv('Soliq', esc(k.tax))+'</div>'+
+    (r ? '<div class="onb-note">Risk balli: <b>'+r.score+'</b> — '+badge(RISK_UZ[r.level])+' (≤30 Past · 31–70 O‘rta · ≥71 Yuqori → EDD)<br>'+
+      (r.factors.length ? r.factors.map(f=>'<span class="mono" style="font-size:11px">'+esc(f[0])+'</span> '+esc(f[1])+' <b>'+(f[2]>0?'+':'')+f[2]+'</b>').join('<br>') : 'Risk omillari topilmadi')+'</div>' : '');
+}
+function historyHTML(a){
+  const ev=a.timeline.map(t=>({t:t.t, text:t.text, who:t.who, c:1})).concat(((a.bank&&a.bank.log)||[]).map(t=>({t:t.t, text:t.text, who:t.who, c:0}))).sort((x,y)=>y.t-x.t);
+  return '<div class="tl">'+ev.map((e,i)=>'<div class="tl-item '+(i?'done':'')+'"><div class="tt">'+esc(e.text)+'</div><div class="td">'+fmtDateTime(e.t)+' · '+esc(e.who)+' · '+
+    (e.c?'<span style="color:var(--blue);font-weight:600">mijoz ko‘radi</span>':'ichki')+'</div></div>').join('')+'</div>';
+}
+const secH = (t, right)=> '<div class="onb-h"><span>'+t+'</span>'+(right||'')+'</div>';
+function appDrawerHTML(a){
+  const b=a.bank||{};
+  let h='<div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><div><h3 style="margin:0 0 4px">'+esc(brandOf(a))+liveTag(a)+'</h3>'+
+    '<div style="font-size:12px;color:var(--text-3)">'+esc(a.id)+' · INN '+esc(a.inn)+' · '+esc(a.form)+'</div></div>'+
+    '<div style="text-align:right">'+appStBadge(a)+'<div style="font-size:11px;color:var(--text-3);margin-top:4px">Mijoz ko‘radi: <b>'+esc(extLabel(a))+'</b></div></div></div>';
+  h+='<div class="onb-stage"><div><span class="k">Bosqich</span>'+esc(APP_STATUS_LABEL[a.status]||a.status)+'</div><div><span class="k">Mas’ul</span>'+esc(STAGE_OWNER[a.status]||'—')+'</div><div><span class="k">Vaqt</span>'+slaChip(a)+'</div>'+
+    (a.submittedAt?'<div><span class="k">Yuborilgan</span>'+fmtDateTime(a.submittedAt)+'</div>':'')+'</div>';
+  if(isLive(a)) h+='<div class="onb-note">Portalda (shu brauzerda) yaratilgan ariza. Mijoz javobi, imzosi va go-live so‘rovi portal / kabinetdan keladi — bu oyna o‘zi yangilanadi.</div>';
+  h+=progressHTML(a);
+  h+=secH('Ariza ma’lumotlari')+appInfoKV(a);
+  h+=secH('Bank hisobi')+appAccHTML(a);
+  if(a.status==='DRAFT') return h+secH('Jarayon tarixi')+historyHTML(a);
+  h+=secH('Hujjatlar — davlat tizimlaridan', a.status==='DOC_REVIEW'&&!docsVerified(a)?'<button class="btn btn-sm" data-onb="docs-ok" data-id="'+a.id+'">Barchasini tasdiqlash</button>':'')+docsHTML(a);
+  if(hasSite(a) && (pipeIdx(a)>=PIPE.indexOf('SITE_REVIEW') || b.site)) h+=secH('Sayt tekshiruvi — BT §4, 19 band', a.status==='SITE_REVIEW'?'<button class="btn btn-sm" data-onb="site-auto" data-id="'+a.id+'">Avto-skan natijasi</button>':'')+siteHTML(a);
+  if(b.kyb) h+=secH('KYC/KYB skrining va risk')+kybHTML(a);
+  if(['COMPLIANCE_REVIEW','ESCALATED'].includes(a.status)) h+=secH('Compliance xulosasi (ichki)')+'<div class="form-row"><textarea id="cmpNote" rows="3" placeholder="Xulosa: skrining, egalik, sayt, risk omillari…">'+esc(b.cmpNote||'')+'</textarea></div>';
+  else if(b.cmpNote) h+=secH('Compliance xulosasi (ichki)')+'<div class="onb-note">'+esc(b.cmpNote)+'</div>';
+  if(a.status==='PENDING_APPROVAL') h+='<div class="onb-note">To‘rt ko‘z: ko‘rib chiqqanlar — '+ROLE.ONB+', '+ROLE.CMP+'; qaror — <b>'+ROLE.APR+'</b> (boshqa shaxs ✓). Shartnomani ham u imzolaydi.</div>';
+  if(a.info) h+=secH('Mijozdan so‘ralgan ('+a.info.cycle+'-so‘rov / 3)')+'<div class="onb-note warn">'+a.info.items.map((it,i)=>(i+1)+'. '+esc(it.text)+' <span class="mono" style="font-size:11px">'+esc(it.code)+'</span>').join('<br>')+'<br>Muddat: <b>'+fmtDate(a.info.deadline)+'</b> · qaytadi: '+esc(APP_STATUS_LABEL[a.info.returnTo]||a.info.returnTo)+'</div>';
+  if(a.rejection) h+=secH('Rad etish')+'<div class="onb-note warn">Ichki kod: <b class="mono">'+esc(b.rejectCode||'—')+'</b> · '+(a.rejection.canReapply?'qayta ariza mumkin':'<b>INN bloklandi</b> (22 §3.1 B1)')+'<br>Mijoz ko‘radi: «'+esc(a.rejection.reason)+'»'+(a.rejection.remarks&&a.rejection.remarks.length?'<br>Kamchiliklar: '+a.rejection.remarks.map(esc).join('; '):'')+'</div>';
+  if(a.contract) h+=secH('Shartnoma')+'<div class="kv-grid">'+kv('Raqam','<span class="mono">'+esc(a.contract.no)+'</span>')+kv('Yaratilgan',fmtDateTime(a.contract.at))+
+    kv('Mijoz imzosi (E-IMZO)', a.contract.mSigned?fmtDateTime(a.contract.mSigned):'<span style="color:var(--amber)">kutilmoqda (14 kun)</span>')+kv('Bank imzosi ('+ROLE.APR+')', a.contract.bSigned?fmtDateTime(a.contract.bSigned):'kutilmoqda')+'</div>';
+  if(['CONTRACT_SIGNED','PROVISIONING'].includes(a.status) || (a.status==='COMPLETED' && a.provStep)) h+=secH('Provisioning (Saga)')+'<div class="ck-list">'+provSteps(a).map((t,i)=>ckRow(esc(t), a.status==='COMPLETED'||i<(a.provStep||0)?'done':i===(a.provStep||0)?'cur':'todo','')).join('')+'</div>';
+  if(a.status==='COMPLETED'){
+    const g=a.golive||{};
+    h+=secH('Go-live cheklist (D4 → D5)')+'<div class="ck-list">'+ckRow('Garant Bankdagi hisob bog‘langan (Q-32)', noAcc(a)?'warn':'done', noAcc(a)?'yo‘q — go-live bloklangan':fmtAcc(settleAcc(a)))+
+      GOLIVE_ITEMS.map(([k,l])=>ckRow(esc(l), g[k]||a.live?'done':'todo', '')).join('')+
+      ckRow('Operatsiya xodimi tasdig‘i → production kalitlar', a.live?'done':g.requestedAt?'cur':'todo', a.live?fmtDateTime(g.approvedAt||a.updatedAt):g.requestedAt?'so‘rov: '+relTime(g.requestedAt):'')+'</div>'+
+      '<div class="kv-grid" style="margin-top:10px">'+kv('Merchant ID','<span class="mono">'+esc(a.merchantId||'—')+'</span>')+kv('Sandbox kalit', a.keys?'<span class="mono" style="font-size:11.5px">'+esc(a.keys.mid)+' · '+esc(a.keys.sk.slice(0,10))+'•••</span>':'—')+'</div>';
+  }
+  return h+secH('Jarayon tarixi (mijoz ko‘radigan + ichki)')+historyHTML(a);
+}
+function appDrawerFoot(a){
+  const id=a.id, B=(act,label,cls,extra)=>'<button class="btn '+(cls||'')+'" data-onb="'+act+'" data-id="'+id+'"'+(extra||'')+'>'+label+'</button>';
+  const live=isLive(a), note=t=>'<span style="font-size:11.5px;color:var(--text-3);margin-right:auto;align-self:center">'+t+'</span>';
+  let f='';
+  switch(a.status){
+    case 'DRAFT': f=note('Mijoz to‘ldirmoqda')+(a.bank&&a.bank.called?'':B('call','Qo‘ng‘iroq qilindi')); break;
+    case 'SUBMITTED': case 'AUTO_VALIDATION': f=B('auto-done','Avto-tekshiruvni yakunlash (tizim)','btn-primary'); break;
+    case 'NEEDS_INFO': f=(live?note('Mijoz portalda javob beradi'):B('info-answer','Mijoz javob berdi (simulyatsiya)','btn-primary'))+B('expire','14 kun o‘tdi → EXPIRED'); break;
+    case 'DOC_REVIEW': f=B('info','Qo‘shimcha ma’lumot so‘rash')+B('reject','Rad etish','btn-danger')+(docsVerified(a)?B('to-site', hasSite(a)?'Hujjatlar to‘g‘ri → Sayt tekshiruvi':'Hujjatlar to‘g‘ri → KYB','btn-primary'):''); break;
+    case 'SITE_REVIEW': { const s=(a.bank&&a.bank.site)||{}, all=SITE_ITEMS.every(([k])=>s[k]), bad=SITE_ITEMS.some(([k])=>s[k]==='bad');
+      f=B('info','Mijozdan so‘rash (sayt)')+B('reject','Rad etish','btn-danger')+(all&&!bad?B('to-kyb','Sayt mos → KYB','btn-primary'):note(bad?'Mos kelmagan band bor — mijozdan so‘rang yoki rad eting':'19 bandni belgilang')); break; }
+    case 'KYB_CHECK': case 'RISK_ASSESSMENT': f=B('kyb','Skrining va risk-skoringni ishga tushirish','btn-primary'); break;
+    case 'COMPLIANCE_REVIEW': f=B('info','Tavsif so‘rash')+B('reject','Rad etish','btn-danger')+B('edd','EDD ga o‘tkazish')+B('cmp-ok','Ijobiy xulosa → Rais o‘rinbosari','btn-primary'); break;
+    case 'ESCALATED': f=B('reject','Rad etish','btn-danger')+B('cmp-ok','EDD yakunlandi → Rais o‘rinbosari','btn-primary'); break;
+    case 'PENDING_APPROVAL': f=B('info','Kamchilik bilan qaytarish')+B('reject','Rad etish','btn-danger')+B('approve','Tasdiqlash (shartnoma yaratiladi)','btn-primary'); break;
+    case 'APPROVED': f=B('contract','Shartnomani yaratish','btn-primary'); break;
+    case 'CONTRACT_PENDING': f = a.contract&&a.contract.mSigned ? B('b-sign','Bank imzosi (E-IMZO, '+ROLE.APR+')','btn-primary')
+      : (live?note('Mijoz portalda E-IMZO bilan imzolaydi'):B('m-sign','Mijoz imzoladi (simulyatsiya)'))+B('expire','14 kun o‘tdi → EXPIRED'); break;
+    case 'CONTRACT_SIGNED': f=B('prov','Provisioningni boshlash','btn-primary'); break;
+    case 'PROVISIONING': f=PROV_TIMERS[id]?note('Provisioning bajarilmoqda…'):B('prov','Provisioningni davom ettirish','btn-primary'); break;
+    case 'COMPLETED':
+      if(!a.live){ f=(goliveDone(a)&&a.golive.requestedAt?'':B('gl-sim','Merchant cheklisti (simulyatsiya)'))+
+        (noAcc(a)?note('Go-live bloklangan: Garant Bankda hisob yo‘q (Q-32)'):B('golive','Go-live tasdiqlash','btn-primary')); }
+      f+=B('goto-m','Merchant 360'); break;
+  }
+  return '<button class="btn" data-action="close-drawer">Yopish</button>'+f;
+}
+function openAppDrawer(id){ const a=findApp(id); if(!a) return; openDrawer(appDrawerHTML(a), appDrawerFoot(a)); STATE.onbDrawer={kind:'app', id}; }
+
+/* ---------------- hisob ochish arizasi kartochkasi ---------------- */
+function accDrawerHTML(r){
+  const d=r.d, A=d.accounts, app=accLinkedApp(r);
+  const accName={uzs:'Milliy valyutada talab qilib olinguncha depozit hisobvarag‘i', cardGoods:'Tovarlar bo‘yicha karta tushumi — tranzit hisobvaraq', cardServices:'Xizmatlar bo‘yicha karta tushumi — tranzit hisobvaraq'};
+  let h='<div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><div><h3 style="margin:0 0 4px">'+esc(r.orgName)+liveTag(r)+'</h3><div style="font-size:12px;color:var(--text-3)">'+esc(r.id)+' · INN '+esc(r.inn)+' · '+esc(r.form)+'</div></div><div>'+accBadge(r)+'</div></div>';
+  h+='<div class="onb-note">Bank shabloni: «Bank hisobvarag‘i va kompleks bank xizmatlari ko‘rsatish shartnomasiga 1-ilova — ommaviy oferta akcepti». Hujjatlar so‘ralmaydi — bank davlat tizimlaridan oladi (Q-34).</div>';
+  if(app) h+='<div class="onb-note">Ekvayring arizasi: <a href="#" data-onb="open" data-id="'+app.id+'"><b>'+esc(app.id)+'</b></a> — '+appStBadge(app)+'. Hisob ochilganda unga avtomatik bog‘lanadi.</div>';
+  h+=secH('1. Hisobvaraqlar')+'<div class="ck-list">'+ckRow(esc(accName.uzs),'done','majburiy')+(+A.cardGoods>0?ckRow(esc(accName.cardGoods),'done',A.cardGoods+' ta'):'')+(+A.cardServices>0?ckRow(esc(accName.cardServices),'done',A.cardServices+' ta'):'')+'</div>';
+  h+=secH('2. Masofaviy xizmat')+'<div class="kv-grid">'+kv('Internet-banking', d.ib?'✓ '+maskPhone(d.phIb):'—')+kv('Mobile-banking', d.mb?'✓ '+maskPhone(d.phMb):'—')+kv('SMS-banking', d.sms?'✓ '+maskPhone(d.phSms):'—')+'</div>';
+  h+=secH('3. Tarif rejasi (RKO)')+'<div class="kv-grid">'+kv('Tarif', esc(d.tariff==='OTHER'?(d.tariffOther||'Boshqa'):(d.tariff||'—')))+'</div>';
+  h+=secH('4. Roziliklar')+'<div class="ck-list">'+ckRow('Tarif bilan tanishdim; xizmat haqini hisobdan chiqarishga roziman', d.cTariff?'done':'todo','')+((d.ib||d.mb)?ckRow('IB / MB orqali arizalar yuborishga roziman', d.cIb?'done':'todo',''):'')+'</div>';
+  h+=secH('5. Imzo')+'<div class="kv-grid">'+kv('Tashkilot rahbari (E-IMZO)', esc(r.dirName||'—'))+kv('Yuborilgan', r.submittedAt?fmtDateTime(r.submittedAt):'— (qoralama)')+'</div>';
+  if(r.numbers) h+=secH('Ochilgan hisoblar (ABS)')+'<div class="kv-grid">'+r.numbers.map(([k,n])=>kv(esc(accName[k]||k),'<span class="mono">'+fmtAcc(n)+'</span>',true)).join('')+'</div>';
+  h+=secH('Tarix')+'<div class="tl">'+r.timeline.map((t,i)=>'<div class="tl-item '+(i?'done':'')+'"><div class="tt">'+esc(t.text)+'</div><div class="td">'+fmtDateTime(t.t)+' · '+esc(t.who)+'</div></div>').join('')+'</div>';
+  return h;
+}
+function accDrawerFoot(r){
+  const B=(act,label,cls)=>'<button class="btn '+(cls||'')+'" data-onb="'+act+'" data-id="'+r.id+'">'+label+'</button>';
+  let f='';
+  if(r.status==='SUBMITTED') f+=B('acc-review','Ko‘rib chiqishga olish');
+  if(r.status==='SUBMITTED'||r.status==='IN_REVIEW') f+=B('acc-open','Hisob ochildi (ABS)','btn-primary');
+  if(r.status==='DRAFT') f+='<span style="font-size:11.5px;color:var(--text-3);margin-right:auto;align-self:center">Mijoz hali yubormagan</span>';
+  return '<button class="btn" data-action="close-drawer">Yopish</button>'+f;
+}
+function openAccDrawer(id){ const r=findAcc(id); if(!r) return; openDrawer(accDrawerHTML(r), accDrawerFoot(r)); STATE.onbDrawer={kind:'acc', id}; }
+
+/* ================================================================
+   ONBOARDING HARAKATLARI — portal bilan bir xil holat o'tishlari
+   (portaldagi «Demo boshqaruvi — bank tomoni» shu harakatlarni simulyatsiya qiladi)
+   ================================================================ */
+const PROV_TIMERS = {};
+function fetchDocsB(a){
+  const keys=docKeys(a);
+  keys.forEach(k=>{ if(a.docs[k].status==='FETCHING') a.docs[k]={status:'FETCHED', file:'davlat tizimi', at:Date.now()}; });
+  if(keys.length && !a.timeline.some(t=>/davlat tizimlaridan olindi/.test(t.text))) pushC(a, 'Hujjatlar davlat tizimlaridan olindi ('+keys.length+' ta)', 'Tizim');
+}
+function toContractB(a){
+  const no=nextContractNo();
+  a.contract={no, at:Date.now(), mSigned:null, bSigned:null};
+  setSt(a, 'CONTRACT_PENDING', ROLE.SYS, 'shartnoma '+no);
+  pushC(a, 'Shartnoma imzolash uchun tayyor ('+no+') — 14 kun ichida imzolang', 'Tizim');
+}
+function rejectB(a, code, remarks, role, reason){
+  const c=REJ_CODES.find(x=>x[0]===code) || [code, code, true];
+  a.info=null;
+  a.rejection={ at:Date.now(), reason: c[2] ? (reason||'Ariza rad etildi: kamchiliklar mavjud') : REJ_FINAL_TEXT, remarks: c[2] ? (remarks||[]) : [], canReapply:c[2] };
+  bk(a).rejectCode=c[0];
+  setSt(a, 'REJECTED', role, c[0]+' — '+c[1]+(c[2]?' · qayta ariza mumkin':' · INN bloklandi (22 §3.1 B1)'));
+  pushC(a, 'Ariza rad etildi', 'Bank');
+}
+function siteAuto(a){
+  const s=bk(a).site=bk(a).site||{}, sc=a.d.scan||{};
+  s.live=sc.url?'ok':'bad'; s.https=sc.https?'ok':'bad'; s.logos=sc.logos?'ok':'bad'; s.ip='na';
+  if(a.d.licensed!=='yes') s.license='na';
+}
+function answerInfoSim(a){
+  if(!a.info) return;
+  const back=a.info.returnTo;
+  a.info.items.forEach(it=>{
+    if(it.kind==='doc' && a.docs[it.key]) a.docs[it.key]={status:'UPLOADED', file:'mijoz yukladi', at:Date.now()};
+    if(it.kind==='site') a.d.scan=Object.assign({}, a.d.scan, {logos:true, logosFixed:true});
+    if(it.kind==='field') a.d[it.field]='Kiyim-kechak va aksessuarlarni onlayn sotamiz; Toshkent bo‘yicha kuryer orqali 1–2 kunda yetkazamiz; 14 kun ichida qaytarish mumkin.';
+  });
+  a.cycles++; a.info=null; a.status=back; a.updatedAt=Date.now(); bk(a).since=Date.now(); bk(a).sinceSt=back;
+  pushC(a, 'Javobingiz qabul qilindi — ariza tegishli bosqichda davom etmoqda', 'Siz');
+  logB(a, 'Mijoz javob berdi → '+(APP_STATUS_LABEL[back]||back), 'Mijoz');
+}
+function openAccountB(r){
+  if(r.status==='OPENED' || r.status==='DRAFT') return;
+  const live=isLiveAcc(r), A=r.d.accounts, tail=r.inn.slice(0,6);
+  r.status='OPENED'; r.openedAt=Date.now(); r.updatedAt=Date.now();
+  r.numbers=[['uzs','20208000900'+tail+'011']].concat(+A.cardGoods>0?[['cardGoods','22618000900'+tail+'015']]:[], +A.cardServices>0?[['cardServices','22618000900'+tail+'016']]:[]);
+  const op=openedMap(live); op[r.inn]=r.numbers[0][1];
+  r.timeline.unshift({t:Date.now(), text:'Hisob ochildi (ABS): '+fmtAcc(op[r.inn]), who:'Bank'});
+  appsOfInn(r.inn, live).filter(a=>!['REJECTED','CANCELLED','EXPIRED'].includes(a.status)).forEach(a=>bindAcc(a, op[r.inn]));
+  pushAudit(ROLE.OPS, 'Hisob ochildi (ABS) — '+fmtAcc(op[r.inn]), 'Hisob ochish', r.id, 'IN_REVIEW', 'OPENED');
+}
+function runProv(id){
+  if(PROV_TIMERS[id]) return;
+  PROV_TIMERS[id]=setInterval(()=>{
+    const a=withApp(id, a=>{
+      if(a.status!=='PROVISIONING') return;
+      a.provStep=(a.provStep||0)+1;
+      if(a.provStep>=7){
+        a.keys=a.keys||{mid:'sbx_'+a.inn, sk:'sk_test_'+rndStr(28)}; a.merchantId=a.merchantId||nextMerchantId();
+        setSt(a, 'COMPLETED', ROLE.SYS, 'merchant '+a.merchantId+' yaratildi (sandbox)');
+        pushC(a, 'Kabinetingiz tayyor — o‘sha akkaunt bilan kiring (Merchant '+a.merchantId+')', 'Tizim');
+      }
+    });
+    if(!a || a.status!=='PROVISIONING'){ clearInterval(PROV_TIMERS[id]); delete PROV_TIMERS[id]; if(a&&a.status==='COMPLETED') toast('Kabinet tayyor: '+a.merchantId+' (sandbox)','ok'); }
+    onbRefresh();
+  }, 650);
+}
+function onbAct(act, el){
+  const id=el.dataset.id;
+  const A=fn=>{ const a=withApp(id, fn); onbRefresh(); return a; };
+  switch(act){
+    case 'open': openAppDrawer(id); return;
+    case 'open-acc': openAccDrawer(id); return;
+    case 'call': A(a=>{ bk(a).called=Date.now(); logB(a,'Mijozga qo‘ng‘iroq qilindi (lid, Q-19)',ROLE.ONB); pushAudit(ROLE.ONB,'Lid: qo‘ng‘iroq qilindi','Onboarding',a.id,'',''); }); toast('Belgilandi: qo‘ng‘iroq qilindi','ok'); return;
+    case 'auto-done': A(a=>{ fetchDocsB(a); pushC(a,'Dastlabki tekshiruv yakunlandi — ariza ko‘rib chiqilmoqda','Tizim'); setSt(a,'DOC_REVIEW',ROLE.SYS,'L3 / ABS / registr — o‘tdi'); }); toast('Hujjatlar ko‘rigiga o‘tdi','ok'); return;
+    case 'doc-ok': A(a=>{ const k=el.dataset.k, x=a.docs[k]; if(x){ x.status='VERIFIED'; logB(a, docName(a,k)+' — tasdiqlandi', ROLE.ONB); } }); return;
+    case 'docs-ok': A(a=>{ docKeys(a).forEach(k=>{ if(['FETCHED','UPLOADED','FETCHING'].includes(a.docs[k].status)) a.docs[k].status='VERIFIED'; }); logB(a,'Hujjatlar tasdiqlandi ('+docKeys(a).length+' ta)',ROLE.ONB); }); toast('Hujjatlar tasdiqlandi','ok'); return;
+    case 'doc-ask': openInfoModal(id, el.dataset.k); return;
+    case 'to-site': A(a=>{ if(!docsVerified(a)) return; if(hasSite(a)) setSt(a,'SITE_REVIEW',ROLE.ONB,'hujjatlar to‘g‘ri'); else setSt(a,'KYB_CHECK',ROLE.ONB,'sayt so‘ralmagan — sayt bosqichi o‘tkazildi'); }); return;
+    case 'site': A(a=>{ const s=bk(a).site=bk(a).site||{}; s[el.dataset.k]=el.dataset.v; }); return;
+    case 'site-auto': A(a=>{ siteAuto(a); logB(a,'Sayt avto-skani qo‘llandi: ishlashi, HTTPS, UZCARD/HUMO logolari',ROLE.SYS); }); return;
+    case 'to-kyb': A(a=>setSt(a,'KYB_CHECK',ROLE.ONB,'sayt BT §4 ga mos')); toast('KYC/KYB skriningga o‘tdi','ok'); return;
+    case 'kyb': { let lv; A(a=>{ lv=runKyb(a); const k=bk(a).kyb, r=bk(a).risk;
+        setSt(a,'RISK_ASSESSMENT',ROLE.SYS,'skrining: sanksiya — toza; PEP — '+k.pep.toLowerCase());
+        if(lv==='HIGH') setSt(a,'ESCALATED',ROLE.SYS,'risk Yuqori ('+r.score+') — EDD'); else setSt(a,'COMPLIANCE_REVIEW',ROLE.SYS,'risk '+RISK_UZ[lv]+' ('+r.score+')'); });
+      toast(lv==='HIGH'?'Risk yuqori — EDD (Compliance)':'Compliance navbatiga o‘tdi', lv==='HIGH'?'err':'ok'); return; }
+    case 'edd': A(a=>setSt(a,'ESCALATED',ROLE.CMP,'EDD — kuchaytirilgan tekshiruv')); return;
+    case 'cmp-ok': { const n=document.getElementById('cmpNote'), note=n?n.value.trim():'';
+      A(a=>{ bk(a).cmpNote=note||'Ijobiy xulosa (izohsiz)'; bk(a).cmpBy=ROLE.CMP; setSt(a,'PENDING_APPROVAL',ROLE.CMP,'ijobiy xulosa'); }); toast('Rais o‘rinbosari qaroriga yuborildi','ok'); return; }
+    case 'approve': A(a=>{ if(bk(a).cmpBy===ROLE.APR){ toast('To‘rt ko‘z: tekshirgan va tasdiqlagan bir shaxs bo‘lmasin','err'); return; }
+        bk(a).approvedBy=ROLE.APR; setSt(a,'APPROVED',ROLE.APR,'to‘rt ko‘z ✓'); pushC(a,'Ariza tasdiqlandi','Bank'); toContractB(a); });
+      toast('Tasdiqlandi — shartnoma mijozga yuborildi','ok'); return;
+    case 'contract': A(a=>{ if(a.status==='APPROVED') toContractB(a); }); return;
+    case 'm-sign': A(a=>{ if(!a.contract) return; a.contract.mSigned=Date.now(); pushC(a,'Siz shartnomani imzoladingiz (E-IMZO) — bank imzosi kutilmoqda','Siz'); logB(a,'Mijoz imzoladi (E-IMZO)','Mijoz'); }); return;
+    case 'b-sign': A(a=>{ if(!a.contract||!a.contract.mSigned||a.status!=='CONTRACT_PENDING') return; a.contract.bSigned=Date.now();
+        setSt(a,'CONTRACT_SIGNED',ROLE.APR,'bank imzosi (E-IMZO)'); pushC(a,'Bank shartnomani imzoladi (Rais o‘rinbosari)','Bank');
+        a.provStep=0; setSt(a,'PROVISIONING',ROLE.SYS,'Saga boshlandi'); pushC(a,'Kabinet tayyorlanmoqda','Tizim'); });
+      runProv(id); return;
+    case 'prov': A(a=>{ if(a.status==='CONTRACT_SIGNED'){ a.provStep=0; setSt(a,'PROVISIONING',ROLE.SYS,'Saga boshlandi'); pushC(a,'Kabinet tayyorlanmoqda','Tizim'); } }); runProv(id); return;
+    case 'info': openInfoModal(id); return;
+    case 'info-answer': A(a=>answerInfoSim(a)); toast('Mijoz javobi qabul qilindi','ok'); return;
+    case 'expire': A(a=>{ const was=a.status; a.info=null; setSt(a,'EXPIRED',ROLE.SYS, was==='NEEDS_INFO'?'14 kun javobsiz':'14 kun imzolanmadi');
+        pushC(a, was==='NEEDS_INFO'?'14 kun ichida javob berilmadi — ariza muddati o‘tdi':'Shartnoma 14 kun ichida imzolanmadi — muddat o‘tdi','Tizim'); }); return;
+    case 'reject': openRejectModal(id); return;
+    case 'gl-sim': A(a=>{ a.golive=Object.assign({}, a.golive, {tech:1,test:1,refund:1,webhook:1,mfa:1});
+        if(!a.golive.requestedAt){ a.golive.requestedAt=Date.now(); pushC(a,'Go-live so‘rovi yuborildi — Operatsiya tasdig‘i kutilmoqda','Siz'); }
+        logB(a,'Merchant go-live cheklistini bajardi (simulyatsiya)','Mijoz'); }); return;
+    case 'golive': { const a0=findApp(id); if(!a0) return;
+      if(noAcc(a0)){ toast('Go-live bloklangan: Garant Bankda hisob yo‘q (Q-32)','err'); return; }
+      const go=()=>{ A(a=>{ if(noAcc(a)||a.live) return; a.golive=Object.assign({}, a.golive, {approvedAt:Date.now()}); a.live=true;
+          pushC(a,'Go-live tasdiqlandi — production kalitlar berildi','Bank'); logB(a,'Go-live tasdiqlandi — production kalitlar berildi',ROLE.OPS);
+          pushAudit(ROLE.OPS,'Go-live tasdiqlandi','Onboarding',a.id,'sandbox','live'); }); toast('Merchant live (D5)','ok'); };
+      if(!goliveDone(a0)) openConfirm('Cheklist to‘liq emas', 'Merchant hali go-live cheklistini to‘liq bajarmagan. Baribir tasdiqlaysizmi? (demo)', 'Tasdiqlash', false, go); else go();
+      return; }
+    case 'goto-m': { const a=findApp(id); if(!a||!a.merchantId) return; syncAppMerchants(); closeDrawer(); STATE.onbDrawer=null;
+      STATE.currentMerchantId=a.merchantId; STATE.currentMerchantTab='overview'; showPage('merchant360'); return; }
+    case 'acc-review': withAcc(id, r=>{ if(r.status!=='SUBMITTED') return; r.status='IN_REVIEW'; r.updatedAt=Date.now();
+        r.timeline.unshift({t:Date.now(), text:'Bank (Operatsiya) arizani ko‘rib chiqmoqda', who:'Bank'});
+        pushAudit(ROLE.OPS,'Hisob ochish arizasi: ko‘rib chiqilmoqda','Hisob ochish',r.id,'SUBMITTED','IN_REVIEW'); });
+      onbRefresh(); return;
+    case 'acc-open': withAcc(id, r=>openAccountB(r)); onbRefresh(); toast('Hisob ochildi — ekvayring arizasiga avtomatik bog‘landi','ok'); return;
+    case 'unblock': toast('[TAKLIF] Blokni faqat Compliance (katta xodim) sabab yozib, ikkinchi xodim tasdig‘i bilan olib tashlaydi (22 §3.1 B9) — Faza 2','ok'); return;
+  }
+}
+function infoRole(a){ return a.status==='PENDING_APPROVAL' ? ROLE.APR : ['COMPLIANCE_REVIEW','ESCALATED'].includes(a.status) ? ROLE.CMP : ROLE.ONB; }
+function openInfoModal(id, preKey){
+  const a=findApp(id); if(!a) return;
+  if(a.cycles>=3){
+    openConfirm('So‘rovlar limiti tugagan', '3 ta qo‘shimcha ma’lumot sikli ishlatilgan (docs/07). Ariza rad etiladi — qayta ariza mumkin.', 'Rad etish', true, ()=>{
+      withApp(id, a=>rejectB(a,'CMP_DATA_MISMATCH',['Oldingi so‘rovlardagi kamchiliklar to‘liq bartaraf etilmadi'],infoRole(a),'Qo‘shimcha ma’lumot sikli limiti (3) tugadi')); onbRefresh(); });
+    return;
+  }
+  const keys=docKeys(a), siteTxt='Saytning bosh sahifasida UZCARD va HUMO logolari yo‘q (BT §4.2)';
+  const docOpts=keys.map(k=>'<label class="ck-opt"><input type="checkbox" data-info-doc="'+esc(k)+'"'+(k===preKey?' checked':'')+'> '+esc(docName(a,k))+'</label>').join('');
+  openModalRaw('<h3>Mijozdan qo‘shimcha ma’lumot so‘rash</h3>'+
+    '<p class="onb-hint">Kim so‘raydi: <b>'+esc(infoRole(a))+'</b>. Mijoz portalda javob beradi (BPMN 03a): muddat 14 kun, '+(a.cycles+1)+'-so‘rov / 3. Faqat belgilangan bandlar ochiladi — qolgan ariza qulflangan (R7). Javobdan keyin ariza shu bosqichga qaytadi.</p>'+
+    (keys.length?'<div class="form-row"><label>Hujjat — davlat tizimlarida topilmadi yoki o‘qilmaydi (mijoz nusxasini yuklaydi)</label><div class="ck-box">'+docOpts+'</div></div>':'')+
+    (hasSite(a)?'<div class="form-row"><label class="ck-opt"><input type="checkbox" id="infoSite"'+(a.status==='SITE_REVIEW'?' checked':'')+'> Sayt talablarga mos emas — mijoz saytni tuzatadi</label><input type="text" id="infoSiteTxt" value="'+esc(siteTxt)+'" style="margin-top:6px"></div>':'')+
+    '<div class="form-row"><label class="ck-opt"><input type="checkbox" id="infoDesc"'+(a.status==='COMPLIANCE_REVIEW'?' checked':'')+'> Faoliyat haqida qisqacha tavsif (formada yo‘q — faqat so‘ralganda, Q-26)</label></div>'+
+    '<div class="modal-actions"><button class="btn" data-action="close-modal">Bekor qilish</button><button class="btn btn-primary" id="infoSend">So‘rovni yuborish</button></div>');
+  document.getElementById('infoSend').onclick=()=>{
+    const docs=Array.from(document.querySelectorAll('[data-info-doc]:checked')).map(x=>x.dataset.infoDoc);
+    const site=document.getElementById('infoSite'), siteOn=!!(site&&site.checked), siteT=((document.getElementById('infoSiteTxt')||{}).value||siteTxt).trim();
+    const desc=document.getElementById('infoDesc').checked;
+    if(!docs.length && !siteOn && !desc){ toast('Kamida bitta bandni belgilang','err'); return; }
+    withApp(id, a=>{
+      const items=[], apr=a.status==='PENDING_APPROVAL';
+      docs.forEach(k=>{ const text=docName(a,k)+' — davlat tizimlarida topilmadi, nusxasini yuklang'; items.push({kind:'doc', key:k, code:apr?'APR_REMARKS':'DOC_NOT_FOUND', text}); a.docs[k]={status:'REPLACEMENT_REQUIRED', note:text}; });
+      if(siteOn) items.push({kind:'site', code:apr?'APR_REMARKS':'CMP_SITE_NONCOMPLIANT', text:siteT});
+      if(desc) items.push({kind:'field', field:'desc', label:'Faoliyatingiz haqida qisqacha (kamida 50 belgi)', code:apr?'APR_REMARKS':'CMP_DATA_MISMATCH', text:'Faoliyatingiz haqida qisqacha yozing: nima sotasiz, qanday yetkazasiz, qaytarish shartlari', orig:a.d.desc||''});
+      const back=apr ? 'DOC_REVIEW' : a.status, role=infoRole(a);
+      a.info={items, deadline:Date.now()+14*DAY, cycle:a.cycles+1, returnTo:back};
+      setSt(a, 'NEEDS_INFO', role, items.length+' ta band · javobdan keyin: '+(APP_STATUS_LABEL[back]||back));
+      pushC(a, 'Bank qo‘shimcha ma’lumot so‘radi ('+items.length+' ta band) — muddat '+fmtDate(a.info.deadline), 'Bank');
+    });
+    closeModal(); onbRefresh(); toast('So‘rov mijozga yuborildi (portal + SMS)','ok');
+  };
+}
+function openRejectModal(id){
+  const a=findApp(id); if(!a) return;
+  const role=infoRole(a);
+  const def=a.status==='SITE_REVIEW'?'CMP_SITE_NONCOMPLIANT':a.status==='PENDING_APPROVAL'?'APR_BUSINESS_DECISION':['COMPLIANCE_REVIEW','ESCALATED'].includes(a.status)?'CMP_UBO_UNCLEAR':'CMP_DOC_INSUFFICIENT';
+  const opts=REJ_CODES.map(c=>'<option value="'+c[0]+'"'+(c[0]===def?' selected':'')+'>'+c[0]+' — '+esc(c[1])+(c[2]?'':' · yakuniy, INN bloklanadi')+'</option>').join('');
+  openModalRaw('<h3>Arizani rad etish</h3><p class="onb-hint">Kim: <b>'+esc(role)+'</b>. Sabab kodi ichki — mijozga ko‘rsatilmaydi. Yakuniy kodlarda INN bloklanadi va mijozga faqat umumiy matn chiqadi (22 §3.1 B1, B5).</p>'+
+    '<div class="form-row"><label>Sabab kodi (data/rejection-reasons.csv)</label><select id="rejCode">'+opts+'</select></div>'+
+    '<div class="form-row" id="rejRemWrap"><label>Mijozga kamchiliklar — har qatorda bittasi (qayta ariza uchun)</label><textarea id="rejRem" rows="3">Saytda qaytarish va yetkazib berish shartlari to‘liq yoritilmagan</textarea></div>'+
+    '<div class="onb-note" id="rejPrev"></div>'+
+    '<div class="modal-actions"><button class="btn" data-action="close-modal">Bekor qilish</button><button class="btn btn-danger" id="rejGo">Rad etish</button></div>');
+  const sel=document.getElementById('rejCode');
+  const upd=()=>{ const c=REJ_CODES.find(x=>x[0]===sel.value);
+    document.getElementById('rejRemWrap').style.display=c[2]?'':'none';
+    document.getElementById('rejPrev').innerHTML='Mijoz ko‘radi: <b>«'+esc(c[2]?'Ariza rad etildi: kamchiliklar mavjud':REJ_FINAL_TEXT)+'»</b>'+(c[2]?' + kamchiliklar ro‘yxati va «Qayta ariza» tugmasi':' — sabab aytilmaydi, «Qayta ariza» yo‘q, INN bloklanadi'); };
+  sel.onchange=upd; upd();
+  document.getElementById('rejGo').onclick=()=>{
+    const code=sel.value, rem=document.getElementById('rejRem').value.split('\n').map(s=>s.trim()).filter(Boolean);
+    withApp(id, a=>rejectB(a, code, rem, role)); closeModal(); onbRefresh(); toast('Ariza rad etildi','err');
+  };
+}
+
+/* ---------------- yangilash, jonli hodisalar, URL hash ---------------- */
+function onbRefresh(){
+  updateSidebarBadges();
+  if(['onboarding','kyc','accreqs','merchants'].includes(STATE.currentPage)) refreshPage();
+  const d=STATE.onbDrawer, ov=document.getElementById('drawerOverlay'), el=document.getElementById('drawerEl');
+  if(!d || !ov.classList.contains('open')) return;
+  const act=document.activeElement;
+  if(act && el.contains(act) && /TEXTAREA|INPUT|SELECT/.test(act.tagName)) return; // xodim yozayotgan bo'lsa — kutamiz
+  const body=el.querySelector('.drawer-body'), top=body?body.scrollTop:0;
+  if(d.kind==='app') openAppDrawer(d.id); else openAccDrawer(d.id);
+  const nb=el.querySelector('.drawer-body'); if(nb) nb.scrollTop=top;
+}
+function onbHash(){
+  const m=/#(app|acc|page)=([\w-]+)/.exec(location.hash); if(!m) return;
+  if(m[1]==='page'){ showPage(m[2]); return; }
+  if(m[1]==='app'){ const a=findApp(m[2]); if(!a){ toast('Ariza topilmadi: '+m[2]+' (shu brauzerda portal ochilganmi?)','err'); return; }
+    STATE.onbTab=onbTabOf(a); showPage('onboarding'); openAppDrawer(a.id); return; }
+  const r=findAcc(m[2]); if(r){ STATE.accTab=r.status==='OPENED'?'opened':r.status==='DRAFT'?'drafts':'queue'; showPage('accreqs'); openAccDrawer(r.id); }
+}
+function onbInit(){
+  window.addEventListener('storage', e=>{
+    if(e.key!==LIVE_KEY) return;
+    const before={}, glr={}; liveApps().forEach(a=>{ before[a.id]=a.status; glr[a.id]=!!(a.golive&&a.golive.requestedAt); });
+    const accBefore={}; liveAccs().forEach(r=>{ accBefore[r.id]=r.status; });
+    liveLoad(); syncAppMerchants();
+    liveApps().forEach(a=>{
+      if(before[a.id]===undefined) toast('Portal: yangi '+(a.status==='DRAFT'?'qoralama (lid)':'ariza')+' — '+a.id,'ok');
+      else if(before[a.id]!==a.status) toast(a.id+' → '+(APP_STATUS_LABEL[a.status]||a.status)+' (portal)','ok');
+      else if(!glr[a.id] && a.golive && a.golive.requestedAt && !a.live) toast('Go-live so‘rovi: '+a.id+' (merchant kabineti)','ok');
+    });
+    liveAccs().forEach(r=>{ if(accBefore[r.id]!==r.status && r.status==='SUBMITTED') toast('Portal: yangi hisob ochish arizasi — '+r.id,'ok'); });
+    onbRefresh();
+  });
+  window.addEventListener('hashchange', onbHash);
+  onbHash();
+}
+// Merchant 360: onboarding'dan kelgan merchant uchun hujjatlar, hisob va tarix — ariza ma'lumotidan
+function applyAppToProfile(m, p){
+  const a=m.appId && findApp(m.appId); if(!a) return p;
+  p.documents=docKeys(a).map((k,i)=>{ const x=a.docs[k];
+    return { id:uid('DOC',i+1), name:docName(a,k), category:/PASSPORT/.test(k)?'KYC':/DOMAIN|LICENSE/.test(k)?'Faoliyat':'Yuridik', type:'PDF',
+      uploadedBy: x.file==='mijoz yukladi' ? 'Mijoz (03a so‘rovi)' : 'Davlat tizimi (onlayn)', date:new Date(x.at||a.submittedAt||a.createdAt), expiry:null,
+      status: x.status==='VERIFIED' ? 'Tasdiqlangan' : 'Kutilmoqda' }; });
+  const acc=settleAcc(a), r=accOfApp(a);
+  p.bankAccounts = acc ? ((r&&r.numbers)||[['uzs',acc]]).map(([k,n],i)=>({ id:uid('BA',i+1), bank:'Garant Bank', accountName:orgName(a)+(k==='uzs'?'':k==='cardGoods'?' · tovar tranziti':' · xizmat tranziti'),
+      accountNumberMasked:'**** '+String(n).slice(-4), currency:'UZS', status:'Tasdiqlangan', primary:i===0 })) : [];
+  p.kycTimeline=((a.bank&&a.bank.log)||[]).slice().reverse().map(l=>({date:new Date(l.t), user:l.who, action:l.text, result:'ariza '+a.id}));
+  return p;
+}
+function m360OnbStrip(m){
+  const a=m.appId && findApp(m.appId); if(!a) return '';
+  return '<div class="onb-strip"><div><b>Onboarding:</b> manba ariza <b>'+esc(a.id)+'</b>'+liveTag(a)+' · '+appStBadge(a)+' · hisob: '+accChip(a)+
+    ' · shartnoma '+esc(a.contract?a.contract.no:'—')+(a.live?'':' · <b>go-live:</b> '+(noAcc(a)?'hisob kutilmoqda (Q-32)':a.golive&&a.golive.requestedAt?'so‘rov keldi':'merchant sandbox’da'))+'</div>'+
+    '<button class="btn btn-sm" data-onb="open" data-id="'+a.id+'">Arizani ochish</button></div>';
+}
 
 /* ================================================================
    STATE
@@ -868,7 +1807,7 @@ const STATE = {
   filters:{}, seq:{tx:1000,rf:1,cb:1,st:1,rx:1,au:1,key:1},
   currentMerchantId:null, currentMerchantTab:'overview', merchantProfiles:{},
   m360Period:'30D', m360Metric:'GMV',
-  applications:[], onbTab:'queue',
+  applications:[], accSeeds:[], blockedSeeds:[], seedOpened:{}, onbTab:'queue', compTab:'queue', accTab:'queue', onbDrawer:null,
 };
 
 function pushAudit(user,action,module,object,before,after){
@@ -1107,204 +2046,6 @@ function genTerminals(n, merchants){
 }
 
 
-function newAppSkeleton(i){
-  const biz = APP_COMPANY_NAMES[i % APP_COMPANY_NAMES.length] + (i>=APP_COMPANY_NAMES.length? ' '+(Math.floor(i/APP_COMPANY_NAMES.length)+1):'');
-  const cat = pick(CATEGORIES);
-  const created = daysAgo(rndInt(1,60));
-  return {
-    id: uid('APP', 20001+i),
-    businessName: biz,
-    legalName: '"'+biz+'" '+pick(APP_BUSINESS_TYPES),
-    businessTypeForm: pick(APP_BUSINESS_TYPES),
-    inn: String(rndInt(400000000,409999999)),
-    mcc: cat.mcc, category: cat.name,
-    city: pick(CITIES),
-    address: pick(CITIES)+' sh., '+pick(['Amir Temur','Mustaqillik','Bunyodkor','Yunusobod','Chilonzor'])+' ko‘chasi, '+rndInt(1,180),
-    ownerName: pick(FIRST_NAMES)+' '+pick(LAST_NAMES),
-    ownerPassport: 'AD'+rndInt(1000000,9999999),
-    contactPhone:'+998 '+rndInt(90,99)+' '+rndInt(100,999)+' '+rndInt(10,99)+' '+rndInt(10,99),
-    contactEmail:'ariza.'+biz.toLowerCase().replace(/[^a-z0-9]/g,'')+'@mail.uz',
-    status:'DRAFT',
-    createdDate: created, updatedDate: created,
-    assignedTo:null, complianceOfficer:null, reviewedBy:null,
-    docs: APP_DOC_TYPES.map(t=>({type:t, status:'Kutilmoqda', uploadedDate:null, note:''})),
-    siteReview:{scheduled:null, items:SITE_CHECK_ITEMS.map(l=>({label:l, ok:false})), done:false},
-    riskScore:null, riskLevel:null,
-    complianceNotes:'',
-    issues:[],
-    rejectionReason:null, rejectionStage:null,
-    contract:{number:null, generatedDate:null, merchantSignedDate:null, bankSignedDate:null},
-    linkedMerchantId:null,
-    timeline:[{status:'DRAFT', date:created, actor:'Merchant (onlayn ariza)', note:"Ariza qoralamasi yaratildi"}],
-  };
-}
-
-function appPush(app,status,actor,note,daysLater){
-  const last = app.timeline[app.timeline.length-1];
-  let date = daysLater!=null
-    ? new Date(last.date.getTime()+daysLater*86400000+rndInt(3600,70000)*1000)
-    : new Date(last.date.getTime()+rndInt(1,3)*86400000+rndInt(0,80000)*1000);
-  if(date.getTime()>Date.now()) date=new Date(Date.now()-rndInt(0,3)*3600000);
-  app.status = status;
-  app.updatedDate = date;
-  app.timeline.push({status, date, actor, note});
-  return date;
-}
-
-function appApplySideEffects(app, status){
-  if(status==='SUBMITTED'){ app.assignedTo = app.assignedTo || pick(ONB_OFFICERS); }
-  if(status==='DOC_REVIEW'){
-    app.assignedTo = app.assignedTo || pick(ONB_OFFICERS);
-    app.docs.forEach(d=>{ if(d.status==='Kutilmoqda'){ d.status='Yuklandi'; d.uploadedDate=app.updatedDate; } });
-  }
-  if(status==='SITE_REVIEW'){
-    app.docs.forEach(d=>{ if(d.status==='Yuklandi') d.status='Tasdiqlangan'; });
-  }
-  if(status==='KYB_CHECK'){
-    app.siteReview.scheduled = app.siteReview.scheduled || app.updatedDate;
-    app.siteReview.items.forEach(it=>it.ok=true);
-    app.siteReview.done=true;
-  }
-  if(status==='RISK_ASSESSMENT'){
-    app.reviewedBy = app.reviewedBy || pick(ONB_OFFICERS);
-  }
-  if(status==='COMPLIANCE_REVIEW'){
-    if(app.riskScore==null){ app.riskScore=rndInt(5,95); app.riskLevel = app.riskScore>=71?'Yuqori':app.riskScore>=31?"O‘rta":'Past'; }
-    app.complianceOfficer = app.complianceOfficer || pick(COMPLIANCE_OFFICERS);
-  }
-  if(status==='PENDING_APPROVAL'){
-    app.complianceNotes = app.complianceNotes || ("Compliance tekshiruvidan muvaffaqiyatli o‘tdi, tavakkalchilik darajasi: "+(app.riskLevel||'Past'));
-  }
-  if(status==='CONTRACT_PENDING'){
-    app.contract.number = app.contract.number || ('IE-'+String(2000+rndInt(1,900))+'/'+new Date().getFullYear());
-    app.contract.generatedDate = app.contract.generatedDate || app.updatedDate;
-  }
-  if(status==='CONTRACT_SIGNED'){
-    if(!app.contract.merchantSignedDate) app.contract.merchantSignedDate=new Date(app.updatedDate.getTime()-2*86400000);
-    app.contract.bankSignedDate = app.contract.bankSignedDate || app.updatedDate;
-  }
-}
-
-function appTransitionObj(a, status, actor, note){
-  if(!a) return null;
-  appPush(a, status, actor, note, 0);
-  appApplySideEffects(a, status);
-  pushAudit(null, (APP_STATUS_LABEL[status]||status)+': '+a.businessName, 'Onboarding', a.id, '', status);
-  return a;
-}
-function findApp(id){ return STATE.applications.find(a=>a.id===id); }
-function appTransition(id, status, actor, note){ return appTransitionObj(findApp(id), status, actor, note); }
-
-function driveAppTo(app, targetStatus){
-  const actorMap={
-    SUBMITTED:'Merchant (onlayn ariza)', AUTO_VALIDATION:'Tizim (avtomatik)',
-    DOC_REVIEW:app.assignedTo||pick(ONB_OFFICERS), SITE_REVIEW:app.assignedTo||pick(ONB_OFFICERS),
-    KYB_CHECK:app.assignedTo||pick(ONB_OFFICERS), RISK_ASSESSMENT:'Tizim (risk-skoring)',
-    COMPLIANCE_REVIEW:app.complianceOfficer||pick(COMPLIANCE_OFFICERS), PENDING_APPROVAL: app.complianceOfficer||pick(COMPLIANCE_OFFICERS),
-    APPROVED:APPROVER_NAME, CONTRACT_PENDING:'Tizim (shartnoma generatsiyasi)',
-    CONTRACT_SIGNED:BANK_SIGNATORY_NAME, PROVISIONING:'Tizim (provisioning)', COMPLETED:'Tizim (avtomatik)',
-  };
-  const noteMap={
-    SUBMITTED:'Ariza rasman topshirildi', AUTO_VALIDATION:"Majburiy maydonlar va formatlar avtomatik tekshirildi",
-    DOC_REVIEW:"Hujjatlar ko‘rib chiqish navbatiga qabul qilindi", SITE_REVIEW:"Barcha hujjatlar tasdiqlandi, joy/sayt tekshiruviga yuborildi",
-    KYB_CHECK:"Joy/sayt tekshiruvi yakunlandi, KYB tekshiruviga o‘tkazildi", RISK_ASSESSMENT:"KYB tasdiqlandi, risk baholashga o‘tkazildi",
-    COMPLIANCE_REVIEW:"Risk balli hisoblandi, Compliance bo‘limiga yuborildi",
-    PENDING_APPROVAL:"Compliance tasdiqladi, rahbariyat tasdig‘iga yuborildi",
-    APPROVED:"Rahbariyat tomonidan tasdiqlandi", CONTRACT_PENDING:"Shartnoma loyihasi tayyorlandi",
-    CONTRACT_SIGNED:"Shartnoma ikkala tomon (Merchant va Bank) tomonidan imzolandi",
-    PROVISIONING:"MID, ekvayer marshruti va limitlar sozlanmoqda",
-    COMPLETED:"Merchant profili yaratildi va faollashtirildi",
-  };
-  const idx0=APP_PATH.indexOf(app.status);
-  const idx1=APP_PATH.indexOf(targetStatus);
-  for(let i=idx0+1;i<=idx1;i++){
-    const st=APP_PATH[i];
-    appPush(app, st, actorMap[st]||'Tizim', noteMap[st]||'', null);
-    appApplySideEffects(app, st);
-  }
-}
-
-function genApplications(n){
-  const apps=[];
-  function mk(i){ const a=newAppSkeleton(i); apps.push(a); return a; }
-
-  mk(0); // 0: DRAFT
-
-  { const a=mk(1); driveAppTo(a,'SUBMITTED'); }
-
-  { const a=mk(2); driveAppTo(a,'AUTO_VALIDATION'); }
-
-  { const a=mk(3); driveAppTo(a,'AUTO_VALIDATION');
-    appPush(a,'NEEDS_INFO', a.assignedTo||pick(ONB_OFFICERS), "INNga mos ustav nusxasi va rahbar pasporti aniq skanerda so‘raldi", 1);
-    a.issues.push({id:uid('ISS',1), type:"Hujjat", text:"Ustav nusxasi sifatsiz, qayta yuklash so‘raldi", status:'Ochiq', date:a.updatedDate}); }
-
-  { const a=mk(4); driveAppTo(a,'DOC_REVIEW');
-    a.docs[2].status='Rad etilgan'; a.docs[2].note="Muassislar protokoli sanasi noaniq, asl nusxa talab qilinadi";
-    a.docs[5].status='Yuklandi'; }
-
-  { const a=mk(5); driveAppTo(a,'SITE_REVIEW');
-    a.siteReview.items[0].ok=true; a.siteReview.items[1].ok=true; a.siteReview.scheduled=daysFromNow(1); }
-
-  { const a=mk(6); driveAppTo(a,'KYB_CHECK'); }
-
-  { const a=mk(7); driveAppTo(a,'RISK_ASSESSMENT'); }
-
-  { const a=mk(8); driveAppTo(a,'COMPLIANCE_REVIEW'); }
-
-  { const a=mk(9); driveAppTo(a,'COMPLIANCE_REVIEW');
-    appPush(a,'ESCALATED', a.complianceOfficer, "Yuqori risk darajasi va tasischilar tarkibida noaniqlik tufayli Bosh Compliance nazoratiga yuborildi", 1);
-    a.complianceNotes="UBO (foydali egalik) zanjirida noaniqlik aniqlandi — qo‘shimcha tekshiruv talab qilinadi";
-    a.issues.push({id:uid('ISS',2), type:'Compliance', text:"UBO tarkibida xorijiy yuridik shaxs aniqlandi, qo‘shimcha skrining kerak", status:'Ochiq', date:a.updatedDate}); }
-
-  { const a=mk(10); driveAppTo(a,'PENDING_APPROVAL'); a.reviewedBy=APPROVER_NAME; }
-
-  { const a=mk(11); driveAppTo(a,'APPROVED'); }
-
-  { const a=mk(12); driveAppTo(a,'CONTRACT_PENDING'); }
-
-  { const a=mk(13); driveAppTo(a,'CONTRACT_SIGNED'); }
-
-  { const a=mk(14); driveAppTo(a,'PROVISIONING'); }
-
-  { const a=mk(15); driveAppTo(a,'COMPLETED');
-    const mNew={
-      id:uid('M',1500+15),
-      businessName:a.businessName, legalName:a.legalName, mcc:a.mcc, category:a.category,
-      status:'Faol', riskLevel:a.riskLevel||'Past', kycStatus:'Tasdiqlangan', kybStatus:'Tasdiqlangan',
-      city:a.city, inn:a.inn, contractNumber:a.contract.number, contractDate:a.contract.bankSignedDate,
-      contactEmail:a.contactEmail, contactPhone:a.contactPhone,
-      monthlyVolume:rndInt(15,300)*1000000, approvalRate:rnd(85,97), chargebackRate:rnd(0.1,0.6),
-      settlementCycle:'T+1', mdr:(rnd(1.6,2.4)).toFixed(2), mid:'MID'+rndInt(100000,999999),
-      createdDate:a.contract.bankSignedDate,
-    };
-    STATE.merchants.push(mNew);
-    a.linkedMerchantId=mNew.id; }
-
-  { const a=mk(16); driveAppTo(a,'COMPLIANCE_REVIEW');
-    appPush(a,'REJECTED', a.complianceOfficer, "Compliance qarori bilan rad etildi", 2);
-    a.rejectionStage='COMPLIANCE'; a.rejectionReason=APP_REJECTION_REASONS[2]; }
-
-  { const a=mk(17); driveAppTo(a,'PENDING_APPROVAL');
-    appPush(a,'REJECTED', APPROVER_NAME, "Rahbariyat tomonidan qo‘shimcha asos bilan rad etildi", 1);
-    a.rejectionStage='RAHBAR'; a.rejectionReason=APP_REJECTION_REASONS[4]; }
-
-  { const a=mk(18); driveAppTo(a,'SUBMITTED');
-    appPush(a,'CANCELLED', 'Merchant', "Ariza beruvchi tomonidan bekor qilindi", 1); }
-
-  { const a=mk(19); a.createdDate=daysAgo(45); a.timeline[0].date=a.createdDate; a.updatedDate=a.createdDate;
-    driveAppTo(a,'AUTO_VALIDATION');
-    appPush(a,'NEEDS_INFO', a.assignedTo||pick(ONB_OFFICERS), "Qo‘shimcha hujjatlar so‘raldi", 1);
-    appPush(a,'EXPIRED', 'Tizim (avtomatik)', "30 kun ichida javob berilmadi, ariza muddati avtomatik tugatildi", 30); }
-
-  const tailStatuses=[['DOC_REVIEW',3],['SITE_REVIEW',2],['KYB_CHECK',2],['COMPLIANCE_REVIEW',2],['PENDING_APPROVAL',2],['COMPLETED',3],['APPROVED',1]];
-  for(let i=20;i<n;i++){
-    const a=mk(i);
-    driveAppTo(a, pickW(tailStatuses));
-  }
-
-  return apps;
-}
-
 function genAuditSeed(){
   const acts=['Merchant MDR o\u2018zgartirildi','Tranzaksiya qaytarildi','Foydalanuvchi roli o\u2018zgartirildi','Risk qoidasi yaratildi','Merchant to\u2018xtatildi','API kalit yaratildi','Webhook qayta ishga tushirildi','Settlement qo\u2018lda tasdiqlandi','Chargeback dalili yuklandi','Limit o\u2018zgartirildi'];
   const modules=['Merchants','Transactions','Users','Risk','Settlements','Developers'];
@@ -1354,7 +2095,7 @@ function initData(){
   STATE.users=genUsers(30);
   STATE.riskRules=genRiskRules();
   STATE.terminals=genTerminals(22, STATE.merchants);
-  STATE.applications=genApplications(27);
+  genOnbSeeds(); syncAppMerchants();
   genAuditSeed();
   genApiKeysAndWebhooks();
   genAlerts();
@@ -1368,7 +2109,7 @@ window.STATE = STATE; // debug: DevTools konsolida window.STATE orqali holatni k
 const STATUS_COLOR = {
   'Faol':'green','Ko\u2018rib chiqilmoqda':'blue','Kutilmoqda':'amber','To\u2018xtatilgan':'red','Bloklangan':'red',
   'Muvaffaqiyatli':'green','Rad etilgan':'red','Muvaffaqiyatsiz':'red','Qaytarilgan':'purple','Bekor qilingan':'gray',
-  'Past':'green','O\u2018rta':'amber','Yuqori':'red',
+  'Past':'green','O\u2018rta':'amber','Yuqori':'red','Sandbox':'purple',
   'Bajarildi':'green',
   'Yangi':'blue','Dalil talab qilinadi':'amber','Representment':'purple','G\u2018alaba qozonildi':'green','Yutqazildi':'red','Hal qilindi':'gray',
   'Amalga oshirildi':'green','Jarayonda':'blue','Istisno':'red',
@@ -1920,7 +2661,7 @@ function getMerchantProfile(m){
   // ---- KYC/KYB timeline & documents ----
   const kycTimeline=[
     {date:daysAgo(rndInt(420,520)),user:'Merchant',action:'Ariza topshirildi',result:'Qabul qilindi'},
-    {date:daysAgo(rndInt(380,419)),user:'Merchant',action:'Hujjatlar yuklandi',result:'To\u2018liq'},
+    {date:daysAgo(rndInt(380,419)),user:'Tizim',action:'Hujjatlar davlat tizimlaridan olindi',result:'To\u2018liq'},
     {date:daysAgo(rndInt(340,379)),user:pick(FIRST_NAMES)+' '+pick(LAST_NAMES),action:'KYB ko\u2018rib chiqildi',result:'Tasdiqlandi'},
     {date:daysAgo(rndInt(300,339)),user:pick(FIRST_NAMES)+' '+pick(LAST_NAMES),action:'Tasischilar (UBO) tekshirildi',result:'Tasdiqlandi'},
     {date:daysAgo(rndInt(260,299)),user:pick(FIRST_NAMES)+' '+pick(LAST_NAMES),action:'Risk skrining o\u2018tkazildi',result:'O\u2018tdi'},
@@ -1937,7 +2678,7 @@ function getMerchantProfile(m){
     const hasExpiry=Math.random()<0.4;
     return {
       id:uid('DOC',i+1), name:d[0], category:d[1], type:pick(['PDF','JPG','PNG']),
-      uploadedBy:pick(FIRST_NAMES)+' '+pick(LAST_NAMES), date:daysAgo(rndInt(20,400)),
+      uploadedBy:pick(['Davlat tizimi (onlayn)','Bank (eski tizim)']), date:daysAgo(rndInt(20,400)),
       expiry: hasExpiry? daysFromNow(rndInt(-8,45)) : null,
       status,
     };
@@ -2408,7 +3149,7 @@ function m360TabKYC(m,p){
 
   <div class="section-h">Hujjatlar</div>
   <div class="table-scroll" style="margin-bottom:16px">
-  <table class="data-table"><thead><tr><th>Hujjat</th><th>Turkum</th><th>Yuklandi</th><th>Sana</th><th>Muddati</th><th>Holat</th><th>Amallar</th></tr></thead>
+  <table class="data-table"><thead><tr><th>Hujjat</th><th>Turkum</th><th>Manba</th><th>Sana</th><th>Muddati</th><th>Holat</th><th>Amallar</th></tr></thead>
   <tbody>${p.documents.map(d=>`<tr>
     <td style="font-weight:600">${esc(d.name)}</td><td style="color:var(--text-2)">${esc(d.category)}</td>
     <td style="color:var(--text-2)">${esc(d.uploadedBy)}</td><td style="color:var(--text-3)">${fmtDate(d.date)}</td>
@@ -2821,14 +3562,14 @@ function renderMerchant360(){
   const m=STATE.merchants.find(x=>x.id===STATE.currentMerchantId) || STATE.merchants[0];
   if(!m) return '<div class="empty-state"><div class="t">Merchant topilmadi</div></div>';
   STATE.currentMerchantId=m.id;
-  const p=getMerchantProfile(m);
+  const p=applyAppToProfile(m, getMerchantProfile(m));
   const active=STATE.currentMerchantTab||'overview';
   const panels=M360_TABS.map(function(pair){
     const key=pair[0]; const fn=M360_TAB_FN[key];
     const html= fn? fn(m,p) : '<div style="color:var(--text-3)">Tez orada</div>';
     return '<div data-tabpanel="'+key+'" data-group="m360" style="'+(key===active?'':'display:none')+'">'+html+'</div>';
   }).join('');
-  return m360Header(m,p) + m360TabBar(m,p,active) + panels;
+  return m360OnbStrip(m) + m360Header(m,p) + m360TabBar(m,p,active) + panels;
 }
 function paintM360Charts(){
   const m=STATE.merchants.find(x=>x.id===STATE.currentMerchantId); if(!m) return;
@@ -3841,107 +4582,6 @@ function paintAnalyticsCharts(){
 }
 
 /* ================================================================
-   PAGE: ONBOARDING
-   ================================================================ */
-const ONBOARDING_STEPS=[
-  ['Biznes ma\u2019lumotlari','Yuridik nomi, INN, faoliyat turi'],
-  ['Yuridik ma\u2019lumotlar',"Ta'sis hujjatlari, litsenziyalar"],
-  ['Egalik tuzilmasi','Foydali egalar, direktorlar'],
-  ['Aloqa ma\u2019lumotlari','Email, telefon, manzil'],
-  ['Bank hisobi',"Hisob raqami, bank rekvizitlari"],
-  ['Settlement hisobi',"Pul tushadigan hisob"],
-  ['KYC/KYB hujjatlari','Guvohnoma, pasport nusxalari'],
-  ['Risk baholash','MCC va risk darajasi tayinlash'],
-  ['MCC belgilash','Faoliyat toifasi kodi'],
-  ['Narxlash','MDR va komissiya stavkalari'],
-  ['Limitlar',"Kunlik/oylik chegaralar"],
-  ['MID yaratish','Merchant ID generatsiyasi'],
-  ['Ekvayer tayinlash',"Routing uchun ekvayer biriktirish"],
-  ['Yakuniy tasdiqlash','Faollashtirish']
-];
-function computeAppStats(){
-  const apps=STATE.applications;
-  const active=apps.filter(a=>!APP_TERMINAL_STATUSES.includes(a.status));
-  const needsInfo=apps.filter(a=>a.status==='NEEDS_INFO');
-  const compliance=apps.filter(a=>a.status==='COMPLIANCE_REVIEW'||a.status==='ESCALATED');
-  const approval=apps.filter(a=>a.status==='PENDING_APPROVAL');
-  const overdue=active.filter(a=>{ const last=a.timeline[a.timeline.length-1]; return daysBetween(last.date,new Date())>=7; });
-  const completedThisMonth=apps.filter(a=>a.status==='COMPLETED' && daysBetween(a.updatedDate,new Date())<=30);
-  return {active,needsInfo,compliance,approval,overdue,completedThisMonth};
-}
-function appSlaChip(a){
-  const last=a.timeline[a.timeline.length-1]; const d=daysBetween(last.date,new Date());
-  let cls='ok'; if(d>=7) cls='late'; else if(d>=3) cls='soon';
-  return '<span class="deadline-chip '+cls+'">'+(d<=0?'bugun':d+' kun')+' shu bosqichda</span>';
-}
-function appRow(a){
-  return '<tr><td style="font-weight:600">'+esc(a.businessName)+'<div style="font-size:11px;color:var(--text-3);font-weight:400">'+esc(a.id)+' &middot; '+esc(a.category)+'</div></td>'+
-    '<td>'+appBadge(a.status)+'</td>'+
-    '<td>'+(a.assignedTo?esc(a.assignedTo):'<span style="color:var(--text-3)">—</span>')+'</td>'+
-    '<td>'+appSlaChip(a)+'</td>'+
-    '<td style="color:var(--text-3)">'+fmtDate(a.createdDate)+'</td>'+
-    '<td><button class="btn btn-sm" data-action="open-application" data-id="'+a.id+'">Ko‘rish</button></td></tr>';
-}
-function renderOnboarding(){
-  const s=computeAppStats();
-  const tab = STATE.onbTab || 'queue';
-  const queueRows=s.active, approvalRows=s.approval,
-        contractRows=STATE.applications.filter(a=>['CONTRACT_PENDING','CONTRACT_SIGNED','PROVISIONING'].includes(a.status)),
-        completedRows=STATE.applications.filter(a=>a.status==='COMPLETED');
-  const tableBlock=function(rows,emptyText){
-    return '<div class="table-scroll"><table class="data-table"><thead><tr><th>Ariza beruvchi</th><th>Bosqich</th><th>Mas’ul xodim</th><th>SLA</th><th>Yaratilgan</th><th></th></tr></thead>'+
-    '<tbody>'+(rows.length? rows.map(appRow).join('') : '<tr><td colspan="6"><div class="empty-state"><div class="d">'+emptyText+'</div></div></td></tr>')+'</tbody>'+
-    '</table></div>';
-  };
-  return `
-  <div class="page-header"><div><h1>Merchant onboarding</h1><div class="desc">Ariza qabul qilishdan tortib merchant profili yaratilishigacha bo'lgan to'liq jarayon.</div></div></div>
-  <div class="kpi-grid" style="grid-template-columns:repeat(5,1fr)">
-    <div class="kpi-card"><div class="label">Faol jarayonda</div><div class="value" style="color:var(--blue)">${s.active.length}</div></div>
-    <div class="kpi-card"><div class="label">Qo'shimcha ma'lumot kutilmoqda</div><div class="value" style="color:var(--amber)">${s.needsInfo.length}</div></div>
-    <div class="kpi-card"><div class="label">Compliance navbatida</div><div class="value" style="color:var(--purple)">${s.compliance.length}</div></div>
-    <div class="kpi-card"><div class="label">Muddati o'tayotgan (7+ kun)</div><div class="value" style="color:var(--red)">${s.overdue.length}</div></div>
-    <div class="kpi-card"><div class="label">Shu oy yakunlangan</div><div class="value" style="color:var(--green)">${s.completedThisMonth.length}</div></div>
-  </div>
-  <div class="tabs">
-    <button class="tab-btn ${tab==='queue'?'active':''}" data-group="onb" data-tab="queue">Barcha arizalar (${queueRows.length})</button>
-    <button class="tab-btn ${tab==='approvals'?'active':''}" data-group="onb" data-tab="approvals">Tasdiqlash navbati (${approvalRows.length})</button>
-    <button class="tab-btn ${tab==='contracts'?'active':''}" data-group="onb" data-tab="contracts">Shartnomalar (${contractRows.length})</button>
-    <button class="tab-btn ${tab==='completed'?'active':''}" data-group="onb" data-tab="completed">Yakunlangan (${completedRows.length})</button>
-  </div>
-  <div data-tabpanel="queue" data-group="onb" style="${tab==='queue'?'':'display:none'}">${tableBlock(queueRows,"Faol arizalar yo‘q")}</div>
-  <div data-tabpanel="approvals" data-group="onb" style="${tab==='approvals'?'':'display:none'}">${tableBlock(approvalRows,"Tasdiqlash kutilayotgan ariza yo‘q")}</div>
-  <div data-tabpanel="contracts" data-group="onb" style="${tab==='contracts'?'':'display:none'}">${tableBlock(contractRows,"Shartnoma bosqichida ariza yo‘q")}</div>
-  <div data-tabpanel="completed" data-group="onb" style="${tab==='completed'?'':'display:none'}">${tableBlock(completedRows,"Hali yakunlangan ariza yo‘q")}</div>
-  `;
-}
-
-/* ================================================================
-   PAGE: COMPLIANCE QUEUE (formerly KYC/KYB nav item)
-   ================================================================ */
-function renderCompliance(){
-  const apps=STATE.applications.filter(a=>a.status==='COMPLIANCE_REVIEW'||a.status==='ESCALATED');
-  const rejected=STATE.applications.filter(a=>a.status==='REJECTED' && a.rejectionStage==='COMPLIANCE');
-  return `
-  <div class="page-header"><div><h1>Compliance navbati</h1><div class="desc">Onboarding arizalarini AML/KYB tekshiruvi va risk asosida ko'rib chiqish.</div></div></div>
-  <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr)">
-    <div class="kpi-card"><div class="label">Ko'rib chiqilmoqda</div><div class="value" style="color:var(--purple)">${apps.filter(a=>a.status==='COMPLIANCE_REVIEW').length}</div></div>
-    <div class="kpi-card"><div class="label">Eskalatsiya qilingan</div><div class="value" style="color:var(--red)">${apps.filter(a=>a.status==='ESCALATED').length}</div></div>
-    <div class="kpi-card"><div class="label">Yuqori risk</div><div class="value" style="color:var(--red)">${apps.filter(a=>a.riskLevel==='Yuqori').length}</div></div>
-    <div class="kpi-card"><div class="label">Compliance rad etgan</div><div class="value" style="color:var(--text-1)">${rejected.length}</div></div>
-  </div>
-  <div class="table-scroll">
-  <table class="data-table"><thead><tr><th>Ariza beruvchi</th><th>Bosqich</th><th>Risk</th><th>Mas'ul</th><th>SLA</th><th></th></tr></thead>
-  <tbody>${apps.length?apps.map(a=>`
-    <tr><td style="font-weight:600">${esc(a.businessName)}<div style="font-size:11px;color:var(--text-3);font-weight:400">${esc(a.id)}</div></td>
-    <td>${appBadge(a.status)}</td><td>${a.riskLevel?badge(a.riskLevel):'<span style="color:var(--text-3)">—</span>'}</td>
-    <td>${esc(a.complianceOfficer||'—')}</td><td>${appSlaChip(a)}</td>
-    <td><button class="btn btn-sm" data-action="open-application" data-id="${a.id}">Ko'rish</button></td></tr>`).join(''):'<tr><td colspan="6"><div class="empty-state"><div class="d">Compliance navbatida ariza yo‘q</div></div></td></tr>'}
-  </tbody></table>
-  </div>
-  `;
-}
-
-/* ================================================================
    PAGE: USERS & ROLES
    ================================================================ */
 function renderUsers(){
@@ -4079,296 +4719,6 @@ function renderHealth(){
 }
 
 /* ================================================================
-   APPLICATION DETAIL DRAWER
-   ================================================================ */
-function appDocsTableHTML(app){
-  const editable = app.status==='DOC_REVIEW';
-  return '<div class="table-scroll" style="border:none"><table class="data-table"><thead><tr><th>Hujjat</th><th>Holat</th><th>Yuklangan</th><th></th></tr></thead><tbody>'+
-    app.docs.map(function(d){
-      return '<tr><td>'+esc(d.type)+(d.note?'<div style="font-size:11px;color:var(--red)">'+esc(d.note)+'</div>':'')+'</td>'+
-      '<td>'+badge(d.status)+'</td><td style="color:var(--text-3)">'+(d.uploadedDate?fmtDate(d.uploadedDate):'—')+'</td>'+
-      '<td>'+((editable && d.status==='Yuklandi')?('<div style="display:flex;gap:6px"><button class="btn btn-sm" data-action="app-doc-verify" data-id="'+app.id+'" data-doc="'+esc(d.type)+'">Tasdiqlash</button><button class="btn btn-sm btn-danger" data-action="app-doc-reject" data-id="'+app.id+'" data-doc="'+esc(d.type)+'">Rad etish</button></div>'):'')+'</td></tr>';
-    }).join('')+
-    '</tbody></table></div>';
-}
-function appSiteChecklistHTML(app){
-  const editable = app.status==='SITE_REVIEW';
-  return '<div class="tl">'+app.siteReview.items.map(function(it,i){
-    return '<div class="tl-item '+(it.ok?'done':'')+'"><div class="tt">'+(it.ok?'✓ ':'')+esc(it.label)+'</div>'+
-      (editable? ('<div class="td"><button class="btn btn-sm" data-action="app-site-toggle" data-id="'+app.id+'" data-idx="'+i+'">'+(it.ok?"Bekor qilish":"Belgilash")+'</button></div>') : '')+
-    '</div>';
-  }).join('')+'</div>';
-}
-function appTimelineHTML(app){
-  const rev=app.timeline.slice().reverse();
-  return '<div class="tl">'+rev.map(function(t,i){
-    return '<div class="tl-item '+(i===0?'':'done')+'"><div class="tt">'+esc(APP_STATUS_LABEL[t.status]||t.status)+'</div><div class="td">'+fmtDateTime(t.date)+' &middot; '+esc(t.actor)+(t.note?(' &middot; '+esc(t.note)):'')+'</div></div>';
-  }).join('')+'</div>';
-}
-function appDetailHeader(app){
-  return '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">'+
-    '<div><h3 style="margin:0 0 4px">'+esc(app.businessName)+'</h3>'+
-    '<div style="font-size:12px;color:var(--text-3)">'+esc(app.id)+' &middot; '+esc(app.category)+' &middot; INN '+esc(app.inn)+'</div></div>'+
-    '<div>'+appBadge(app.status)+'</div></div>';
-}
-function appOverviewKV(app){
-  let html='<div class="kv-grid">'+
-    '<div class="kv"><div class="k">Yuridik nomi</div><div class="v">'+esc(app.legalName)+'</div></div>'+
-    '<div class="kv"><div class="k">Tashkiliy shakl</div><div class="v">'+esc(app.businessTypeForm)+'</div></div>'+
-    '<div class="kv"><div class="k">MCC</div><div class="v mono">'+esc(app.mcc)+'</div></div>'+
-    '<div class="kv"><div class="k">Shahar / manzil</div><div class="v">'+esc(app.city)+', '+esc(app.address)+'</div></div>'+
-    '<div class="kv"><div class="k">Rahbar</div><div class="v">'+esc(app.ownerName)+' ('+esc(app.ownerPassport)+')</div></div>'+
-    '<div class="kv"><div class="k">Aloqa</div><div class="v">'+esc(app.contactPhone)+' &middot; '+esc(app.contactEmail)+'</div></div>'+
-    '<div class="kv"><div class="k">Mas’ul xodim</div><div class="v">'+(app.assignedTo?esc(app.assignedTo):'—')+'</div></div>'+
-    '<div class="kv"><div class="k">Ariza sanasi</div><div class="v">'+fmtDate(app.createdDate)+'</div></div>';
-  if(app.riskScore!=null) html+='<div class="kv"><div class="k">Risk balli</div><div class="v">'+app.riskScore+' ('+badge(app.riskLevel)+')</div></div>';
-  if(app.complianceOfficer) html+='<div class="kv"><div class="k">Compliance xodimi</div><div class="v">'+esc(app.complianceOfficer)+'</div></div>';
-  if(app.contract.number) html+='<div class="kv"><div class="k">Shartnoma raqami</div><div class="v mono">'+esc(app.contract.number)+'</div></div>';
-  if(app.contract.merchantSignedDate) html+='<div class="kv"><div class="k">Merchant imzosi</div><div class="v">'+fmtDate(app.contract.merchantSignedDate)+'</div></div>';
-  if(app.contract.bankSignedDate) html+='<div class="kv"><div class="k">Bank imzosi ('+esc(BANK_SIGNATORY_NAME)+')</div><div class="v">'+fmtDate(app.contract.bankSignedDate)+'</div></div>';
-  if(app.linkedMerchantId) html+='<div class="kv" style="border-bottom:none"><div class="k">Merchant profili</div><div class="v"><button class="btn btn-sm" data-action="app-goto-merchant" data-id="'+app.id+'">'+esc(app.linkedMerchantId)+' &middot; profilga o‘tish</button></div></div>';
-  html+='</div>';
-  return html;
-}
-function appDetailHTML(app){
-  let html = appDetailHeader(app);
-  html += '<div style="height:14px"></div>';
-  html += appOverviewKV(app);
-  if(app.status==='DOC_REVIEW' || app.docs.some(function(d){return d.status!=='Kutilmoqda';})){
-    html += '<div class="panel-title" style="margin-top:16px"><h3>Hujjatlar</h3></div>' + appDocsTableHTML(app);
-  }
-  if(app.status==='SITE_REVIEW' || app.siteReview.done){
-    html += '<div class="panel-title" style="margin-top:16px"><h3>Sayt/joy tekshiruvi</h3></div>' + appSiteChecklistHTML(app);
-  }
-  if(app.issues.length){
-    html += '<div class="panel-title" style="margin-top:16px"><h3>Aniqlangan muammolar</h3></div>' +
-      app.issues.map(function(is){ return '<div class="kv"><div class="k">'+esc(is.type)+'</div><div class="v">'+esc(is.text)+' '+badge(is.status)+'</div></div>'; }).join('');
-  }
-  if(app.complianceNotes){
-    html += '<div class="panel-title" style="margin-top:16px"><h3>Compliance izohi</h3></div><p style="font-size:12.5px;color:var(--text-2);padding:0 2px">'+esc(app.complianceNotes)+'</p>';
-  }
-  if(app.rejectionReason){
-    html += '<div class="panel-title" style="margin-top:16px"><h3>Rad etish sababi</h3></div><p style="font-size:12.5px;color:var(--red);padding:0 2px">'+esc(app.rejectionReason)+'</p>';
-  }
-  html += '<div class="panel-title" style="margin-top:16px"><h3>Jarayon tarixi</h3></div>' + appTimelineHTML(app);
-  return html;
-}
-function appActionButtons(app){
-  let btns = '<button class="btn" data-action="close-drawer">Yopish</button>';
-  const id=app.id;
-  switch(app.status){
-    case 'DRAFT':
-      btns+='<button class="btn btn-danger" data-action="app-cancel" data-id="'+id+'">Bekor qilish</button>';
-      break;
-    case 'SUBMITTED':
-      btns+='<button class="btn btn-primary" data-action="app-start-validation" data-id="'+id+'">Avtomatik tekshiruvni boshlash</button>';
-      break;
-    case 'AUTO_VALIDATION':
-      btns+='<button class="btn" data-action="app-request-info" data-id="'+id+'">Qo‘shimcha ma’lumot so‘rash</button>'+
-            '<button class="btn btn-primary" data-action="app-to-doc-review" data-id="'+id+'">Hujjatlar tekshiruviga o‘tkazish</button>';
-      break;
-    case 'NEEDS_INFO':
-      btns+='<button class="btn btn-primary" data-action="app-info-responded" data-id="'+id+'">Javob keldi, davom ettirish</button>';
-      break;
-    case 'DOC_REVIEW': {
-      const allVerified = app.docs.every(function(d){return d.status==='Tasdiqlangan';});
-      btns+='<button class="btn" data-action="app-request-info" data-id="'+id+'">Qo‘shimcha ma’lumot so‘rash</button>';
-      btns+='<button class="btn btn-danger" data-action="app-reject" data-id="'+id+'">Rad etish</button>';
-      if(allVerified) btns+='<button class="btn btn-primary" data-action="app-to-site-review" data-id="'+id+'">Sayt/joy tekshiruviga o‘tkazish</button>';
-      break; }
-    case 'SITE_REVIEW':
-      btns+='<button class="btn btn-danger" data-action="app-reject" data-id="'+id+'">Rad etish</button>';
-      btns+='<button class="btn btn-primary" data-action="app-to-kyb" data-id="'+id+'">Tekshiruvni yakunlash, KYBga o‘tkazish</button>';
-      break;
-    case 'KYB_CHECK':
-      btns+='<button class="btn btn-danger" data-action="app-reject" data-id="'+id+'">Rad etish</button>';
-      btns+='<button class="btn btn-primary" data-action="app-to-risk" data-id="'+id+'">KYB tasdiqlandi, Riskka o‘tkazish</button>';
-      break;
-    case 'RISK_ASSESSMENT':
-      if(app.riskScore==null) btns+='<button class="btn btn-primary" data-action="app-calc-risk" data-id="'+id+'">Risk ballini hisoblash</button>';
-      else btns+='<button class="btn btn-primary" data-action="app-to-compliance" data-id="'+id+'">Compliance‘ga yuborish</button>';
-      break;
-    case 'COMPLIANCE_REVIEW':
-      btns+='<button class="btn btn-danger" data-action="app-reject-compliance" data-id="'+id+'">Rad etish (Compliance)</button>';
-      btns+='<button class="btn" data-action="app-escalate" data-id="'+id+'">Eskalatsiya qilish</button>';
-      btns+='<button class="btn btn-primary" data-action="app-to-approval" data-id="'+id+'">Tasdiqlash, rahbariyatga yuborish</button>';
-      break;
-    case 'ESCALATED':
-      btns+='<button class="btn btn-danger" data-action="app-reject-compliance" data-id="'+id+'">Rad etish</button>';
-      btns+='<button class="btn btn-primary" data-action="app-resolve-escalation" data-id="'+id+'">Hal qilindi, davom ettirish</button>';
-      break;
-    case 'PENDING_APPROVAL':
-      btns+='<button class="btn btn-danger" data-action="app-reject-rahbar" data-id="'+id+'">Rad etish (Rahbariyat)</button>';
-      btns+='<button class="btn btn-primary" data-action="app-approve" data-id="'+id+'">Tasdiqlash</button>';
-      break;
-    case 'APPROVED':
-      btns+='<button class="btn btn-primary" data-action="app-gen-contract" data-id="'+id+'">Shartnoma loyihasini yaratish</button>';
-      break;
-    case 'CONTRACT_PENDING':
-      if(!app.contract.merchantSignedDate) btns+='<button class="btn btn-primary" data-action="app-sign-merchant" data-id="'+id+'">Merchant imzoladi (belgilash)</button>';
-      else if(!app.contract.bankSignedDate) btns+='<button class="btn btn-primary" data-action="app-sign-bank" data-id="'+id+'">Bank tomonidan imzolash</button>';
-      break;
-    case 'CONTRACT_SIGNED':
-      btns+='<button class="btn btn-primary" data-action="app-to-provisioning" data-id="'+id+'">Provisioningni boshlash</button>';
-      break;
-    case 'PROVISIONING':
-      btns+='<button class="btn btn-primary" data-action="app-provision" data-id="'+id+'">Merchant yaratish va yakunlash</button>';
-      break;
-    case 'COMPLETED':
-      if(app.linkedMerchantId) btns+='<button class="btn btn-primary" data-action="app-goto-merchant" data-id="'+id+'">Merchant profiliga o‘tish</button>';
-      break;
-    case 'REJECTED':
-      if(app.rejectionStage==='RAHBAR') btns+='<button class="btn btn-primary" data-action="app-reapply" data-id="'+id+'">Qayta ariza berish</button>';
-      break;
-  }
-  return btns;
-}
-function openApplicationDrawer(app){ openDrawer(appDetailHTML(app), appActionButtons(app)); }
-function refreshApplicationDrawer(id){
-  const app=findApp(id);
-  const overlay=document.getElementById('drawerOverlay');
-  if(app && overlay && overlay.classList.contains('open')) openApplicationDrawer(app);
-  refreshPage();
-}
-
-/* ================================================================
-   APPLICATION ACTIONS
-   ================================================================ */
-function doAppCancel(id){ const a=findApp(id); if(!a) return;
-  openConfirm('Arizani bekor qilish', a.businessName+" arizasini bekor qilishni tasdiqlaysizmi?", 'Bekor qilish', true, function(){
-    appPush(a,'CANCELLED','Admin','Admin tomonidan bekor qilindi',0);
-    pushAudit(null,'Ariza bekor qilindi','Onboarding',a.id,'','CANCELLED');
-    refreshApplicationDrawer(id); toast(a.id+' bekor qilindi','ok');
-  });
-}
-function doAppStartValidation(id){ const a=appTransition(id,'AUTO_VALIDATION','Tizim (avtomatik)',"Majburiy maydonlar va formatlar tekshirilmoqda");
-  if(a){ refreshApplicationDrawer(id); toast('Avtomatik tekshiruv boshlandi','ok'); } }
-function doAppToDocReview(id){ const a=findApp(id); if(!a) return; a.assignedTo=a.assignedTo||pick(ONB_OFFICERS);
-  appTransition(id,'DOC_REVIEW', a.assignedTo, "Hujjatlar ko‘rib chiqish navbatiga qabul qilindi");
-  refreshApplicationDrawer(id); toast('Hujjatlar tekshiruviga o‘tkazildi','ok'); }
-function doAppToSiteReview(id){ const a=findApp(id); if(!a) return;
-  appTransition(id,'SITE_REVIEW', a.assignedTo||pick(ONB_OFFICERS), "Barcha hujjatlar tasdiqlandi, joy/sayt tekshiruviga yuborildi");
-  refreshApplicationDrawer(id); toast('Sayt/joy tekshiruviga o‘tkazildi','ok'); }
-function doAppToKyb(id){ const a=findApp(id); if(!a) return;
-  appTransition(id,'KYB_CHECK', a.assignedTo||pick(ONB_OFFICERS), "Joy/sayt tekshiruvi yakunlandi");
-  refreshApplicationDrawer(id); toast('KYB tekshiruviga o‘tkazildi','ok'); }
-function doAppToRisk(id){ const a=findApp(id); if(!a) return;
-  appTransition(id,'RISK_ASSESSMENT', 'Tizim (KYB)', "KYB tasdiqlandi, risk baholashga o‘tkazildi");
-  a.reviewedBy=a.reviewedBy||pick(ONB_OFFICERS);
-  refreshApplicationDrawer(id); toast('Risk baholashga o‘tkazildi','ok'); }
-function doAppCalcRisk(id){ const a=findApp(id); if(!a) return;
-  a.riskScore=rndInt(5,95); a.riskLevel=a.riskScore>=71?'Yuqori':a.riskScore>=31?"O‘rta":'Past';
-  pushAudit(null,'Risk balli hisoblandi: '+a.riskScore,'Onboarding',a.id,'',String(a.riskScore));
-  refreshApplicationDrawer(id); toast('Risk balli: '+a.riskScore+' ('+a.riskLevel+')','ok'); }
-function doAppToCompliance(id){ const a=findApp(id); if(!a) return;
-  a.complianceOfficer=a.complianceOfficer||pick(COMPLIANCE_OFFICERS);
-  appTransition(id,'COMPLIANCE_REVIEW', 'Tizim', "Risk balli hisoblandi, Compliance bo‘limiga yuborildi");
-  refreshApplicationDrawer(id); toast('Compliance‘ga yuborildi','ok'); }
-function doAppEscalate(id){ const a=findApp(id); if(!a) return;
-  a.complianceOfficer=a.complianceOfficer||pick(COMPLIANCE_OFFICERS);
-  appTransition(id,'ESCALATED', SENIOR_COMPLIANCE_NAME, "Yuqori risk yoki noaniqlik tufayli Bosh Compliance nazoratiga yuborildi");
-  refreshApplicationDrawer(id); toast('Eskalatsiya qilindi','ok'); }
-function doAppResolveEscalation(id){
-  appTransition(id,'PENDING_APPROVAL', SENIOR_COMPLIANCE_NAME, "Eskalatsiya hal qilindi, rahbariyat tasdig‘iga yuborildi");
-  refreshApplicationDrawer(id); toast("Rahbariyat tasdig‘iga yuborildi",'ok'); }
-function doAppToApproval(id){ const a=findApp(id);
-  appTransition(id,'PENDING_APPROVAL', a?(a.complianceOfficer||pick(COMPLIANCE_OFFICERS)):pick(COMPLIANCE_OFFICERS), "Compliance tasdiqladi, rahbariyat tasdig‘iga yuborildi");
-  refreshApplicationDrawer(id); toast("Rahbariyat tasdig‘iga yuborildi",'ok'); }
-function doAppApprove(id){ const a=findApp(id); if(!a) return;
-  if(a.reviewedBy && a.reviewedBy===APPROVER_NAME){
-    toast("To‘rt ko‘z prinsipi: taqrizchi va tasdiqlovchi bir xil shaxs bo‘lishi mumkin emas", 'err');
-    return;
-  }
-  appTransition(id,'APPROVED', APPROVER_NAME, "Rahbariyat tomonidan tasdiqlandi");
-  refreshApplicationDrawer(id); toast('Ariza tasdiqlandi','ok'); }
-function doAppGenContract(id){ const a=findApp(id); if(!a) return;
-  a.contract.number = a.contract.number || ('IE-'+String(2000+rndInt(1,900))+'/'+new Date().getFullYear());
-  appTransition(id,'CONTRACT_PENDING','Tizim (shartnoma generatsiyasi)', "Shartnoma loyihasi tayyorlandi: "+a.contract.number);
-  refreshApplicationDrawer(id); toast('Shartnoma loyihasi yaratildi: '+a.contract.number,'ok'); }
-function doAppSignMerchant(id){ const a=findApp(id); if(!a) return;
-  a.contract.merchantSignedDate=new Date();
-  pushAudit(null,'Shartnoma merchant tomonidan imzolandi','Onboarding',a.id,'',a.contract.number);
-  a.timeline.push({status:'CONTRACT_PENDING', date:new Date(), actor:'Merchant', note:"Shartnoma merchant tomonidan imzolandi"});
-  refreshApplicationDrawer(id); toast('Merchant imzosi qayd etildi','ok'); }
-function doAppSignBank(id){ const a=findApp(id); if(!a) return;
-  if(!a.contract.merchantSignedDate){ toast('Avval merchant tomonidan imzolanishi kerak','err'); return; }
-  a.contract.bankSignedDate=new Date();
-  appTransition(id,'CONTRACT_SIGNED', BANK_SIGNATORY_NAME, "Shartnoma bank tomonidan imzolandi");
-  refreshApplicationDrawer(id); toast('Shartnoma imzolandi','ok'); }
-function doAppToProvisioning(id){
-  appTransition(id,'PROVISIONING','Tizim (provisioning)', "MID, ekvayer marshruti va limitlar sozlanmoqda");
-  refreshApplicationDrawer(id); toast('Provisioning boshlandi','ok'); }
-function doAppProvision(id){ const a=findApp(id); if(!a) return;
-  appTransition(id,'COMPLETED','Tizim (avtomatik)', "Merchant profili yaratildi va faollashtirildi");
-  const mNew={
-    id:uid('M', 1600+STATE.merchants.length),
-    businessName:a.businessName, legalName:a.legalName, mcc:a.mcc, category:a.category,
-    status:'Faol', riskLevel:a.riskLevel||'Past', kycStatus:'Tasdiqlangan', kybStatus:'Tasdiqlangan',
-    city:a.city, inn:a.inn, contractNumber:a.contract.number, contractDate:a.contract.bankSignedDate||new Date(),
-    contactEmail:a.contactEmail, contactPhone:a.contactPhone,
-    monthlyVolume:rndInt(15,300)*1000000, approvalRate:rnd(85,97), chargebackRate:rnd(0.1,0.6),
-    settlementCycle:'T+1', mdr:(rnd(1.6,2.4)).toFixed(2), mid:'MID'+rndInt(100000,999999),
-    createdDate:new Date(),
-  };
-  STATE.merchants.push(mNew);
-  a.linkedMerchantId=mNew.id;
-  pushAudit(null,'Merchant profili yaratildi','Onboarding',a.id,'',mNew.id);
-  refreshApplicationDrawer(id); toast('Merchant yaratildi: '+mNew.id,'ok'); }
-function doAppGotoMerchant(id){ const a=findApp(id); if(!a||!a.linkedMerchantId) return;
-  closeDrawer(); STATE.currentMerchantId=a.linkedMerchantId; STATE.currentMerchantTab='overview'; showPage('merchant360'); }
-function doAppReapply(id){ const old=findApp(id); if(!old) return;
-  const na=newAppSkeleton(1000+STATE.applications.length);
-  na.businessName=old.businessName; na.legalName=old.legalName; na.inn=old.inn; na.mcc=old.mcc; na.category=old.category;
-  na.city=old.city; na.address=old.address; na.ownerName=old.ownerName; na.ownerPassport=old.ownerPassport;
-  na.contactPhone=old.contactPhone; na.contactEmail=old.contactEmail; na.businessTypeForm=old.businessTypeForm;
-  STATE.applications.unshift(na);
-  appTransitionObj(na,'SUBMITTED','Merchant (qayta ariza)', "Oldingi rad etilgan ariza ("+old.id+") asosida remediatsiyadan so‘ng qayta topshirildi");
-  pushAudit(null,'Qayta ariza topshirildi','Onboarding',na.id,old.id,'SUBMITTED');
-  closeDrawer(); showPage('onboarding');
-  toast('Yangi ariza yaratildi: '+na.id,'ok'); }
-function doAppDocVerify(id, docType){ const a=findApp(id); if(!a) return;
-  const d=a.docs.find(function(x){return x.type===docType;}); if(!d) return;
-  d.status='Tasdiqlangan'; d.note='';
-  pushAudit(null,'Hujjat tasdiqlandi: '+docType,'Onboarding',a.id,'','Tasdiqlangan');
-  refreshApplicationDrawer(id); toast(docType+' tasdiqlandi','ok'); }
-function doAppDocReject(id, docType){ const a=findApp(id); if(!a) return;
-  const d=a.docs.find(function(x){return x.type===docType;}); if(!d) return;
-  d.status='Rad etilgan'; d.note="Qayta ko‘rib chiqish talab qilinadi";
-  pushAudit(null,'Hujjat rad etildi: '+docType,'Onboarding',a.id,'','Rad etilgan');
-  refreshApplicationDrawer(id); toast(docType+' rad etildi','err'); }
-function doAppSiteToggle(id, idx){ const a=findApp(id); if(!a) return;
-  const it=a.siteReview.items[idx]; if(!it) return;
-  it.ok=!it.ok;
-  refreshApplicationDrawer(id); }
-function openAppRequestInfoModal(id){
-  openModalRaw('<h3>Qo‘shimcha ma’lumot so‘rash</h3>'+
-    '<div class="form-row"><label>Izoh / so‘raladigan ma’lumot</label><textarea id="reqInfoNote" rows="3" style="width:100%;font:inherit;padding:8px;border:1px solid var(--border);border-radius:6px" placeholder="Masalan: ustav nusxasini aniqroq skanerda yuklang"></textarea></div>'+
-    '<div class="modal-actions"><button class="btn" data-action="close-modal">Bekor qilish</button><button class="btn btn-primary" id="reqInfoBtn">Yuborish</button></div>');
-  document.getElementById('reqInfoBtn').onclick=function(){
-    const note=document.getElementById('reqInfoNote').value.trim() || "Qo‘shimcha ma’lumot so‘raldi";
-    appTransition(id,'NEEDS_INFO','Admin',note);
-    closeModal(); refreshApplicationDrawer(id); toast("So‘rov merchantga yuborildi",'ok');
-  };
-}
-function doAppInfoResponded(id){
-  appTransition(id,'DOC_REVIEW','Merchant', "Merchant tomonidan qo‘shimcha ma’lumot taqdim etildi");
-  refreshApplicationDrawer(id); toast("Ariza ko‘rib chiqish davom ettirilmoqda",'ok'); }
-function openAppRejectModal(id, stage){
-  const opts=APP_REJECTION_REASONS.map(function(r){return '<option value="'+esc(r)+'">'+esc(r)+'</option>';}).join('');
-  openModalRaw('<h3>Arizani rad etish</h3>'+
-    '<div class="form-row"><label>Rad etish sababi</label><select id="rejReason" style="width:100%">'+opts+'</select></div>'+
-    '<div class="modal-actions"><button class="btn" data-action="close-modal">Bekor qilish</button><button class="btn btn-danger" id="rejBtn">Rad etish</button></div>');
-  document.getElementById('rejBtn').onclick=function(){
-    const reason=document.getElementById('rejReason').value;
-    const a=findApp(id); if(!a){ closeModal(); return; }
-    const actor = stage==='COMPLIANCE' ? (a.complianceOfficer||SENIOR_COMPLIANCE_NAME) : (stage==='RAHBAR'? APPROVER_NAME : (a.assignedTo||'Admin'));
-    appTransition(id,'REJECTED', actor, "Ariza rad etildi: "+reason);
-    a.rejectionStage=stage; a.rejectionReason=reason;
-    closeModal(); refreshApplicationDrawer(id); toast('Ariza rad etildi','err');
-  };
-}
-
-/* ================================================================
    ROUTER
    ================================================================ */
 let liveSeconds=0;
@@ -4398,6 +4748,7 @@ const PAGE_RENDERERS = {
   health:{render:renderHealth},
   onboarding:{render:renderOnboarding},
   kyc:{render:renderCompliance},
+  accreqs:{render:renderAccReqs},
   merchant360:{render:renderMerchant360, after:()=>{ destroyCharts(); paintM360Charts(); }},
 };
 
@@ -4405,12 +4756,13 @@ function updateSidebarBadges(){
   const openCb=STATE.chargebacks.filter(c=>['Yangi','Ko\u2018rib chiqilmoqda','Dalil talab qilinadi','Representment'].includes(c.status)).length;
   const el=document.getElementById('cbBadge');
   if(el) el.textContent=openCb;
-  const activeApps=STATE.applications.filter(a=>!APP_TERMINAL_STATUSES.includes(a.status)).length;
+  const apps=allApps();
   const onbEl=document.getElementById('onbBadge');
-  if(onbEl) onbEl.textContent=activeApps;
-  const compQueue=STATE.applications.filter(a=>a.status==='COMPLIANCE_REVIEW'||a.status==='ESCALATED').length;
+  if(onbEl) onbEl.textContent=apps.filter(a=>REVIEW_STATUSES.includes(a.status) && a.status!=='NEEDS_INFO').length;
   const compEl=document.getElementById('compBadge');
-  if(compEl) compEl.textContent=compQueue;
+  if(compEl) compEl.textContent=apps.filter(a=>a.status==='COMPLIANCE_REVIEW'||a.status==='ESCALATED').length;
+  const accEl=document.getElementById('accBadge');
+  if(accEl) accEl.textContent=allAccs().filter(r=>r.status==='SUBMITTED'||r.status==='IN_REVIEW').length;
 }
 
 function showPage(key){
@@ -4430,6 +4782,7 @@ function refreshPage(){ showPage(STATE.currentPage); }
    DRAWER / MODAL / TOAST
    ================================================================ */
 function openDrawer(bodyHtml,footHtml){
+  STATE.onbDrawer=null;
   const el=document.getElementById('drawerEl');
   el.innerHTML =
     '<div class="drawer-head" style="border-bottom:none;padding-bottom:0"><div></div>'+
@@ -4623,80 +4976,15 @@ function mainClickDelegate(e){
     document.querySelectorAll('[data-tabpanel][data-group="'+group+'"]').forEach(p=>{ p.style.display=(p.dataset.tabpanel===tabBtn.dataset.tab)?'':'none'; });
     if(group==='m360') STATE.currentMerchantTab=tabBtn.dataset.tab;
     if(group==='onb') STATE.onbTab=tabBtn.dataset.tab;
+    if(group==='comp') STATE.compTab=tabBtn.dataset.tab;
+    if(group==='acc') STATE.accTab=tabBtn.dataset.tab;
     return;
   }
 
   let el;
   if((el=e.target.closest('[data-action="open-tx"]'))){ const t=STATE.transactions.find(x=>x.id===el.dataset.id); if(t) openTxDrawer(t); return; }
   if((el=e.target.closest('[data-action="open-merchant"]'))){ e.preventDefault(); const m=STATE.merchants.find(x=>x.id===el.dataset.id); if(m){ STATE.currentMerchantId=m.id; STATE.currentMerchantTab='overview'; const panel=document.getElementById('notifPanel'); if(panel) panel.remove(); showPage('merchant360'); } return; }
-  if((el=e.target.closest('[data-action="open-application"]'))){ const a=STATE.applications.find(x=>x.id===el.dataset.id); if(a) openApplicationDrawer(a); return; }
-  if((el=e.target.closest('[data-action="app-cancel"]'))){ doAppCancel(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="app-start-validation"]'))){ doAppStartValidation(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="app-to-doc-review"]'))){ doAppToDocReview(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="app-to-site-review"]'))){ doAppToSiteReview(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="app-to-kyb"]'))){ doAppToKyb(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="app-to-risk"]'))){ doAppToRisk(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="app-calc-risk"]'))){ doAppCalcRisk(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="app-to-compliance"]'))){ doAppToCompliance(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="app-escalate"]'))){ doAppEscalate(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="app-resolve-escalation"]'))){ doAppResolveEscalation(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="app-to-approval"]'))){ doAppToApproval(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="app-approve"]'))){ doAppApprove(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="app-gen-contract"]'))){ doAppGenContract(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="app-sign-merchant"]'))){ doAppSignMerchant(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="app-sign-bank"]'))){ doAppSignBank(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="app-to-provisioning"]'))){ doAppToProvisioning(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="app-provision"]'))){ doAppProvision(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="app-goto-merchant"]'))){ doAppGotoMerchant(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="app-reapply"]'))){ doAppReapply(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="app-request-info"]'))){ openAppRequestInfoModal(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="app-info-responded"]'))){ doAppInfoResponded(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="app-reject"]'))){ openAppRejectModal(el.dataset.id,'REVIEW'); return; }
-  if((el=e.target.closest('[data-action="app-reject-compliance"]'))){ openAppRejectModal(el.dataset.id,'COMPLIANCE'); return; }
-  if((el=e.target.closest('[data-action="app-reject-rahbar"]'))){ openAppRejectModal(el.dataset.id,'RAHBAR'); return; }
-  if((el=e.target.closest('[data-action="app-doc-verify"]'))){ doAppDocVerify(el.dataset.id, el.dataset.doc); return; }
-  if((el=e.target.closest('[data-action="app-doc-reject"]'))){ doAppDocReject(el.dataset.id, el.dataset.doc); return; }
-  if((el=e.target.closest('[data-action="app-site-toggle"]'))){ doAppSiteToggle(el.dataset.id, parseInt(el.dataset.idx,10)); return; }
-
-
-  if((el=e.target.closest('[data-action="m360-menu-toggle"]'))){ e.stopPropagation(); toggleM360Menu(el,el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="m360-suspend"]'))){ openSuspendMerchantModal(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="m360-activate"]'))){ openActivateMerchantModal(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="m360-edit"]'))){ openEditMerchantModal(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="m360-request-info"]'))){ openRequestInfoModal(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="m360-create-mid"]'))){ openCreateMidModal(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="m360-change-pricing"]'))){ openChangePricingModal(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="m360-adjust-limits"]'))){ openAdjustLimitsModal(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="m360-export"]'))){ m360Export(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="m360-goto-tab"]'))){ m360GotoTab(el.dataset.tab); return; }
-  if((el=e.target.closest('[data-action="m360-toggle-cap"]'))){ doToggleCapability(el.dataset.id,el.dataset.cap); return; }
-  if((el=e.target.closest('[data-action="m360-health-info"]'))){ openHealthInfoModal(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="m360-period"]'))){ setM360Period(el.dataset.period); return; }
-  if((el=e.target.closest('[data-action="m360act"]'))){ handleM360Action(el.dataset.type,el.dataset.id,el); return; }
-  if((el=e.target.closest('[data-action="open-chargeback"]'))){ const c=STATE.chargebacks.find(x=>x.id===el.dataset.id); if(c) openChargebackDrawer(c); return; }
-  if((el=e.target.closest('[data-action="open-settlement"]'))){ const s=STATE.settlements.find(x=>x.id===el.dataset.id); if(s) openSettlementDrawer(s); return; }
-  if((el=e.target.closest('[data-action="open-acquirer"]'))){ const a=STATE.acquirers.find(x=>x.id===el.dataset.id); if(a) openAcquirerDrawer(a); return; }
-
-  if(e.target.closest('[data-action="close-drawer"]')){ closeDrawer(); return; }
-  if(e.target.id==='drawerOverlay'){ closeDrawer(); return; }
-  if(e.target.closest('[data-action="close-modal"]')){ closeModal(); return; }
-  if(e.target.id==='modalCenter'){ closeModal(); return; }
-
-  if((el=e.target.closest('[data-action="refund-tx"]'))){ doRefundTx(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="suspend-merchant"]'))){ doSuspendMerchant(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="activate-merchant"]'))){ doActivateMerchant(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="accept-chargeback"]'))){ doChargebackDecision(el.dataset.id,'accept'); return; }
-  if((el=e.target.closest('[data-action="contest-chargeback"]'))){ doChargebackDecision(el.dataset.id,'contest'); return; }
-  if((el=e.target.closest('[data-action="upload-evidence"]'))){ doUploadEvidence(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="match-exception"]'))){ doMatchException(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="toggle-risk-rule"]'))){ doToggleRiskRule(el.dataset.id); return; }
-  if((el=e.target.closest('[data-action="open-modal"]'))){ if(el.dataset.modal==='new-risk-rule') openNewRiskRuleModal(); return; }
-  if(e.target.closest('[data-action="create-api-key"]')){ doCreateApiKey(); return; }
-  if((el=e.target.closest('[data-action="revoke-api-key"]'))){ doRevokeApiKey(el.dataset.id); return; }
-  if(e.target.closest('[data-action="copy-key"]')){ toast('Kalit clipboardga nusxalandi (demo)','ok'); return; }
-  if((el=e.target.closest('[data-action="retry-webhook"]'))){ doRetryWebhook(el.dataset.id); return; }
-  if(e.target.closest('[data-action="run-fee-sim"]')){ runFeeSim(); return; }
-
+  if((el=e.target.closest('[data-onb]'))){ e.preventDefault(); onbAct(el.dataset.onb, el); return; }
   if((el=e.target.closest('[data-action="page"]'))){
     const key=el.dataset.key; const f=getFilter(key); f.page+=parseInt(el.dataset.dir,10); refreshPage(); return;
   }
@@ -4750,6 +5038,10 @@ function initChrome(){
     if(cb){ openChargebackDrawer(cb); return; }
     let st=STATE.settlements.find(s=>s.id.toLowerCase()===ql);
     if(st){ openSettlementDrawer(st); return; }
+    let ap=findApp(q.toUpperCase()) || allApps().find(a=>a.inn===q);
+    if(ap){ STATE.onbTab=onbTabOf(ap); showPage('onboarding'); openAppDrawer(ap.id); return; }
+    let ar=findAcc(q.toUpperCase());
+    if(ar){ showPage('accreqs'); openAccDrawer(ar.id); return; }
     toast('"'+q+'" bo\u2018yicha natija topilmadi', 'err');
   });
   document.addEventListener('keydown', function(e){
@@ -4766,6 +5058,7 @@ function initChrome(){
 document.addEventListener('DOMContentLoaded', function(){
   initChrome();
   showPage('overview');
+  onbInit();
   setInterval(function(){
     liveSeconds+=3;
     const el=document.getElementById('liveUpdated');

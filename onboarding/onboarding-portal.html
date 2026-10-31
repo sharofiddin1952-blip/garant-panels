@@ -1017,7 +1017,7 @@ VIEWS.status = () => {
       <div>${keys}<div class="card"><h3>Hujjatlar</h3><p class="dim">Bank ${DOC_SRC} oladi — sizdan yuklash talab qilinmaydi (Q-34)</p><div class="docs mt8">${requiredDocs(a).map((x) => { const s = a.docs[x.key] || {}; const st = s.status === 'VERIFIED' ? ['Tasdiqlangan', 'green'] : s.status === 'REPLACEMENT_REQUIRED' ? ['Sizdan so‘raldi', 'amber'] : s.status === 'UPLOADED' ? ['Siz yukladingiz', 'blue'] : s.status === 'FETCHED' ? ['Olindi', 'blue'] : ['Olinmoqda', 'gray']; return '<div class="row" style="font-size:13px"><span class="sp">' + esc(x.name) + '</span><span class="badge ' + st[1] + '">' + st[0] + '</span></div>'; }).join('')}</div></div></div></div>`;
 };
 function provHTML(a) {
-  const steps = ['Shartnoma ikkala tomondan imzolandi', 'Merchant yozuvi yaratildi (MER-000892) — ariza ma’lumotlari nusxalandi', 'Tarif, limitlar va settlement (T+1) o‘rnatildi', 'Uzcard / Humo protsessingda ro‘yxatga olindi (MID, TID)', noAcc(a) ? 'ABS: hisob hali yo‘q — live’dan oldin bog‘lanadi (go-live sharti, Q-32)' : 'ABS: hisob raqami bog‘landi', 'Sandbox kalitlari yaratildi (shartnomadan keyin — Q-16)', a.role === 'EMP' ? 'Rolingiz: ariza beruvchi → administrator; direktorga Owner taklifi' : 'Rolingiz: ariza beruvchi → kabinet egasi (Owner)'];
+  const steps = ['Shartnoma ikkala tomondan imzolandi', 'Merchant yozuvi yaratildi (' + (a.merchantId || 'MER-000892') + ') — ariza ma’lumotlari nusxalandi', 'Tarif, limitlar va settlement (T+1) o‘rnatildi', 'Uzcard / Humo protsessingda ro‘yxatga olindi (MID, TID)', noAcc(a) ? 'ABS: hisob hali yo‘q — live’dan oldin bog‘lanadi (go-live sharti, Q-32)' : 'ABS: hisob raqami bog‘landi', 'Sandbox kalitlari yaratildi (shartnomadan keyin — Q-16)', a.role === 'EMP' ? 'Rolingiz: ariza beruvchi → administrator; direktorga Owner taklifi' : 'Rolingiz: ariza beruvchi → kabinet egasi (Owner)'];
   const k = a.provStep || 0;
   return steps.map((t, i) => '<div class="pi ' + (i < k ? 'done' : i === k ? 'run' : '') + '"><span class="dot"></span>' + esc(t) + '</div>').join('');
 }
@@ -1085,13 +1085,14 @@ VIEWS.done = () => {
       <div class="empty" style="padding:0"><div class="big" style="background:var(--green-bg);color:var(--green)">✓</div></div>
       <h1>Kabinetingiz tayyor!</h1>
       <p class="muted" style="max-width:600px;margin:6px auto 0"><b>${esc(a.d.legalName)}</b> Garant merchanti sifatida ro‘yxatga olindi. Yangi login yoki parol kerak emas — kabinetga <b>shu akkaunt</b> bilan kirasiz. Sizning rolingiz: <b>${a.role === 'EMP' ? 'Administrator' : 'Owner'}</b>.${a.role === 'EMP' ? ' Direktorga kabinet egasi (Owner) sifatida taklif SMS yuborildi.' : ''}</p>
-      <div class="row mt20" style="justify-content:center"><a class="btn primary lg" href="merchant-panel.html">Kabinetga o‘tish →</a><button class="btn lg" data-act="go" data-to="home">Arizalarim</button></div></div>
+      <div class="row mt20" style="justify-content:center"><a class="btn primary lg" href="merchant-panel.html#org=${a.inn}">Kabinetga o‘tish →</a><button class="btn lg" data-act="go" data-to="home">Arizalarim</button></div></div>
     <div class="cols mt16"><div class="card"><div class="row"><h3 class="sp">Go-live cheklist (D4 → D5)</h3><span class="badge ${a.live ? 'green' : 'purple'}">${a.live ? 'Live' : 'Sandbox'}</span></div>
-        <p class="dim">Real to‘lovlarni qabul qilish uchun. Tekshiruvlar avtomatik, oxirida Operatsiya xodimi tasdiqlaydi (docs/09 §3.2).</p>
+        <p class="dim">Real to‘lovlarni qabul qilish uchun. Cheklistni <a href="merchant-panel.html#page=golive">kabinetning «Go-live» bo‘limida</a> bajarasiz, oxirida Operatsiya xodimi tasdiqlaydi (docs/09 §3.2).</p>
+        ${g.requestedAt && !a.live ? '<div class="alert info mt8"><span class="ic">i</span><span>Go-live so‘rovi yuborildi — Operatsiya xodimi tasdig‘i kutilmoqda.</span></div>' : ''}
         <div class="prov mt8">${items.map(([k, t]) => '<div class="pi ' + ((k === 'acc' ? !noAcc(a) : g[k] || a.live) ? 'done' : '') + '"><span class="dot"></span>' + t + '</div>').join('')}
         <div class="pi ${a.live ? 'done' : ''}"><span class="dot"></span>Operatsiya xodimi tasdig‘i → production kalitlar</div></div></div>
       <div>${a.keys ? '<div class="card"><div class="row"><h3 class="sp">Sandbox kalitlari</h3><span class="badge purple">Test muhit</span></div><p class="dim">Shartnomadan keyin, kabinet bilan birga berildi (Q-16). Real pul yo‘q.</p><div class="keys mt8"><span>merchant_id:</span> ' + a.keys.mid + '<br><span>secret_key:</span> ' + a.keys.sk.slice(0, 10) + '••••••••••••' + a.keys.sk.slice(-4) + '<br><span>api_url:</span> https://sandbox.pay.garantbank.uz/v1</div></div>' : ''}<div class="card"><h3>Merchant ma’lumotlari</h3><div class="kv mt8" style="grid-template-columns:130px 1fr;font-size:13px">
-        <div class="k">Merchant ID</div><div class="mono">MER-000892</div><div class="k">MID / TID</div><div class="mono">90510047 / 10047001</div>
+        <div class="k">Merchant ID</div><div class="mono">${a.merchantId || 'MER-000892'}</div><div class="k">MID / TID</div><div class="mono">90510047 / 10047001</div>
         <div class="k">Shartnoma</div><div class="mono">${a.contract ? a.contract.no : ''}</div><div class="k">Tushum hisobi</div><div class="mono">${noAcc(a) ? '— hali yo‘q' : fmtAcc(settleAcc(a))}</div><div class="k">Manba ariza</div><div class="mono">${a.id}</div>
         <div class="k">Dostup</div><div>${level(a)} · ${LEVEL_NAME[level(a)]}</div></div></div></div></div>`;
 };
@@ -1202,6 +1203,10 @@ function renderDemo() {
     if (st === 'COMPLETED' && !a.live) body += B('demo-golive', 'Test to‘lov, refund, webhook ✓ → Operatsiya: go-live', true);
     if (REVIEW_ST.includes(st) || st === 'SUBMITTED' || st === 'AUTO_VALIDATION') body += '<div class="dim">Tez yo‘l:</div>' + B('demo-fast', 'Tasdiqlashgacha o‘tkazib yuborish ⏩');
   }
+  const ar0 = S.screen === 'account' && S.accInn && S.accReqs ? S.accReqs[S.accInn] : null;
+  const adm = ar0 && ar0.status !== 'DRAFT' ? '#acc=' + ar0.id : a && S.user && !['home', 'new', 'account'].includes(S.screen) ? '#app=' + a.id : '#page=onboarding';
+  body += '<div class="lbl">Jonli bog‘lanish</div><div class="dim">Bank harakatlarini <b>Admin panel</b>da ham bajarish mumkin — shu brauzerda ochilsa, natija shu yerda va kabinetda darhol ko‘rinadi.</div>' +
+    '<a class="btn" href="admin-panel.html' + adm + '" target="_blank">Admin panelda ochish ↗</a><a class="btn" href="merchant-panel.html' + (a ? '#org=' + a.inn : '') + '" target="_blank">Merchant kabinet ↗</a>';
   body += '<div class="lbl">Prototip</div>' + B('demo-reset', 'Demo’ni qayta boshlash') + '<div class="dim">Hujjatlar (private repo): dasturchilar uchun — docs/27; qarorlar Q-xx — docs/25 · BPMN: bpmn/viewer.html</div>';
   el.innerHTML = '<button class="dh" data-act="demo-toggle">⚙ Demo boshqaruvi — bank tomoni<span class="sp"></span>' + (S.demoMin ? '▲' : '▼') + '</button><div class="db">' + body + '</div>';
 }
@@ -1272,15 +1277,23 @@ ACT['pre-fill'] = (el) => { $('#preInn').value = el.dataset.v; };
 ACT['pre-reset'] = () => { S.pre = { inn: '', phase: 'input' }; render(); };
 ACT['pre-role'] = (el) => { S.pre.role = el.dataset.v; render(); };
 ACT['access-request'] = () => { toast('Kirish so‘rovi yuborildi — egasi tasdiqlasa, tashkilot «Arizalarim»da paydo bo‘ladi'); };
+// B6: bloklangan INN ga har urinish — bank Admin paneldagi «Bloklangan urinishlar» ro'yxatida ko'radi. Mijozga sabab ko'rsatilmaydi (B5)
+function logBlocked(inn, where, rejApp) {
+  S.blockedLog = S.blockedLog || [];
+  S.blockedLog.unshift({ id: 'BLK-' + String(Date.now()).slice(-6), inn, at: Date.now(), phone: S.user ? S.user.phone : '', where, live: true,
+    code: rejApp ? ((rejApp.bank && rejApp.bank.rejectCode) || 'FINAL_REJECTION') : 'STOP_LIST',
+    src: rejApp ? 'Oldingi ariza yakuniy rad etilgan (' + rejApp.id + ')' : 'Demo: bank stop-ro‘yxati' });
+}
 ACT['pre-check'] = () => {
   const inn = ($('#preInn').value || '').replace(/\D/g, '');
   if (inn.length !== 9) { $('#preErr').textContent = 'INN 9 ta raqamdan iborat bo‘lishi kerak'; return; }
   const own = S.apps.find((x) => x.inn === inn && !TERMINAL.includes(x.status));
   const rej = S.apps.find((x) => x.inn === inn && x.status === 'REJECTED' && x.rejection && x.rejection.canReapply);
+  const fin = S.apps.find((x) => x.inn === inn && x.status === 'REJECTED' && x.rejection && x.rejection.canReapply === false);
   const sp = SPECIAL[inn], r = REG[inn];
   const plan = [['INN formati va nazorat raqami', 'ok']];
   let outcome = 'OK';
-  if (sp === 'BLOCKED') { plan.push(['Dublikat va cheklovlar', 'no']); outcome = 'BLOCKED'; }
+  if (sp === 'BLOCKED' || fin) { plan.push(['Dublikat va cheklovlar', 'no']); outcome = 'BLOCKED'; logBlocked(inn, 'precheck', fin); }
   else if (sp === 'MERCHANT') { plan.push(['Faol merchant', 'no', 'topildi']); outcome = 'MERCHANT'; }
   else if (sp === 'OPEN_OTHER') { plan.push(['Ochiq arizalar', 'no', 'boshqa foydalanuvchida']); outcome = 'OPEN_OTHER'; }
   else if (own) { plan.push(['Ochiq arizalar', 'w', 'sizda bor']); outcome = own.status === 'DRAFT' ? 'OWN_DRAFT' : 'OWN_ACTIVE'; }
@@ -1433,7 +1446,7 @@ ACT['demo-next'] = () => {
   if (a.status === 'AUTO_VALIDATION' || a.status === 'SUBMITTED') fetchDocs(a);
   if (a.status === 'DOC_REVIEW') requiredDocs(a).forEach((x) => { if (a.docs[x.key]) a.docs[x.key].status = 'VERIFIED'; });
   if (a.status === 'AUTO_VALIDATION' || a.status === 'SUBMITTED') push(a, 'Dastlabki tekshiruv yakunlandi — ariza ko‘rib chiqilmoqda', 'Tizim');
-  a.status = nxt; render();
+  const from = a.status; a.status = nxt; bankLog(a, 'Demo panel: ' + from + ' → ' + nxt); render();
 };
 ACT['demo-fast'] = () => { const a = curApp(); fetchDocs(a); requiredDocs(a).forEach((x) => { if (a.docs[x.key]) a.docs[x.key].status = 'VERIFIED'; }); if (!a.timeline.some((t) => /ko‘rib chiqilmoqda/.test(t.text))) push(a, 'Dastlabki tekshiruv yakunlandi — ariza ko‘rib chiqilmoqda', 'Tizim'); a.status = 'PENDING_APPROVAL'; render(); };
 ACT['demo-info'] = () => {
@@ -1452,9 +1465,11 @@ ACT['demo-info'] = () => {
   render();
 };
 ACT['demo-info-expire'] = () => { const a = curApp(); a.status = 'EXPIRED'; a.info = null; push(a, '14 kun ichida javob berilmadi — ariza muddati o‘tdi', 'Tizim'); render(); };
-function reject(a, reason, remarks, canReapply) { a.status = 'REJECTED'; a.info = null; a.rejection = { at: Date.now(), reason, remarks, canReapply }; push(a, 'Ariza rad etildi', 'Bank'); go('rejected'); }
+// Bank ichki tarixi (a.bank) — faqat Admin panelda ko'rinadi; portal uni hech qachon ko'rsatmaydi (22 §3.1 B5)
+function bankLog(a, text, who) { a.bank = a.bank || { log: [] }; a.bank.log = a.bank.log || []; a.bank.log.unshift({ t: Date.now(), text, who: who || 'Tizim' }); a.bank.since = Date.now(); a.bank.sinceSt = a.status; }
+function reject(a, reason, remarks, canReapply) { a.status = 'REJECTED'; bankLog(a, 'Demo panel: rad etildi' + (canReapply ? '' : ' (yakuniy — INN bloklanadi)')); a.info = null; a.rejection = { at: Date.now(), reason, remarks, canReapply }; push(a, 'Ariza rad etildi', 'Bank'); go('rejected'); }
 ACT['demo-reject'] = () => reject(curApp(), 'Ariza rad etildi: kamchiliklar mavjud', ['Saytda qaytarish va yetkazib berish shartlari to‘liq yoritilmagan', 'Ta’sischi yuridik shaxsning foydali egasi (UBO) haqida ma’lumot yetarli emas'], true);
-ACT['demo-reject-final'] = () => reject(curApp(), 'Ariza qabul qilinmadi. Batafsil ma’lumot uchun bank bilan bog‘laning.', [], false);
+ACT['demo-reject-final'] = () => reject(Object.assign(curApp(), { bank: Object.assign({ log: [] }, curApp().bank, { rejectCode: 'CMP_SANCTIONS_HIT' }) }), 'Ariza qabul qilinmadi. Batafsil ma’lumot uchun bank bilan bog‘laning.', [], false);
 function toContract(a) {
   a.status = 'CONTRACT_PENDING'; a.contract = { no: 'CTR-2026-000318', at: Date.now(), mSigned: null, bSigned: null };
   push(a, 'Shartnoma imzolash uchun tayyor (CTR-2026-000318) — 14 kun ichida imzolang', 'Tizim');
@@ -1568,12 +1583,13 @@ ACT['demo-bank-sign'] = () => {
     a.provStep++;
     if (a.provStep >= 7) {
       a.keys = { mid: 'sbx_' + a.inn, sk: 'sk_test_' + rnd(28) };
-      clearInterval(t); a.status = 'COMPLETED'; push(a, 'Kabinetingiz tayyor — o‘sha akkaunt bilan kiring (Merchant MER-000892)', 'Tizim');
+      a.merchantId = a.merchantId || 'MER-000892';
+      clearInterval(t); a.status = 'COMPLETED'; push(a, 'Kabinetingiz tayyor — o‘sha akkaunt bilan kiring (Merchant ' + a.merchantId + ')', 'Tizim'); bankLog(a, 'Demo panel: provisioning yakunlandi');
       if (curApp() === a) go('done'); else save();
     } else if (curApp() === a && $('#prov')) { $('#prov').innerHTML = provHTML(a); save(); }
   }, 650);
 };
-ACT['demo-golive'] = () => { const a = curApp(); if (noAcc(a)) { toast('Go-live bloklangan: Garant Bankda hisob yo‘q (Q-32)'); return; } a.golive = { test: 1, refund: 1, webhook: 1, mfa: 1 }; a.live = true; push(a, 'Go-live tasdiqlandi — production kalitlar berildi', 'Bank'); toast('Merchant ACTIVE · dostup D5'); render(); };
+ACT['demo-golive'] = () => { const a = curApp(); if (noAcc(a)) { toast('Go-live bloklangan: Garant Bankda hisob yo‘q (Q-32)'); return; } a.golive = Object.assign({}, a.golive, { tech: 1, test: 1, refund: 1, webhook: 1, mfa: 1, approvedAt: Date.now() }); a.live = true; bankLog(a, 'Demo panel: go-live tasdiqlandi', 'Operatsiya xodimi'); push(a, 'Go-live tasdiqlandi — production kalitlar berildi', 'Bank'); toast('Merchant ACTIVE · dostup D5'); render(); };
 ACT['demo-expire'] = () => { const a = curApp(); a.status = 'EXPIRED'; push(a, a.contract ? 'Shartnoma 14 kun ichida imzolanmadi — muddat o‘tdi' : 'Qoralama 30 kun faolsiz qoldi — muddat o‘tdi', 'Tizim'); go('home'); };
 ACT['demo-fill'] = () => {
   const a = curApp(), r = REG[a.inn] || {}, d = a.d;
@@ -1594,7 +1610,7 @@ ACT['demo-fill'] = () => {
 
 /* ---------------- modal ---------------- */
 function modal(html) { $('#modal').innerHTML = '<div class="modal-bg" data-act="modal-bg"><div class="modal" role="dialog" aria-modal="true">' + html + '</div></div>'; }
-function closeModal() { $('#modal').innerHTML = ''; }
+function closeModal() { $('#modal').innerHTML = ''; if (syncPending) setTimeout(liveRender, 0); }
 ACT['modal-close'] = closeModal;
 ACT['modal-bg'] = (el, ev) => { if (ev.target === el) closeModal(); };
 
@@ -1659,6 +1675,39 @@ document.addEventListener('keydown', (ev) => {
   const map = { regPhone: 'reg-send', otp: 'reg-verify', preInn: 'pre-check', subOtp: 'submit-confirm', lPw: 'login', eimzo: 'sign-confirm', accPin: 'acc-sign' };
   if (map[id]) { ev.preventDefault(); ACT[map[id]](ev.target); }
 });
+
+/* ---------------- jonli bog'lanish: Admin panel va Merchant kabinet (v2.6) ---------------- */
+// Uchala prototip bitta xotirani (KEY) ishlatadi. Boshqa tab yozsa — ma'lumotlar birlashtiriladi,
+// ekran holati (screen, cur, wiz…) o'zgarmaydi. Obyektlar joyida yangilanadi — taymerlar eski havolada qolmaydi.
+let syncPending = false;
+function replaceIn(o, x) { Object.keys(o).forEach((k) => { delete o[k]; }); Object.assign(o, x); }
+function mergeLive(n) {
+  const before = {}, byId = {};
+  S.apps.forEach((a) => { before[a.id] = a.status + (a.live ? '*' : ''); byId[a.id] = a; });
+  const apps = (n.apps || []).map((x) => { const o = byId[x.id]; if (!o) return x; delete byId[x.id]; if ((x.updatedAt || 0) >= (o.updatedAt || 0)) replaceIn(o, x); return o; });
+  Object.values(byId).forEach((o) => apps.push(o)); // shu tabda yaratilgan, hali saqlanmagan
+  S.apps = apps;
+  S.accReqs = S.accReqs || {};
+  Object.entries(n.accReqs || {}).forEach(([inn, x]) => { const o = S.accReqs[inn]; if (!o) S.accReqs[inn] = x; else if ((x.updatedAt || 0) >= (o.updatedAt || 0)) replaceIn(o, x); });
+  S.opened = Object.assign({}, S.opened, n.opened);
+  S.users = Object.assign({}, n.users, S.users);
+  if (n.blockedLog) S.blockedLog = n.blockedLog;
+  S.seq = Math.max(S.seq || 0, n.seq || 0);
+  return S.apps.filter((a) => before[a.id] !== undefined && before[a.id] !== a.status + (a.live ? '*' : ''));
+}
+function liveRender() {
+  const ae = document.activeElement;
+  if ($('#modal').innerHTML || (ae && /INPUT|TEXTAREA|SELECT/.test(ae.tagName) && $('#app').contains(ae))) { syncPending = true; return; }
+  syncPending = false; render();
+}
+window.addEventListener('storage', (e) => {
+  if (e.key !== KEY || !e.newValue) return;
+  let n; try { n = JSON.parse(e.newValue); } catch (err) { return; }
+  if (!n || n.v !== 5) return;
+  mergeLive(n).forEach((a) => toast(a.id + ': ' + ext(a)[0]));
+  liveRender();
+});
+document.addEventListener('focusout', () => { if (syncPending) setTimeout(() => { if (syncPending) liveRender(); }, 60); });
 
 render();
 if (S.screen === 'register' && S.reg.step === 2) tickResend();
